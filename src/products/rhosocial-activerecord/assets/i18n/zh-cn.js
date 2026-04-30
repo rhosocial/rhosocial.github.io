@@ -174,6 +174,70 @@ window.I18N['zh-cn'] = {
   },
 
   footer: {
-    hotkeys: '23 themes × 24 font packs · <span class="kbd">Ctrl</span>+<span class="kbd">letter</span> theme / <span class="kbd">Shift</span>+<span class="kbd">letter</span> font / <span class="kbd">Alt</span>+<span class="kbd">letter</span> language'
+    hotkeys: '23 themes × 24 font packs · <span class="kbd">Ctrl</span>+<span class="kbd">letter</span> theme / <span class="kbd">Shift</span>+<span class="kbd">letter</span> font / <span class="kbd">Alt</span>+<span class="kbd">letter</span> language',
+    backends: '后端',
+    themes: '主题展示',
+    github: 'GitHub',
+    copyright: '© 2015–2026 rhosocial. Apache 2.0.'
+  },
+
+  numbers: {
+    label: 'By the Numbers',
+    title: '关键<em>指标</em>。',
+    n1: '数据库后端',
+    n1_sub: 'SQLite/PostgreSQL/MySQL/SQLServer/Oracle + 自定义',
+    n2: 'Python 版本',
+    n2_sub: '3.8 / 3.9 / 3.10 / 3.11 / 3.12',
+    n3: '语言支持',
+    n3_sub: 'UN 6 官方语言 + 全球主要语言',
+    n4: '主题支持',
+    n4_sub: '10 暗色 + 16 亮色',
+    n5: '核心依赖',
+    n5_sub: '仅 Pydantic',
+    n6: '开源协议',
+    n6_sub: '商业友好，免费使用'
+  },
+
+  started: {
+    label: 'Get Started',
+    title: '快速<em>入门</em>。',
+    step1_title: '安装',
+    step2_title: '定义模型',
+    step3_title: '使用',
+    cta_docs: '阅读文档 →',
+    cta_github: 'GitHub →'
+  },
+
+  voices: {
+    label: 'Voices · 用户之声',
+    title: '他们<em>这样说</em>。',
+    q1: 'rhosocial-activerecord 终于让我不再和 ORM 搏斗了。类型注解就是模型定义，太对了。',
+    q1_role: 'Backend Engineer · Kyoto',
+    q2: 'Async 和 sync 共用一套 API，重构时几乎零成本。我的 FastAPI 项目整个迁移只改了两行。',
+    q2_role: 'Staff Engineer · Berlin',
+    q3: '我自己接了 DuckDB 后端，看了 Backend ABC 不到一个下午就跑通了。这才是可扩展。',
+    q3_role: 'Data Platform · Singapore',
+    q4: 'IDE 里每一步链式调用都有正确的类型推导。Pydantic 的力量用在了刀刃上。',
+    q4_role: 'Senior Python · São Paulo',
+    q5: '零运行时依赖是关键。嵌入式部署场景里我们再也不用为 SQLAlchemy 的体积头疼了。',
+    q5_role: 'IoT 工程师 · 深圳'
+  },
+
+  compare: {
+    label: 'Compare',
+    title: '与其它 Python ORM <em>对比</em>。',
+    col_feature: '特性',
+    row1: '设计模式',   row1r: 'ActiveRecord', row1sa: 'Data Mapper', row1dj: 'ActiveRecord', row1sm: 'Hybrid', row1pw: 'ActiveRecord', row1to: 'ActiveRecord',
+    row2: '后端可独立使用',
+    row3: '无 Session 概念',
+    row4: '同步 / 异步 API 一致',
+    row5: '原生 Pydantic 集成',
+    row6: '运行时数据验证',
+    row7: '完整 SQL 表达力',
+    row8: '能力声明机制',
+    row9: 'SQL 透明 <code>.to_sql()</code>',
+    row10: '零强制迁移依赖',
+    row11: '最小依赖',
+    row12: '显式关系定义'
   }
 };
