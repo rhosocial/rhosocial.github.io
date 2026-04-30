@@ -3,11 +3,8 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [master, main]
-
-# Only trigger on changes to src/ directory
-path-ignore:
-  - '**'
-  - '!src/**'
+    paths:
+      - 'src/**'
 
 permissions:
   contents: read
@@ -34,7 +31,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # Only deploy src/ directory content to site root
           path: 'src'
 
       - name: Deploy to GitHub Pages
