@@ -1,0 +1,47 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Editor & IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.settings/
+*.sublime-*
+
+# Temporary
+*.tmp
+*.temp
+*.bak
+
+# Logs
+*.log
+
+# Build output
+dist/
+build/
+
+# Dependencies
+node_modules/
+vendor/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Test directory (not deployed)
+tests/
+
+# Claude Code working directory
+.claude/plan/
+.claude/tmp/
