@@ -142,7 +142,7 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
   <div class="dropdown" data-dropdown="font">
     <button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
       <span class="dropdown-label" data-i18n="control.font_label">Font</span>
-      <span class="dropdown-value" data-i18n-value="auto" id="font-value">Auto</span>
+      <span class="dropdown-value" id="font-value">Auto</span>
       <svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
     <div class="dropdown-menu" role="listbox">
@@ -612,45 +612,55 @@ function detectLang() {
   }
   return 'zh-cn';
 }
+function refreshDropdownValueLabel(kind, value) {
+  var dd = document.querySelector('[data-dropdown="' + kind + '"]');
+  if (!dd) return;
+  var item = dd.querySelector('.dropdown-item[data-value="' + value + '"]');
+  if (!item) return;
+  var valueEl = dd.querySelector('.dropdown-value');
+  if (valueEl) valueEl.textContent = item.querySelector('.dropdown-item-label')?.textContent || value;
+}
+
+var FONT_THEME_MAP = {
+  'terminal': 'tight', 'editorial': 'serif', 'brutalist': 'geometric',
+  'aurora': 'heavy', 'synthwave': 'allmono', 'sumi': 'reader',
+  'blueprint': 'display-serif', 'noir': 'neo-future', 'riso': 'plex',
+  'nordic': 'playful', 'solarpunk': 'classic-serif', 'mocha': 'pixel',
+  'wireframe': 'monumental', 'anderson': 'slab', 'tokyo': 'condensed',
+  'memphis': 'expressive', 'chalkboard': 'deco', 'matrix': 'stencil',
+  'steel': 'rubik', 'frutiger': 'bricolage', 'newsprint': 'gloock',
+  'candy': 'crimson', 'botanical': 'dm', 'cyberpunk': 'outfit',
+  'parchment': 'literata', 'glassmorphism': 'auto'
+};
+
 function setValue(type, value, skipStorage) {
   if (type === 'theme') {
     document.documentElement.setAttribute('data-theme', value);
     if (!skipStorage) localStorage.setItem('rhosocial-theme', value);
-    var themeBtn = document.querySelector('[data-dropdown="theme"] .dropdown-value');
-    if (themeBtn) {
-      var themeItem = document.querySelector('[data-dropdown="theme"] .dropdown-item[data-value="' + value + '"]');
-      if (themeItem) themeBtn.textContent = themeItem.querySelector('.dropdown-item-label').textContent;
-    }
-    var activeThemeItem = document.querySelector('[data-dropdown="theme"] .dropdown-item.is-active');
-    if (activeThemeItem) activeThemeItem.classList.remove('is-active');
-    var newActiveThemeItem = document.querySelector('[data-dropdown="theme"] .dropdown-item[data-value="' + value + '"]');
-    if (newActiveThemeItem) newActiveThemeItem.classList.add('is-active');
+    refreshDropdownValueLabel('theme', value);
+    document.documentElement.setAttribute('data-font', 'auto');
+    localStorage.removeItem('rhosocial-font');
+    refreshDropdownValueLabel('font', 'auto');
+    document.querySelectorAll('[data-dropdown="font"] .dropdown-item').forEach(function(i) { i.classList.remove('is-active'); });
+    var autoItem = document.querySelector('[data-dropdown="font"] .dropdown-item[data-value="auto"]');
+    if (autoItem) autoItem.classList.add('is-active');
   }
   else if (type === 'font') {
     document.documentElement.setAttribute('data-font', value);
-    if (!skipStorage) localStorage.setItem('rhosocial-font', value);
-    var fontBtn = document.querySelector('[data-dropdown="font"] .dropdown-value');
-    if (fontBtn) {
-      if (value === 'auto') fontBtn.textContent = 'Auto';
-      else {
-        var fontItem = document.querySelector('[data-dropdown="font"] .dropdown-item[data-value="' + value + '"]');
-        if (fontItem) fontBtn.textContent = fontItem.querySelector('.dropdown-item-label').textContent;
-      }
+    if (value === 'auto') {
+      localStorage.removeItem('rhosocial-font');
+    } else if (!skipStorage) {
+      localStorage.setItem('rhosocial-font', value);
     }
-    var activeFontItem = document.querySelector('[data-dropdown="font"] .dropdown-item.is-active');
-    if (activeFontItem) activeFontItem.classList.remove('is-active');
-    var newActiveFontItem = document.querySelector('[data-dropdown="font"] .dropdown-item[data-value="' + value + '"]');
-    if (newActiveFontItem) newActiveFontItem.classList.add('is-active');
+    refreshDropdownValueLabel('font', value);
   }
   else if (type === 'lang') {
     document.documentElement.setAttribute('lang', value);
+    var rtlLangs = ['ar', 'fa-ir', 'he-il', 'yi'];
+    document.documentElement.setAttribute('dir', rtlLangs.includes(value) ? 'rtl' : 'ltr');
     localStorage.setItem('rhosocial-lang', value);
     applyI18n(value);
-    var langBtn = document.querySelector('[data-dropdown="lang"] .dropdown-value');
-    if (langBtn) {
-      var langItem = document.querySelector('[data-dropdown="lang"] .dropdown-item[data-value="' + value + '"]');
-      if (langItem) langBtn.textContent = langItem.querySelector('.dropdown-item-label').textContent;
-    }
+    refreshDropdownValueLabel('lang', value);
   }
 }
 function applyI18n(lang) {
@@ -670,9 +680,14 @@ function applyI18n(lang) {
     for (const p of parts) { value = value && value[p]; }
     if (value) el.textContent = value;
   });
+  refreshDropdownValueLabel('theme', document.documentElement.getAttribute('data-theme'));
+  refreshDropdownValueLabel('font', document.documentElement.getAttribute('data-font'));
+  refreshDropdownValueLabel('lang', lang);
 }
 const currentLang = detectLang();
 document.documentElement.setAttribute('lang', currentLang);
+var rtlLangs = ['ar', 'fa-ir', 'he-il', 'yi'];
+document.documentElement.setAttribute('dir', rtlLangs.includes(currentLang) ? 'rtl' : 'ltr');
 applyI18n(currentLang);
 
 // Theme and font initialization from URL params or localStorage
@@ -683,37 +698,25 @@ applyI18n(currentLang);
   const themeFromStorage = localStorage.getItem('rhosocial-theme');
   const fontFromStorage = localStorage.getItem('rhosocial-font');
 
-  const fontThemeMap = {
-    'terminal': 'tight', 'editorial': 'serif', 'brutalist': 'geometric',
-    'aurora': 'heavy', 'synthwave': 'allmono', 'sumi': 'reader',
-    'blueprint': 'display-serif', 'noir': 'neo-future', 'riso': 'plex',
-    'nordic': 'playful', 'solarpunk': 'classic-serif', 'mocha': 'pixel',
-    'wireframe': 'monumental', 'anderson': 'slab', 'tokyo': 'condensed',
-    'memphis': 'expressive', 'chalkboard': 'deco', 'matrix': 'stencil',
-    'steel': 'rubik', 'frutiger': 'bricolage', 'newsprint': 'gloock',
-    'candy': 'crimson', 'botanical': 'dm', 'cyberpunk': 'outfit',
-    'parchment': 'literata', 'glassmorphism': 'auto'
-  };
-
   let finalTheme = themeFromUrl || themeFromStorage || 'terminal';
-  let finalFont = fontFromUrl || fontFromStorage;
-  if (!finalFont) {
-    finalFont = fontThemeMap[finalTheme] || 'auto';
-  }
+  let explicitFont = fontFromUrl || fontFromStorage;
 
   setValue('theme', finalTheme, true);
-  setValue('font', finalFont, true);
+
+  if (explicitFont && explicitFont !== 'auto') {
+    document.documentElement.setAttribute('data-font', explicitFont);
+    document.querySelectorAll('[data-dropdown="font"] .dropdown-item').forEach(function(i) { i.classList.remove('is-active'); });
+    var fontItem = document.querySelector('[data-dropdown="font"] .dropdown-item[data-value="' + explicitFont + '"]');
+    if (fontItem) fontItem.classList.add('is-active');
+    refreshDropdownValueLabel('font', explicitFont);
+  } else {
+    document.documentElement.setAttribute('data-font', 'auto');
+    document.querySelectorAll('[data-dropdown="font"] .dropdown-item').forEach(function(i) { i.classList.remove('is-active'); });
+    var autoItem = document.querySelector('[data-dropdown="font"] .dropdown-item[data-value="auto"]');
+    if (autoItem) autoItem.classList.add('is-active');
+    refreshDropdownValueLabel('font', 'auto');
+  }
 })();
-
-// Initialize dropdown display values
-(function() {
-  var themeValue = document.querySelector('[data-dropdown="theme"] .dropdown-item.is-active .dropdown-item-label');
-  if (themeValue) document.querySelector('[data-dropdown="theme"] .dropdown-value').textContent = themeValue.textContent;
-  var langItem = document.querySelector('[data-dropdown="lang"] .dropdown-item[data-value="' + currentLang + '"]');
-  if (langItem) document.querySelector('[data-dropdown="lang"] .dropdown-value').textContent = langItem.querySelector('.dropdown-item-label').textContent;
-})();
-
-
 
 // Initialize feature code from external data
 (function() {
