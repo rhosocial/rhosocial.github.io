@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="terminal" data-font="auto">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>rhosocial ActiveRecord — MariaDB</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/core.css">
+<link rel="stylesheet" href="../assets/themes/terminal.css">
+<link rel="stylesheet" href="../assets/themes/editorial.css">
+<link rel="stylesheet" href="../assets/themes/brutalist.css">
+<link rel="stylesheet" href="../assets/themes/aurora.css">
+<link rel="stylesheet" href="../assets/themes/synthwave.css">
+<link rel="stylesheet" href="../assets/themes/sumi.css">
+<link rel="stylesheet" href="../assets/themes/blueprint.css">
+<link rel="stylesheet" href="../assets/themes/noir.css">
+<link rel="stylesheet" href="../assets/themes/riso.css">
+<link rel="stylesheet" href="../assets/themes/nordic.css">
+<link rel="stylesheet" href="../assets/themes/solarpunk.css">
+<link rel="stylesheet" href="../assets/themes/mocha.css">
+<link rel="stylesheet" href="../assets/themes/wireframe.css">
+<link rel="stylesheet" href="../assets/themes/anderson.css">
+<link rel="stylesheet" href="../assets/themes/tokyo.css">
+<link rel="stylesheet" href="../assets/themes/memphis.css">
+<link rel="stylesheet" href="../assets/themes/chalkboard.css">
+<link rel="stylesheet" href="../assets/themes/matrix.css">
+<link rel="stylesheet" href="../assets/themes/steel.css">
+<link rel="stylesheet" href="../assets/themes/frutiger.css">
+<link rel="stylesheet" href="../assets/themes/newsprint.css">
+<link rel="stylesheet" href="../assets/themes/candy.css">
+<link rel="stylesheet" href="../assets/themes/botanical.css">
+<link rel="stylesheet" href="../assets/themes/cyberpunk.css">
+<link rel="stylesheet" href="../assets/themes/parchment.css">
+<link rel="stylesheet" href="../assets/themes/glassmorphism.css">
+<link rel="stylesheet" href="../assets/core-extensions.css">
+<link rel="stylesheet" href="../assets/fonts/tight.css">
+<link rel="stylesheet" href="../assets/fonts/serif.css">
+<link rel="stylesheet" href="../assets/fonts/geometric.css">
+<link rel="stylesheet" href="../assets/fonts/heavy.css">
+<link rel="stylesheet" href="../assets/fonts/allmono.css">
+<link rel="stylesheet" href="../assets/fonts/reader.css">
+<link rel="stylesheet" href="../assets/fonts/display-serif.css">
+<link rel="stylesheet" href="../assets/fonts/neo-future.css">
+<link rel="stylesheet" href="../assets/fonts/plex.css">
+<link rel="stylesheet" href="../assets/fonts/playful.css">
+<link rel="stylesheet" href="../assets/fonts/classic-serif.css">
+<link rel="stylesheet" href="../assets/fonts/pixel.css">
+<link rel="stylesheet" href="../assets/fonts/monumental.css">
+<link rel="stylesheet" href="../assets/fonts/slab.css">
+<link rel="stylesheet" href="../assets/fonts/condensed.css">
+<link rel="stylesheet" href="../assets/fonts/expressive.css">
+<link rel="stylesheet" href="../assets/fonts/deco.css">
+<link rel="stylesheet" href="../assets/fonts/stencil.css">
+<link rel="stylesheet" href="../assets/fonts/rubik.css">
+<link rel="stylesheet" href="../assets/fonts/bricolage.css">
+<link rel="stylesheet" href="../assets/fonts/gloock.css">
+<link rel="stylesheet" href="../assets/fonts/crimson.css">
+<link rel="stylesheet" href="../assets/fonts/dm.css">
+<link rel="stylesheet" href="../assets/fonts/outfit.css">
+<link rel="stylesheet" href="../assets/fonts/literata.css">
+<script src="mariadb/zh-CN.js"></script>
+<script src="mariadb/en-US.js"></script>
+</head>
+<body>
+<header class="control-bar">
+<div class="control-brand">
+<span class="brand-mark size-md">&rho;<sub>AR</sub></span>
+<span>rhosocial ActiveRecord</span>
+<span class="dim"><a href="../index.html" data-i18n="nav.index">Index</a> / <a href="./index.html" data-i18n="nav.backends">Backends</a> / <a href="../activerecord/index.html" data-i18n="nav.activerecord">ActiveRecord</a></span>
+</div>
+<div class="dropdown" data-dropdown="theme">
+<button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+<span class="dropdown-label" data-i18n="control.theme_label">Theme</span>
+<span class="dropdown-value">Terminal</span>
+<svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<div class="dropdown-menu" role="listbox">
+<button class="dropdown-item is-active" data-value="terminal"><span class="dropdown-item-label">Terminal</span><span class="dropdown-item-kbd">&#8963;Q</span></button>
+<button class="dropdown-item" data-value="editorial"><span class="dropdown-item-label">Editorial</span><span class="dropdown-item-kbd">&#8963;W</span></button>
+<button class="dropdown-item" data-value="brutalist"><span class="dropdown-item-label">Brutalist</span><span class="dropdown-item-kbd">&#8963;E</span></button>
+<button class="dropdown-item" data-value="aurora"><span class="dropdown-item-label">Aurora</span><span class="dropdown-item-kbd">&#8963;R</span></button>
+<button class="dropdown-item" data-value="synthwave"><span class="dropdown-item-label">Synthwave</span><span class="dropdown-item-kbd">&#8963;T</span></button>
+<button class="dropdown-item" data-value="sumi"><span class="dropdown-item-label">Sumi 墨</span><span class="dropdown-item-kbd">&#8963;Y</span></button>
+<button class="dropdown-item" data-value="blueprint"><span class="dropdown-item-label">Blueprint</span><span class="dropdown-item-kbd">&#8963;U</span></button>
+<button class="dropdown-item" data-value="noir"><span class="dropdown-item-label">Noir</span><span class="dropdown-item-kbd">&#8963;I</span></button>
+<button class="dropdown-item" data-value="riso"><span class="dropdown-item-label">Riso</span><span class="dropdown-item-kbd">&#8963;O</span></button>
+<button class="dropdown-item" data-value="nordic"><span class="dropdown-item-label">Nordic</span><span class="dropdown-item-kbd">&#8963;P</span></button>
+<button class="dropdown-item" data-value="solarpunk"><span class="dropdown-item-label">Solarpunk</span><span class="dropdown-item-kbd">&#8963;A</span></button>
+<button class="dropdown-item" data-value="mocha"><span class="dropdown-item-label">Mocha</span><span class="dropdown-item-kbd">&#8963;S</span></button>
+<button class="dropdown-item" data-value="wireframe"><span class="dropdown-item-label">Wireframe</span><span class="dropdown-item-kbd">&#8963;D</span></button>
+<button class="dropdown-item" data-value="anderson"><span class="dropdown-item-label">Anderson</span><span class="dropdown-item-kbd">&#8963;F</span></button>
+<button class="dropdown-item" data-value="tokyo"><span class="dropdown-item-label">Tokyo Night</span><span class="dropdown-item-kbd">&#8963;G</span></button>
+<button class="dropdown-item" data-value="memphis"><span class="dropdown-item-label">Memphis</span><span class="dropdown-item-kbd">&#8963;H</span></button>
+<button class="dropdown-item" data-value="chalkboard"><span class="dropdown-item-label">Chalkboard</span><span class="dropdown-item-kbd">&#8963;J</span></button>
+<button class="dropdown-item" data-value="matrix"><span class="dropdown-item-label">Matrix</span><span class="dropdown-item-kbd">&#8963;K</span></button>
+<button class="dropdown-item" data-value="steel"><span class="dropdown-item-label">Steel</span><span class="dropdown-item-kbd">&#8963;L</span></button>
+<button class="dropdown-item" data-value="frutiger"><span class="dropdown-item-label">Frutiger</span><span class="dropdown-item-kbd">&#8963;Z</span></button>
+<button class="dropdown-item" data-value="newsprint"><span class="dropdown-item-label">Newsprint</span><span class="dropdown-item-kbd">&#8963;X</span></button>
+<button class="dropdown-item" data-value="candy"><span class="dropdown-item-label">Candy</span><span class="dropdown-item-kbd">&#8963;C</span></button>
+<button class="dropdown-item" data-value="botanical"><span class="dropdown-item-label">Botanical</span><span class="dropdown-item-kbd">&#8963;V</span></button>
+<button class="dropdown-item" data-value="cyberpunk"><span class="dropdown-item-label">Cyberpunk</span><span class="dropdown-item-kbd">&#8963;1</span></button>
+<button class="dropdown-item" data-value="parchment"><span class="dropdown-item-label">Parchment</span><span class="dropdown-item-kbd">&#8963;2</span></button>
+<button class="dropdown-item" data-value="glassmorphism"><span class="dropdown-item-label">Glassmorphism</span><span class="dropdown-item-kbd">&#8963;3</span></button>
+</div>
+</div>
+<div class="dropdown" data-dropdown="font">
+<button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+<span class="dropdown-label" data-i18n="control.font_label">Font</span>
+<span class="dropdown-value" data-i18n-value="auto">Auto</span>
+<svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<div class="dropdown-menu" role="listbox">
+<button class="dropdown-item is-active" data-value="auto"><span class="dropdown-item-label" data-i18n="control.font_auto">Auto (theme default)</span><span class="dropdown-item-kbd">&#8679;Q</span></button>
+<button class="dropdown-item" data-value="tight"><span class="dropdown-item-label">Tight Sans</span><span class="dropdown-item-kbd">&#8679;W</span></button>
+<button class="dropdown-item" data-value="serif"><span class="dropdown-item-label">Editorial Serif</span><span class="dropdown-item-kbd">&#8679;E</span></button>
+<button class="dropdown-item" data-value="geometric"><span class="dropdown-item-label">Geometric</span><span class="dropdown-item-kbd">&#8679;R</span></button>
+<button class="dropdown-item" data-value="heavy"><span class="dropdown-item-label">Heavy Display</span><span class="dropdown-item-kbd">&#8679;T</span></button>
+<button class="dropdown-item" data-value="allmono"><span class="dropdown-item-label">All Mono</span><span class="dropdown-item-kbd">&#8679;Y</span></button>
+<button class="dropdown-item" data-value="reader"><span class="dropdown-item-label">Reader</span><span class="dropdown-item-kbd">&#8679;U</span></button>
+<button class="dropdown-item" data-value="display-serif"><span class="dropdown-item-label">Display Serif</span><span class="dropdown-item-kbd">&#8679;I</span></button>
+<button class="dropdown-item" data-value="neo-future"><span class="dropdown-item-label">Neo Future</span><span class="dropdown-item-kbd">&#8679;O</span></button>
+<button class="dropdown-item" data-value="plex"><span class="dropdown-item-label">IBM Plex</span><span class="dropdown-item-kbd">&#8679;P</span></button>
+<button class="dropdown-item" data-value="playful"><span class="dropdown-item-label">Playful (Caveat)</span><span class="dropdown-item-kbd">&#8679;A</span></button>
+<button class="dropdown-item" data-value="classic-serif"><span class="dropdown-item-label">Classic Serif (Garamond)</span><span class="dropdown-item-kbd">&#8679;S</span></button>
+</div>
+</div>
+<div class="dropdown" data-dropdown="lang">
+<button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+<span class="dropdown-label" data-i18n="control.lang_label">Language</span>
+<span class="dropdown-value"></span>
+<svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<div class="dropdown-menu" role="listbox">
+<button class="dropdown-item is-active" data-value="zh-cn"><span class="dropdown-item-label">简体中文</span><span class="dropdown-item-kbd">&#8997;Q</span></button>
+<button class="dropdown-item" data-value="en-us"><span class="dropdown-item-label">English</span><span class="dropdown-item-kbd">&#8997;W</span></button>
+</div>
+</div>
+</header>
+<main class="page">
+<section class="hero section">
+<div class="container hero-inner">
+<div class="hero-eyebrow rise"><a href="./index.html">&larr; <span data-i18n="hero.back">Backends</span></div>
+<h1 class="hero-title rise">MariaDB</h1>
+<p class="hero-sub rise" data-i18n="hero.sub">MySQL 兼容的增强分支。SEQUENCE / RETURNING / 系统版本化表 / INTERSECT & EXCEPT 独有支持。</p>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="features.label">Features</div>
+<h2 class="section-title" data-i18n="features.title">MariaDB 特性。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / SEQUENCE</div>
+<h3 class="feature-title" data-i18n="features.sequence.title">序列</h3>
+<p class="feature-desc" data-i18n="features.sequence.desc">CREATE SEQUENCE / NEXTVAL / CURRVAL / SETVAL（10.3+）。独立序列对象，替代 AUTO_INCREMENT。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / RETURNING</div>
+<h3 class="feature-title" data-i18n="features.returning.title">RETURNING</h3>
+<p class="feature-desc" data-i18n="features.returning.desc">INSERT / DELETE / REPLACE 支持 RETURNING 子句（10.5+）。MySQL 不支持此功能。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Versioning</div>
+<h3 class="feature-title" data-i18n="features.versioning.title">系统版本化</h3>
+<p class="feature-desc" data-i18n="features.versioning.desc">WITH SYSTEM VERSIONING / FOR SYSTEM_TIME AS OF / BETWEEN（10.3+）。时点查询，无需额外表。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / SET Ops</div>
+<h3 class="feature-title" data-i18n="features.set_ops.title">集合运算</h3>
+<p class="feature-desc" data-i18n="features.set_ops.desc">INTERSECT / EXCEPT / INTERSECT ALL / EXCEPT ALL（10.3+）。MySQL 8.0.31+ 才部分支持。</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="connection.label">Connection</div>
+<h2 class="section-title" data-i18n="connection.title">连接配置。</h2>
+</div>
+<p class="section-intro" data-i18n="connection.desc">MariaDBConnectionConfig 继承 ConnectionConfig，混入 Pool / SSL / Charset / Timezone / Version / Logging 六组配置。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">connection_config.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.mariadb <span class="tok-k">import</span> <span class="tok-cls">MariaDBBackend</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.mariadb.config <span class="tok-k">import</span> <span class="tok-cls">MariaDBConnectionConfig</span>
+
+<span class="tok-c"># 标准连接（使用官方 mariadb 驱动 + 连接池）</span>
+config = <span class="tok-cls">MariaDBConnectionConfig</span>(
+    host=<span class="tok-s">'127.0.0.1'</span>,
+    port=<span class="tok-n">3306</span>,
+    user=<span class="tok-s">'app_user'</span>,
+    password=<span class="tok-s">'secret'</span>,
+    database=<span class="tok-s">'app_db'</span>,
+)
+backend = <span class="tok-cls">MariaDBBackend</span>(connection_config=config)
+backend.connect()
+
+<span class="tok-c"># 快捷方式：直接传连接参数</span>
+backend = <span class="tok-cls">MariaDBBackend</span>(
+    host=<span class="tok-s">'127.0.0.1'</span>,
+    port=<span class="tok-n">3306</span>,
+    user=<span class="tok-s">'app_user'</span>,
+    password=<span class="tok-s">'secret'</span>,
+    database=<span class="tok-s">'app_db'</span>,
+)
+
+<span class="tok-c"># MariaDB 专有字段</span>
+config = <span class="tok-cls">MariaDBConnectionConfig</span>(
+    ...,
+    autocommit=<span class="tok-k">False</span>,
+    ssl_disabled=<span class="tok-k">False</span>,
+    options={<span class="tok-s">'plugindir'</span>: <span class="tok-s">'/usr/lib/mariadb/plugin'</span>},
+)
+
+<span class="tok-c"># 从环境变量创建配置（前缀 MARIADB_）</span>
+config = <span class="tok-cls">MariaDBConnectionConfig</span>.from_env(prefix=<span class="tok-s">"MARIADB_"</span>)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="config_mixins.label">Config Mixins</div>
+<h2 class="section-title" data-i18n="config_mixins.title">配置混入。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Pool</div>
+<h3 class="feature-title" data-i18n="config_mixins.pool">ConnectionPoolMixin</h3>
+<p class="feature-desc">pool_size / pool_timeout / pool_name — 连接池管理</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / SSL</div>
+<h3 class="feature-title" data-i18n="config_mixins.ssl">SSLMixin</h3>
+<p class="feature-desc">ssl_ca / ssl_cert / ssl_key / ssl_verify_cert / ssl_verify_identity</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Charset</div>
+<h3 class="feature-title" data-i18n="config_mixins.charset">CharsetMixin</h3>
+<p class="feature-desc">charset (默认 utf8mb4) / collation</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Timezone</div>
+<h3 class="feature-title" data-i18n="config_mixins.timezone">TimezoneMixin</h3>
+<p class="feature-desc">timezone — 会话时区</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / Version</div>
+<h3 class="feature-title" data-i18n="config_mixins.version">VersionMixin</h3>
+<p class="feature-desc">version — 服务器版本追踪，影响方言功能开关</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / Logging</div>
+<h3 class="feature-title" data-i18n="config_mixins.logging">LoggingMixin</h3>
+<p class="feature-desc">log_queries / log_level — 查询日志控制</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="dialect.label">Dialect</div>
+<h2 class="section-title" data-i18n="dialect.title">MariaDBDialect 版本感知。</h2>
+</div>
+<p class="section-intro" data-i18n="dialect.desc">MariaDBDialect 依赖 MARIADB_VERSION_BOUNDARIES 字典，11 个版本阈值驱动功能开关。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">dialect_version.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.mariadb.dialect <span class="tok-k">import</span> <span class="tok-cls">MariaDBDialect</span>
+
+<span class="tok-c"># 默认版本 10.11.0（启用全部功能）</span>
+dialect = <span class="tok-cls">MariaDBDialect</span>()
+
+<span class="tok-c"># 指定旧版本 → 功能降级</span>
+old_dialect = <span class="tok-cls">MariaDBDialect</span>(version=(<span class="tok-n">10</span>, <span class="tok-n">2</span>, <span class="tok-n">0</span>))
+old_dialect.supports_returning_clause() <span class="tok-c"># False (需 10.5+)</span>
+old_dialect.supports_sequence() <span class="tok-c"># False (需 10.3+)</span>
+old_dialect.supports_window_functions() <span class="tok-c"># True (10.2+)</span>
+
+<span class="tok-c"># 版本阈值表 (MARIADB_VERSION_BOUNDARIES)</span>
+<span class="tok-c"># 10.2.0 — Window Functions / CTE / FILTER</span>
+<span class="tok-c"># 10.2.3 — JSON 函数</span>
+<span class="tok-c"># 10.2.7 — JSON 箭头操作符 (-> / ->>)</span>
+<span class="tok-c"># 10.3.0 — SEQUENCE / System Versioning / INTERSECT / EXCEPT / SKIP LOCKED</span>
+<span class="tok-c"># 10.4.0 — INSTEAD OF 触发器 / 每事件多触发器</span>
+<span class="tok-c"># 10.5.0 — RETURNING 子句</span>
+<span class="tok-c"># 10.6.0 — EXPLAIN FORMAT=JSON/TREE / EXPLAIN ANALYZE</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="dialect_features.label">Feature Matrix</div>
+<h2 class="section-title" data-i18n="dialect_features.title">方言功能矩阵。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Supported</div>
+<h3 class="feature-title" data-i18n="dialect_features.supported">支持</h3>
+<p class="feature-desc">CTE (10.2+) / Window Functions (10.2+) / RETURNING (10.5+) / SEQUENCE (10.3+) / INTERSECT/EXCEPT (10.3+) / ROLLUP / UPSERT / FILTER / JSON 箭头 (10.2.7+) / SKIP LOCKED (10.3+) / INSTEAD OF Trigger (10.4+) / System Versioning (10.3+) / EXPLAIN ANALYZE (10.6+)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Not Supported</div>
+<h3 class="feature-title" data-i18n="dialect_features.unsupported">不支持</h3>
+<p class="feature-desc">MERGE / CUBE / GROUPING SETS / ARRAY / ILIKE / QUALIFY / Materialized CTE / JSON_TABLE / Graph MATCH / Ordered-Set Aggregation / RETURNING for UPDATE</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / MariaDB-specific</div>
+<h3 class="feature-title" data-i18n="dialect_features.mariadb_specific">MariaDB 专有</h3>
+<p class="feature-desc">SEQUENCE / RETURNING (INSERT/DELETE/REPLACE) / System Versioning / INSTEAD OF Trigger / OR REPLACE Trigger / 多触发器每事件 / JSON 箭头操作符 / EXPLAIN FORMAT=JSON/TREE</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="protocols.label">Protocols</div>
+<h2 class="section-title" data-i18n="protocols.title">MariaDB 专有协议。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Sequence</div>
+<h3 class="feature-title" data-i18n="protocols.sequence">MariaDBSequenceSupport</h3>
+<p class="feature-desc">format_create_sequence_statement() / format_drop_sequence_statement() / format_alter_sequence_statement() / format_nextval() / format_currval() / format_setval()</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Returning</div>
+<h3 class="feature-title" data-i18n="protocols.returning">MariaDBReturningSupport</h3>
+<p class="feature-desc">supports_returning() / supports_returning_expression() / format_returning_clause() — 仅 INSERT/DELETE/REPLACE，不支持 UPDATE</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Versioning</div>
+<h3 class="feature-title" data-i18n="protocols.versioning">MariaDBSystemVersioningSupport</h3>
+<p class="feature-desc">format_system_time_as_of() / format_system_time_between() / format_system_time_from_to() / format_system_time_all() / format_system_versioning_clause()</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / SetOps</div>
+<h3 class="feature-title" data-i18n="protocols.set_ops">MariaDBIntersectExceptSupport</h3>
+<p class="feature-desc">supports_intersect() / supports_except() / supports_intersect_all() / supports_except_all()</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / JSON</div>
+<h3 class="feature-title" data-i18n="protocols.json">MariaDBJSONFunctionSupport</h3>
+<p class="feature-desc">supports_json_function() / supports_json_arrows() / format_json_extract() / format_json_arrow() — 箭头操作符 10.2.7+</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / FullText</div>
+<h3 class="feature-title" data-i18n="protocols.fulltext">MariaDBFullTextSearchSupport</h3>
+<p class="feature-desc">supports_fulltext_index() / format_match_against() — NATURAL LANGUAGE / BOOLEAN / QUERY EXPANSION</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="sequence_code.label">Sequence</div>
+<h2 class="section-title" data-i18n="sequence_code.title">序列操作示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">sequence_example.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.mariadb.dialect <span class="tok-k">import</span> <span class="tok-cls">MariaDBDialect</span>
+
+dialect = <span class="tok-cls">MariaDBDialect</span>()
+
+<span class="tok-c"># CREATE SEQUENCE</span>
+sql, params = dialect.format_create_sequence_statement(
+    name=<span class="tok-s">'user_id_seq'</span>,
+    start_with=<span class="tok-n">1</span>,
+    increment_by=<span class="tok-n">1</span>,
+    minvalue=<span class="tok-n">1</span>,
+    maxvalue=<span class="tok-n">999999</span>,
+    cache=<span class="tok-n">20</span>,
+    cycle=<span class="tok-k">False</span>,
+)
+<span class="tok-c"># → CREATE SEQUENCE `user_id_seq` START WITH = 1 INCREMENT BY = 1 ...</span>
+
+<span class="tok-c"># NEXTVAL / CURRVAL / SETVAL</span>
+sql = dialect.format_nextval(sequence_name=<span class="tok-s">'user_id_seq'</span>)
+<span class="tok-c"># → NEXT VALUE FOR `user_id_seq`</span>
+
+sql = dialect.format_currval(sequence_name=<span class="tok-s">'user_id_seq'</span>)
+<span class="tok-c"># → CURRENT VALUE FOR `user_id_seq`</span>
+
+<span class="tok-c"># ALTER SEQUENCE</span>
+sql, params = dialect.format_alter_sequence_statement(
+    name=<span class="tok-s">'user_id_seq'</span>,
+    restart_with=<span class="tok-n">1000</span>,
+)
+
+<span class="tok-c"># DROP SEQUENCE</span>
+sql, params = dialect.format_drop_sequence_statement(name=<span class="tok-s">'user_id_seq'</span>)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="versioning_code.label">Versioning</div>
+<h2 class="section-title" data-i18n="versioning_code.title">系统版本化示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">versioning_example.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.mariadb.dialect <span class="tok-k">import</span> <span class="tok-cls">MariaDBDialect</span>
+
+dialect = <span class="tok-cls">MariaDBDialect</span>()
+
+<span class="tok-c"># 建表时启用系统版本化</span>
+sql, params = dialect.format_system_versioning_clause()
+<span class="tok-c"># → WITH SYSTEM VERSIONING</span>
+
+<span class="tok-c"># 时点查询：AS OF</span>
+sql, params = dialect.format_for_system_time_as_of(
+    table_name=<span class="tok-s">'users'</span>,
+    timestamp=<span class="tok-s">'2024-01-01 00:00:00'</span>
+)
+<span class="tok-c"># → `users` FOR SYSTEM_TIME AS OF '2024-01-01 00:00:00'</span>
+
+<span class="tok-c"># 区间查询：BETWEEN</span>
+sql, params = dialect.format_for_system_time_between(
+    table_name=<span class="tok-s">'users'</span>,
+    start=<span class="tok-s">'2024-01-01'</span>,
+    end=<span class="tok-s">'2024-06-01'</span>
+)
+<span class="tok-c"># → `users` FOR SYSTEM_TIME BETWEEN '2024-01-01' AND '2024-06-01'</span>
+
+<span class="tok-c"># 全历史查询</span>
+sql, params = dialect.format_for_system_time_all(table_name=<span class="tok-s">'users'</span>)
+<span class="tok-c"># → `users` FOR SYSTEM_TIME ALL</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="insert_syntax.label">INSERT Syntax</div>
+<h2 class="section-title" data-i18n="insert_syntax.title">INSERT 语法扩展。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">insert_syntax.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.expression <span class="tok-k">import</span> <span class="tok-cls">InsertExpression</span>, <span class="tok-cls">ValuesSource</span>, <span class="tok-cls">Literal</span>
+
+<span class="tok-c"># ON DUPLICATE KEY UPDATE（与 MySQL 相同）</span>
+insert = <span class="tok-cls">InsertExpression</span>(
+    dialect=dialect, into=<span class="tok-s">'users'</span>,
+    columns=[<span class="tok-s">'id'</span>, <span class="tok-s">'name'</span>],
+    source=<span class="tok-cls">ValuesSource</span>(dialect, [[<span class="tok-cls">Literal</span>(dialect, <span class="tok-n">1</span>), <span class="tok-cls">Literal</span>(dialect, <span class="tok-s">'Alice'</span>)]]),
+    dialect_options={<span class="tok-s">'on_duplicate_key_update'</span>: {<span class="tok-s">'name'</span>: <span class="tok-cls">Literal</span>(dialect, <span class="tok-s">'Alice'</span>)}}
+)
+
+<span class="tok-c"># INSERT ... RETURNING（MariaDB 10.5+ 独有，MySQL 不支持）</span>
+insert_returning = <span class="tok-cls">InsertExpression</span>(
+    dialect=dialect, into=<span class="tok-s">'users'</span>,
+    columns=[<span class="tok-s">'id'</span>, <span class="tok-s">'name'</span>],
+    source=<span class="tok-cls">ValuesSource</span>(dialect, [[<span class="tok-cls">Literal</span>(dialect, <span class="tok-n">1</span>), <span class="tok-cls">Literal</span>(dialect, <span class="tok-s">'Alice'</span>)]]),
+    dialect_options={<span class="tok-s">'returning'</span>: [<span class="tok-s">'id'</span>, <span class="tok-s">'name'</span>]}
+)
+<span class="tok-c"># → INSERT INTO users (id, name) VALUES (1, 'Alice') RETURNING id, name</span>
+
+<span class="tok-c"># REPLACE INTO ... RETURNING（MariaDB 10.5+ 独有）</span>
+replace = <span class="tok-cls">InsertExpression</span>(
+    dialect=dialect, into=<span class="tok-s">'users'</span>,
+    columns=[<span class="tok-s">'id'</span>, <span class="tok-s">'name'</span>],
+    source=<span class="tok-cls">ValuesSource</span>(dialect, [[<span class="tok-cls">Literal</span>(dialect, <span class="tok-n">1</span>), <span class="tok-cls">Literal</span>(dialect, <span class="tok-s">'Alice'</span>)]]),
+    dialect_options={<span class="tok-s">'replace'</span>: <span class="tok-k">True</span>, <span class="tok-s">'returning'</span>: [<span class="tok-s">'id'</span>]}
+)
+
+<span class="tok-c"># INSERT IGNORE（与 MySQL 相同）</span>
+ignore = <span class="tok-cls">InsertExpression</span>(
+    dialect=dialect, into=<span class="tok-s">'users'</span>,
+    columns=[<span class="tok-s">'id'</span>, <span class="tok-s">'name'</span>],
+    source=<span class="tok-cls">ValuesSource</span>(dialect, [[<span class="tok-cls">Literal</span>(dialect, <span class="tok-n">1</span>), <span class="tok-cls">Literal</span>(dialect, <span class="tok-s">'Alice'</span>)]]),
+    dialect_options={<span class="tok-s">'ignore'</span>: <span class="tok-k">True</span>}
+)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="type_adapters.label">Type Adapters</div>
+<h2 class="section-title" data-i18n="type_adapters.title">MariaDB 类型适配器。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / JSON</div>
+<h3 class="feature-title">MariaDBJSONAdapter</h3>
+<p class="feature-desc">dict/list ↔ LONGTEXT (MariaDB 存 JSON 为 LONGTEXT)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / UUID</div>
+<h3 class="feature-title">MariaDBUUIDAdapter</h3>
+<p class="feature-desc">UUID ↔ CHAR(36) 或 BINARY(16)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Time</div>
+<h3 class="feature-title">MariaDBTimeAdapter</h3>
+<p class="feature-desc">time ↔ timedelta/str — MariaDB 驱动返回 timedelta</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Enum</div>
+<h3 class="feature-title">MariaDBEnumAdapter</h3>
+<p class="feature-desc">Enum ↔ str/int — 支持 use_int_storage 内部整数存储</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / Set</div>
+<h3 class="feature-title">MariaDBSetAdapter</h3>
+<p class="feature-desc">set/frozenset ↔ str — 位标志解码，最多 64 成员</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / Datetime</div>
+<h3 class="feature-title">MariaDBDatetimeAdapter</h3>
+<p class="feature-desc">datetime ↔ datetime/str — 时区感知归一化至 UTC</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="functions.label">Functions</div>
+<h2 class="section-title" data-i18n="functions.title">MariaDB 专有函数工厂。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / JSON</div>
+<h3 class="feature-title" data-i18n="functions.json">JSON</h3>
+<p class="feature-desc">json_extract / json_arrow (-> / ->>) / json_unquote / json_object / json_array / json_contains / json_set / json_remove</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Sequence</div>
+<h3 class="feature-title" data-i18n="functions.sequence">Sequence</h3>
+<p class="feature-desc">nextval — NEXT VALUE FOR / currval — CURRENT VALUE FOR（10.3+）</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Full-Text</div>
+<h3 class="feature-title" data-i18n="functions.fulltext">全文搜索</h3>
+<p class="feature-desc">match_against — MATCH ... AGAINST (NATURAL LANGUAGE / BOOLEAN / QUERY EXPANSION)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / SET</div>
+<h3 class="feature-title" data-i18n="functions.set">SET</h3>
+<p class="feature-desc">find_in_set — SET 列值查找</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / Spatial</div>
+<h3 class="feature-title" data-i18n="functions.spatial">空间</h3>
+<p class="feature-desc">st_geom_from_text / st_as_text / st_as_geojson / st_distance / st_distance_sphere / st_within / st_contains / st_intersects</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="transaction.label">Transaction</div>
+<h2 class="section-title" data-i18n="transaction.title">事务控制。</h2>
+</div>
+<p class="section-intro" data-i18n="transaction.desc">MariaDBTransactionManager 支持全部四种 SQL 标准隔离级别。默认 REPEATABLE_READ。支持 START TRANSACTION READ ONLY。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">transaction_control.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.transaction <span class="tok-k">import</span> <span class="tok-cls">IsolationLevel</span>
+
+<span class="tok-c"># 标准事务（默认 REPEATABLE READ）</span>
+<span class="tok-k">with</span> backend.transaction():
+    backend.execute(<span class="tok-s">"INSERT INTO users ..."</span>, ())
+
+<span class="tok-c"># 指定隔离级别</span>
+<span class="tok-k">with</span> backend.transaction(isolation_level=<span class="tok-cls">IsolationLevel</span>.SERIALIZABLE):
+    ...
+
+<span class="tok-c"># MariaDB 四种隔离级别</span>
+<span class="tok-c"># READ_UNCOMMITTED / READ_COMMITTED / REPEATABLE_READ / SERIALIZABLE</span>
+
+<span class="tok-c"># MariaDB 独有：START TRANSACTION READ ONLY（10.0+）</span>
+dialect = backend.dialect
+sql, params = dialect.format_start_transaction(read_only=<span class="tok-k">True</span>)
+<span class="tok-c"># → START TRANSACTION READ ONLY</span>
+
+<span class="tok-c"># FOR UPDATE SKIP LOCKED / NOWAIT（10.3+）</span>
+<span class="tok-c"># 通过查询表达式的 dialect_options 设置</span>
+
+<span class="tok-c"># Savepoint 支持</span>
+<span class="tok-k">with</span> backend.transaction():
+    backend.execute(<span class="tok-s">"INSERT ..."</span>, ())
+    <span class="tok-k">with</span> backend.transaction(): <span class="tok-c"># SAVEPOINT</span>
+        backend.execute(<span class="tok-s">"UPDATE ..."</span>, ())</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="async.label">Async</div>
+<h2 class="section-title" data-i18n="async.title">异步支持。</h2>
+</div>
+<p class="section-intro" data-i18n="async.desc">AsyncMariaDBBackend 懒加载。优先使用 mariadb.aio，回退到 aiomysql。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">async_mariadb.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.mariadb <span class="tok-k">import</span> <span class="tok-cls">AsyncMariaDBBackend</span>
+<span class="tok-c"># 需安装: pip install rhosocial-activerecord-mariadb[async]</span>
+
+backend = <span class="tok-cls">AsyncMariaDBBackend</span>(
+    host=<span class="tok-s">'127.0.0.1'</span>,
+    port=<span class="tok-n">3306</span>,
+    user=<span class="tok-s">'app_user'</span>,
+    password=<span class="tok-s">'secret'</span>,
+    database=<span class="tok-s">'app_db'</span>,
+)
+<span class="tok-k">await</span> backend.connect()
+
+<span class="tok-k">async with</span> backend.transaction():
+    result = <span class="tok-k">await</span> backend.execute(<span class="tok-s">"SELECT ..."</span>, ())
+
+<span class="tok-k">await</span> backend.disconnect()
+
+<span class="tok-c"># 驱动优先级：mariadb.aio → aiomysql (回退)</span>
+<span class="tok-c"># 懒加载：导入同步组件不需要异步驱动</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.mariadb <span class="tok-k">import</span> <span class="tok-cls">MariaDBBackend</span> <span class="tok-c"># ✓</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.mariadb <span class="tok-k">import</span> <span class="tok-cls">AsyncMariaDBBackend</span> <span class="tok-c"># ✗ 需要异步驱动</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="env_config.label">Environment</div>
+<h2 class="section-title" data-i18n="env_config.title">环境变量配置。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">env_config.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.mariadb.config <span class="tok-k">import</span> <span class="tok-cls">MariaDBConnectionConfig</span>
+
+<span class="tok-c"># 从环境变量创建配置（前缀 MARIADB_）</span>
+config = <span class="tok-cls">MariaDBConnectionConfig</span>.from_env(prefix=<span class="tok-s">"MARIADB_"</span>)
+
+<span class="tok-c"># 支持的环境变量：</span>
+<span class="tok-c"># MARIADB_HOST — 主机地址</span>
+<span class="tok-c"># MARIADB_PORT — 端口号</span>
+<span class="tok-c"># MARIADB_USER — 用户名</span>
+<span class="tok-c"># MARIADB_PASSWORD — 密码</span>
+<span class="tok-c"># MARIADB_DATABASE — 数据库名</span>
+<span class="tok-c"># MARIADB_POOL_SIZE — 连接池大小</span>
+<span class="tok-c"># MARIADB_CHARSET — 字符集</span>
+<span class="tok-c"># MARIADB_COLLATION — 排序规则</span>
+<span class="tok-c"># MARIADB_TIMEZONE — 会话时区</span>
+<span class="tok-c"># MARIADB_SSL_CA / SSL_CERT / SSL_KEY — SSL 配置</span>
+<span class="tok-c"># MARIADB_AUTOCOMMIT — 自动提交模式</span></pre></div>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div>&copy; rhosocial &middot; rhosocial-activerecord &middot; Apache 2.0</div>
+<div data-i18n="footer.hotkeys">25 themes · <span class="kbd">Ctrl</span>+<span class="kbd">key</span> theme / <span class="kbd">Alt</span>+<span class="kbd">key</span> lang</div>
+</footer>
+</main>
+<script>
+const html = document.documentElement;
+
+const THEMES = [
+'terminal','editorial','brutalist','aurora','synthwave','sumi','blueprint','noir','riso','nordic',
+'solarpunk','mocha','wireframe','anderson','tokyo','memphis','chalkboard','matrix','steel',
+'frutiger','newsprint','candy','botanical','cyberpunk','parchment','glassmorphism'
+];
+const FONTS = [
+'auto','tight','serif','geometric','heavy','allmono','reader','display-serif','neo-future','plex',
+'playful','classic-serif','pixel','monumental','slab','condensed','expressive','deco','stencil',
+'rubik','bricolage','gloock','crimson','dm','outfit','literata'
+];
+const LANGS = ['zh-cn','en-us'];
+const QWERTY = 'qwertyuiopasdfghjklzxcvbnm';
+const NUMERIC = '1234567890-';
+const BASE_IDX = QWERTY.length;
+
+const LANG_COLLAPSE = {
+zh: 'zh-cn', en: 'en-us', fr: 'fr-fr', ru: 'ru-ru', es: 'es-es', ar: 'ar',
+ja: 'ja-jp', de: 'de-de', ko: 'ko-kr', pt: 'pt-pt', nl: 'nl-nl', it: 'it-it',
+tr: 'tr-tr', el: 'el-gr', hi: 'hi-in',
+id: 'id-id', in: 'id-id',
+vi: 'vi-vn', pl: 'pl-pl',
+th: 'th-th', uk: 'uk-ua', fa: 'fa-ir', bn: 'bn-bd', ro: 'ro-ro', cs: 'cs-cz'
+};
+
+function matchLang(tag) {
+if (!tag) return null;
+const lower = String(tag).toLowerCase();
+if (LANGS.indexOf(lower) !== -1) return lower;
+const primary = lower.split('-')[0];
+return LANG_COLLAPSE[primary] || null;
+}
+
+function detectInitialLang() {
+try {
+const url = new URLSearchParams(location.search).get('lang');
+const m = matchLang(url);
+if (m) return m;
+} catch (_) {}
+try {
+const stored = localStorage.getItem('rhosocial-lang');
+const m = matchLang(stored);
+if (m) return m;
+} catch (_) {}
+const navLangs = (navigator.languages && navigator.languages.length)
+? navigator.languages
+: [navigator.language || navigator.userLanguage || ''];
+for (const tag of navLangs) {
+const m = matchLang(tag);
+if (m) return m;
+}
+return 'en-us';
+}
+
+let currentLang = detectInitialLang();
+
+function get(path, dict) {
+return path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), dict);
+}
+
+function applyI18n() {
+const dict = window.I18N && window.I18N[currentLang];
+if (!dict) return;
+document.querySelectorAll('[data-i18n]').forEach(el => {
+const val = get(el.getAttribute('data-i18n'), dict);
+if (val !== undefined) el.innerHTML = val;
+});
+refreshDropdownValueLabel('theme', html.getAttribute('data-theme'));
+refreshDropdownValueLabel('font', html.getAttribute('data-font'));
+refreshDropdownValueLabel('lang', currentLang);
+}
+
+function refreshDropdownValueLabel(kind, value) {
+const dd = document.querySelector('[data-dropdown="' + kind + '"]');
+if (!dd) return;
+const item = dd.querySelector('.dropdown-item[data-value="' + value + '"]');
+if (!item) return;
+const valueEl = dd.querySelector('.dropdown-value');
+if (valueEl) valueEl.textContent = item.querySelector('.dropdown-item-label')?.textContent || value;
+}
+
+function setValue(kind, value) {
+if (kind === 'lang') {
+currentLang = value;
+html.setAttribute('lang', value);
+html.setAttribute('dir', value === 'ar' || value === 'fa-ir' ? 'rtl' : 'ltr');
+try { localStorage.setItem('rhosocial-lang', value); } catch (_) {}
+applyI18n();
+} else {
+html.setAttribute('data-' + kind, value);
+}
+const dd = document.querySelector('[data-dropdown="' + kind + '"]');
+if (!dd) return;
+let activatedLabel = null;
+dd.querySelectorAll('.dropdown-item').forEach(it => {
+const match = it.getAttribute('data-value') === value;
+it.classList.toggle('is-active', match);
+if (match) activatedLabel = it.querySelector('.dropdown-item-label')?.textContent || value;
+});
+const valueEl = dd.querySelector('.dropdown-value');
+if (valueEl && activatedLabel) valueEl.textContent = activatedLabel;
+}
+
+function closeAllDropdowns(except) {
+document.querySelectorAll('.dropdown.is-open').forEach(d => {
+if (d !== except) {
+d.classList.remove('is-open');
+d.querySelector('.dropdown-trigger')?.setAttribute('aria-expanded', 'false');
+}
+});
+}
+
+document.querySelectorAll('[data-dropdown]').forEach(dd => {
+const trigger = dd.querySelector('.dropdown-trigger');
+const kind = dd.getAttribute('data-dropdown');
+trigger.addEventListener('click', e => {
+e.stopPropagation();
+const willOpen = !dd.classList.contains('is-open');
+closeAllDropdowns(dd);
+dd.classList.toggle('is-open', willOpen);
+trigger.setAttribute('aria-expanded', String(willOpen));
+});
+dd.querySelectorAll('.dropdown-item').forEach(item => {
+item.addEventListener('click', e => {
+e.stopPropagation();
+const value = item.getAttribute('data-value');
+const label = item.querySelector('.dropdown-item-label')?.textContent;
+if (kind === 'theme' || kind === 'font' || kind === 'lang') {
+setValue(kind, value);
+} else {
+dd.querySelectorAll('.dropdown-item').forEach(it => it.classList.toggle('is-active', it === item));
+const valueEl = dd.querySelector('.dropdown-value');
+if (valueEl) valueEl.textContent = label || value;
+}
+dd.classList.remove('is-open');
+trigger.setAttribute('aria-expanded', 'false');
+});
+});
+});
+
+document.addEventListener('click', e => {
+if (!e.target.closest('.dropdown')) closeAllDropdowns();
+});
+document.addEventListener('keydown', e => {
+if (e.key === 'Escape') closeAllDropdowns();
+});
+
+document.addEventListener('keydown', e => {
+const isMod = e.ctrlKey || e.metaKey;
+const key = e.key.toLowerCase();
+const idx = QWERTY.indexOf(key);
+if (idx === -1) return;
+if (isMod && !e.shiftKey) {
+e.preventDefault();
+setValue('theme', THEMES[idx % THEMES.length]);
+} else if (isMod && e.shiftKey) {
+e.preventDefault();
+setValue('font', FONTS[idx % FONTS.length]);
+} else if (e.altKey && !isMod && !e.shiftKey) {
+e.preventDefault();
+setValue('lang', LANGS[idx % LANGS.length]);
+}
+});
+
+applyI18n();
+</script>
+</body>
+</html>

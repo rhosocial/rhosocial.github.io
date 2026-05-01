@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="terminal" data-font="auto">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>rhosocial ActiveRecord — Named Procedure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/core.css">
+<link rel="stylesheet" href="../assets/themes/terminal.css">
+<link rel="stylesheet" href="../assets/themes/editorial.css">
+<link rel="stylesheet" href="../assets/themes/brutalist.css">
+<link rel="stylesheet" href="../assets/themes/aurora.css">
+<link rel="stylesheet" href="../assets/themes/synthwave.css">
+<link rel="stylesheet" href="../assets/themes/sumi.css">
+<link rel="stylesheet" href="../assets/themes/blueprint.css">
+<link rel="stylesheet" href="../assets/themes/noir.css">
+<link rel="stylesheet" href="../assets/themes/riso.css">
+<link rel="stylesheet" href="../assets/themes/nordic.css">
+<link rel="stylesheet" href="../assets/themes/solarpunk.css">
+<link rel="stylesheet" href="../assets/themes/mocha.css">
+<link rel="stylesheet" href="../assets/themes/wireframe.css">
+<link rel="stylesheet" href="../assets/themes/anderson.css">
+<link rel="stylesheet" href="../assets/themes/tokyo.css">
+<link rel="stylesheet" href="../assets/themes/memphis.css">
+<link rel="stylesheet" href="../assets/themes/chalkboard.css">
+<link rel="stylesheet" href="../assets/themes/matrix.css">
+<link rel="stylesheet" href="../assets/themes/steel.css">
+<link rel="stylesheet" href="../assets/themes/frutiger.css">
+<link rel="stylesheet" href="../assets/themes/newsprint.css">
+<link rel="stylesheet" href="../assets/themes/candy.css">
+<link rel="stylesheet" href="../assets/themes/botanical.css">
+<link rel="stylesheet" href="../assets/themes/cyberpunk.css">
+<link rel="stylesheet" href="../assets/themes/parchment.css">
+<link rel="stylesheet" href="../assets/themes/glassmorphism.css">
+<link rel="stylesheet" href="../assets/core-extensions.css">
+<link rel="stylesheet" href="../assets/fonts/tight.css">
+<link rel="stylesheet" href="../assets/fonts/serif.css">
+<link rel="stylesheet" href="../assets/fonts/geometric.css">
+<link rel="stylesheet" href="../assets/fonts/heavy.css">
+<link rel="stylesheet" href="../assets/fonts/allmono.css">
+<link rel="stylesheet" href="../assets/fonts/reader.css">
+<link rel="stylesheet" href="../assets/fonts/display-serif.css">
+<link rel="stylesheet" href="../assets/fonts/neo-future.css">
+<link rel="stylesheet" href="../assets/fonts/plex.css">
+<link rel="stylesheet" href="../assets/fonts/playful.css">
+<link rel="stylesheet" href="../assets/fonts/classic-serif.css">
+<link rel="stylesheet" href="../assets/fonts/pixel.css">
+<link rel="stylesheet" href="../assets/fonts/monumental.css">
+<link rel="stylesheet" href="../assets/fonts/slab.css">
+<link rel="stylesheet" href="../assets/fonts/condensed.css">
+<link rel="stylesheet" href="../assets/fonts/expressive.css">
+<link rel="stylesheet" href="../assets/fonts/deco.css">
+<link rel="stylesheet" href="../assets/fonts/stencil.css">
+<link rel="stylesheet" href="../assets/fonts/rubik.css">
+<link rel="stylesheet" href="../assets/fonts/bricolage.css">
+<link rel="stylesheet" href="../assets/fonts/gloock.css">
+<link rel="stylesheet" href="../assets/fonts/crimson.css">
+<link rel="stylesheet" href="../assets/fonts/dm.css">
+<link rel="stylesheet" href="../assets/fonts/outfit.css">
+<link rel="stylesheet" href="../assets/fonts/literata.css">
+<script src="named-procedure/zh-CN.js"></script>
+<script src="named-procedure/en-US.js"></script>
+</head>
+<body>
+<header class="control-bar">
+<div class="control-brand">
+<span class="brand-mark size-md">&rho;<sub>AR</sub></span>
+<span>rhosocial ActiveRecord</span>
+<span class="dim"><a href="../index.html" data-i18n="nav.index">Index</a> / <a href="./index.html" data-i18n="nav.backends">Backends</a> / <a href="../activerecord/index.html" data-i18n="nav.activerecord">ActiveRecord</a></span>
+</div>
+<div class="dropdown" data-dropdown="theme">
+<button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+<span class="dropdown-label" data-i18n="control.theme_label">Theme</span>
+<span class="dropdown-value">Terminal</span>
+<svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<div class="dropdown-menu" role="listbox">
+<button class="dropdown-item is-active" data-value="terminal"><span class="dropdown-item-label">Terminal</span><span class="dropdown-item-kbd">&#8963;Q</span></button>
+<button class="dropdown-item" data-value="editorial"><span class="dropdown-item-label">Editorial</span><span class="dropdown-item-kbd">&#8963;W</span></button>
+<button class="dropdown-item" data-value="brutalist"><span class="dropdown-item-label">Brutalist</span><span class="dropdown-item-kbd">&#8963;E</span></button>
+<button class="dropdown-item" data-value="aurora"><span class="dropdown-item-label">Aurora</span><span class="dropdown-item-kbd">&#8963;R</span></button>
+<button class="dropdown-item" data-value="synthwave"><span class="dropdown-item-label">Synthwave</span><span class="dropdown-item-kbd">&#8963;T</span></button>
+<button class="dropdown-item" data-value="sumi"><span class="dropdown-item-label">Sumi 墨</span><span class="dropdown-item-kbd">&#8963;Y</span></button>
+<button class="dropdown-item" data-value="blueprint"><span class="dropdown-item-label">Blueprint</span><span class="dropdown-item-kbd">&#8963;U</span></button>
+<button class="dropdown-item" data-value="noir"><span class="dropdown-item-label">Noir</span><span class="dropdown-item-kbd">&#8963;I</span></button>
+<button class="dropdown-item" data-value="riso"><span class="dropdown-item-label">Riso</span><span class="dropdown-item-kbd">&#8963;O</span></button>
+<button class="dropdown-item" data-value="nordic"><span class="dropdown-item-label">Nordic</span><span class="dropdown-item-kbd">&#8963;P</span></button>
+<button class="dropdown-item" data-value="solarpunk"><span class="dropdown-item-label">Solarpunk</span><span class="dropdown-item-kbd">&#8963;A</span></button>
+<button class="dropdown-item" data-value="mocha"><span class="dropdown-item-label">Mocha</span><span class="dropdown-item-kbd">&#8963;S</span></button>
+<button class="dropdown-item" data-value="wireframe"><span class="dropdown-item-label">Wireframe</span><span class="dropdown-item-kbd">&#8963;D</span></button>
+<button class="dropdown-item" data-value="anderson"><span class="dropdown-item-label">Anderson</span><span class="dropdown-item-kbd">&#8963;F</span></button>
+<button class="dropdown-item" data-value="tokyo"><span class="dropdown-item-label">Tokyo Night</span><span class="dropdown-item-kbd">&#8963;G</span></button>
+<button class="dropdown-item" data-value="memphis"><span class="dropdown-item-label">Memphis</span><span class="dropdown-item-kbd">&#8963;H</span></button>
+<button class="dropdown-item" data-value="chalkboard"><span class="dropdown-item-label">Chalkboard</span><span class="dropdown-item-kbd">&#8963;J</span></button>
+<button class="dropdown-item" data-value="matrix"><span class="dropdown-item-label">Matrix</span><span class="dropdown-item-kbd">&#8963;K</span></button>
+<button class="dropdown-item" data-value="steel"><span class="dropdown-item-label">Steel</span><span class="dropdown-item-kbd">&#8963;L</span></button>
+<button class="dropdown-item" data-value="frutiger"><span class="dropdown-item-label">Frutiger</span><span class="dropdown-item-kbd">&#8963;Z</span></button>
+<button class="dropdown-item" data-value="newsprint"><span class="dropdown-item-label">Newsprint</span><span class="dropdown-item-kbd">&#8963;X</span></button>
+<button class="dropdown-item" data-value="candy"><span class="dropdown-item-label">Candy</span><span class="dropdown-item-kbd">&#8963;C</span></button>
+<button class="dropdown-item" data-value="botanical"><span class="dropdown-item-label">Botanical</span><span class="dropdown-item-kbd">&#8963;V</span></button>
+<button class="dropdown-item" data-value="cyberpunk"><span class="dropdown-item-label">Cyberpunk</span><span class="dropdown-item-kbd">&#8963;1</span></button>
+<button class="dropdown-item" data-value="parchment"><span class="dropdown-item-label">Parchment</span><span class="dropdown-item-kbd">&#8963;2</span></button>
+<button class="dropdown-item" data-value="glassmorphism"><span class="dropdown-item-label">Glassmorphism</span><span class="dropdown-item-kbd">&#8963;3</span></button>
+</div>
+</div>
+<div class="dropdown" data-dropdown="font">
+<button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+<span class="dropdown-label" data-i18n="control.font_label">Font</span>
+<span class="dropdown-value" data-i18n-value="auto">Auto</span>
+<svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<div class="dropdown-menu" role="listbox">
+<button class="dropdown-item is-active" data-value="auto"><span class="dropdown-item-label" data-i18n="control.font_auto">Auto (theme default)</span><span class="dropdown-item-kbd">&#8679;Q</span></button>
+<button class="dropdown-item" data-value="tight"><span class="dropdown-item-label">Tight Sans</span><span class="dropdown-item-kbd">&#8679;W</span></button>
+<button class="dropdown-item" data-value="serif"><span class="dropdown-item-label">Editorial Serif</span><span class="dropdown-item-kbd">&#8679;E</span></button>
+<button class="dropdown-item" data-value="geometric"><span class="dropdown-item-label">Geometric</span><span class="dropdown-item-kbd">&#8679;R</span></button>
+<button class="dropdown-item" data-value="heavy"><span class="dropdown-item-label">Heavy Display</span><span class="dropdown-item-kbd">&#8679;T</span></button>
+<button class="dropdown-item" data-value="allmono"><span class="dropdown-item-label">All Mono</span><span class="dropdown-item-kbd">&#8679;Y</span></button>
+<button class="dropdown-item" data-value="reader"><span class="dropdown-item-label">Reader</span><span class="dropdown-item-kbd">&#8679;U</span></button>
+<button class="dropdown-item" data-value="display-serif"><span class="dropdown-item-label">Display Serif</span><span class="dropdown-item-kbd">&#8679;I</span></button>
+<button class="dropdown-item" data-value="neo-future"><span class="dropdown-item-label">Neo Future</span><span class="dropdown-item-kbd">&#8679;O</span></button>
+<button class="dropdown-item" data-value="plex"><span class="dropdown-item-label">IBM Plex</span><span class="dropdown-item-kbd">&#8679;P</span></button>
+<button class="dropdown-item" data-value="playful"><span class="dropdown-item-label">Playful (Caveat)</span><span class="dropdown-item-kbd">&#8679;A</span></button>
+<button class="dropdown-item" data-value="classic-serif"><span class="dropdown-item-label">Classic Serif (Garamond)</span><span class="dropdown-item-kbd">&#8679;S</span></button>
+</div>
+</div>
+<div class="dropdown" data-dropdown="lang">
+<button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+<span class="dropdown-label" data-i18n="control.lang_label">Language</span>
+<span class="dropdown-value"></span>
+<svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<div class="dropdown-menu" role="listbox">
+<button class="dropdown-item is-active" data-value="zh-cn"><span class="dropdown-item-label">简体中文</span><span class="dropdown-item-kbd">&#8997;Q</span></button>
+<button class="dropdown-item" data-value="en-us"><span class="dropdown-item-label">English</span><span class="dropdown-item-kbd">&#8997;W</span></button>
+</div>
+</div>
+</header>
+<main class="page">
+<section class="hero section">
+<div class="container hero-inner">
+<div class="hero-eyebrow rise"><a href="./index.html">&larr; <span data-i18n="hero.back">Backends</span></div>
+<h1 class="hero-title rise">Named Procedure</h1>
+<p class="hero-sub rise" data-i18n="hero.sub">存储过程调用，输入/输出参数管理。</p>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="call.label">Call</div>
+<h2 class="section-title" data-i18n="call.title">调用语法。</h2>
+</div>
+<p class="section-intro" data-i18n="call.desc">StatementType.CALL / EXECUTE 枚举值已定义。</p>
+<p class="section-intro" data-i18n="call.note">注意：当前版本通过 Procedure 编排 Python 层查询流程，非 SQL CALL 语句生成。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">statement_type_call.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.schema <span class="tok-k">import</span> <span class="tok-cls">StatementType</span>
+
+<span class="tok-c"># StatementType 枚举包含 CALL 和 EXECUTE</span>
+<span class="tok-c"># StatementType.CALL</span>
+<span class="tok-c"># StatementType.EXECUTE</span>
+<span class="tok-c"># 当前保留，未来版本可能添加 CallExpression</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="params.label">Parameters</div>
+<h2 class="section-title" data-i18n="params.title">参数绑定。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Input</div>
+<h3 class="feature-title" data-i18n="params.input">输入参数</h3>
+<p class="feature-desc">Procedure 类属性注解定义输入参数。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Output</div>
+<h3 class="feature-title" data-i18n="params.output">输出参数</h3>
+<p class="feature-desc">ctx.execute(output=True) 返回执行结果。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Bind</div>
+<h3 class="feature-title" data-i18n="params.inout">中间数据绑定</h3>
+<p class="feature-desc">ProcedureContext.bind() 绑定步骤间传递的数据。</p>
+</div>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">procedure_params.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.named_query <span class="tok-k">import</span> <span class="tok-cls">Procedure</span>, <span class="tok-cls">ProcedureContext</span>
+
+<span class="tok-k">class</span> <span class="tok-cls">CalculateOrderTotal</span>(<span class="tok-cls">Procedure</span>):
+    order_id: <span class="tok-cls">int</span>       <span class="tok-c"># 输入参数</span>
+    discount: <span class="tok-cls">float</span> = <span class="tok-n">0.0</span>  <span class="tok-c"># 输入参数（有默认值）</span>
+
+    <span class="tok-k">def</span> <span class="tok-f">run</span>(self, ctx: <span class="tok-cls">ProcedureContext</span>):
+        <span class="tok-c"># 执行命名查询，绑定结果</span>
+        ctx.<span class="tok-f">execute</span>(
+            <span class="tok-s">'myapp.queries.order_items'</span>,
+            params={<span class="tok-s">'order_id'</span>: self.order_id},
+            bind=<span class="tok-s">'items'</span>
+        )
+        <span class="tok-c"># 获取标量值</span>
+        total = ctx.<span class="tok-f">scalar</span>(<span class="tok-s">'items'</span>, <span class="tok-s">'price'</span>)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="procedure.label">Procedure</div>
+<h2 class="section-title" data-i18n="procedure.title">Procedure 基类。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">procedure_runner.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.named_query <span class="tok-k">import</span> (
+    <span class="tok-cls">Procedure</span>, <span class="tok-cls">ProcedureRunner</span>, <span class="tok-cls">TransactionMode</span>
+)
+
+<span class="tok-c"># Procedure — 定义业务流程</span>
+<span class="tok-c">#   run(ctx)           — 实现方法（必须覆写）</span>
+<span class="tok-c">#   get_parameters()   — 自省类属性注解</span>
+<span class="tok-c">#   static_diagram()   — 生成 Mermaid 流程图</span>
+
+<span class="tok-c"># ProcedureRunner — 执行入口</span>
+runner = <span class="tok-cls">ProcedureRunner</span>(<span class="tok-s">'myapp.procedures.CalculateOrderTotal'</span>)
+runner.<span class="tok-f">load</span>()
+
+<span class="tok-c"># 执行</span>
+result = runner.<span class="tok-f">run</span>(
+    backend=backend,
+    user_params={<span class="tok-s">'order_id'</span>: <span class="tok-n">42</span>, <span class="tok-s">'discount'</span>: <span class="tok-n">0.1</span>},
+    transaction_mode=<span class="tok-cls">TransactionMode</span>.AUTO
+)
+
+<span class="tok-c"># ProcedureResult</span>
+<span class="tok-c">#   outputs / logs / aborted / abort_reason</span>
+<span class="tok-c">#   success (property) / diagram() (method)</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="backend_diff.label">Backend Diff</div>
+<h2 class="section-title" data-i18n="backend_diff.title">后端差异。</h2>
+</div>
+<p class="section-intro" data-i18n="backend_diff.desc">各数据库存储过程调用语法差异通过方言系统处理。</p>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / PostgreSQL</div>
+<h3 class="feature-title">CALL function()</h3>
+<p class="feature-desc">PostgreSQL 使用 CALL 调用存储过程。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / MySQL</div>
+<h3 class="feature-title">CALL procedure()</h3>
+<p class="feature-desc">MySQL 使用 CALL 调用存储过程。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Oracle</div>
+<h3 class="feature-title">EXECUTE / BEGIN...END</h3>
+<p class="feature-desc">Oracle 使用 EXECUTE 或 PL/SQL 匿名块。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / SQL Server</div>
+<h3 class="feature-title">EXEC procedure</h3>
+<p class="feature-desc">SQL Server 使用 EXEC 调用存储过程。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / SQLite</div>
+<h3 class="feature-title">不支持</h3>
+<p class="feature-desc">SQLite 不支持服务器端存储过程。</p>
+</div>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div>&copy; rhosocial &middot; rhosocial-activerecord &middot; Apache 2.0</div>
+<div data-i18n="footer.hotkeys">25 themes · <span class="kbd">Ctrl</span>+<span class="kbd">key</span> theme / <span class="kbd">Alt</span>+<span class="kbd">key</span> lang</div>
+</footer>
+</main>
+<script>
+const html = document.documentElement;
+
+const THEMES = [
+'terminal','editorial','brutalist','aurora','synthwave','sumi','blueprint','noir','riso','nordic',
+'solarpunk','mocha','wireframe','anderson','tokyo','memphis','chalkboard','matrix','steel',
+'frutiger','newsprint','candy','botanical','cyberpunk','parchment','glassmorphism'
+];
+const FONTS = [
+'auto','tight','serif','geometric','heavy','allmono','reader','display-serif','neo-future','plex',
+'playful','classic-serif','pixel','monumental','slab','condensed','expressive','deco','stencil',
+'rubik','bricolage','gloock','crimson','dm','outfit','literata'
+];
+const LANGS = ['zh-cn','en-us'];
+const QWERTY = 'qwertyuiopasdfghjklzxcvbnm';
+const NUMERIC = '1234567890-';
+const BASE_IDX = QWERTY.length;
+
+const LANG_COLLAPSE = {
+zh: 'zh-cn', en: 'en-us', fr: 'fr-fr', ru: 'ru-ru', es: 'es-es', ar: 'ar',
+ja: 'ja-jp', de: 'de-de', ko: 'ko-kr', pt: 'pt-pt', nl: 'nl-nl', it: 'it-it',
+tr: 'tr-tr', el: 'el-gr', hi: 'hi-in',
+id: 'id-id', in: 'id-id',
+vi: 'vi-vn', pl: 'pl-pl',
+th: 'th-th', uk: 'uk-ua', fa: 'fa-ir', bn: 'bn-bd', ro: 'ro-ro', cs: 'cs-cz'
+};
+
+function matchLang(tag) {
+if (!tag) return null;
+const lower = String(tag).toLowerCase();
+if (LANGS.indexOf(lower) !== -1) return lower;
+const primary = lower.split('-')[0];
+return LANG_COLLAPSE[primary] || null;
+}
+
+function detectInitialLang() {
+try {
+const url = new URLSearchParams(location.search).get('lang');
+const m = matchLang(url);
+if (m) return m;
+} catch (_) {}
+try {
+const stored = localStorage.getItem('rhosocial-lang');
+const m = matchLang(stored);
+if (m) return m;
+} catch (_) {}
+const navLangs = (navigator.languages && navigator.languages.length)
+? navigator.languages
+: [navigator.language || navigator.userLanguage || ''];
+for (const tag of navLangs) {
+const m = matchLang(tag);
+if (m) return m;
+}
+return 'en-us';
+}
+
+let currentLang = detectInitialLang();
+
+function get(path, dict) {
+return path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), dict);
+}
+
+function applyI18n() {
+const dict = window.I18N && window.I18N[currentLang];
+if (!dict) return;
+document.querySelectorAll('[data-i18n]').forEach(el => {
+const val = get(el.getAttribute('data-i18n'), dict);
+if (val !== undefined) el.innerHTML = val;
+});
+refreshDropdownValueLabel('theme', html.getAttribute('data-theme'));
+refreshDropdownValueLabel('font', html.getAttribute('data-font'));
+refreshDropdownValueLabel('lang', currentLang);
+}
+
+function refreshDropdownValueLabel(kind, value) {
+const dd = document.querySelector('[data-dropdown="' + kind + '"]');
+if (!dd) return;
+const item = dd.querySelector('.dropdown-item[data-value="' + value + '"]');
+if (!item) return;
+const valueEl = dd.querySelector('.dropdown-value');
+if (valueEl) valueEl.textContent = item.querySelector('.dropdown-item-label')?.textContent || value;
+}
+
+function setValue(kind, value) {
+if (kind === 'lang') {
+currentLang = value;
+html.setAttribute('lang', value);
+html.setAttribute('dir', value === 'ar' || value === 'fa-ir' ? 'rtl' : 'ltr');
+try { localStorage.setItem('rhosocial-lang', value); } catch (_) {}
+applyI18n();
+} else {
+html.setAttribute('data-' + kind, value);
+}
+const dd = document.querySelector('[data-dropdown="' + kind + '"]');
+if (!dd) return;
+let activatedLabel = null;
+dd.querySelectorAll('.dropdown-item').forEach(it => {
+const match = it.getAttribute('data-value') === value;
+it.classList.toggle('is-active', match);
+if (match) activatedLabel = it.querySelector('.dropdown-item-label')?.textContent || value;
+});
+const valueEl = dd.querySelector('.dropdown-value');
+if (valueEl && activatedLabel) valueEl.textContent = activatedLabel;
+}
+
+function closeAllDropdowns(except) {
+document.querySelectorAll('.dropdown.is-open').forEach(d => {
+if (d !== except) {
+d.classList.remove('is-open');
+d.querySelector('.dropdown-trigger')?.setAttribute('aria-expanded', 'false');
+}
+});
+}
+
+document.querySelectorAll('[data-dropdown]').forEach(dd => {
+const trigger = dd.querySelector('.dropdown-trigger');
+const kind = dd.getAttribute('data-dropdown');
+trigger.addEventListener('click', e => {
+e.stopPropagation();
+const willOpen = !dd.classList.contains('is-open');
+closeAllDropdowns(dd);
+dd.classList.toggle('is-open', willOpen);
+trigger.setAttribute('aria-expanded', String(willOpen));
+});
+dd.querySelectorAll('.dropdown-item').forEach(item => {
+item.addEventListener('click', e => {
+e.stopPropagation();
+const value = item.getAttribute('data-value');
+const label = item.querySelector('.dropdown-item-label')?.textContent;
+if (kind === 'theme' || kind === 'font' || kind === 'lang') {
+setValue(kind, value);
+} else {
+dd.querySelectorAll('.dropdown-item').forEach(it => it.classList.toggle('is-active', it === item));
+const valueEl = dd.querySelector('.dropdown-value');
+if (valueEl) valueEl.textContent = label || value;
+}
+dd.classList.remove('is-open');
+trigger.setAttribute('aria-expanded', 'false');
+});
+});
+});
+
+document.addEventListener('click', e => {
+if (!e.target.closest('.dropdown')) closeAllDropdowns();
+});
+document.addEventListener('keydown', e => {
+if (e.key === 'Escape') closeAllDropdowns();
+});
+
+document.addEventListener('keydown', e => {
+const isMod = e.ctrlKey || e.metaKey;
+const key = e.key.toLowerCase();
+const idx = QWERTY.indexOf(key);
+if (idx === -1) return;
+if (isMod && !e.shiftKey) {
+e.preventDefault();
+setValue('theme', THEMES[idx % THEMES.length]);
+} else if (isMod && e.shiftKey) {
+e.preventDefault();
+setValue('font', FONTS[idx % FONTS.length]);
+} else if (e.altKey && !isMod && !e.shiftKey) {
+e.preventDefault();
+setValue('lang', LANGS[idx % LANGS.length]);
+}
+});
+
+applyI18n();
+</script>
+</body>
+</html>

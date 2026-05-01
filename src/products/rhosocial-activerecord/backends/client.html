@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="terminal" data-font="auto">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>rhosocial ActiveRecord — Backend Client</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/core.css">
+<link rel="stylesheet" href="../assets/themes/terminal.css">
+<link rel="stylesheet" href="../assets/themes/editorial.css">
+<link rel="stylesheet" href="../assets/themes/brutalist.css">
+<link rel="stylesheet" href="../assets/themes/aurora.css">
+<link rel="stylesheet" href="../assets/themes/synthwave.css">
+<link rel="stylesheet" href="../assets/themes/sumi.css">
+<link rel="stylesheet" href="../assets/themes/blueprint.css">
+<link rel="stylesheet" href="../assets/themes/noir.css">
+<link rel="stylesheet" href="../assets/themes/riso.css">
+<link rel="stylesheet" href="../assets/themes/nordic.css">
+<link rel="stylesheet" href="../assets/themes/solarpunk.css">
+<link rel="stylesheet" href="../assets/themes/mocha.css">
+<link rel="stylesheet" href="../assets/themes/wireframe.css">
+<link rel="stylesheet" href="../assets/themes/anderson.css">
+<link rel="stylesheet" href="../assets/themes/tokyo.css">
+<link rel="stylesheet" href="../assets/themes/memphis.css">
+<link rel="stylesheet" href="../assets/themes/chalkboard.css">
+<link rel="stylesheet" href="../assets/themes/matrix.css">
+<link rel="stylesheet" href="../assets/themes/steel.css">
+<link rel="stylesheet" href="../assets/themes/frutiger.css">
+<link rel="stylesheet" href="../assets/themes/newsprint.css">
+<link rel="stylesheet" href="../assets/themes/candy.css">
+<link rel="stylesheet" href="../assets/themes/botanical.css">
+<link rel="stylesheet" href="../assets/themes/cyberpunk.css">
+<link rel="stylesheet" href="../assets/themes/parchment.css">
+<link rel="stylesheet" href="../assets/themes/glassmorphism.css">
+<link rel="stylesheet" href="../assets/core-extensions.css">
+<link rel="stylesheet" href="../assets/fonts/tight.css">
+<link rel="stylesheet" href="../assets/fonts/serif.css">
+<link rel="stylesheet" href="../assets/fonts/geometric.css">
+<link rel="stylesheet" href="../assets/fonts/heavy.css">
+<link rel="stylesheet" href="../assets/fonts/allmono.css">
+<link rel="stylesheet" href="../assets/fonts/reader.css">
+<link rel="stylesheet" href="../assets/fonts/display-serif.css">
+<link rel="stylesheet" href="../assets/fonts/neo-future.css">
+<link rel="stylesheet" href="../assets/fonts/plex.css">
+<link rel="stylesheet" href="../assets/fonts/playful.css">
+<link rel="stylesheet" href="../assets/fonts/classic-serif.css">
+<link rel="stylesheet" href="../assets/fonts/pixel.css">
+<link rel="stylesheet" href="../assets/fonts/monumental.css">
+<link rel="stylesheet" href="../assets/fonts/slab.css">
+<link rel="stylesheet" href="../assets/fonts/condensed.css">
+<link rel="stylesheet" href="../assets/fonts/expressive.css">
+<link rel="stylesheet" href="../assets/fonts/deco.css">
+<link rel="stylesheet" href="../assets/fonts/stencil.css">
+<link rel="stylesheet" href="../assets/fonts/rubik.css">
+<link rel="stylesheet" href="../assets/fonts/bricolage.css">
+<link rel="stylesheet" href="../assets/fonts/gloock.css">
+<link rel="stylesheet" href="../assets/fonts/crimson.css">
+<link rel="stylesheet" href="../assets/fonts/dm.css">
+<link rel="stylesheet" href="../assets/fonts/outfit.css">
+<link rel="stylesheet" href="../assets/fonts/literata.css">
+<script src="client/zh-CN.js"></script>
+<script src="client/en-US.js"></script>
+</head>
+<body>
+<header class="control-bar">
+<div class="control-brand">
+<span class="brand-mark size-md">&rho;<sub>AR</sub></span>
+<span>rhosocial ActiveRecord</span>
+<span class="dim"><a href="../index.html" data-i18n="nav.index">Index</a> / <a href="./index.html" data-i18n="nav.backends">Backends</a> / <a href="../activerecord/index.html" data-i18n="nav.activerecord">ActiveRecord</a></span>
+</div>
+<div class="dropdown" data-dropdown="theme">
+<button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+<span class="dropdown-label" data-i18n="control.theme_label">Theme</span>
+<span class="dropdown-value">Terminal</span>
+<svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<div class="dropdown-menu" role="listbox">
+<button class="dropdown-item is-active" data-value="terminal"><span class="dropdown-item-label">Terminal</span><span class="dropdown-item-kbd">&#8963;Q</span></button>
+<button class="dropdown-item" data-value="editorial"><span class="dropdown-item-label">Editorial</span><span class="dropdown-item-kbd">&#8963;W</span></button>
+<button class="dropdown-item" data-value="brutalist"><span class="dropdown-item-label">Brutalist</span><span class="dropdown-item-kbd">&#8963;E</span></button>
+<button class="dropdown-item" data-value="aurora"><span class="dropdown-item-label">Aurora</span><span class="dropdown-item-kbd">&#8963;R</span></button>
+<button class="dropdown-item" data-value="synthwave"><span class="dropdown-item-label">Synthwave</span><span class="dropdown-item-kbd">&#8963;T</span></button>
+<button class="dropdown-item" data-value="sumi"><span class="dropdown-item-label">Sumi 墨</span><span class="dropdown-item-kbd">&#8963;Y</span></button>
+<button class="dropdown-item" data-value="blueprint"><span class="dropdown-item-label">Blueprint</span><span class="dropdown-item-kbd">&#8963;U</span></button>
+<button class="dropdown-item" data-value="noir"><span class="dropdown-item-label">Noir</span><span class="dropdown-item-kbd">&#8963;I</span></button>
+<button class="dropdown-item" data-value="riso"><span class="dropdown-item-label">Riso</span><span class="dropdown-item-kbd">&#8963;O</span></button>
+<button class="dropdown-item" data-value="nordic"><span class="dropdown-item-label">Nordic</span><span class="dropdown-item-kbd">&#8963;P</span></button>
+<button class="dropdown-item" data-value="solarpunk"><span class="dropdown-item-label">Solarpunk</span><span class="dropdown-item-kbd">&#8963;A</span></button>
+<button class="dropdown-item" data-value="mocha"><span class="dropdown-item-label">Mocha</span><span class="dropdown-item-kbd">&#8963;S</span></button>
+<button class="dropdown-item" data-value="wireframe"><span class="dropdown-item-label">Wireframe</span><span class="dropdown-item-kbd">&#8963;D</span></button>
+<button class="dropdown-item" data-value="anderson"><span class="dropdown-item-label">Anderson</span><span class="dropdown-item-kbd">&#8963;F</span></button>
+<button class="dropdown-item" data-value="tokyo"><span class="dropdown-item-label">Tokyo Night</span><span class="dropdown-item-kbd">&#8963;G</span></button>
+<button class="dropdown-item" data-value="memphis"><span class="dropdown-item-label">Memphis</span><span class="dropdown-item-kbd">&#8963;H</span></button>
+<button class="dropdown-item" data-value="chalkboard"><span class="dropdown-item-label">Chalkboard</span><span class="dropdown-item-kbd">&#8963;J</span></button>
+<button class="dropdown-item" data-value="matrix"><span class="dropdown-item-label">Matrix</span><span class="dropdown-item-kbd">&#8963;K</span></button>
+<button class="dropdown-item" data-value="steel"><span class="dropdown-item-label">Steel</span><span class="dropdown-item-kbd">&#8963;L</span></button>
+<button class="dropdown-item" data-value="frutiger"><span class="dropdown-item-label">Frutiger</span><span class="dropdown-item-kbd">&#8963;Z</span></button>
+<button class="dropdown-item" data-value="newsprint"><span class="dropdown-item-label">Newsprint</span><span class="dropdown-item-kbd">&#8963;X</span></button>
+<button class="dropdown-item" data-value="candy"><span class="dropdown-item-label">Candy</span><span class="dropdown-item-kbd">&#8963;C</span></button>
+<button class="dropdown-item" data-value="botanical"><span class="dropdown-item-label">Botanical</span><span class="dropdown-item-kbd">&#8963;V</span></button>
+<button class="dropdown-item" data-value="cyberpunk"><span class="dropdown-item-label">Cyberpunk</span><span class="dropdown-item-kbd">&#8963;1</span></button>
+<button class="dropdown-item" data-value="parchment"><span class="dropdown-item-label">Parchment</span><span class="dropdown-item-kbd">&#8963;2</span></button>
+<button class="dropdown-item" data-value="glassmorphism"><span class="dropdown-item-label">Glassmorphism</span><span class="dropdown-item-kbd">&#8963;3</span></button>
+</div>
+</div>
+<div class="dropdown" data-dropdown="font">
+<button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+<span class="dropdown-label" data-i18n="control.font_label">Font</span>
+<span class="dropdown-value" data-i18n-value="auto">Auto</span>
+<svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<div class="dropdown-menu" role="listbox">
+<button class="dropdown-item is-active" data-value="auto"><span class="dropdown-item-label" data-i18n="control.font_auto">Auto (theme default)</span><span class="dropdown-item-kbd">&#8679;Q</span></button>
+<button class="dropdown-item" data-value="tight"><span class="dropdown-item-label">Tight Sans</span><span class="dropdown-item-kbd">&#8679;W</span></button>
+<button class="dropdown-item" data-value="serif"><span class="dropdown-item-label">Editorial Serif</span><span class="dropdown-item-kbd">&#8679;E</span></button>
+<button class="dropdown-item" data-value="geometric"><span class="dropdown-item-label">Geometric</span><span class="dropdown-item-kbd">&#8679;R</span></button>
+<button class="dropdown-item" data-value="heavy"><span class="dropdown-item-label">Heavy Display</span><span class="dropdown-item-kbd">&#8679;T</span></button>
+<button class="dropdown-item" data-value="allmono"><span class="dropdown-item-label">All Mono</span><span class="dropdown-item-kbd">&#8679;Y</span></button>
+<button class="dropdown-item" data-value="reader"><span class="dropdown-item-label">Reader</span><span class="dropdown-item-kbd">&#8679;U</span></button>
+<button class="dropdown-item" data-value="display-serif"><span class="dropdown-item-label">Display Serif</span><span class="dropdown-item-kbd">&#8679;I</span></button>
+<button class="dropdown-item" data-value="neo-future"><span class="dropdown-item-label">Neo Future</span><span class="dropdown-item-kbd">&#8679;O</span></button>
+<button class="dropdown-item" data-value="plex"><span class="dropdown-item-label">IBM Plex</span><span class="dropdown-item-kbd">&#8679;P</span></button>
+<button class="dropdown-item" data-value="playful"><span class="dropdown-item-label">Playful (Caveat)</span><span class="dropdown-item-kbd">&#8679;A</span></button>
+<button class="dropdown-item" data-value="classic-serif"><span class="dropdown-item-label">Classic Serif (Garamond)</span><span class="dropdown-item-kbd">&#8679;S</span></button>
+</div>
+</div>
+<div class="dropdown" data-dropdown="lang">
+<button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+<span class="dropdown-label" data-i18n="control.lang_label">Language</span>
+<span class="dropdown-value"></span>
+<svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<div class="dropdown-menu" role="listbox">
+<button class="dropdown-item is-active" data-value="zh-cn"><span class="dropdown-item-label">简体中文</span><span class="dropdown-item-kbd">&#8997;Q</span></button>
+<button class="dropdown-item" data-value="en-us"><span class="dropdown-item-label">English</span><span class="dropdown-item-kbd">&#8997;W</span></button>
+</div>
+</div>
+</header>
+<main class="page">
+<section class="hero section">
+<div class="container hero-inner">
+<div class="hero-eyebrow rise"><a href="./index.html">&larr; <span data-i18n="hero.back">Backends</span></div>
+<h1 class="hero-title rise">Backend Client</h1>
+<p class="hero-sub rise" data-i18n="hero.sub">后端客户端架构，Mixin 组合模式。</p>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="mro.label">MRO</div>
+<h2 class="section-title" data-i18n="mro.title">Mixin 组合。</h2>
+</div>
+<p class="section-intro" data-i18n="mro.desc">StorageBackendBase → Logging → TypeAdaption → SQLBuilding → Returning → ResultProcessing → SQLOperations → Execution → BatchExecution → ExecutionHooks → Connection → TransactionManagement</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">storage_backend_mro.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.base <span class="tok-k">import</span> <span class="tok-cls">StorageBackend</span>, <span class="tok-cls">AsyncStorageBackend</span>
+
+<span class="tok-c"># StorageBackend 通过 12 层 Mixin 组合实现全部功能</span>
+<span class="tok-c"># StorageBackendBase  — 配置、连接状态、类型注册</span>
+<span class="tok-c"># LoggingMixin        — BackendLoggingMixin（非模型层 LoggingMixin）</span>
+<span class="tok-c"># TypeAdaptionMixin   — prepare_parameters, _adapt_row_types</span>
+<span class="tok-c"># SQLBuildingMixin    — SQL 构建辅助</span>
+<span class="tok-c"># ReturningClauseMixin — RETURNING 子句处理</span>
+<span class="tok-c"># ResultProcessingMixin — 结果构建与日志</span>
+<span class="tok-c"># SQLOperationsMixin   — insert / update / delete / fetch_one / fetch_all</span>
+<span class="tok-c"># ExecutionMixin       — execute / execute_many</span>
+<span class="tok-c"># BatchExecutionMixin  — execute_batch_dml / execute_batch_dql</span>
+<span class="tok-c"># ExecutionHooksMixin  — 游标、执行、自动提交、错误处理</span>
+<span class="tok-c"># ConnectionMixin      — connection 属性、上下文管理器</span>
+<span class="tok-c"># TransactionManagementMixin — begin/commit/rollback</span>
+
+<span class="tok-c"># AsyncStorageBackend 同构，异步版 Mixin 替换 I/O 层</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="config.label">Config</div>
+<h2 class="section-title" data-i18n="config.title">连接配置。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Basic</div>
+<h3 class="feature-title" data-i18n="config.basic">BasicConnectionMixin</h3>
+<p class="feature-desc">host / port / database / username / password</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Pool</div>
+<h3 class="feature-title" data-i18n="config.pool">ConnectionPoolMixin</h3>
+<p class="feature-desc">pool_size / pool_timeout / pool_min_size / pool_max_size / pool_recycle / pool_pre_ping</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / SSL</div>
+<h3 class="feature-title" data-i18n="config.ssl">SSLMixin</h3>
+<p class="feature-desc">ssl_ca / ssl_cert / ssl_key / ssl_mode / ssl_verify_cert / ssl_verify_identity</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Charset</div>
+<h3 class="feature-title" data-i18n="config.charset">CharsetMixin</h3>
+<p class="feature-desc">charset / client_encoding / collation</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / Timezone</div>
+<h3 class="feature-title" data-i18n="config.timezone">TimezoneMixin</h3>
+<p class="feature-desc">timezone / server_timezone / use_timezone</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / Version</div>
+<h3 class="feature-title" data-i18n="config.version">VersionMixin</h3>
+<p class="feature-desc">version: Optional[Tuple[int, ...]]</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">07 / Logging</div>
+<h3 class="feature-title" data-i18n="config.logging">LoggingMixin</h3>
+<p class="feature-desc">raise_on_warnings / log_queries / log_level</p>
+</div>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">connection_config.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.config <span class="tok-k">import</span> (
+    <span class="tok-cls">ConnectionConfig</span>, <span class="tok-cls">BasicConnectionMixin</span>,
+    <span class="tok-cls">ConnectionPoolMixin</span>, <span class="tok-cls">SSLMixin</span>, <span class="tok-cls">CharsetMixin</span>,
+    <span class="tok-cls">TimezoneMixin</span>, <span class="tok-cls">VersionMixin</span>, <span class="tok-cls">LoggingMixin</span>
+)
+
+<span class="tok-c"># ConnectionConfig 基类 = BaseConfig + BasicConnectionMixin</span>
+<span class="tok-c"># 数据库特定 Config 通过组合 Mixin 扩展</span>
+<span class="tok-k">class</span> <span class="tok-cls">MyConfig</span>(<span class="tok-cls">ConnectionConfig</span>, <span class="tok-cls">ConnectionPoolMixin</span>,
+            <span class="tok-cls">SSLMixin</span>, <span class="tok-cls">CharsetMixin</span>):
+    <span class="tok-k">pass</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="options.label">Options</div>
+<h2 class="section-title" data-i18n="options.title">执行选项。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">execution_options.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.options <span class="tok-k">import</span> (
+    <span class="tok-cls">ExecutionOptions</span>, <span class="tok-cls">InsertOptions</span>,
+    <span class="tok-cls">UpdateOptions</span>, <span class="tok-cls">DeleteOptions</span>
+)
+
+<span class="tok-c"># ExecutionOptions — 通用执行选项</span>
+opts = <span class="tok-cls">ExecutionOptions</span>(stmt_type=StatementType.SELECT)
+
+<span class="tok-c"># InsertOptions — 插入选项</span>
+insert_opts = <span class="tok-cls">InsertOptions</span>(
+    table=<span class="tok-s">'users'</span>,
+    data={<span class="tok-s">'username'</span>: <span class="tok-s">'Alice'</span>, <span class="tok-s">'age'</span>: <span class="tok-n">30</span>},
+    auto_commit=<span class="tok-k">True</span>,
+    returning_columns=[<span class="tok-s">'id'</span>]
+)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="type_adapter.label">Type Adapter</div>
+<h2 class="section-title" data-i18n="type_adapter.title">类型适配器。</h2>
+</div>
+<p class="section-intro" data-i18n="type_adapter.protocol">SQLTypeAdapter 协议：to_database / from_database / supported_types。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">type_adapter.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.type_adapter <span class="tok-k">import</span> (
+    <span class="tok-cls">SQLTypeAdapter</span>, <span class="tok-cls">BaseSQLTypeAdapter</span>,
+    <span class="tok-cls">DateTimeAdapter</span>, <span class="tok-cls">JSONAdapter</span>,
+    <span class="tok-cls">UUIDAdapter</span>, <span class="tok-cls">EnumAdapter</span>,
+    <span class="tok-cls">BooleanAdapter</span>, <span class="tok-cls">DecimalAdapter</span>,
+    <span class="tok-cls">ArrayAdapter</span>
+)
+
+<span class="tok-c"># SQLTypeAdapter @runtime_checkable 协议</span>
+<span class="tok-c"># to_database(value, target_type, options) — Python → 数据库</span>
+<span class="tok-c"># from_database(value, target_type, options) — 数据库 → Python</span>
+<span class="tok-c"># supported_types — Dict[Type, Set[Type]] 注册映射</span>
+
+<span class="tok-c"># BaseSQLTypeAdapter 自动处理 None / Optional[T]</span>
+<span class="tok-c"># 子类实现 _do_to_database / _do_from_database</span></pre></div>
+</div>
+<div class="features-grid" style="margin-top: 24px;">
+<div class="feature rise">
+<div class="feature-num">01 / DateTime</div>
+<h3 class="feature-title">DateTimeAdapter</h3>
+<p class="feature-desc">datetime→str(ISO) / datetime→int(timestamp) / date→str / time→str</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / JSON</div>
+<h3 class="feature-title">JSONAdapter</h3>
+<p class="feature-desc">dict→str / list→str；from_database 兼容已解析 JSONB</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / UUID</div>
+<h3 class="feature-title">UUIDAdapter</h3>
+<p class="feature-desc">UUID→str；from_database 接受 str 或 bytes</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Enum</div>
+<h3 class="feature-title">EnumAdapter</h3>
+<p class="feature-desc">str→name / int→value；无默认注册（泛型）</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / Boolean</div>
+<h3 class="feature-title">BooleanAdapter</h3>
+<p class="feature-desc">bool→int(1/0) / bool→str('true'/'false')</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / Decimal</div>
+<h3 class="feature-title">DecimalAdapter</h3>
+<p class="feature-desc">Decimal→str / Decimal→float；支持 precision / rounding 选项</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">07 / Array</div>
+<h3 class="feature-title">ArrayAdapter</h3>
+<p class="feature-desc">list→str(json)；无默认注册（避免 JSONAdapter 冲突）</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="result.label">Result</div>
+<h2 class="section-title" data-i18n="result.title">结果类型。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">query_result.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.result <span class="tok-k">import</span> (
+    <span class="tok-cls">QueryResult</span>, <span class="tok-cls">BatchDMLResult</span>,
+    <span class="tok-cls">BatchDQLResult</span>, <span class="tok-cls">BatchCommitMode</span>
+)
+
+<span class="tok-c"># QueryResult[T] — 单次查询结果</span>
+result = <span class="tok-cls">QueryResult</span>(
+    data=[{<span class="tok-s">'id'</span>: <span class="tok-n">1</span>, <span class="tok-s">'username'</span>: <span class="tok-s">'Alice'</span>}],
+    affected_rows=<span class="tok-n">0</span>,
+    last_insert_id=<span class="tok-k">None</span>,
+    duration=<span class="tok-n">0.003</span>
+)
+
+<span class="tok-c"># BatchCommitMode — 批量提交策略</span>
+<span class="tok-c"># WHOLE    — 单事务包含所有批次</span>
+<span class="tok-c"># PER_BATCH — 每批次独立提交</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="batch.label">Batch</div>
+<h2 class="section-title" data-i18n="batch.title">批量执行。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">batch_execution.py</span></div>
+<div class="code-body"><pre><span class="tok-c"># 批量 DML — 迭代器模式，支持大数量操作</span>
+<span class="tok-k">for</span> batch_result <span class="tok-k">in</span> backend.<span class="tok-f">execute_batch_dml</span>(
+    expressions,
+    batch_size=<span class="tok-n">100</span>,
+    commit_mode=BatchCommitMode.WHOLE,
+    returning_columns=[<span class="tok-s">'id'</span>]
+):
+    <span class="tok-f">print</span>(batch_result.total_affected_rows)
+
+<span class="tok-c"># 批量 DQL — 分页迭代器</span>
+<span class="tok-k">for</span> page <span class="tok-k">in</span> backend.<span class="tok-f">execute_batch_dql</span>(
+    query_expr,
+    page_size=<span class="tok-n">1000</span>
+):
+    <span class="tok-f">print</span>(<span class="tok-f">len</span>(page.data), page.has_more)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="hooks.label">Hooks</div>
+<h2 class="section-title" data-i18n="hooks.title">执行基础设施。</h2>
+</div>
+<p class="section-intro" data-i18n="hooks.desc">ExecutionHooksMixin — 游标获取、查询执行、自动提交、错误处理。</p>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Cursor</div>
+<h3 class="feature-title" data-i18n="hooks.cursor">_get_cursor()</h3>
+<p class="feature-desc">获取数据库游标，优先使用已有游标。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Execute</div>
+<h3 class="feature-title" data-i18n="hooks.execute">_execute_query()</h3>
+<p class="feature-desc">执行 cursor.execute(sql, params)。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Auto Commit</div>
+<h3 class="feature-title" data-i18n="hooks.auto_commit">_handle_auto_commit()</h3>
+<p class="feature-desc">非事务状态下自动提交，具体后端覆写。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Error</div>
+<h3 class="feature-title" data-i18n="hooks.error">_handle_execution_error()</h3>
+<p class="feature-desc">委托 _handle_error() 处理异常。</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="concurrency.label">Concurrency</div>
+<h2 class="section-title" data-i18n="concurrency.title">并发提示。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">concurrency_hint.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.protocols <span class="tok-k">import</span> (
+    <span class="tok-cls">ConcurrencyAware</span>, <span class="tok-cls">ConcurrencyHint</span>
+)
+
+<span class="tok-c"># ConcurrencyAware 协议</span>
+<span class="tok-c"># get_concurrency_hint() -> ConcurrencyHint | None</span>
+
+<span class="tok-c"># ConcurrencyHint(frozen=True) 数据类</span>
+<span class="tok-c"># max_concurrency: int | None  — None=无限制, 1=串行</span>
+<span class="tok-c"># reason: str = ""</span>
+
+<span class="tok-c"># SQLite 示例：文件级写锁，并发写入串行化</span>
+<span class="tok-k">if</span> <span class="tok-f">isinstance</span>(backend, <span class="tok-cls">ConcurrencyAware</span>):
+    hint = backend.<span class="tok-f">get_concurrency_hint</span>()
+    <span class="tok-k">if</span> hint <span class="tok-k">and</span> hint.max_concurrency == <span class="tok-n">1</span>:
+        <span class="tok-f">print</span>(<span class="tok-s">f"串行执行: </span>{hint.reason}<span class="tok-s">"</span>)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label">Instantiation</div>
+<h2 class="section-title">后端实例化。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">instantiation.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlite <span class="tok-k">import</span> (
+    <span class="tok-cls">SQLiteBackend</span>, <span class="tok-cls">AsyncSQLiteBackend</span>
+)
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlite.config <span class="tok-k">import</span> <span class="tok-cls">SQLiteConnectionConfig</span>
+
+<span class="tok-c"># 方式一：传入 database 字符串</span>
+backend = <span class="tok-cls">SQLiteBackend</span>(database=<span class="tok-s">":memory:"</span>)
+
+<span class="tok-c"># 方式二：传入 ConnectionConfig</span>
+backend = <span class="tok-cls">SQLiteBackend</span>(
+    connection_config=<span class="tok-cls">SQLiteConnectionConfig</span>(
+        database=<span class="tok-s">"app.db"</span>,
+        timeout=<span class="tok-n">10.0</span>,
+        uri=<span class="tok-k">True</span>
+    )
+)
+
+<span class="tok-c"># 异步后端（需安装 aiosqlite，懒加载）</span>
+async_backend = <span class="tok-cls">AsyncSQLiteBackend</span>(database=<span class="tok-s">":memory:"</span>)
+
+<span class="tok-c"># 抽象方法（具体后端必须实现）</span>
+<span class="tok-c"># connect() -> None</span>
+<span class="tok-c"># disconnect() -> None</span>
+<span class="tok-c"># ping(reconnect=True) -> bool</span>
+<span class="tok-c"># _handle_error(error) -> None</span>
+<span class="tok-c"># get_server_version() -> tuple</span>
+<span class="tok-c"># introspect_and_adapt() -> None</span></pre></div>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div>&copy; rhosocial &middot; rhosocial-activerecord &middot; Apache 2.0</div>
+<div data-i18n="footer.hotkeys">25 themes · <span class="kbd">Ctrl</span>+<span class="kbd">key</span> theme / <span class="kbd">Alt</span>+<span class="kbd">key</span> lang</div>
+</footer>
+</main>
+<script>
+const html = document.documentElement;
+
+const THEMES = [
+'terminal','editorial','brutalist','aurora','synthwave','sumi','blueprint','noir','riso','nordic',
+'solarpunk','mocha','wireframe','anderson','tokyo','memphis','chalkboard','matrix','steel',
+'frutiger','newsprint','candy','botanical','cyberpunk','parchment','glassmorphism'
+];
+const FONTS = [
+'auto','tight','serif','geometric','heavy','allmono','reader','display-serif','neo-future','plex',
+'playful','classic-serif','pixel','monumental','slab','condensed','expressive','deco','stencil',
+'rubik','bricolage','gloock','crimson','dm','outfit','literata'
+];
+const LANGS = ['zh-cn','en-us'];
+const QWERTY = 'qwertyuiopasdfghjklzxcvbnm';
+const NUMERIC = '1234567890-';
+const BASE_IDX = QWERTY.length;
+
+const LANG_COLLAPSE = {
+zh: 'zh-cn', en: 'en-us', fr: 'fr-fr', ru: 'ru-ru', es: 'es-es', ar: 'ar',
+ja: 'ja-jp', de: 'de-de', ko: 'ko-kr', pt: 'pt-pt', nl: 'nl-nl', it: 'it-it',
+tr: 'tr-tr', el: 'el-gr', hi: 'hi-in',
+id: 'id-id', in: 'id-id',
+vi: 'vi-vn', pl: 'pl-pl',
+th: 'th-th', uk: 'uk-ua', fa: 'fa-ir', bn: 'bn-bd', ro: 'ro-ro', cs: 'cs-cz'
+};
+
+function matchLang(tag) {
+if (!tag) return null;
+const lower = String(tag).toLowerCase();
+if (LANGS.indexOf(lower) !== -1) return lower;
+const primary = lower.split('-')[0];
+return LANG_COLLAPSE[primary] || null;
+}
+
+function detectInitialLang() {
+try {
+const url = new URLSearchParams(location.search).get('lang');
+const m = matchLang(url);
+if (m) return m;
+} catch (_) {}
+try {
+const stored = localStorage.getItem('rhosocial-lang');
+const m = matchLang(stored);
+if (m) return m;
+} catch (_) {}
+const navLangs = (navigator.languages && navigator.languages.length)
+? navigator.languages
+: [navigator.language || navigator.userLanguage || ''];
+for (const tag of navLangs) {
+const m = matchLang(tag);
+if (m) return m;
+}
+return 'en-us';
+}
+
+let currentLang = detectInitialLang();
+
+function get(path, dict) {
+return path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), dict);
+}
+
+function applyI18n() {
+const dict = window.I18N && window.I18N[currentLang];
+if (!dict) return;
+document.querySelectorAll('[data-i18n]').forEach(el => {
+const val = get(el.getAttribute('data-i18n'), dict);
+if (val !== undefined) el.innerHTML = val;
+});
+refreshDropdownValueLabel('theme', html.getAttribute('data-theme'));
+refreshDropdownValueLabel('font', html.getAttribute('data-font'));
+refreshDropdownValueLabel('lang', currentLang);
+}
+
+function refreshDropdownValueLabel(kind, value) {
+const dd = document.querySelector('[data-dropdown="' + kind + '"]');
+if (!dd) return;
+const item = dd.querySelector('.dropdown-item[data-value="' + value + '"]');
+if (!item) return;
+const valueEl = dd.querySelector('.dropdown-value');
+if (valueEl) valueEl.textContent = item.querySelector('.dropdown-item-label')?.textContent || value;
+}
+
+function setValue(kind, value) {
+if (kind === 'lang') {
+currentLang = value;
+html.setAttribute('lang', value);
+html.setAttribute('dir', value === 'ar' || value === 'fa-ir' ? 'rtl' : 'ltr');
+try { localStorage.setItem('rhosocial-lang', value); } catch (_) {}
+applyI18n();
+} else {
+html.setAttribute('data-' + kind, value);
+}
+const dd = document.querySelector('[data-dropdown="' + kind + '"]');
+if (!dd) return;
+let activatedLabel = null;
+dd.querySelectorAll('.dropdown-item').forEach(it => {
+const match = it.getAttribute('data-value') === value;
+it.classList.toggle('is-active', match);
+if (match) activatedLabel = it.querySelector('.dropdown-item-label')?.textContent || value;
+});
+const valueEl = dd.querySelector('.dropdown-value');
+if (valueEl && activatedLabel) valueEl.textContent = activatedLabel;
+}
+
+function closeAllDropdowns(except) {
+document.querySelectorAll('.dropdown.is-open').forEach(d => {
+if (d !== except) {
+d.classList.remove('is-open');
+d.querySelector('.dropdown-trigger')?.setAttribute('aria-expanded', 'false');
+}
+});
+}
+
+document.querySelectorAll('[data-dropdown]').forEach(dd => {
+const trigger = dd.querySelector('.dropdown-trigger');
+const kind = dd.getAttribute('data-dropdown');
+trigger.addEventListener('click', e => {
+e.stopPropagation();
+const willOpen = !dd.classList.contains('is-open');
+closeAllDropdowns(dd);
+dd.classList.toggle('is-open', willOpen);
+trigger.setAttribute('aria-expanded', String(willOpen));
+});
+dd.querySelectorAll('.dropdown-item').forEach(item => {
+item.addEventListener('click', e => {
+e.stopPropagation();
+const value = item.getAttribute('data-value');
+const label = item.querySelector('.dropdown-item-label')?.textContent;
+if (kind === 'theme' || kind === 'font' || kind === 'lang') {
+setValue(kind, value);
+} else {
+dd.querySelectorAll('.dropdown-item').forEach(it => it.classList.toggle('is-active', it === item));
+const valueEl = dd.querySelector('.dropdown-value');
+if (valueEl) valueEl.textContent = label || value;
+}
+dd.classList.remove('is-open');
+trigger.setAttribute('aria-expanded', 'false');
+});
+});
+});
+
+document.addEventListener('click', e => {
+if (!e.target.closest('.dropdown')) closeAllDropdowns();
+});
+document.addEventListener('keydown', e => {
+if (e.key === 'Escape') closeAllDropdowns();
+});
+
+document.addEventListener('keydown', e => {
+const isMod = e.ctrlKey || e.metaKey;
+const key = e.key.toLowerCase();
+const idx = QWERTY.indexOf(key);
+if (idx === -1) return;
+if (isMod && !e.shiftKey) {
+e.preventDefault();
+setValue('theme', THEMES[idx % THEMES.length]);
+} else if (isMod && e.shiftKey) {
+e.preventDefault();
+setValue('font', FONTS[idx % FONTS.length]);
+} else if (e.altKey && !isMod && !e.shiftKey) {
+e.preventDefault();
+setValue('lang', LANGS[idx % LANGS.length]);
+}
+});
+
+applyI18n();
+</script>
+</body>
+</html>

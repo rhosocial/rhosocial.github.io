@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="terminal" data-font="auto">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>rhosocial ActiveRecord — Expression &amp; Dialect</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/core.css">
+<link rel="stylesheet" href="../assets/themes/terminal.css">
+<link rel="stylesheet" href="../assets/themes/editorial.css">
+<link rel="stylesheet" href="../assets/themes/brutalist.css">
+<link rel="stylesheet" href="../assets/themes/aurora.css">
+<link rel="stylesheet" href="../assets/themes/synthwave.css">
+<link rel="stylesheet" href="../assets/themes/sumi.css">
+<link rel="stylesheet" href="../assets/themes/blueprint.css">
+<link rel="stylesheet" href="../assets/themes/noir.css">
+<link rel="stylesheet" href="../assets/themes/riso.css">
+<link rel="stylesheet" href="../assets/themes/nordic.css">
+<link rel="stylesheet" href="../assets/themes/solarpunk.css">
+<link rel="stylesheet" href="../assets/themes/mocha.css">
+<link rel="stylesheet" href="../assets/themes/wireframe.css">
+<link rel="stylesheet" href="../assets/themes/anderson.css">
+<link rel="stylesheet" href="../assets/themes/tokyo.css">
+<link rel="stylesheet" href="../assets/themes/memphis.css">
+<link rel="stylesheet" href="../assets/themes/chalkboard.css">
+<link rel="stylesheet" href="../assets/themes/matrix.css">
+<link rel="stylesheet" href="../assets/themes/steel.css">
+<link rel="stylesheet" href="../assets/themes/frutiger.css">
+<link rel="stylesheet" href="../assets/themes/newsprint.css">
+<link rel="stylesheet" href="../assets/themes/candy.css">
+<link rel="stylesheet" href="../assets/themes/botanical.css">
+<link rel="stylesheet" href="../assets/themes/cyberpunk.css">
+<link rel="stylesheet" href="../assets/themes/parchment.css">
+<link rel="stylesheet" href="../assets/themes/glassmorphism.css">
+<link rel="stylesheet" href="../assets/core-extensions.css">
+<link rel="stylesheet" href="../assets/fonts/tight.css">
+<link rel="stylesheet" href="../assets/fonts/serif.css">
+<link rel="stylesheet" href="../assets/fonts/geometric.css">
+<link rel="stylesheet" href="../assets/fonts/heavy.css">
+<link rel="stylesheet" href="../assets/fonts/allmono.css">
+<link rel="stylesheet" href="../assets/fonts/reader.css">
+<link rel="stylesheet" href="../assets/fonts/display-serif.css">
+<link rel="stylesheet" href="../assets/fonts/neo-future.css">
+<link rel="stylesheet" href="../assets/fonts/plex.css">
+<link rel="stylesheet" href="../assets/fonts/playful.css">
+<link rel="stylesheet" href="../assets/fonts/classic-serif.css">
+<link rel="stylesheet" href="../assets/fonts/pixel.css">
+<link rel="stylesheet" href="../assets/fonts/monumental.css">
+<link rel="stylesheet" href="../assets/fonts/slab.css">
+<link rel="stylesheet" href="../assets/fonts/condensed.css">
+<link rel="stylesheet" href="../assets/fonts/expressive.css">
+<link rel="stylesheet" href="../assets/fonts/deco.css">
+<link rel="stylesheet" href="../assets/fonts/stencil.css">
+<link rel="stylesheet" href="../assets/fonts/rubik.css">
+<link rel="stylesheet" href="../assets/fonts/bricolage.css">
+<link rel="stylesheet" href="../assets/fonts/gloock.css">
+<link rel="stylesheet" href="../assets/fonts/crimson.css">
+<link rel="stylesheet" href="../assets/fonts/dm.css">
+<link rel="stylesheet" href="../assets/fonts/outfit.css">
+<link rel="stylesheet" href="../assets/fonts/literata.css">
+<script src="expression/zh-CN.js"></script>
+<script src="expression/en-US.js"></script>
+</head>
+<body>
+<header class="control-bar">
+<div class="control-brand">
+<span class="brand-mark size-md">&rho;<sub>AR</sub></span>
+<span>rhosocial ActiveRecord</span>
+<span class="dim"><a href="../index.html" data-i18n="nav.index">Index</a> / <a href="./index.html" data-i18n="nav.backends">Backends</a> / <a href="../activerecord/index.html" data-i18n="nav.activerecord">ActiveRecord</a></span>
+</div>
+<div class="dropdown" data-dropdown="theme">
+<button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+<span class="dropdown-label" data-i18n="control.theme_label">Theme</span>
+<span class="dropdown-value">Terminal</span>
+<svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<div class="dropdown-menu" role="listbox">
+<button class="dropdown-item is-active" data-value="terminal"><span class="dropdown-item-label">Terminal</span><span class="dropdown-item-kbd">&#8963;Q</span></button>
+<button class="dropdown-item" data-value="editorial"><span class="dropdown-item-label">Editorial</span><span class="dropdown-item-kbd">&#8963;W</span></button>
+<button class="dropdown-item" data-value="brutalist"><span class="dropdown-item-label">Brutalist</span><span class="dropdown-item-kbd">&#8963;E</span></button>
+<button class="dropdown-item" data-value="aurora"><span class="dropdown-item-label">Aurora</span><span class="dropdown-item-kbd">&#8963;R</span></button>
+<button class="dropdown-item" data-value="synthwave"><span class="dropdown-item-label">Synthwave</span><span class="dropdown-item-kbd">&#8963;T</span></button>
+<button class="dropdown-item" data-value="sumi"><span class="dropdown-item-label">Sumi 墨</span><span class="dropdown-item-kbd">&#8963;Y</span></button>
+<button class="dropdown-item" data-value="blueprint"><span class="dropdown-item-label">Blueprint</span><span class="dropdown-item-kbd">&#8963;U</span></button>
+<button class="dropdown-item" data-value="noir"><span class="dropdown-item-label">Noir</span><span class="dropdown-item-kbd">&#8963;I</span></button>
+<button class="dropdown-item" data-value="riso"><span class="dropdown-item-label">Riso</span><span class="dropdown-item-kbd">&#8963;O</span></button>
+<button class="dropdown-item" data-value="nordic"><span class="dropdown-item-label">Nordic</span><span class="dropdown-item-kbd">&#8963;P</span></button>
+<button class="dropdown-item" data-value="solarpunk"><span class="dropdown-item-label">Solarpunk</span><span class="dropdown-item-kbd">&#8963;A</span></button>
+<button class="dropdown-item" data-value="mocha"><span class="dropdown-item-label">Mocha</span><span class="dropdown-item-kbd">&#8963;S</span></button>
+<button class="dropdown-item" data-value="wireframe"><span class="dropdown-item-label">Wireframe</span><span class="dropdown-item-kbd">&#8963;D</span></button>
+<button class="dropdown-item" data-value="anderson"><span class="dropdown-item-label">Anderson</span><span class="dropdown-item-kbd">&#8963;F</span></button>
+<button class="dropdown-item" data-value="tokyo"><span class="dropdown-item-label">Tokyo Night</span><span class="dropdown-item-kbd">&#8963;G</span></button>
+<button class="dropdown-item" data-value="memphis"><span class="dropdown-item-label">Memphis</span><span class="dropdown-item-kbd">&#8963;H</span></button>
+<button class="dropdown-item" data-value="chalkboard"><span class="dropdown-item-label">Chalkboard</span><span class="dropdown-item-kbd">&#8963;J</span></button>
+<button class="dropdown-item" data-value="matrix"><span class="dropdown-item-label">Matrix</span><span class="dropdown-item-kbd">&#8963;K</span></button>
+<button class="dropdown-item" data-value="steel"><span class="dropdown-item-label">Steel</span><span class="dropdown-item-kbd">&#8963;L</span></button>
+<button class="dropdown-item" data-value="frutiger"><span class="dropdown-item-label">Frutiger</span><span class="dropdown-item-kbd">&#8963;Z</span></button>
+<button class="dropdown-item" data-value="newsprint"><span class="dropdown-item-label">Newsprint</span><span class="dropdown-item-kbd">&#8963;X</span></button>
+<button class="dropdown-item" data-value="candy"><span class="dropdown-item-label">Candy</span><span class="dropdown-item-kbd">&#8963;C</span></button>
+<button class="dropdown-item" data-value="botanical"><span class="dropdown-item-label">Botanical</span><span class="dropdown-item-kbd">&#8963;V</span></button>
+<button class="dropdown-item" data-value="cyberpunk"><span class="dropdown-item-label">Cyberpunk</span><span class="dropdown-item-kbd">&#8963;1</span></button>
+<button class="dropdown-item" data-value="parchment"><span class="dropdown-item-label">Parchment</span><span class="dropdown-item-kbd">&#8963;2</span></button>
+<button class="dropdown-item" data-value="glassmorphism"><span class="dropdown-item-label">Glassmorphism</span><span class="dropdown-item-kbd">&#8963;3</span></button>
+</div>
+</div>
+<div class="dropdown" data-dropdown="font">
+<button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+<span class="dropdown-label" data-i18n="control.font_label">Font</span>
+<span class="dropdown-value" data-i18n-value="auto">Auto</span>
+<svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<div class="dropdown-menu" role="listbox">
+<button class="dropdown-item is-active" data-value="auto"><span class="dropdown-item-label" data-i18n="control.font_auto">Auto (theme default)</span><span class="dropdown-item-kbd">&#8679;Q</span></button>
+<button class="dropdown-item" data-value="tight"><span class="dropdown-item-label">Tight Sans</span><span class="dropdown-item-kbd">&#8679;W</span></button>
+<button class="dropdown-item" data-value="serif"><span class="dropdown-item-label">Editorial Serif</span><span class="dropdown-item-kbd">&#8679;E</span></button>
+<button class="dropdown-item" data-value="geometric"><span class="dropdown-item-label">Geometric</span><span class="dropdown-item-kbd">&#8679;R</span></button>
+<button class="dropdown-item" data-value="heavy"><span class="dropdown-item-label">Heavy Display</span><span class="dropdown-item-kbd">&#8679;T</span></button>
+<button class="dropdown-item" data-value="allmono"><span class="dropdown-item-label">All Mono</span><span class="dropdown-item-kbd">&#8679;Y</span></button>
+<button class="dropdown-item" data-value="reader"><span class="dropdown-item-label">Reader</span><span class="dropdown-item-kbd">&#8679;U</span></button>
+<button class="dropdown-item" data-value="display-serif"><span class="dropdown-item-label">Display Serif</span><span class="dropdown-item-kbd">&#8679;I</span></button>
+<button class="dropdown-item" data-value="neo-future"><span class="dropdown-item-label">Neo Future</span><span class="dropdown-item-kbd">&#8679;O</span></button>
+<button class="dropdown-item" data-value="plex"><span class="dropdown-item-label">IBM Plex</span><span class="dropdown-item-kbd">&#8679;P</span></button>
+<button class="dropdown-item" data-value="playful"><span class="dropdown-item-label">Playful (Caveat)</span><span class="dropdown-item-kbd">&#8679;A</span></button>
+<button class="dropdown-item" data-value="classic-serif"><span class="dropdown-item-label">Classic Serif (Garamond)</span><span class="dropdown-item-kbd">&#8679;S</span></button>
+</div>
+</div>
+<div class="dropdown" data-dropdown="lang">
+<button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+<span class="dropdown-label" data-i18n="control.lang_label">Language</span>
+<span class="dropdown-value"></span>
+<svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<div class="dropdown-menu" role="listbox">
+<button class="dropdown-item is-active" data-value="zh-cn"><span class="dropdown-item-label">简体中文</span><span class="dropdown-item-kbd">&#8997;Q</span></button>
+<button class="dropdown-item" data-value="en-us"><span class="dropdown-item-label">English</span><span class="dropdown-item-kbd">&#8997;W</span></button>
+</div>
+</div>
+</header>
+<main class="page">
+<section class="hero section">
+<div class="container hero-inner">
+<div class="hero-eyebrow rise"><a href="./index.html">&larr; <span data-i18n="hero.back">Backends</span></div>
+<h1 class="hero-title rise">Expression &amp; Dialect</h1>
+<p class="hero-sub rise" data-i18n="hero.sub">表达式收集语义，方言生成 SQL。</p>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="expr_basics.label">Expression Basics</div>
+<h2 class="section-title" data-i18n="expr_basics.title">表达式基础。</h2>
+</div>
+<p class="section-intro" data-i18n="expr_basics.desc">BaseExpression.to_sql(dialect) — 表达式委托方言生成 SQL。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">expression_basics.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.expression <span class="tok-k">import</span> <span class="tok-cls">Column</span>, <span class="tok-cls">Literal</span>
+
+<span class="tok-c"># 表达式收集语义参数，不含 SQL 细节</span>
+name = <span class="tok-cls">Column</span>(<span class="tok-s">'username'</span>)
+age = <span class="tok-cls">Column</span>(<span class="tok-s">'age'</span>)
+
+<span class="tok-c"># 运算符重载构建条件</span>
+condition = (name == <span class="tok-s">'Alice'</span>) & (age > <span class="tok-n">18</span>)
+<span class="tok-c"># → 委托 dialect.format_*() 生成目标 SQL</span>
+sql, params = condition.<span class="tok-f">to_sql</span>(dialect)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="operator_overload.label">Operator Overload</div>
+<h2 class="section-title" data-i18n="operator_overload.title">运算符重载。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Arithmetic</div>
+<h3 class="feature-title" data-i18n="operator_overload.arithmetic">算术：+ - * / %</h3>
+<p class="feature-desc"><span class="tok-cls">ArithmeticMixin</span> — <span class="tok-attr">__add__</span> / <span class="tok-attr">__sub__</span> / <span class="tok-attr">__mul__</span> / <span class="tok-attr">__truediv__</span> / <span class="tok-attr">__mod__</span></p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Comparison</div>
+<h3 class="feature-title" data-i18n="operator_overload.comparison">比较：== != &lt; &gt; &lt;= &gt;=</h3>
+<p class="feature-desc"><span class="tok-cls">ComparisonMixin</span> — <span class="tok-attr">__eq__</span> / <span class="tok-attr">__ne__</span> / <span class="tok-attr">__lt__</span> / <span class="tok-attr">__gt__</span> / <span class="tok-attr">__le__</span> / <span class="tok-attr">__ge__</span></p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Logical</div>
+<h3 class="feature-title" data-i18n="operator_overload.logical">逻辑：&amp; (AND) | (OR) ~ (NOT)</h3>
+<p class="feature-desc"><span class="tok-cls">LogicalMixin</span> — <span class="tok-attr">__and__</span> &amp; / <span class="tok-attr">__or__</span> | / <span class="tok-attr">__invert__</span> ~</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / String</div>
+<h3 class="feature-title" data-i18n="operator_overload.string">字符串：like() / ilike() / concat()</h3>
+<p class="feature-desc"><span class="tok-cls">StringMixin</span> — <span class="tok-f">like()</span> / <span class="tok-f">ilike()</span> / <span class="tok-f">concat()</span></p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / Type Casting</div>
+<h3 class="feature-title" data-i18n="operator_overload.casting">类型转换：::type</h3>
+<p class="feature-desc"><span class="tok-cls">TypeCastingMixin</span> — <span class="tok-f">cast()</span> 生成 <span class="tok-s">::type</span> 语法</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / Alias</div>
+<h3 class="feature-title" data-i18n="operator_overload.alias">别名：.as_()</h3>
+<p class="feature-desc"><span class="tok-cls">AliasableMixin</span> — <span class="tok-f">.as_()</span> 生成 <span class="tok-s">AS alias</span></p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="predicates.label">Predicates</div>
+<h2 class="section-title" data-i18n="predicates.title">谓词体系。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">predicates.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.expression <span class="tok-k">import</span> (
+    <span class="tok-cls">InPredicate</span>, <span class="tok-cls">BetweenPredicate</span>,
+    <span class="tok-cls">LikePredicate</span>, <span class="tok-cls">IsNullPredicate</span>,
+    <span class="tok-cls">ComparisonPredicate</span>
+)
+
+<span class="tok-c"># ComparisonPredicate</span>
+cond = <span class="tok-cls">ComparisonPredicate</span>(Column(<span class="tok-s">'age'</span>), <span class="tok-s">'>'</span>, Literal(<span class="tok-n">18</span>))
+
+<span class="tok-c"># InPredicate</span>
+cond = <span class="tok-cls">InPredicate</span>(Column(<span class="tok-s">'category'</span>), [<span class="tok-s">'A'</span>, <span class="tok-s">'B'</span>])
+
+<span class="tok-c"># BetweenPredicate</span>
+cond = <span class="tok-cls">BetweenPredicate</span>(Column(<span class="tok-s">'stock'</span>), <span class="tok-n">10</span>, <span class="tok-n">100</span>)
+
+<span class="tok-c"># IsNullPredicate</span>
+cond = <span class="tok-cls">IsNullPredicate</span>(Column(<span class="tok-s">'deleted_at'</span>))</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="advanced_expr.label">Advanced</div>
+<h2 class="section-title" data-i18n="advanced_expr.title">高级表达式。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / CASE</div>
+<h3 class="feature-title" data-i18n="advanced_expr.case">CASE WHEN ... THEN ... ELSE ... END</h3>
+<p class="feature-desc"><span class="tok-cls">CaseExpression</span> — <span class="tok-f">.when()</span> / <span class="tok-f">.else_()</span></p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / EXISTS</div>
+<h3 class="feature-title" data-i18n="advanced_expr.exists">EXISTS / NOT EXISTS</h3>
+<p class="feature-desc">子查询存在性检查</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / ANY ALL</div>
+<h3 class="feature-title" data-i18n="advanced_expr.any_all">ANY / ALL / SOME</h3>
+<p class="feature-desc">量词比较谓词</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Window</div>
+<h3 class="feature-title" data-i18n="advanced_expr.window">窗口函数 OVER (...)</h3>
+<p class="feature-desc"><span class="tok-cls">WindowFunctionCall</span> — <span class="tok-f">.over()</span> / <span class="tok-f">.partition_by()</span></p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / FILTER</div>
+<h3 class="feature-title" data-i18n="advanced_expr.filter">FILTER (WHERE ...)</h3>
+<p class="feature-desc">聚合函数条件过滤</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="advanced_expr.label">Advanced</div>
+<h2 class="section-title">CASE WHEN 示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">case_expression.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.expression <span class="tok-k">import</span> <span class="tok-cls">CaseExpression</span>, <span class="tok-cls">Literal</span>
+
+<span class="tok-c"># CASE WHEN active = True THEN 'Active' ELSE 'Inactive' END</span>
+status_label = <span class="tok-cls">CaseExpression</span>() \
+    .<span class="tok-f">when</span>(User.c.active == <span class="tok-k">True</span>, <span class="tok-cls">Literal</span>(<span class="tok-s">'Active'</span>)) \
+    .<span class="tok-f">else_</span>(<span class="tok-cls">Literal</span>(<span class="tok-s">'Inactive'</span>))</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="dql.label">DQL</div>
+<h2 class="section-title" data-i18n="dql.title">SELECT 语句。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">query_expression.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.expression <span class="tok-k">import</span> <span class="tok-cls">QueryExpression</span>
+
+<span class="tok-c"># QueryExpression — 完整 SELECT 构建</span>
+query = <span class="tok-cls">QueryExpression</span>() \
+    .<span class="tok-f">select_from</span>(<span class="tok-s">'users'</span>) \
+    .<span class="tok-f">where</span>(User.c.age > <span class="tok-n">18</span>) \
+    .<span class="tok-f">order_by</span>(User.c.created_at.<span class="tok-f">desc</span>()) \
+    .<span class="tok-f">limit</span>(<span class="tok-n">10</span>) \
+    .<span class="tok-f">offset</span>(<span class="tok-n">20</span>)
+
+sql, params = query.<span class="tok-f">to_sql</span>(backend.dialect)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="functions.label">Functions</div>
+<h2 class="section-title" data-i18n="functions.title">函数工厂。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Aggregate</div>
+<h3 class="feature-title" data-i18n="functions.aggregate">聚合：count / sum / avg / min / max</h3>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Window</div>
+<h3 class="feature-title" data-i18n="functions.window">窗口：row_number / rank / dense_rank / lag / lead</h3>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / String</div>
+<h3 class="feature-title" data-i18n="functions.string">字符串：concat / substring / trim / replace ...</h3>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Datetime</div>
+<h3 class="feature-title" data-i18n="functions.datetime">日期时间：now / date_add / date_trunc / extract ...</h3>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / Math</div>
+<h3 class="feature-title" data-i18n="functions.math">数学：abs / round / ceil / floor / sqrt ...</h3>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / Conditional</div>
+<h3 class="feature-title" data-i18n="functions.conditional">条件：case / nullif / coalesce / greatest / least</h3>
+</div>
+<div class="feature rise">
+<div class="feature-num">07 / JSON</div>
+<h3 class="feature-title" data-i18n="functions.json">JSON：json_extract / json_array_length ...</h3>
+</div>
+<div class="feature rise">
+<div class="feature-num">08 / Grouping</div>
+<h3 class="feature-title" data-i18n="functions.grouping">分组：ROLLUP / CUBE / GROUPING SETS</h3>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="dialect_protocol.label">Dialect Protocol</div>
+<h2 class="section-title" data-i18n="dialect_protocol.title">方言协议。</h2>
+</div>
+<p class="section-intro" data-i18n="dialect_protocol.desc">35+ @runtime_checkable 协议检测后端能力。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">protocol_check.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.dialect.protocols <span class="tok-k">import</span> (
+    <span class="tok-cls">CTESupport</span>, <span class="tok-cls">WindowFunctionSupport</span>
+)
+
+<span class="tok-c"># 运行时检测后端能力</span>
+<span class="tok-k">if</span> <span class="tok-f">isinstance</span>(backend.dialect, <span class="tok-cls">CTESupport</span>):
+    <span class="tok-c"># 安全使用 CTE</span>
+    ...
+<span class="tok-k">else</span>:
+    <span class="tok-k">raise</span> <span class="tok-cls">UnsupportedFeatureError</span>(<span class="tok-s">'CTE not supported'</span>)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="graph.label">Graph</div>
+<h2 class="section-title" data-i18n="graph.title">图查询 SQL/PGQ。</h2>
+</div>
+<p class="section-intro" data-i18n="graph.desc">SQL 2023 标准属性图遍历。</p>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="introspection.label">Introspection</div>
+<h2 class="section-title" data-i18n="introspection.title">内省表达式。</h2>
+</div>
+<p class="section-intro" data-i18n="introspection.desc">数据库/表/列/索引/外键/主键/触发器/视图信息查询。</p>
+</div>
+</section>
+<footer class="footer">
+<div>&copy; rhosocial &middot; rhosocial-activerecord &middot; Apache 2.0</div>
+<div data-i18n="footer.hotkeys">25 themes · <span class="kbd">Ctrl</span>+<span class="kbd">key</span> theme / <span class="kbd">Alt</span>+<span class="kbd">key</span> lang</div>
+</footer>
+</main>
+<script>
+const html = document.documentElement;
+
+const THEMES = [
+'terminal','editorial','brutalist','aurora','synthwave','sumi','blueprint','noir','riso','nordic',
+'solarpunk','mocha','wireframe','anderson','tokyo','memphis','chalkboard','matrix','steel',
+'frutiger','newsprint','candy','botanical','cyberpunk','parchment','glassmorphism'
+];
+const FONTS = [
+'auto','tight','serif','geometric','heavy','allmono','reader','display-serif','neo-future','plex',
+'playful','classic-serif','pixel','monumental','slab','condensed','expressive','deco','stencil',
+'rubik','bricolage','gloock','crimson','dm','outfit','literata'
+];
+const LANGS = ['zh-cn','en-us'];
+const QWERTY = 'qwertyuiopasdfghjklzxcvbnm';
+const NUMERIC = '1234567890-';
+const BASE_IDX = QWERTY.length;
+
+const LANG_COLLAPSE = {
+zh: 'zh-cn', en: 'en-us', fr: 'fr-fr', ru: 'ru-ru', es: 'es-es', ar: 'ar',
+ja: 'ja-jp', de: 'de-de', ko: 'ko-kr', pt: 'pt-pt', nl: 'nl-nl', it: 'it-it',
+tr: 'tr-tr', el: 'el-gr', hi: 'hi-in',
+id: 'id-id', in: 'id-id',
+vi: 'vi-vn', pl: 'pl-pl',
+th: 'th-th', uk: 'uk-ua', fa: 'fa-ir', bn: 'bn-bd', ro: 'ro-ro', cs: 'cs-cz'
+};
+
+function matchLang(tag) {
+if (!tag) return null;
+const lower = String(tag).toLowerCase();
+if (LANGS.indexOf(lower) !== -1) return lower;
+const primary = lower.split('-')[0];
+return LANG_COLLAPSE[primary] || null;
+}
+
+function detectInitialLang() {
+try {
+const url = new URLSearchParams(location.search).get('lang');
+const m = matchLang(url);
+if (m) return m;
+} catch (_) {}
+try {
+const stored = localStorage.getItem('rhosocial-lang');
+const m = matchLang(stored);
+if (m) return m;
+} catch (_) {}
+const navLangs = (navigator.languages && navigator.languages.length)
+? navigator.languages
+: [navigator.language || navigator.userLanguage || ''];
+for (const tag of navLangs) {
+const m = matchLang(tag);
+if (m) return m;
+}
+return 'en-us';
+}
+
+let currentLang = detectInitialLang();
+
+function get(path, dict) {
+return path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), dict);
+}
+
+function applyI18n() {
+const dict = window.I18N && window.I18N[currentLang];
+if (!dict) return;
+document.querySelectorAll('[data-i18n]').forEach(el => {
+const val = get(el.getAttribute('data-i18n'), dict);
+if (val !== undefined) el.innerHTML = val;
+});
+refreshDropdownValueLabel('theme', html.getAttribute('data-theme'));
+refreshDropdownValueLabel('font', html.getAttribute('data-font'));
+refreshDropdownValueLabel('lang', currentLang);
+}
+
+function refreshDropdownValueLabel(kind, value) {
+const dd = document.querySelector('[data-dropdown="' + kind + '"]');
+if (!dd) return;
+const item = dd.querySelector('.dropdown-item[data-value="' + value + '"]');
+if (!item) return;
+const valueEl = dd.querySelector('.dropdown-value');
+if (valueEl) valueEl.textContent = item.querySelector('.dropdown-item-label')?.textContent || value;
+}
+
+function setValue(kind, value) {
+if (kind === 'lang') {
+currentLang = value;
+html.setAttribute('lang', value);
+html.setAttribute('dir', value === 'ar' || value === 'fa-ir' ? 'rtl' : 'ltr');
+try { localStorage.setItem('rhosocial-lang', value); } catch (_) {}
+applyI18n();
+} else {
+html.setAttribute('data-' + kind, value);
+}
+const dd = document.querySelector('[data-dropdown="' + kind + '"]');
+if (!dd) return;
+let activatedLabel = null;
+dd.querySelectorAll('.dropdown-item').forEach(it => {
+const match = it.getAttribute('data-value') === value;
+it.classList.toggle('is-active', match);
+if (match) activatedLabel = it.querySelector('.dropdown-item-label')?.textContent || value;
+});
+const valueEl = dd.querySelector('.dropdown-value');
+if (valueEl && activatedLabel) valueEl.textContent = activatedLabel;
+}
+
+function closeAllDropdowns(except) {
+document.querySelectorAll('.dropdown.is-open').forEach(d => {
+if (d !== except) {
+d.classList.remove('is-open');
+d.querySelector('.dropdown-trigger')?.setAttribute('aria-expanded', 'false');
+}
+});
+}
+
+document.querySelectorAll('[data-dropdown]').forEach(dd => {
+const trigger = dd.querySelector('.dropdown-trigger');
+const kind = dd.getAttribute('data-dropdown');
+trigger.addEventListener('click', e => {
+e.stopPropagation();
+const willOpen = !dd.classList.contains('is-open');
+closeAllDropdowns(dd);
+dd.classList.toggle('is-open', willOpen);
+trigger.setAttribute('aria-expanded', String(willOpen));
+});
+dd.querySelectorAll('.dropdown-item').forEach(item => {
+item.addEventListener('click', e => {
+e.stopPropagation();
+const value = item.getAttribute('data-value');
+const label = item.querySelector('.dropdown-item-label')?.textContent;
+if (kind === 'theme' || kind === 'font' || kind === 'lang') {
+setValue(kind, value);
+} else {
+dd.querySelectorAll('.dropdown-item').forEach(it => it.classList.toggle('is-active', it === item));
+const valueEl = dd.querySelector('.dropdown-value');
+if (valueEl) valueEl.textContent = label || value;
+}
+dd.classList.remove('is-open');
+trigger.setAttribute('aria-expanded', 'false');
+});
+});
+});
+
+document.addEventListener('click', e => {
+if (!e.target.closest('.dropdown')) closeAllDropdowns();
+});
+document.addEventListener('keydown', e => {
+if (e.key === 'Escape') closeAllDropdowns();
+});
+
+document.addEventListener('keydown', e => {
+const isMod = e.ctrlKey || e.metaKey;
+const key = e.key.toLowerCase();
+const idx = QWERTY.indexOf(key);
+if (idx === -1) return;
+if (isMod && !e.shiftKey) {
+e.preventDefault();
+setValue('theme', THEMES[idx % THEMES.length]);
+} else if (isMod && e.shiftKey) {
+e.preventDefault();
+setValue('font', FONTS[idx % FONTS.length]);
+} else if (e.altKey && !isMod && !e.shiftKey) {
+e.preventDefault();
+setValue('lang', LANGS[idx % LANGS.length]);
+}
+});
+
+applyI18n();
+</script>
+</body>
+</html>

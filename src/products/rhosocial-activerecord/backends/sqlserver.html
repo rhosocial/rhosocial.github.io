@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="terminal" data-font="auto">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>rhosocial ActiveRecord — SQL Server</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/core.css">
+<link rel="stylesheet" href="../assets/themes/terminal.css">
+<link rel="stylesheet" href="../assets/themes/editorial.css">
+<link rel="stylesheet" href="../assets/themes/brutalist.css">
+<link rel="stylesheet" href="../assets/themes/aurora.css">
+<link rel="stylesheet" href="../assets/themes/synthwave.css">
+<link rel="stylesheet" href="../assets/themes/sumi.css">
+<link rel="stylesheet" href="../assets/themes/blueprint.css">
+<link rel="stylesheet" href="../assets/themes/noir.css">
+<link rel="stylesheet" href="../assets/themes/riso.css">
+<link rel="stylesheet" href="../assets/themes/nordic.css">
+<link rel="stylesheet" href="../assets/themes/solarpunk.css">
+<link rel="stylesheet" href="../assets/themes/mocha.css">
+<link rel="stylesheet" href="../assets/themes/wireframe.css">
+<link rel="stylesheet" href="../assets/themes/anderson.css">
+<link rel="stylesheet" href="../assets/themes/tokyo.css">
+<link rel="stylesheet" href="../assets/themes/memphis.css">
+<link rel="stylesheet" href="../assets/themes/chalkboard.css">
+<link rel="stylesheet" href="../assets/themes/matrix.css">
+<link rel="stylesheet" href="../assets/themes/steel.css">
+<link rel="stylesheet" href="../assets/themes/frutiger.css">
+<link rel="stylesheet" href="../assets/themes/newsprint.css">
+<link rel="stylesheet" href="../assets/themes/candy.css">
+<link rel="stylesheet" href="../assets/themes/botanical.css">
+<link rel="stylesheet" href="../assets/themes/cyberpunk.css">
+<link rel="stylesheet" href="../assets/themes/parchment.css">
+<link rel="stylesheet" href="../assets/themes/glassmorphism.css">
+<link rel="stylesheet" href="../assets/core-extensions.css">
+<link rel="stylesheet" href="../assets/fonts/tight.css">
+<link rel="stylesheet" href="../assets/fonts/serif.css">
+<link rel="stylesheet" href="../assets/fonts/geometric.css">
+<link rel="stylesheet" href="../assets/fonts/heavy.css">
+<link rel="stylesheet" href="../assets/fonts/allmono.css">
+<link rel="stylesheet" href="../assets/fonts/reader.css">
+<link rel="stylesheet" href="../assets/fonts/display-serif.css">
+<link rel="stylesheet" href="../assets/fonts/neo-future.css">
+<link rel="stylesheet" href="../assets/fonts/plex.css">
+<link rel="stylesheet" href="../assets/fonts/playful.css">
+<link rel="stylesheet" href="../assets/fonts/classic-serif.css">
+<link rel="stylesheet" href="../assets/fonts/pixel.css">
+<link rel="stylesheet" href="../assets/fonts/monumental.css">
+<link rel="stylesheet" href="../assets/fonts/slab.css">
+<link rel="stylesheet" href="../assets/fonts/condensed.css">
+<link rel="stylesheet" href="../assets/fonts/expressive.css">
+<link rel="stylesheet" href="../assets/fonts/deco.css">
+<link rel="stylesheet" href="../assets/fonts/stencil.css">
+<link rel="stylesheet" href="../assets/fonts/rubik.css">
+<link rel="stylesheet" href="../assets/fonts/bricolage.css">
+<link rel="stylesheet" href="../assets/fonts/gloock.css">
+<link rel="stylesheet" href="../assets/fonts/crimson.css">
+<link rel="stylesheet" href="../assets/fonts/dm.css">
+<link rel="stylesheet" href="../assets/fonts/outfit.css">
+<link rel="stylesheet" href="../assets/fonts/literata.css">
+<script src="sqlserver/zh-CN.js"></script>
+<script src="sqlserver/en-US.js"></script>
+</head>
+<body>
+<header class="control-bar">
+<div class="control-brand">
+<span class="brand-mark size-md">&rho;<sub>AR</sub></span>
+<span>rhosocial ActiveRecord</span>
+<span class="dim"><a href="../index.html" data-i18n="nav.index">Index</a> / <a href="./index.html" data-i18n="nav.backends">Backends</a> / <a href="../activerecord/index.html" data-i18n="nav.activerecord">ActiveRecord</a></span>
+</div>
+<div class="dropdown" data-dropdown="theme">
+<button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+<span class="dropdown-label" data-i18n="control.theme_label">Theme</span>
+<span class="dropdown-value">Terminal</span>
+<svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<div class="dropdown-menu" role="listbox">
+<button class="dropdown-item is-active" data-value="terminal"><span class="dropdown-item-label">Terminal</span><span class="dropdown-item-kbd">&#8963;Q</span></button>
+<button class="dropdown-item" data-value="editorial"><span class="dropdown-item-label">Editorial</span><span class="dropdown-item-kbd">&#8963;W</span></button>
+<button class="dropdown-item" data-value="brutalist"><span class="dropdown-item-label">Brutalist</span><span class="dropdown-item-kbd">&#8963;E</span></button>
+<button class="dropdown-item" data-value="aurora"><span class="dropdown-item-label">Aurora</span><span class="dropdown-item-kbd">&#8963;R</span></button>
+<button class="dropdown-item" data-value="synthwave"><span class="dropdown-item-label">Synthwave</span><span class="dropdown-item-kbd">&#8963;T</span></button>
+<button class="dropdown-item" data-value="sumi"><span class="dropdown-item-label">Sumi 墨</span><span class="dropdown-item-kbd">&#8963;Y</span></button>
+<button class="dropdown-item" data-value="blueprint"><span class="dropdown-item-label">Blueprint</span><span class="dropdown-item-kbd">&#8963;U</span></button>
+<button class="dropdown-item" data-value="noir"><span class="dropdown-item-label">Noir</span><span class="dropdown-item-kbd">&#8963;I</span></button>
+<button class="dropdown-item" data-value="riso"><span class="dropdown-item-label">Riso</span><span class="dropdown-item-kbd">&#8963;O</span></button>
+<button class="dropdown-item" data-value="nordic"><span class="dropdown-item-label">Nordic</span><span class="dropdown-item-kbd">&#8963;P</span></button>
+<button class="dropdown-item" data-value="solarpunk"><span class="dropdown-item-label">Solarpunk</span><span class="dropdown-item-kbd">&#8963;A</span></button>
+<button class="dropdown-item" data-value="mocha"><span class="dropdown-item-label">Mocha</span><span class="dropdown-item-kbd">&#8963;S</span></button>
+<button class="dropdown-item" data-value="wireframe"><span class="dropdown-item-label">Wireframe</span><span class="dropdown-item-kbd">&#8963;D</span></button>
+<button class="dropdown-item" data-value="anderson"><span class="dropdown-item-label">Anderson</span><span class="dropdown-item-kbd">&#8963;F</span></button>
+<button class="dropdown-item" data-value="tokyo"><span class="dropdown-item-label">Tokyo Night</span><span class="dropdown-item-kbd">&#8963;G</span></button>
+<button class="dropdown-item" data-value="memphis"><span class="dropdown-item-label">Memphis</span><span class="dropdown-item-kbd">&#8963;H</span></button>
+<button class="dropdown-item" data-value="chalkboard"><span class="dropdown-item-label">Chalkboard</span><span class="dropdown-item-kbd">&#8963;J</span></button>
+<button class="dropdown-item" data-value="matrix"><span class="dropdown-item-label">Matrix</span><span class="dropdown-item-kbd">&#8963;K</span></button>
+<button class="dropdown-item" data-value="steel"><span class="dropdown-item-label">Steel</span><span class="dropdown-item-kbd">&#8963;L</span></button>
+<button class="dropdown-item" data-value="frutiger"><span class="dropdown-item-label">Frutiger</span><span class="dropdown-item-kbd">&#8963;Z</span></button>
+<button class="dropdown-item" data-value="newsprint"><span class="dropdown-item-label">Newsprint</span><span class="dropdown-item-kbd">&#8963;X</span></button>
+<button class="dropdown-item" data-value="candy"><span class="dropdown-item-label">Candy</span><span class="dropdown-item-kbd">&#8963;C</span></button>
+<button class="dropdown-item" data-value="botanical"><span class="dropdown-item-label">Botanical</span><span class="dropdown-item-kbd">&#8963;V</span></button>
+<button class="dropdown-item" data-value="cyberpunk"><span class="dropdown-item-label">Cyberpunk</span><span class="dropdown-item-kbd">&#8963;1</span></button>
+<button class="dropdown-item" data-value="parchment"><span class="dropdown-item-label">Parchment</span><span class="dropdown-item-kbd">&#8963;2</span></button>
+<button class="dropdown-item" data-value="glassmorphism"><span class="dropdown-item-label">Glassmorphism</span><span class="dropdown-item-kbd">&#8963;3</span></button>
+</div>
+</div>
+<div class="dropdown" data-dropdown="font">
+<button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+<span class="dropdown-label" data-i18n="control.font_label">Font</span>
+<span class="dropdown-value" data-i18n-value="auto">Auto</span>
+<svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<div class="dropdown-menu" role="listbox">
+<button class="dropdown-item is-active" data-value="auto"><span class="dropdown-item-label" data-i18n="control.font_auto">Auto (theme default)</span><span class="dropdown-item-kbd">&#8679;Q</span></button>
+<button class="dropdown-item" data-value="tight"><span class="dropdown-item-label">Tight Sans</span><span class="dropdown-item-kbd">&#8679;W</span></button>
+<button class="dropdown-item" data-value="serif"><span class="dropdown-item-label">Editorial Serif</span><span class="dropdown-item-kbd">&#8679;E</span></button>
+<button class="dropdown-item" data-value="geometric"><span class="dropdown-item-label">Geometric</span><span class="dropdown-item-kbd">&#8679;R</span></button>
+<button class="dropdown-item" data-value="heavy"><span class="dropdown-item-label">Heavy Display</span><span class="dropdown-item-kbd">&#8679;T</span></button>
+<button class="dropdown-item" data-value="allmono"><span class="dropdown-item-label">All Mono</span><span class="dropdown-item-kbd">&#8679;Y</span></button>
+<button class="dropdown-item" data-value="reader"><span class="dropdown-item-label">Reader</span><span class="dropdown-item-kbd">&#8679;U</span></button>
+<button class="dropdown-item" data-value="display-serif"><span class="dropdown-item-label">Display Serif</span><span class="dropdown-item-kbd">&#8679;I</span></button>
+<button class="dropdown-item" data-value="neo-future"><span class="dropdown-item-label">Neo Future</span><span class="dropdown-item-kbd">&#8679;O</span></button>
+<button class="dropdown-item" data-value="plex"><span class="dropdown-item-label">IBM Plex</span><span class="dropdown-item-kbd">&#8679;P</span></button>
+<button class="dropdown-item" data-value="playful"><span class="dropdown-item-label">Playful (Caveat)</span><span class="dropdown-item-kbd">&#8679;A</span></button>
+<button class="dropdown-item" data-value="classic-serif"><span class="dropdown-item-label">Classic Serif (Garamond)</span><span class="dropdown-item-kbd">&#8679;S</span></button>
+</div>
+</div>
+<div class="dropdown" data-dropdown="lang">
+<button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+<span class="dropdown-label" data-i18n="control.lang_label">Language</span>
+<span class="dropdown-value"></span>
+<svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<div class="dropdown-menu" role="listbox">
+<button class="dropdown-item is-active" data-value="zh-cn"><span class="dropdown-item-label">简体中文</span><span class="dropdown-item-kbd">&#8997;Q</span></button>
+<button class="dropdown-item" data-value="en-us"><span class="dropdown-item-label">English</span><span class="dropdown-item-kbd">&#8997;W</span></button>
+</div>
+</div>
+</header>
+<main class="page">
+<section class="hero section">
+<div class="container hero-inner">
+<div class="hero-eyebrow rise"><a href="./index.html">&larr; <span data-i18n="hero.back">Backends</span></div>
+<h1 class="hero-title rise">SQL Server</h1>
+<p class="hero-sub rise" data-i18n="hero.sub">微软企业级 RDBMS。OUTPUT 子句 / MERGE / CROSS APPLY / IDENTITY / OFFSET-FETCH / 表提示 / 索引视图。</p>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="features.label">Features</div>
+<h2 class="section-title" data-i18n="features.title">SQL Server 特性。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / OUTPUT</div>
+<h3 class="feature-title" data-i18n="features.output.title">OUTPUT 子句</h3>
+<p class="feature-desc" data-i18n="features.output.desc">INSERT / UPDATE / DELETE / MERGE 支持 OUTPUT 子句。inserted.* / deleted.* 虚拟表，替代 RETURNING。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / MERGE</div>
+<h3 class="feature-title" data-i18n="features.merge.title">MERGE</h3>
+<p class="feature-desc" data-i18n="features.merge.desc">MERGE ... USING ... ON ... WHEN MATCHED / NOT MATCHED。支持 $action 输出。通过 MERGE 实现 UPSERT。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / APPLY</div>
+<h3 class="feature-title" data-i18n="features.apply.title">CROSS / OUTER APPLY</h3>
+<p class="feature-desc" data-i18n="features.apply.desc">替代 LATERAL JOIN。CROSS APPLY（内连接） / OUTER APPLY（左连接）。关联子查询横向关联。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / IDENTITY</div>
+<h3 class="feature-title" data-i18n="features.identity.title">IDENTITY</h3>
+<p class="feature-desc" data-i18n="features.identity.desc">IDENTITY(1,1) 自增列。SET IDENTITY_INSERT ON/OFF。SCOPE_IDENTITY() / IDENT_CURRENT() / DBCC CHECKIDENT。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / Pagination</div>
+<h3 class="feature-title" data-i18n="features.pagination.title">OFFSET-FETCH</h3>
+<p class="feature-desc" data-i18n="features.pagination.desc">OFFSET n ROWS FETCH NEXT m ROWS ONLY（2012+）。旧版本使用 TOP / ROW_NUMBER() 分页。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / Hints</div>
+<h3 class="feature-title" data-i18n="features.hints.title">表提示</h3>
+<p class="feature-desc" data-i18n="features.hints.desc">WITH (NOLOCK / UPDLOCK / XLOCK / READPAST / TABLOCKX / INDEX / HOLDLOCK) — 查询级锁控制。</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="connection.label">Connection</div>
+<h2 class="section-title" data-i18n="connection.title">连接配置。</h2>
+</div>
+<p class="section-intro" data-i18n="connection.desc">SQLServerConnectionConfig 继承 pydantic.BaseModel，纯 Pydantic 模型（无框架混入）。ODBC 连接字符串构建。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">connection_config.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlserver <span class="tok-k">import</span> <span class="tok-cls">SQLServerBackend</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlserver.config <span class="tok-k">import</span> <span class="tok-cls">SQLServerConnectionConfig</span>
+
+<span class="tok-c"># 标准连接（pyodbc 驱动）</span>
+config = <span class="tok-cls">SQLServerConnectionConfig</span>(
+    host=<span class="tok-s">'localhost'</span>,
+    port=<span class="tok-n">1433</span>,
+    database=<span class="tok-s">'app_db'</span>,
+    username=<span class="tok-s">'sa'</span>,
+    password=<span class="tok-s">'YourPassword123'</span>,
+)
+backend = <span class="tok-cls">SQLServerBackend</span>(connection_config=config)
+backend.connect()
+
+<span class="tok-c"># Windows 身份验证（Trusted Connection）</span>
+config = <span class="tok-cls">SQLServerConnectionConfig</span>(
+    host=<span class="tok-s">'localhost'</span>,
+    port=<span class="tok-n">1433</span>,
+    database=<span class="tok-s">'app_db'</span>,
+    trusted_connection=<span class="tok-k">True</span>,
+)
+
+<span class="tok-c"># ODBC 驱动选择</span>
+config = <span class="tok-cls">SQLServerConnectionConfig</span>(
+    ...,
+    driver=<span class="tok-s">'ODBC Driver 18 for SQL Server'</span>,
+    encrypt=<span class="tok-k">True</span>,
+    trust_server_certificate=<span class="tok-k">True</span>,
+)
+
+<span class="tok-c"># 连接字符串自动构建</span>
+conn_str = config.build_connection_string()
+<span class="tok-c"># → DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=app_db;...</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="config_fields.label">Config Fields</div>
+<h2 class="section-title" data-i18n="config_fields.title">配置字段。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Host</div>
+<h3 class="feature-title" data-i18n="config_fields.host">host</h3>
+<p class="feature-desc">host (默认 "localhost") / port (默认 1433) / database (必填)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Driver</div>
+<h3 class="feature-title" data-i18n="config_fields.driver">driver</h3>
+<p class="feature-desc">driver (默认 "ODBC Driver 17 for SQL Server") — validate_driver 校验</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Auth</div>
+<h3 class="feature-title" data-i18n="config_fields.auth">认证</h3>
+<p class="feature-desc">username / password / trusted_connection (Windows 验证) — 二选一</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Encrypt</div>
+<h3 class="feature-title" data-i18n="config_fields.encrypt">加密</h3>
+<p class="feature-desc">encrypt (默认 True) / trust_server_certificate (默认 False) / charset (默认 UTF-8)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / Pool</div>
+<h3 class="feature-title" data-i18n="config_fields.pool">连接池</h3>
+<p class="feature-desc">pool_size (默认 5) / pool_timeout (默认 30) / timeout (默认 30) / query_timeout (默认 0)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / Options</div>
+<h3 class="feature-title">options</h3>
+<p class="feature-desc">options: Dict[str, Any] = {} / autocommit (默认 True) / model_config: extra = "allow"</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="dialect.label">Dialect</div>
+<h2 class="section-title" data-i18n="dialect.title">SQLServerDialect 版本感知。</h2>
+</div>
+<p class="section-intro" data-i18n="dialect.desc">SQLServerDialect 依赖版本常量：2012 / 2014 / 2016 / 2017 / 2019 / 2022，驱动功能开关。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">dialect_version.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlserver.dialect <span class="tok-k">import</span> <span class="tok-cls">SQLServerDialect</span>
+
+<span class="tok-c"># 默认版本 16.0.0 (SQL Server 2022)</span>
+dialect = <span class="tok-cls">SQLServerDialect</span>()
+
+<span class="tok-c"># 指定旧版本 → 功能降级</span>
+old_dialect = <span class="tok-cls">SQLServerDialect</span>(version=(<span class="tok-n">11</span>, <span class="tok-n">0</span>, <span class="tok-n">0</span>))  <span class="tok-c"># SQL Server 2012</span>
+old_dialect.supports_json_type()                   <span class="tok-c"># False (需 2016+)</span>
+old_dialect.supports_fetch_first_pagination()      <span class="tok-c"># True (2012+)</span>
+old_dialect.supports_for_update_skip_locked()      <span class="tok-c"># False (需 2019+)</span>
+
+<span class="tok-c"># 版本常量 (SQL_SERVER_* = (major, 0, 0))</span>
+<span class="tok-c"># SQL_SERVER_2012 = (11, 0, 0) — OFFSET FETCH / SEQUENCE / IIF / TRY_CAST / Window Frame</span>
+<span class="tok-c"># SQL_SERVER_2014 = (12, 0, 0)</span>
+<span class="tok-c"># SQL_SERVER_2016 = (13, 0, 0) — JSON / STRING_SPLIT / Temporal Tables / DROP IF EXISTS</span>
+<span class="tok-c"># SQL_SERVER_2017 = (14, 0, 0) — STRING_AGG / CONCAT_WS / TRIM</span>
+<span class="tok-c"># SQL_SERVER_2019 = (15, 0, 0) — READPAST+UPDLOCK / APPROX_COUNT_DISTINCT</span>
+<span class="tok-c"># SQL_SERVER_2022 = (16, 0, 0) — JSON_PATH_EXISTS / JSON_OBJECT / JSON_ARRAY</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="dialect_features.label">Feature Matrix</div>
+<h2 class="section-title" data-i18n="dialect_features.title">方言功能矩阵。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Supported</div>
+<h3 class="feature-title" data-i18n="dialect_features.supported">支持</h3>
+<p class="feature-desc">CTE / Recursive CTE / Window Functions / MERGE / RETURNING (via OUTPUT) / ROLLUP / FOR UPDATE (table hints) / UPSERT (via MERGE) / LATERAL (CROSS/OUTER APPLY) / SAVEPOINT / EXPLAIN ANALYZE / IDENTITY / CUBE / PIVOT / Temporal Tables (2016+) / Filtered Index / ONLINE Index / Fulltext Index / INSTEAD OF Trigger</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Not Supported</div>
+<h3 class="feature-title" data-i18n="dialect_features.unsupported">不支持</h3>
+<p class="feature-desc">ARRAY / FILTER Clause / QUALIFY / Materialized CTE / Materialized View / OR REPLACE View / Temporary View / CASCADE View / Graph MATCH / Ordered-Set Aggregation / IF NOT EXISTS (Table/Index/Trigger) / Transaction Mode / Isolation in BEGIN / Read-Only Transaction / Deferrable Transaction</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / SQL Server-specific</div>
+<h3 class="feature-title" data-i18n="dialect_features.sqlserver_specific">SQL Server 专有</h3>
+<p class="feature-desc">OUTPUT (inserted./deleted.) / CROSS APPLY / OUTER APPLY / IDENTITY / SET IDENTITY_INSERT / TABLESAMPLE / CLUSTERED/NONCLUSTERED Index / INCLUDE (Covering Index) / WITH CHECK OPTION / CREATE OR ALTER VIEW / SET NOCOUNT / SET LOCK_TIMEOUT / SET DEADLOCK_PRIORITY / DBCC CHECKIDENT / SNAPSHOT Isolation</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="protocols.label">Protocols</div>
+<h2 class="section-title" data-i18n="protocols.title">SQL Server 专有协议。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Indexed View</div>
+<h3 class="feature-title" data-i18n="protocols.indexed_view">SQLServerIndexedViewSupport</h3>
+<p class="feature-desc">supports_indexed_view() / format_create_indexed_view_statement(expr)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Identity</div>
+<h3 class="feature-title" data-i18n="protocols.identity">SQLServerIdentitySupport</h3>
+<p class="feature-desc">supports_identity_insert() / format_set_identity_insert(table, on) — SET IDENTITY_INSERT ON/OFF</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Table Hint</div>
+<h3 class="feature-title" data-i18n="protocols.table_hint">SQLServerTableHintSupport</h3>
+<p class="feature-desc">supports_table_hints() / format_table_hint(hints) — NOLOCK / UPDLOCK / READPAST / INDEX / HOLDLOCK</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / OUTPUT</div>
+<h3 class="feature-title" data-i18n="protocols.output">SQLServerOutputSupport</h3>
+<p class="feature-desc">supports_output_clause() / format_output_clause(columns, clause_type) — inserted.*/deleted.*</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="output_code.label">OUTPUT</div>
+<h2 class="section-title" data-i18n="output_code.title">OUTPUT 子句示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">output_example.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlserver.dialect <span class="tok-k">import</span> <span class="tok-cls">SQLServerDialect</span>
+
+dialect = <span class="tok-cls">SQLServerDialect</span>()
+
+<span class="tok-c"># INSERT ... OUTPUT — 替代 RETURNING</span>
+sql, params = dialect.format_insert_statement(
+    table=<span class="tok-s">'users'</span>,
+    columns=[<span class="tok-s">'id'</span>, <span class="tok-s">'name'</span>],
+    values=[[<span class="tok-n">1</span>, <span class="tok-s">'Alice'</span>]],
+    output_columns=[<span class="tok-s">'id'</span>, <span class="tok-s">'name'</span>],
+)
+<span class="tok-c"># → INSERT INTO users (id, name) OUTPUT inserted.id, inserted.name VALUES (1, 'Alice')</span>
+
+<span class="tok-c"># UPDATE ... OUTPUT — 同时获取旧值和新值</span>
+sql, params = dialect.format_update_statement(
+    table=<span class="tok-s">'users'</span>,
+    set_clause={<span class="tok-s">'name'</span>: <span class="tok-s">'Bob'</span>},
+    where=<span class="tok-s">'id = 1'</span>,
+    output_columns=[<span class="tok-s">'deleted.name'</span>, <span class="tok-s">'inserted.name'</span>],
+)
+<span class="tok-c"># → UPDATE users SET name = 'Bob' OUTPUT deleted.name, inserted.name WHERE id = 1</span>
+
+<span class="tok-c"># DELETE ... OUTPUT</span>
+sql, params = dialect.format_delete_statement(
+    table=<span class="tok-s">'users'</span>,
+    where=<span class="tok-s">'id = 1'</span>,
+    output_columns=[<span class="tok-s">'deleted.id'</span>, <span class="tok-s">'deleted.name'</span>],
+)
+<span class="tok-c"># → DELETE FROM users OUTPUT deleted.id, deleted.name WHERE id = 1</span>
+
+<span class="tok-c"># MERGE ... OUTPUT $action — 区分 INSERT / UPDATE</span>
+<span class="tok-c"># OUTPUT $action, inserted.*, deleted.*</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="merge_code.label">MERGE</div>
+<h2 class="section-title" data-i18n="merge_code.title">MERGE 语句示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">merge_example.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlserver.dialect <span class="tok-k">import</span> <span class="tok-cls">SQLServerDialect</span>
+
+dialect = <span class="tok-cls">SQLServerDialect</span>()
+
+<span class="tok-c"># MERGE INTO：条件插入或更新（SQL Server UPSERT 机制）</span>
+<span class="tok-c"># SQLServerDialect.get_upsert_syntax_type() → "MERGE"</span>
+
+<span class="tok-c"># MERGE with OUTPUT $action</span>
+<span class="tok-c"># MERGE INTO users AS target</span>
+<span class="tok-c"># USING (SELECT @id AS id, @name AS name) AS source</span>
+<span class="tok-c"># ON target.id = source.id</span>
+<span class="tok-c"># WHEN MATCHED THEN UPDATE SET name = source.name</span>
+<span class="tok-c"># WHEN NOT MATCHED THEN INSERT (id, name) VALUES (source.id, source.name)</span>
+<span class="tok-c"># OUTPUT $action, inserted.*, deleted.*;</span>
+
+<span class="tok-c"># $action 输出列值：</span>
+<span class="tok-c">#   'INSERT' — 新插入行</span>
+<span class="tok-c">#   'UPDATE' — 已更新行</span>
+<span class="tok-c">#   'DELETE' — 仅 DELETE WHEN MATCHED 时</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="set_statements.label">SET</div>
+<h2 class="section-title" data-i18n="set_statements.title">SET 语句控制。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">set_statements.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlserver.mixins <span class="tok-k">import</span> <span class="tok-cls">SQLServerBackendMixin</span>
+
+<span class="tok-c"># SET NOCOUNT — 禁止返回行数消息</span>
+backend.set_nocount(on=<span class="tok-k">True</span>)   <span class="tok-c"># → SET NOCOUNT ON</span>
+
+<span class="tok-c"># IDENTITY 控制</span>
+backend.set_identity_insert(table=<span class="tok-s">'users'</span>, on=<span class="tok-k">True</span>)
+<span class="tok-c"># → SET IDENTITY_INSERT users ON</span>
+
+identity = backend.get_scope_identity()
+<span class="tok-c"># → SELECT SCOPE_IDENTITY()</span>
+
+identity = backend.get_identity_current(table=<span class="tok-s">'users'</span>)
+<span class="tok-c"># → SELECT IDENT_CURRENT('users')</span>
+
+backend.reset_identity(table=<span class="tok-s">'users'</span>, seed=<span class="tok-n">1000</span>)
+<span class="tok-c"># → DBCC CHECKIDENT ('users', RESEED, 1000)</span>
+
+<span class="tok-c"># 锁和死锁控制</span>
+backend.set_lock_timeout(timeout_ms=<span class="tok-n">5000</span>)       <span class="tok-c"># → SET LOCK_TIMEOUT 5000</span>
+backend.set_deadlock_priority(priority=<span class="tok-n">10</span>)        <span class="tok-c"># → SET DEADLOCK_PRIORITY 10</span>
+
+<span class="tok-c"># 会话设置</span>
+backend.set_ansi_nulls(on=<span class="tok-k">True</span>)              <span class="tok-c"># → SET ANSI_NULLS ON</span>
+backend.set_quoted_identifier(on=<span class="tok-k">True</span>)       <span class="tok-c"># → SET QUOTED_IDENTIFIER ON</span>
+backend.set_ansi_padding(on=<span class="tok-k">True</span>)            <span class="tok-c"># → SET ANSI_PADDING ON</span>
+backend.set_textsize(size=<span class="tok-n">2147483647</span>)        <span class="tok-c"># → SET TEXTSIZE 2147483647</span>
+backend.set_language(language=<span class="tok-s">'us_english'</span>)     <span class="tok-c"># → SET LANGUAGE us_english</span>
+backend.set_dateformat(format=<span class="tok-s">'ymd'</span>)           <span class="tok-c"># → SET DATEFORMAT ymd</span>
+
+<span class="tok-c"># 服务器属性查询</span>
+version = backend.get_product_version()    <span class="tok-c"># → SERVERPROPERTY('ProductVersion')</span>
+edition  = backend.get_edition()           <span class="tok-c"># → SERVERPROPERTY('Edition')</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="type_adapters.label">Type Adapters</div>
+<h2 class="section-title" data-i18n="type_adapters.title">SQL Server 类型适配器。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / UUID</div>
+<h3 class="feature-title">SQLServerUUIDAdapter</h3>
+<p class="feature-desc">UUID ↔ uniqueidentifier — Python uuid.UUID / str 自动转换</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / DateTime</div>
+<h3 class="feature-title">SQLServerDateTimeAdapter</h3>
+<p class="feature-desc">datetime ↔ datetime2 / datetime / smalldatetime — 高精度时间</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / DateTimeOffset</div>
+<h3 class="feature-title">SQLServerDateTimeOffsetAdapter</h3>
+<p class="feature-desc">datetime ↔ datetimeoffset — 时区感知，缺省 UTC</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / JSON</div>
+<h3 class="feature-title">SQLServerJSONAdapter</h3>
+<p class="feature-desc">dict/list ↔ nvarchar(max) / json (2016+) — 无原生 JSON 类型时用 NVARCHAR</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / XML</div>
+<h3 class="feature-title">SQLServerXMLAdapter</h3>
+<p class="feature-desc">str/bytes/dict ↔ xml — dict 自动转 XML (ElementTree)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / Decimal</div>
+<h3 class="feature-title">SQLServerDecimalAdapter</h3>
+<p class="feature-desc">Decimal/float/int ↔ decimal / numeric / money / smallmoney</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">07 / Spatial</div>
+<h3 class="feature-title">SQLServerSpatialAdapter</h3>
+<p class="feature-desc">str/dict ↔ geography / geometry — GeoJSON → WKT 自动转换</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">08 / HierarchyId</div>
+<h3 class="feature-title">SQLServerHierarchyIdAdapter</h3>
+<p class="feature-desc">list/str ↔ hierarchyid — list → /1/2/3/ 路径格式</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="functions.label">Functions</div>
+<h2 class="section-title" data-i18n="functions.title">SQL Server 专有函数。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / JSON</div>
+<h3 class="feature-title" data-i18n="functions.json">JSON (2016+)</h3>
+<p class="feature-desc">json_value / json_query / json_modify / isjson / openjson / string_split (2016+) / json_path_exists / json_object / json_array (2022+)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / String</div>
+<h3 class="feature-title" data-i18n="functions.string">字符串 (2017+)</h3>
+<p class="feature-desc">string_agg / concat_ws / trim (2017+) / iif / choose / try_cast / try_convert / try_parse (2012+)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / DateTime</div>
+<h3 class="feature-title" data-i18n="functions.datetime">日期时间 (2012+)</h3>
+<p class="feature-desc">eomonth / datefromparts / datetime2fromparts / datetimeoffsetfromparts / timefromparts / datediff_big (2016+) / sysdatetime / sysutcdatetime</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Hierarchy</div>
+<h3 class="feature-title" data-i18n="functions.hierarchy">层级</h3>
+<p class="feature-desc">hierarchyid::GetRoot() / GetDescendant() / GetLevel() / IsDescendantOf() / GetReparentedValue() / ToString() / Parse()</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="transaction.label">Transaction</div>
+<h2 class="section-title" data-i18n="transaction.title">事务控制。</h2>
+</div>
+<p class="section-intro" data-i18n="transaction.desc">SQLServerTransactionManager 支持五种隔离级别，含 SQL Server 专有 SNAPSHOT。支持 SET LOCK_TIMEOUT / DEADLOCK_PRIORITY。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">transaction_control.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.transaction <span class="tok-k">import</span> <span class="tok-cls">IsolationLevel</span>
+
+<span class="tok-c"># 标准事务（默认 READ COMMITTED）</span>
+<span class="tok-k">with</span> backend.transaction():
+    backend.execute(<span class="tok-s">"INSERT INTO users ..."</span>, ())
+
+<span class="tok-c"># 指定隔离级别</span>
+<span class="tok-k">with</span> backend.transaction(isolation_level=<span class="tok-cls">IsolationLevel</span>.SERIALIZABLE):
+    ...
+
+<span class="tok-c"># SQL Server 五种隔离级别</span>
+<span class="tok-c"># READ_UNCOMMITTED</span>
+<span class="tok-c"># READ_COMMITTED  (默认)</span>
+<span class="tok-c"># REPEATABLE_READ</span>
+<span class="tok-c"># SERIALIZABLE</span>
+<span class="tok-c"># SNAPSHOT — SQL Server 专有！</span>
+
+<span class="tok-c"># SNAPSHOT 隔离级别（行版本控制）</span>
+<span class="tok-k">with</span> backend.transaction(snapshot=<span class="tok-k">True</span>):
+    result = backend.execute(<span class="tok-s">"SELECT ..."</span>, ())
+
+<span class="tok-c"># Savepoint 支持</span>
+<span class="tok-k">with</span> backend.transaction():
+    backend.execute(<span class="tok-s">"INSERT ..."</span>, ())
+    <span class="tok-k">with</span> backend.transaction():  <span class="tok-c"># SAVE TRANSACTION</span>
+        backend.execute(<span class="tok-s">"UPDATE ..."</span>, ())
+
+<span class="tok-c"># 注意：SQL Server 中 ROLLBACK 回滚所有嵌套层</span>
+<span class="tok-c"># 嵌套事务使用 SQLServerNestedTransactionManager</span>
+
+<span class="tok-c"># 锁控制</span>
+backend.set_lock_timeout(<span class="tok-n">5000</span>)      <span class="tok-c"># SET LOCK_TIMEOUT 5000</span>
+backend.set_deadlock_priority(<span class="tok-n">10</span>)  <span class="tok-c"># SET DEADLOCK_PRIORITY 10</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="async.label">Async</div>
+<h2 class="section-title" data-i18n="async.title">异步支持。</h2>
+</div>
+<p class="section-intro" data-i18n="async.desc">AsyncSQLServerBackend 懒加载，使用 aioodbc 异步驱动。注意：继承同步 StorageBackend 基类。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">async_sqlserver.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlserver <span class="tok-k">import</span> <span class="tok-cls">AsyncSQLServerBackend</span>
+<span class="tok-c"># 需安装: pip install rhosocial-activerecord-sqlserver[async]</span>
+
+backend = <span class="tok-cls">AsyncSQLServerBackend</span>(
+    host=<span class="tok-s">'localhost'</span>,
+    port=<span class="tok-n">1433</span>,
+    database=<span class="tok-s">'app_db'</span>,
+    username=<span class="tok-s">'sa'</span>,
+    password=<span class="tok-s">'YourPassword123'</span>,
+)
+<span class="tok-k">await</span> backend.connect()
+
+<span class="tok-k">async with</span> backend.transaction():
+    result = <span class="tok-k">await</span> backend.execute(<span class="tok-s">"SELECT ..."</span>, ())
+
+<span class="tok-k">await</span> backend.disconnect()
+
+<span class="tok-c"># 懒加载：同步组件不依赖异步驱动</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlserver <span class="tok-k">import</span> <span class="tok-cls">SQLServerBackend</span>         <span class="tok-c"># ✓</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlserver <span class="tok-k">import</span> <span class="tok-cls">AsyncSQLServerBackend</span> <span class="tok-c"># ✗ 需要异步驱动</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="env_config.label">Environment</div>
+<h2 class="section-title" data-i18n="env_config.title">环境变量配置。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">env_config.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlserver.config <span class="tok-k">import</span> <span class="tok-cls">SQLServerConnectionConfig</span>
+
+<span class="tok-c"># 从环境变量创建配置（前缀 SQLSERVER_）</span>
+config = <span class="tok-cls">SQLServerConnectionConfig</span>.from_env(prefix=<span class="tok-s">"SQLSERVER_"</span>)
+
+<span class="tok-c"># 支持的环境变量：</span>
+<span class="tok-c"># SQLSERVER_HOST     — 主机地址 (默认 localhost)</span>
+<span class="tok-c"># SQLSERVER_PORT     — 端口号 (默认 1433)</span>
+<span class="tok-c"># SQLSERVER_DATABASE — 数据库名 (必填)</span>
+<span class="tok-c"># SQLSERVER_USERNAME — 用户名</span>
+<span class="tok-c"># SQLSERVER_PASSWORD — 密码</span>
+<span class="tok-c"># SQLSERVER_DRIVER   — ODBC 驱动名</span>
+<span class="tok-c"># SQLSERVER_ENCRYPT  — 加密连接 (默认 True)</span>
+<span class="tok-c"># SQLSERVER_TRUST_SERVER_CERTIFICATE — 信任服务器证书</span>
+<span class="tok-c"># SQLSERVER_POOL_SIZE — 连接池大小</span>
+<span class="tok-c"># SQLSERVER_CHARSET  — 字符集 (默认 UTF-8)</span>
+<span class="tok-c"># SQLSERVER_AUTOCOMMIT — 自动提交 (默认 True)</span>
+<span class="tok-c"># SQLSERVER_TRUSTED_CONNECTION — Windows 身份验证</span></pre></div>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div>&copy; rhosocial &middot; rhosocial-activerecord &middot; Apache 2.0</div>
+<div data-i18n="footer.hotkeys">25 themes · <span class="kbd">Ctrl</span>+<span class="kbd">key</span> theme / <span class="kbd">Alt</span>+<span class="kbd">key</span> lang</div>
+</footer>
+</main>
+<script>
+const html = document.documentElement;
+
+const THEMES = [
+  'terminal','editorial','brutalist','aurora','synthwave','sumi','blueprint','noir','riso','nordic',
+  'solarpunk','mocha','wireframe','anderson','tokyo','memphis','chalkboard','matrix','steel',
+  'frutiger','newsprint','candy','botanical','cyberpunk','parchment','glassmorphism'
+];
+const FONTS = [
+  'auto','tight','serif','geometric','heavy','allmono','reader','display-serif','neo-future','plex',
+  'playful','classic-serif','pixel','monumental','slab','condensed','expressive','deco','stencil',
+  'rubik','bricolage','gloock','crimson','dm','outfit','literata'
+];
+const LANGS = ['zh-cn','en-us'];
+const QWERTY = 'qwertyuiopasdfghjklzxcvbnm';
+const NUMERIC = '1234567890-';
+const BASE_IDX = QWERTY.length;
+
+const LANG_COLLAPSE = {
+  zh: 'zh-cn', en: 'en-us', fr: 'fr-fr', ru: 'ru-ru', es: 'es-es', ar: 'ar',
+  ja: 'ja-jp', de: 'de-de', ko: 'ko-kr', pt: 'pt-pt', nl: 'nl-nl', it: 'it-it',
+  tr: 'tr-tr', el: 'el-gr', hi: 'hi-in',
+  id: 'id-id', in: 'id-id',
+  vi: 'vi-vn', pl: 'pl-pl',
+  th: 'th-th', uk: 'uk-ua', fa: 'fa-ir', bn: 'bn-bd', ro: 'ro-ro', cs: 'cs-cz'
+};
+
+function matchLang(tag) {
+  if (!tag) return null;
+  const lower = String(tag).toLowerCase();
+  if (LANGS.indexOf(lower) !== -1) return lower;
+  const primary = lower.split('-')[0];
+  return LANG_COLLAPSE[primary] || null;
+}
+
+function detectInitialLang() {
+  try {
+    const url = new URLSearchParams(location.search).get('lang');
+    const m = matchLang(url);
+    if (m) return m;
+  } catch (_) {}
+  try {
+    const stored = localStorage.getItem('rhosocial-lang');
+    const m = matchLang(stored);
+    if (m) return m;
+  } catch (_) {}
+  const navLangs = (navigator.languages && navigator.languages.length)
+    ? navigator.languages
+    : [navigator.language || navigator.userLanguage || ''];
+  for (const tag of navLangs) {
+    const m = matchLang(tag);
+    if (m) return m;
+  }
+  return 'en-us';
+}
+
+let currentLang = detectInitialLang();
+
+function get(path, dict) {
+  return path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), dict);
+}
+
+function applyI18n() {
+  const dict = window.I18N && window.I18N[currentLang];
+  if (!dict) return;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const val = get(el.getAttribute('data-i18n'), dict);
+    if (val !== undefined) el.innerHTML = val;
+  });
+  refreshDropdownValueLabel('theme', html.getAttribute('data-theme'));
+  refreshDropdownValueLabel('font', html.getAttribute('data-font'));
+  refreshDropdownValueLabel('lang', currentLang);
+}
+
+function refreshDropdownValueLabel(kind, value) {
+  const dd = document.querySelector('[data-dropdown="' + kind + '"]');
+  if (!dd) return;
+  const item = dd.querySelector('.dropdown-item[data-value="' + value + '"]');
+  if (!item) return;
+  const valueEl = dd.querySelector('.dropdown-value');
+  if (valueEl) valueEl.textContent = item.querySelector('.dropdown-item-label')?.textContent || value;
+}
+
+function setValue(kind, value) {
+  if (kind === 'lang') {
+    currentLang = value;
+    html.setAttribute('lang', value);
+    html.setAttribute('dir', value === 'ar' || value === 'fa-ir' ? 'rtl' : 'ltr');
+    try { localStorage.setItem('rhosocial-lang', value); } catch (_) {}
+    applyI18n();
+  } else {
+    html.setAttribute('data-' + kind, value);
+  }
+  const dd = document.querySelector('[data-dropdown="' + kind + '"]');
+  if (!dd) return;
+  let activatedLabel = null;
+  dd.querySelectorAll('.dropdown-item').forEach(it => {
+    const match = it.getAttribute('data-value') === value;
+    it.classList.toggle('is-active', match);
+    if (match) activatedLabel = it.querySelector('.dropdown-item-label')?.textContent || value;
+  });
+  const valueEl = dd.querySelector('.dropdown-value');
+  if (valueEl && activatedLabel) valueEl.textContent = activatedLabel;
+}
+
+function closeAllDropdowns(except) {
+  document.querySelectorAll('.dropdown.is-open').forEach(d => {
+    if (d !== except) {
+      d.classList.remove('is-open');
+      d.querySelector('.dropdown-trigger')?.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
+
+document.querySelectorAll('[data-dropdown]').forEach(dd => {
+  const trigger = dd.querySelector('.dropdown-trigger');
+  const kind = dd.getAttribute('data-dropdown');
+  trigger.addEventListener('click', e => {
+    e.stopPropagation();
+    const willOpen = !dd.classList.contains('is-open');
+    closeAllDropdowns(dd);
+    dd.classList.toggle('is-open', willOpen);
+    trigger.setAttribute('aria-expanded', String(willOpen));
+  });
+  dd.querySelectorAll('.dropdown-item').forEach(item => {
+    item.addEventListener('click', e => {
+      e.stopPropagation();
+      const value = item.getAttribute('data-value');
+      const label = item.querySelector('.dropdown-item-label')?.textContent;
+      if (kind === 'theme' || kind === 'font' || kind === 'lang') {
+        setValue(kind, value);
+      } else {
+        dd.querySelectorAll('.dropdown-item').forEach(it => it.classList.toggle('is-active', it === item));
+        const valueEl = dd.querySelector('.dropdown-value');
+        if (valueEl) valueEl.textContent = label || value;
+      }
+      dd.classList.remove('is-open');
+      trigger.setAttribute('aria-expanded', 'false');
+    });
+  });
+});
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.dropdown')) closeAllDropdowns();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeAllDropdowns();
+});
+
+document.addEventListener('keydown', e => {
+  const isMod = e.ctrlKey || e.metaKey;
+  const key = e.key.toLowerCase();
+  const idx = QWERTY.indexOf(key);
+  if (idx === -1) return;
+  if (isMod && !e.shiftKey) {
+    e.preventDefault();
+    setValue('theme', THEMES[idx % THEMES.length]);
+  } else if (isMod && e.shiftKey) {
+    e.preventDefault();
+    setValue('font', FONTS[idx % FONTS.length]);
+  } else if (e.altKey && !isMod && !e.shiftKey) {
+    e.preventDefault();
+    setValue('lang', LANGS[idx % LANGS.length]);
+  }
+});
+
+applyI18n();
+</script>
+</body>
+</html>

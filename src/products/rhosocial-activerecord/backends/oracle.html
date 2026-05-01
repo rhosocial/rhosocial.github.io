@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="terminal" data-font="auto">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>rhosocial ActiveRecord — Oracle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/core.css">
+<link rel="stylesheet" href="../assets/themes/terminal.css">
+<link rel="stylesheet" href="../assets/themes/editorial.css">
+<link rel="stylesheet" href="../assets/themes/brutalist.css">
+<link rel="stylesheet" href="../assets/themes/aurora.css">
+<link rel="stylesheet" href="../assets/themes/synthwave.css">
+<link rel="stylesheet" href="../assets/themes/sumi.css">
+<link rel="stylesheet" href="../assets/themes/blueprint.css">
+<link rel="stylesheet" href="../assets/themes/noir.css">
+<link rel="stylesheet" href="../assets/themes/riso.css">
+<link rel="stylesheet" href="../assets/themes/nordic.css">
+<link rel="stylesheet" href="../assets/themes/solarpunk.css">
+<link rel="stylesheet" href="../assets/themes/mocha.css">
+<link rel="stylesheet" href="../assets/themes/wireframe.css">
+<link rel="stylesheet" href="../assets/themes/anderson.css">
+<link rel="stylesheet" href="../assets/themes/tokyo.css">
+<link rel="stylesheet" href="../assets/themes/memphis.css">
+<link rel="stylesheet" href="../assets/themes/chalkboard.css">
+<link rel="stylesheet" href="../assets/themes/matrix.css">
+<link rel="stylesheet" href="../assets/themes/steel.css">
+<link rel="stylesheet" href="../assets/themes/frutiger.css">
+<link rel="stylesheet" href="../assets/themes/newsprint.css">
+<link rel="stylesheet" href="../assets/themes/candy.css">
+<link rel="stylesheet" href="../assets/themes/botanical.css">
+<link rel="stylesheet" href="../assets/themes/cyberpunk.css">
+<link rel="stylesheet" href="../assets/themes/parchment.css">
+<link rel="stylesheet" href="../assets/themes/glassmorphism.css">
+<link rel="stylesheet" href="../assets/core-extensions.css">
+<link rel="stylesheet" href="../assets/fonts/tight.css">
+<link rel="stylesheet" href="../assets/fonts/serif.css">
+<link rel="stylesheet" href="../assets/fonts/geometric.css">
+<link rel="stylesheet" href="../assets/fonts/heavy.css">
+<link rel="stylesheet" href="../assets/fonts/allmono.css">
+<link rel="stylesheet" href="../assets/fonts/reader.css">
+<link rel="stylesheet" href="../assets/fonts/display-serif.css">
+<link rel="stylesheet" href="../assets/fonts/neo-future.css">
+<link rel="stylesheet" href="../assets/fonts/plex.css">
+<link rel="stylesheet" href="../assets/fonts/playful.css">
+<link rel="stylesheet" href="../assets/fonts/classic-serif.css">
+<link rel="stylesheet" href="../assets/fonts/pixel.css">
+<link rel="stylesheet" href="../assets/fonts/monumental.css">
+<link rel="stylesheet" href="../assets/fonts/slab.css">
+<link rel="stylesheet" href="../assets/fonts/condensed.css">
+<link rel="stylesheet" href="../assets/fonts/expressive.css">
+<link rel="stylesheet" href="../assets/fonts/deco.css">
+<link rel="stylesheet" href="../assets/fonts/stencil.css">
+<link rel="stylesheet" href="../assets/fonts/rubik.css">
+<link rel="stylesheet" href="../assets/fonts/bricolage.css">
+<link rel="stylesheet" href="../assets/fonts/gloock.css">
+<link rel="stylesheet" href="../assets/fonts/crimson.css">
+<link rel="stylesheet" href="../assets/fonts/dm.css">
+<link rel="stylesheet" href="../assets/fonts/outfit.css">
+<link rel="stylesheet" href="../assets/fonts/literata.css">
+<script src="oracle/zh-CN.js"></script>
+<script src="oracle/en-US.js"></script>
+</head>
+<body>
+<header class="control-bar">
+<div class="control-brand">
+<span class="brand-mark size-md">&rho;<sub>AR</sub></span>
+<span>rhosocial ActiveRecord</span>
+<span class="dim"><a href="../index.html" data-i18n="nav.index">Index</a> / <a href="./index.html" data-i18n="nav.backends">Backends</a> / <a href="../activerecord/index.html" data-i18n="nav.activerecord">ActiveRecord</a></span>
+</div>
+<div class="dropdown" data-dropdown="theme">
+<button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+<span class="dropdown-label" data-i18n="control.theme_label">Theme</span>
+<span class="dropdown-value">Terminal</span>
+<svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<div class="dropdown-menu" role="listbox">
+<button class="dropdown-item is-active" data-value="terminal"><span class="dropdown-item-label">Terminal</span><span class="dropdown-item-kbd">&#8963;Q</span></button>
+<button class="dropdown-item" data-value="editorial"><span class="dropdown-item-label">Editorial</span><span class="dropdown-item-kbd">&#8963;W</span></button>
+<button class="dropdown-item" data-value="brutalist"><span class="dropdown-item-label">Brutalist</span><span class="dropdown-item-kbd">&#8963;E</span></button>
+<button class="dropdown-item" data-value="aurora"><span class="dropdown-item-label">Aurora</span><span class="dropdown-item-kbd">&#8963;R</span></button>
+<button class="dropdown-item" data-value="synthwave"><span class="dropdown-item-label">Synthwave</span><span class="dropdown-item-kbd">&#8963;T</span></button>
+<button class="dropdown-item" data-value="sumi"><span class="dropdown-item-label">Sumi 墨</span><span class="dropdown-item-kbd">&#8963;Y</span></button>
+<button class="dropdown-item" data-value="blueprint"><span class="dropdown-item-label">Blueprint</span><span class="dropdown-item-kbd">&#8963;U</span></button>
+<button class="dropdown-item" data-value="noir"><span class="dropdown-item-label">Noir</span><span class="dropdown-item-kbd">&#8963;I</span></button>
+<button class="dropdown-item" data-value="riso"><span class="dropdown-item-label">Riso</span><span class="dropdown-item-kbd">&#8963;O</span></button>
+<button class="dropdown-item" data-value="nordic"><span class="dropdown-item-label">Nordic</span><span class="dropdown-item-kbd">&#8963;P</span></button>
+<button class="dropdown-item" data-value="solarpunk"><span class="dropdown-item-label">Solarpunk</span><span class="dropdown-item-kbd">&#8963;A</span></button>
+<button class="dropdown-item" data-value="mocha"><span class="dropdown-item-label">Mocha</span><span class="dropdown-item-kbd">&#8963;S</span></button>
+<button class="dropdown-item" data-value="wireframe"><span class="dropdown-item-label">Wireframe</span><span class="dropdown-item-kbd">&#8963;D</span></button>
+<button class="dropdown-item" data-value="anderson"><span class="dropdown-item-label">Anderson</span><span class="dropdown-item-kbd">&#8963;F</span></button>
+<button class="dropdown-item" data-value="tokyo"><span class="dropdown-item-label">Tokyo Night</span><span class="dropdown-item-kbd">&#8963;G</span></button>
+<button class="dropdown-item" data-value="memphis"><span class="dropdown-item-label">Memphis</span><span class="dropdown-item-kbd">&#8963;H</span></button>
+<button class="dropdown-item" data-value="chalkboard"><span class="dropdown-item-label">Chalkboard</span><span class="dropdown-item-kbd">&#8963;J</span></button>
+<button class="dropdown-item" data-value="matrix"><span class="dropdown-item-label">Matrix</span><span class="dropdown-item-kbd">&#8963;K</span></button>
+<button class="dropdown-item" data-value="steel"><span class="dropdown-item-label">Steel</span><span class="dropdown-item-kbd">&#8963;L</span></button>
+<button class="dropdown-item" data-value="frutiger"><span class="dropdown-item-label">Frutiger</span><span class="dropdown-item-kbd">&#8963;Z</span></button>
+<button class="dropdown-item" data-value="newsprint"><span class="dropdown-item-label">Newsprint</span><span class="dropdown-item-kbd">&#8963;X</span></button>
+<button class="dropdown-item" data-value="candy"><span class="dropdown-item-label">Candy</span><span class="dropdown-item-kbd">&#8963;C</span></button>
+<button class="dropdown-item" data-value="botanical"><span class="dropdown-item-label">Botanical</span><span class="dropdown-item-kbd">&#8963;V</span></button>
+<button class="dropdown-item" data-value="cyberpunk"><span class="dropdown-item-label">Cyberpunk</span><span class="dropdown-item-kbd">&#8963;1</span></button>
+<button class="dropdown-item" data-value="parchment"><span class="dropdown-item-label">Parchment</span><span class="dropdown-item-kbd">&#8963;2</span></button>
+<button class="dropdown-item" data-value="glassmorphism"><span class="dropdown-item-label">Glassmorphism</span><span class="dropdown-item-kbd">&#8963;3</span></button>
+</div>
+</div>
+<div class="dropdown" data-dropdown="font">
+<button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+<span class="dropdown-label" data-i18n="control.font_label">Font</span>
+<span class="dropdown-value" data-i18n-value="auto">Auto</span>
+<svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<div class="dropdown-menu" role="listbox">
+<button class="dropdown-item is-active" data-value="auto"><span class="dropdown-item-label" data-i18n="control.font_auto">Auto (theme default)</span><span class="dropdown-item-kbd">&#8679;Q</span></button>
+<button class="dropdown-item" data-value="tight"><span class="dropdown-item-label">Tight Sans</span><span class="dropdown-item-kbd">&#8679;W</span></button>
+<button class="dropdown-item" data-value="serif"><span class="dropdown-item-label">Editorial Serif</span><span class="dropdown-item-kbd">&#8679;E</span></button>
+<button class="dropdown-item" data-value="geometric"><span class="dropdown-item-label">Geometric</span><span class="dropdown-item-kbd">&#8679;R</span></button>
+<button class="dropdown-item" data-value="heavy"><span class="dropdown-item-label">Heavy Display</span><span class="dropdown-item-kbd">&#8679;T</span></button>
+<button class="dropdown-item" data-value="allmono"><span class="dropdown-item-label">All Mono</span><span class="dropdown-item-kbd">&#8679;Y</span></button>
+<button class="dropdown-item" data-value="reader"><span class="dropdown-item-label">Reader</span><span class="dropdown-item-kbd">&#8679;U</span></button>
+<button class="dropdown-item" data-value="display-serif"><span class="dropdown-item-label">Display Serif</span><span class="dropdown-item-kbd">&#8679;I</span></button>
+<button class="dropdown-item" data-value="neo-future"><span class="dropdown-item-label">Neo Future</span><span class="dropdown-item-kbd">&#8679;O</span></button>
+<button class="dropdown-item" data-value="plex"><span class="dropdown-item-label">IBM Plex</span><span class="dropdown-item-kbd">&#8679;P</span></button>
+<button class="dropdown-item" data-value="playful"><span class="dropdown-item-label">Playful (Caveat)</span><span class="dropdown-item-kbd">&#8679;A</span></button>
+<button class="dropdown-item" data-value="classic-serif"><span class="dropdown-item-label">Classic Serif (Garamond)</span><span class="dropdown-item-kbd">&#8679;S</span></button>
+</div>
+</div>
+<div class="dropdown" data-dropdown="lang">
+<button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+<span class="dropdown-label" data-i18n="control.lang_label">Language</span>
+<span class="dropdown-value"></span>
+<svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+</button>
+<div class="dropdown-menu" role="listbox">
+<button class="dropdown-item is-active" data-value="zh-cn"><span class="dropdown-item-label">简体中文</span><span class="dropdown-item-kbd">&#8997;Q</span></button>
+<button class="dropdown-item" data-value="en-us"><span class="dropdown-item-label">English</span><span class="dropdown-item-kbd">&#8997;W</span></button>
+</div>
+</div>
+</header>
+<main class="page">
+<section class="hero section">
+<div class="container hero-inner">
+<div class="hero-eyebrow rise"><a href="./index.html">&larr; <span data-i18n="hero.back">Backends</span></div>
+<h1 class="hero-title rise">Oracle</h1>
+<p class="hero-sub rise" data-i18n="hero.sub">企业级 RDBMS。层次查询 / PIVOT / MERGE / FETCH FIRST / 查询提示 / FOR UPDATE 扩展。</p>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="features.label">Features</div>
+<h2 class="section-title" data-i18n="features.title">Oracle 特性。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Hierarchical</div>
+<h3 class="feature-title" data-i18n="features.hierarchical.title">层次查询</h3>
+<p class="feature-desc" data-i18n="features.hierarchical.desc">CONNECT BY / START WITH / PRIOR / LEVEL / CONNECT_BY_ROOT / SYS_CONNECT_BY_PATH / NOCYCLE / SIBLINGS 排序。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / PIVOT</div>
+<h3 class="feature-title" data-i18n="features.pivot.title">PIVOT / UNPIVOT</h3>
+<p class="feature-desc" data-i18n="features.pivot.desc">行转列 / 列转行。PIVOT ... IN / UNPIVOT ... INCLUDE|EXCLUDE NULLS（11g+）。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / MERGE</div>
+<h3 class="feature-title" data-i18n="features.merge.title">MERGE</h3>
+<p class="feature-desc" data-i18n="features.merge.desc">MERGE INTO ... USING ... ON ... WHEN MATCHED / NOT MATCHED。Oracle 原生 MERGE 语法。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Hints</div>
+<h3 class="feature-title" data-i18n="features.hints.title">查询提示</h3>
+<p class="feature-desc" data-i18n="features.hints.desc">FULL / INDEX / PARALLEL / USE_NL / USE_HASH / DRIVING_SITE / APPEND 等 Oracle 优化器提示。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / Pagination</div>
+<h3 class="feature-title" data-i18n="features.pagination.title">FETCH FIRST</h3>
+<p class="feature-desc" data-i18n="features.pagination.desc">OFFSET ... ROWS FETCH NEXT ... ROWS ONLY（12c+）。旧版本使用 ROWNUM 分页。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / FOR UPDATE</div>
+<h3 class="feature-title" data-i18n="features.for_update.title">FOR UPDATE 扩展</h3>
+<p class="feature-desc" data-i18n="features.for_update.desc">FOR UPDATE OF / NOWAIT / WAIT n / SKIP LOCKED。Oracle 独有的行锁等待控制。</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="connection.label">Connection</div>
+<h2 class="section-title" data-i18n="connection.title">连接配置。</h2>
+</div>
+<p class="section-intro" data-i18n="connection.desc">OracleConnectionConfig 继承 ConnectionConfig，混入 Pool / SSL / Timezone / Version / Logging 五组配置。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">connection_config.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle <span class="tok-k">import</span> <span class="tok-cls">OracleBackend</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle.config <span class="tok-k">import</span> <span class="tok-cls">OracleConnectionConfig</span>
+
+<span class="tok-c"># 标准连接（oracledb 驱动）</span>
+config = <span class="tok-cls">OracleConnectionConfig</span>(
+    host=<span class="tok-s">'localhost'</span>,
+    port=<span class="tok-n">1521</span>,
+    user=<span class="tok-s">'app_user'</span>,
+    password=<span class="tok-s">'secret'</span>,
+    service=<span class="tok-s">'ORCL'</span>,
+)
+backend = <span class="tok-cls">OracleBackend</span>(connection_config=config)
+backend.connect()
+
+<span class="tok-c"># 快捷方式：直接传连接参数</span>
+backend = <span class="tok-cls">OracleBackend</span>(
+    host=<span class="tok-s">'localhost'</span>,
+    port=<span class="tok-n">1521</span>,
+    user=<span class="tok-s">'app_user'</span>,
+    password=<span class="tok-s">'secret'</span>,
+    service=<span class="tok-s">'ORCL'</span>,
+)
+
+<span class="tok-c"># Oracle 专有字段</span>
+config = <span class="tok-cls">OracleConnectionConfig</span>(
+    ...,
+    mode=<span class="tok-s">'sysdba'</span>,
+    thread_mode=<span class="tok-k">True</span>,
+    events=<span class="tok-k">False</span>,
+    ssl_server_dn_match=<span class="tok-k">True</span>,
+    config_dir=<span class="tok-s">'/opt/oracle/network/admin'</span>,
+)
+
+<span class="tok-c"># 从环境变量创建配置（前缀 ORACLE_）</span>
+config = <span class="tok-cls">OracleConnectionConfig</span>.from_env(prefix=<span class="tok-s">"ORACLE_"</span>)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="config_mixins.label">Config Mixins</div>
+<h2 class="section-title" data-i18n="config_mixins.title">配置混入。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Pool</div>
+<h3 class="feature-title" data-i18n="config_mixins.pool">ConnectionPoolMixin</h3>
+<p class="feature-desc">pool_size / pool_timeout / pool_increment / pool_getmode — 连接池管理</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / SSL</div>
+<h3 class="feature-title" data-i18n="config_mixins.ssl">SSLMixin</h3>
+<p class="feature-desc">ssl_ca / ssl_cert / ssl_key / ssl_server_dn_match / wallet_path — mTLS / Oracle Wallet</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Timezone</div>
+<h3 class="feature-title" data-i18n="config_mixins.timezone">TimezoneMixin</h3>
+<p class="feature-desc">timezone — 会话时区 (ALTER SESSION SET TIME_ZONE)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Version</div>
+<h3 class="feature-title" data-i18n="config_mixins.version">VersionMixin</h3>
+<p class="feature-desc">version — 数据库版本追踪，影响方言功能开关</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / Logging</div>
+<h3 class="feature-title" data-i18n="config_mixins.logging">LoggingMixin</h3>
+<p class="feature-desc">log_queries / log_level — 查询日志控制</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="dialect.label">Dialect</div>
+<h2 class="section-title" data-i18n="dialect.title">OracleDialect 版本感知。</h2>
+</div>
+<p class="section-intro" data-i18n="dialect.desc">OracleDialect 依赖 _ORACLE_VERSION_BOUNDARIES 字典，版本阈值驱动功能开关：10g / 11g / 12c / 12.2 / 18c / 21c / 23ai。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">dialect_version.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle.dialect <span class="tok-k">import</span> <span class="tok-cls">OracleDialect</span>
+
+<span class="tok-c"># 默认版本 23.0.0（启用全部功能）</span>
+dialect = <span class="tok-cls">OracleDialect</span>()
+
+<span class="tok-c"># 指定旧版本 → 功能降级</span>
+old_dialect = <span class="tok-cls">OracleDialect</span>(version=(<span class="tok-n">11</span>, <span class="tok-n">0</span>, <span class="tok-n">0</span>))
+old_dialect.supports_fetch_first_pagination() <span class="tok-c"># False (需 12c+)</span>
+old_dialect.supports_pivot()                      <span class="tok-c"># True (11g+)</span>
+old_dialect.supports_json_type()                   <span class="tok-c"># False (需 21c+)</span>
+
+<span class="tok-c"># 版本阈值表 (_ORACLE_VERSION_BOUNDARIES)</span>
+<span class="tok-c"># 10g — MERGE / RETURNING / Flashback Query</span>
+<span class="tok-c"># 11g — PIVOT / UNPIVOT / LISTAGG / READ ONLY</span>
+<span class="tok-c"># 12c — FETCH FIRST / IDENTITY 列 / LATERAL</span>
+<span class="tok-c"># 12.2 — JSON 函数</span>
+<span class="tok-c"># 18c — POLYMORPHIC TABLE FUNCTION</span>
+<span class="tok-c"># 21c — 原生 JSON / BITMAP INDEX</span>
+<span class="tok-c"># 23ai — BOOLEAN 类型 / VECTOR 类型 / JSON DUALITY</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="dialect_features.label">Feature Matrix</div>
+<h2 class="section-title" data-i18n="dialect_features.title">方言功能矩阵。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Supported</div>
+<h3 class="feature-title" data-i18n="dialect_features.supported">支持</h3>
+<p class="feature-desc">CTE / Recursive CTE / Window Functions / MERGE (10g+) / RETURNING (OUTPUT) / PIVOT/UNPIVOT (11g+) / FETCH FIRST (12c+) / LATERAL (12c+) / JSON Functions (12.2+) / FOR UPDATE variants / HIERARCHICAL / Hints / ROLLUP / UPSERT / SAVEPOINT / Flashback Query / IDENTITY (12c+)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Not Supported</div>
+<h3 class="feature-title" data-i18n="dialect_features.unsupported">不支持</h3>
+<p class="feature-desc">ARRAY Constructor / FILTER Clause / QUALIFY / GROUPING SETS / Materialized CTE / Graph MATCH / Ordered-Set Aggregation / INSERT ON CONFLICT / UPSERT via ON CONFLICT</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Oracle-specific</div>
+<h3 class="feature-title" data-i18n="dialect_features.oracle_specific">Oracle 专有</h3>
+<p class="feature-desc">CONNECT BY / PIVOT / UNPIVOT / Query Hints / FOR UPDATE NOWAIT/WAIT/SKIP LOCKED / Flashback Query / BITMAP INDEX / IDENTITY 列 / ROWNUM / SEQUENCE (CURRVAL/NEXTVAL) / JSON Duality (23ai) / BOOLEAN (23ai) / VECTOR (23ai)</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="protocols.label">Protocols</div>
+<h2 class="section-title" data-i18n="protocols.title">Oracle 专有协议。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Hierarchical</div>
+<h3 class="feature-title" data-i18n="protocols.hierarchical">OracleHierarchicalQuerySupport</h3>
+<p class="feature-desc">format_connect_by() / format_start_with() / format_connect_by_root() / format_sys_connect_by_path() / format_order_siblings_by()</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / PIVOT</div>
+<h3 class="feature-title" data-i18n="protocols.pivot">OraclePivotSupport</h3>
+<p class="feature-desc">format_pivot_clause() / format_unpivot_clause() / supports_pivot() / supports_unpivot()</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Hints</div>
+<h3 class="feature-title" data-i18n="protocols.hint">OracleQueryHintSupport</h3>
+<p class="feature-desc">format_query_hint() / supports_query_hints() — FULL / INDEX / PARALLEL / USE_NL / USE_HASH / DRIVING_SITE / APPEND</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Flashback</div>
+<h3 class="feature-title" data-i18n="protocols.flashback">OracleFlashbackSupport</h3>
+<p class="feature-desc">format_flashback_query_as_of() / format_flashback_query_between() / format_flashback_query_to_scn() — 历史数据查询</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / FOR UPDATE</div>
+<h3 class="feature-title" data-i18n="protocols.for_update">OracleForUpdateSupport</h3>
+<p class="feature-desc">format_for_update_clause() — 支持 OF / NOWAIT / WAIT n / SKIP LOCKED 扩展</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="hierarchical_code.label">Hierarchical</div>
+<h2 class="section-title" data-i18n="hierarchical_code.title">层次查询示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">hierarchical_query.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle.dialect <span class="tok-k">import</span> <span class="tok-cls">OracleDialect</span>
+
+dialect = <span class="tok-cls">OracleDialect</span>()
+
+<span class="tok-c"># 员工层级结构查询</span>
+sql = dialect.format_connect_by(
+    table=<span class="tok-s">'employees'</span>,
+    connect_condition=<span class="tok-s">'PRIOR employee_id = manager_id'</span>,
+    start_with=<span class="tok-s">'manager_id IS NULL'</span>,
+    order_siblings_by=<span class="tok-s">'last_name'</span>,
+)
+<span class="tok-c"># → SELECT ... FROM employees</span>
+<span class="tok-c">#   START WITH manager_id IS NULL</span>
+<span class="tok-c">#   CONNECT BY PRIOR employee_id = manager_id</span>
+<span class="tok-c">#   ORDER SIBLINGS BY last_name</span>
+
+<span class="tok-c"># 层次函数</span>
+sql = dialect.format_connect_by_root(column=<span class="tok-s">'last_name'</span>)
+<span class="tok-c"># → CONNECT_BY_ROOT last_name</span>
+
+sql = dialect.format_sys_connect_by_path(column=<span class="tok-s">'last_name'</span>, separator=<span class="tok-s">'/'</span>)
+<span class="tok-c"># → SYS_CONNECT_BY_PATH(last_name, '/')</span>
+
+<span class="tok-c"># NOCYCLE 防止循环</span>
+<span class="tok-c"># CONNECT BY NOCYCLE PRIOR employee_id = manager_id</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="pivot_code.label">PIVOT</div>
+<h2 class="section-title" data-i18n="pivot_code.title">PIVOT / UNPIVOT 示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">pivot_example.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle.dialect <span class="tok-k">import</span> <span class="tok-cls">OracleDialect</span>
+
+dialect = <span class="tok-cls">OracleDialect</span>()
+
+<span class="tok-c"># PIVOT：行转列</span>
+sql, params = dialect.format_pivot_clause(
+    aggregate=<span class="tok-s">'SUM'</span>,
+    pivot_column=<span class="tok-s">'quarter'</span>,
+    value_column=<span class="tok-s">'revenue'</span>,
+    pivot_values=[<span class="tok-s">'Q1'</span>, <span class="tok-s">'Q2'</span>, <span class="tok-s">'Q3'</span>, <span class="tok-s">'Q4'</span>],
+)
+<span class="tok-c"># → PIVOT (SUM(revenue) FOR quarter IN ('Q1', 'Q2', 'Q3', 'Q4'))</span>
+
+<span class="tok-c"># UNPIVOT：列转行</span>
+sql, params = dialect.format_unpivot_clause(
+    value_column=<span class="tok-s">'revenue'</span>,
+    pivot_column=<span class="tok-s">'quarter'</span>,
+    unpivot_columns=[<span class="tok-s">'Q1'</span>, <span class="tok-s">'Q2'</span>, <span class="tok-s">'Q3'</span>, <span class="tok-s">'Q4'</span>],
+    include_nulls=<span class="tok-k">False</span>,
+)
+<span class="tok-c"># → UNPIVOT EXCLUDE NULLS (revenue FOR quarter IN (Q1, Q2, Q3, Q4))</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="merge_code.label">MERGE</div>
+<h2 class="section-title" data-i18n="merge_code.title">MERGE 语句示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">merge_example.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle.dialect <span class="tok-k">import</span> <span class="tok-cls">OracleDialect</span>
+
+dialect = <span class="tok-cls">OracleDialect</span>()
+
+<span class="tok-c"># MERGE INTO：条件插入或更新</span>
+sql, params = dialect.format_merge_statement(
+    target=<span class="tok-s">'employees'</span>,
+    source=<span class="tok-s">'(SELECT :emp_id AS employee_id, :name AS name FROM DUAL)'</span>,
+    on_condition=<span class="tok-s">'employees.employee_id = source.employee_id'</span>,
+    when_matched={<span class="tok-s">'update'</span>: {<span class="tok-s">'name'</span>: <span class="tok-s">'source.name'</span>}},
+    when_not_matched={<span class="tok-s">'insert'</span>: {<span class="tok-s">'employee_id'</span>: <span class="tok-s">'source.employee_id'</span>, <span class="tok-s">'name'</span>: <span class="tok-s">'source.name'</span>}},
+)
+<span class="tok-c"># → MERGE INTO employees</span>
+<span class="tok-c">#   USING (SELECT :emp_id AS employee_id, :name AS name FROM DUAL) source</span>
+<span class="tok-c">#   ON (employees.employee_id = source.employee_id)</span>
+<span class="tok-c">#   WHEN MATCHED THEN UPDATE SET name = source.name</span>
+<span class="tok-c">#   WHEN NOT MATCHED THEN INSERT (employee_id, name) VALUES (source.employee_id, source.name)</span>
+
+<span class="tok-c"># UPSERT 通过 MERGE 实现</span>
+<span class="tok-c"># OracleDialect.get_upsert_syntax_type() → "MERGE"</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="hint_code.label">Hints</div>
+<h2 class="section-title" data-i18n="hint_code.title">查询提示示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">hint_example.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle.dialect <span class="tok-k">import</span> <span class="tok-cls">OracleDialect</span>
+
+dialect = <span class="tok-cls">OracleDialect</span>()
+
+<span class="tok-c"># 单提示</span>
+hint = dialect.format_query_hint(hints=[<span class="tok-s">'FULL'</span>], table=<span class="tok-s">'employees'</span>)
+<span class="tok-c"># → /*+ FULL(employees) */</span>
+
+<span class="tok-c"># 多提示组合</span>
+hint = dialect.format_query_hint(hints=[<span class="tok-s">'PARALLEL'</span>, <span class="tok-s">'USE_HASH'</span>], table=<span class="tok-s">'orders'</span>, degree=<span class="tok-n">4</span>)
+<span class="tok-c"># → /*+ PARALLEL(orders 4) USE_HASH(orders) */</span>
+
+<span class="tok-c"># 常用提示类型</span>
+<span class="tok-c"># FULL(table)         — 全表扫描</span>
+<span class="tok-c"># INDEX(table idx)    — 索引扫描</span>
+<span class="tok-c"># PARALLEL(table n)   — 并行执行</span>
+<span class="tok-c"># USE_NL(table)       — 嵌套循环连接</span>
+<span class="tok-c"># USE_HASH(table)     — 哈希连接</span>
+<span class="tok-c"># DRIVING_SITE(table) — 分布式查询远程执行</span>
+<span class="tok-c"># APPEND              — 直接路径插入</span>
+<span class="tok-c"># FIRST_ROWS(n)       — 优化前 n 行响应</span>
+<span class="tok-c"># ALL_ROWS            — 优化全量吞吐</span>
+
+<span class="tok-c"># Flashback Query：历史时点查询</span>
+sql = dialect.format_flashback_query_as_of(
+    table=<span class="tok-s">'orders'</span>,
+    timestamp=<span class="tok-s">'2024-01-01 00:00:00'</span>,
+)
+<span class="tok-c"># → SELECT * FROM orders AS OF TIMESTAMP('2024-01-01 00:00:00')</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="type_adapters.label">Type Adapters</div>
+<h2 class="section-title" data-i18n="type_adapters.title">Oracle 类型适配器。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / LOB</div>
+<h3 class="feature-title">OracleLOBAdapter</h3>
+<p class="feature-desc">CLOB / BLOB / NCLOB — 大对象流式读写，自动分片处理</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / NUMBER</div>
+<h3 class="feature-title">OracleNumberAdapter</h3>
+<p class="feature-desc">NUMBER(p,s) / FLOAT / BINARY_DOUBLE / BINARY_FLOAT — 高精度数值</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / DateTime</div>
+<h3 class="feature-title">OracleDateTimeAdapter</h3>
+<p class="feature-desc">DATE / TIMESTAMP / TIMESTAMP WITH TIME ZONE — 时区感知归一化</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Interval</div>
+<h3 class="feature-title">OracleIntervalAdapter</h3>
+<p class="feature-desc">INTERVAL YEAR TO MONTH / INTERVAL DAY TO SECOND — 时间间隔</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / RAW</div>
+<h3 class="feature-title">OracleRAWAdapter</h3>
+<p class="feature-desc">RAW / LONG RAW — 二进制数据，bytes ↔ hex 编码</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / JSON</div>
+<h3 class="feature-title">OracleJSONAdapter</h3>
+<p class="feature-desc">JSON (21c+) / CLOB (12.2+) — dict/list 自动序列化，低版本存为 CLOB</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="functions.label">Functions</div>
+<h2 class="section-title" data-i18n="functions.title">Oracle 专有函数工厂。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / JSON</div>
+<h3 class="feature-title" data-i18n="functions.json">JSON</h3>
+<p class="feature-desc">json_value / json_query / json_table / json_object / json_array / json_transform / json_serialize / json_dataguide (12.2+)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Hierarchical</div>
+<h3 class="feature-title" data-i18n="functions.hierarchical">层次</h3>
+<p class="feature-desc">connect_by_root / sys_connect_by_path / level / prior — 树形结构遍历</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Analytics</div>
+<h3 class="feature-title" data-i18n="functions.analytics">分析</h3>
+<p class="feature-desc">listagg / rank / dense_rank / row_number / lead / lag / first_value / last_value / nth_value / ratio_to_report</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / DateTime</div>
+<h3 class="feature-title" data-i18n="functions.datetime">日期时间</h3>
+<p class="feature-desc">sysdate / systimestamp / current_date / current_timestamp / extract / numtodsinterval / numtoyminterval / to_dsinterval / to_yminterval</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="transaction.label">Transaction</div>
+<h2 class="section-title" data-i18n="transaction.title">事务控制。</h2>
+</div>
+<p class="section-intro" data-i18n="transaction.desc">OracleTransactionManager 支持四种隔离级别，默认 READ_COMMITTED。支持 SET TRANSACTION / SAVEPOINT / 只读事务。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">transaction_control.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.transaction <span class="tok-k">import</span> <span class="tok-cls">IsolationLevel</span>
+
+<span class="tok-c"># 标准事务（默认 READ COMMITTED）</span>
+<span class="tok-k">with</span> backend.transaction():
+    backend.execute(<span class="tok-s">"INSERT INTO employees ..."</span>, ())
+
+<span class="tok-c"># 指定隔离级别</span>
+<span class="tok-k">with</span> backend.transaction(isolation_level=<span class="tok-cls">IsolationLevel</span>.SERIALIZABLE):
+    ...
+
+<span class="tok-c"># Oracle 四种隔离级别</span>
+<span class="tok-c"># READ_UNCOMMITTED (实际等同于 READ_COMMITTED)</span>
+<span class="tok-c"># READ_COMMITTED  (默认)</span>
+<span class="tok-c"># REPEATABLE_READ (实际等同于 SERIALIZABLE)</span>
+<span class="tok-c"># SERIALIZABLE</span>
+
+<span class="tok-c"># 只读事务</span>
+<span class="tok-k">with</span> backend.transaction(read_only=<span class="tok-k">True</span>):
+    result = backend.execute(<span class="tok-s">"SELECT ..."</span>, ())
+
+<span class="tok-c"># Savepoint 支持</span>
+<span class="tok-k">with</span> backend.transaction():
+    backend.execute(<span class="tok-s">"INSERT ..."</span>, ())
+    <span class="tok-k">with</span> backend.transaction():  <span class="tok-c"># SAVEPOINT</span>
+        backend.execute(<span class="tok-s">"UPDATE ..."</span>, ())</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="async.label">Async</div>
+<h2 class="section-title" data-i18n="async.title">异步支持。</h2>
+</div>
+<p class="section-intro" data-i18n="async.desc">AsyncOracleBackend 懒加载，使用 oracledb 异步驱动。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">async_oracle.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle <span class="tok-k">import</span> <span class="tok-cls">AsyncOracleBackend</span>
+<span class="tok-c"># 需安装: pip install rhosocial-activerecord-oracle[async]</span>
+
+backend = <span class="tok-cls">AsyncOracleBackend</span>(
+    host=<span class="tok-s">'localhost'</span>,
+    port=<span class="tok-n">1521</span>,
+    user=<span class="tok-s">'app_user'</span>,
+    password=<span class="tok-s">'secret'</span>,
+    service=<span class="tok-s">'ORCL'</span>,
+)
+<span class="tok-k">await</span> backend.connect()
+
+<span class="tok-k">async with</span> backend.transaction():
+    result = <span class="tok-k">await</span> backend.execute(<span class="tok-s">"SELECT ..."</span>, ())
+
+<span class="tok-k">await</span> backend.disconnect()
+
+<span class="tok-c"># 懒加载：同步组件不依赖异步驱动</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle <span class="tok-k">import</span> <span class="tok-cls">OracleBackend</span>       <span class="tok-c"># ✓</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle <span class="tok-k">import</span> <span class="tok-cls">AsyncOracleBackend</span> <span class="tok-c"># ✗ 需要异步驱动</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="env_config.label">Environment</div>
+<h2 class="section-title" data-i18n="env_config.title">环境变量配置。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">env_config.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle.config <span class="tok-k">import</span> <span class="tok-cls">OracleConnectionConfig</span>
+
+<span class="tok-c"># 从环境变量创建配置（前缀 ORACLE_）</span>
+config = <span class="tok-cls">OracleConnectionConfig</span>.from_env(prefix=<span class="tok-s">"ORACLE_"</span>)
+
+<span class="tok-c"># 支持的环境变量：</span>
+<span class="tok-c"># ORACLE_HOST     — 主机地址</span>
+<span class="tok-c"># ORACLE_PORT     — 端口号 (默认 1521)</span>
+<span class="tok-c"># ORACLE_USER     — 用户名</span>
+<span class="tok-c"># ORACLE_PASSWORD — 密码</span>
+<span class="tok-c"># ORACLE_SERVICE  — 服务名 (默认 ORCL)</span>
+<span class="tok-c"># ORACLE_POOL_SIZE — 连接池大小</span>
+<span class="tok-c"># ORACLE_TIMEZONE  — 会话时区</span>
+<span class="tok-c"># ORACLE_SSL_CA / SSL_CERT / SSL_KEY — SSL 配置</span>
+<span class="tok-c"># ORACLE_WALLET_PATH — Oracle Wallet 路径</span></pre></div>
+</div>
+</div>
+</section>
+<footer class="footer">
+<div>&copy; rhosocial &middot; rhosocial-activerecord &middot; Apache 2.0</div>
+<div data-i18n="footer.hotkeys">25 themes · <span class="kbd">Ctrl</span>+<span class="kbd">key</span> theme / <span class="kbd">Alt</span>+<span class="kbd">key</span> lang</div>
+</footer>
+</main>
+<script>
+const html = document.documentElement;
+
+const THEMES = [
+  'terminal','editorial','brutalist','aurora','synthwave','sumi','blueprint','noir','riso','nordic',
+  'solarpunk','mocha','wireframe','anderson','tokyo','memphis','chalkboard','matrix','steel',
+  'frutiger','newsprint','candy','botanical','cyberpunk','parchment','glassmorphism'
+];
+const FONTS = [
+  'auto','tight','serif','geometric','heavy','allmono','reader','display-serif','neo-future','plex',
+  'playful','classic-serif','pixel','monumental','slab','condensed','expressive','deco','stencil',
+  'rubik','bricolage','gloock','crimson','dm','outfit','literata'
+];
+const LANGS = ['zh-cn','en-us'];
+const QWERTY = 'qwertyuiopasdfghjklzxcvbnm';
+const NUMERIC = '1234567890-';
+const BASE_IDX = QWERTY.length;
+
+const LANG_COLLAPSE = {
+  zh: 'zh-cn', en: 'en-us', fr: 'fr-fr', ru: 'ru-ru', es: 'es-es', ar: 'ar',
+  ja: 'ja-jp', de: 'de-de', ko: 'ko-kr', pt: 'pt-pt', nl: 'nl-nl', it: 'it-it',
+  tr: 'tr-tr', el: 'el-gr', hi: 'hi-in',
+  id: 'id-id', in: 'id-id',
+  vi: 'vi-vn', pl: 'pl-pl',
+  th: 'th-th', uk: 'uk-ua', fa: 'fa-ir', bn: 'bn-bd', ro: 'ro-ro', cs: 'cs-cz'
+};
+
+function matchLang(tag) {
+  if (!tag) return null;
+  const lower = String(tag).toLowerCase();
+  if (LANGS.indexOf(lower) !== -1) return lower;
+  const primary = lower.split('-')[0];
+  return LANG_COLLAPSE[primary] || null;
+}
+
+function detectInitialLang() {
+  try {
+    const url = new URLSearchParams(location.search).get('lang');
+    const m = matchLang(url);
+    if (m) return m;
+  } catch (_) {}
+  try {
+    const stored = localStorage.getItem('rhosocial-lang');
+    const m = matchLang(stored);
+    if (m) return m;
+  } catch (_) {}
+  const navLangs = (navigator.languages && navigator.languages.length)
+    ? navigator.languages
+    : [navigator.language || navigator.userLanguage || ''];
+  for (const tag of navLangs) {
+    const m = matchLang(tag);
+    if (m) return m;
+  }
+  return 'en-us';
+}
+
+let currentLang = detectInitialLang();
+
+function get(path, dict) {
+  return path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), dict);
+}
+
+function applyI18n() {
+  const dict = window.I18N && window.I18N[currentLang];
+  if (!dict) return;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const val = get(el.getAttribute('data-i18n'), dict);
+    if (val !== undefined) el.innerHTML = val;
+  });
+  refreshDropdownValueLabel('theme', html.getAttribute('data-theme'));
+  refreshDropdownValueLabel('font', html.getAttribute('data-font'));
+  refreshDropdownValueLabel('lang', currentLang);
+}
+
+function refreshDropdownValueLabel(kind, value) {
+  const dd = document.querySelector('[data-dropdown="' + kind + '"]');
+  if (!dd) return;
+  const item = dd.querySelector('.dropdown-item[data-value="' + value + '"]');
+  if (!item) return;
+  const valueEl = dd.querySelector('.dropdown-value');
+  if (valueEl) valueEl.textContent = item.querySelector('.dropdown-item-label')?.textContent || value;
+}
+
+function setValue(kind, value) {
+  if (kind === 'lang') {
+    currentLang = value;
+    html.setAttribute('lang', value);
+    html.setAttribute('dir', value === 'ar' || value === 'fa-ir' ? 'rtl' : 'ltr');
+    try { localStorage.setItem('rhosocial-lang', value); } catch (_) {}
+    applyI18n();
+  } else {
+    html.setAttribute('data-' + kind, value);
+  }
+  const dd = document.querySelector('[data-dropdown="' + kind + '"]');
+  if (!dd) return;
+  let activatedLabel = null;
+  dd.querySelectorAll('.dropdown-item').forEach(it => {
+    const match = it.getAttribute('data-value') === value;
+    it.classList.toggle('is-active', match);
+    if (match) activatedLabel = it.querySelector('.dropdown-item-label')?.textContent || value;
+  });
+  const valueEl = dd.querySelector('.dropdown-value');
+  if (valueEl && activatedLabel) valueEl.textContent = activatedLabel;
+}
+
+function closeAllDropdowns(except) {
+  document.querySelectorAll('.dropdown.is-open').forEach(d => {
+    if (d !== except) {
+      d.classList.remove('is-open');
+      d.querySelector('.dropdown-trigger')?.setAttribute('aria-expanded', 'false');
+    }
+  });
+}
+
+document.querySelectorAll('[data-dropdown]').forEach(dd => {
+  const trigger = dd.querySelector('.dropdown-trigger');
+  const kind = dd.getAttribute('data-dropdown');
+  trigger.addEventListener('click', e => {
+    e.stopPropagation();
+    const willOpen = !dd.classList.contains('is-open');
+    closeAllDropdowns(dd);
+    dd.classList.toggle('is-open', willOpen);
+    trigger.setAttribute('aria-expanded', String(willOpen));
+  });
+  dd.querySelectorAll('.dropdown-item').forEach(item => {
+    item.addEventListener('click', e => {
+      e.stopPropagation();
+      const value = item.getAttribute('data-value');
+      const label = item.querySelector('.dropdown-item-label')?.textContent;
+      if (kind === 'theme' || kind === 'font' || kind === 'lang') {
+        setValue(kind, value);
+      } else {
+        dd.querySelectorAll('.dropdown-item').forEach(it => it.classList.toggle('is-active', it === item));
+        const valueEl = dd.querySelector('.dropdown-value');
+        if (valueEl) valueEl.textContent = label || value;
+      }
+      dd.classList.remove('is-open');
+      trigger.setAttribute('aria-expanded', 'false');
+    });
+  });
+});
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('.dropdown')) closeAllDropdowns();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeAllDropdowns();
+});
+
+document.addEventListener('keydown', e => {
+  const isMod = e.ctrlKey || e.metaKey;
+  const key = e.key.toLowerCase();
+  const idx = QWERTY.indexOf(key);
+  if (idx === -1) return;
+  if (isMod && !e.shiftKey) {
+    e.preventDefault();
+    setValue('theme', THEMES[idx % THEMES.length]);
+  } else if (isMod && e.shiftKey) {
+    e.preventDefault();
+    setValue('font', FONTS[idx % FONTS.length]);
+  } else if (e.altKey && !isMod && !e.shiftKey) {
+    e.preventDefault();
+    setValue('lang', LANGS[idx % LANGS.length]);
+  }
+});
+
+applyI18n();
+</script>
+</body>
+</html>
