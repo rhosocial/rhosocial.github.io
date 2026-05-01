@@ -156,7 +156,7 @@
         <a href="./model.html" class="feature rise">
           <div class="feature-num">01 / Model</div>
           <h3 class="feature-title">Model</h3>
-          <p class="feature-desc" data-i18n="topics.model.desc">类型注解即字段定义。</p>
+          <p class="feature-desc" data-i18n="topics.model.desc">字段、Mixin、事件钩子。</p>
           <span class="feature-tag">Python 3.8+</span>
         </a>
         <a href="./crud.html" class="feature rise">
@@ -177,16 +177,40 @@
           <p class="feature-desc" data-i18n="topics.tx.desc">事务、savepoint、嵌套。</p>
           <span class="feature-tag">Advanced</span>
         </a>
-        <a href="./queries.html" class="feature rise">
+        <a href="./query.html" class="feature rise">
           <div class="feature-num">05 / Queries</div>
           <h3 class="feature-title">Queries</h3>
           <p class="feature-desc" data-i18n="topics.queries.desc">where, order_by, join, prefetch。</p>
           <span class="feature-tag">Query Builder</span>
         </a>
+        <a href="./cte.html" class="feature rise">
+          <div class="feature-num">06 / CTE</div>
+          <h3 class="feature-title">CTE</h3>
+          <p class="feature-desc" data-i18n="topics.cte.desc">公共表表达式、递归查询。</p>
+          <span class="feature-tag">Advanced</span>
+        </a>
+        <a href="./set-operation.html" class="feature rise">
+          <div class="feature-num">07 / Set</div>
+          <h3 class="feature-title">Set</h3>
+          <p class="feature-desc" data-i18n="topics.set.desc">UNION / INTERSECT / EXCEPT。</p>
+          <span class="feature-tag">Advanced</span>
+        </a>
+        <a href="./migrations.html" class="feature rise">
+          <div class="feature-num">08 / Migrations</div>
+          <h3 class="feature-title">Migrations</h3>
+          <p class="feature-desc" data-i18n="topics.migrations.desc">版本化数据库模式变更。</p>
+          <span class="feature-tag">DevTools</span>
+        </a>
+        <a href="./validations.html" class="feature rise">
+          <div class="feature-num">09 / Validations</div>
+          <h3 class="feature-title">Validations</h3>
+          <p class="feature-desc" data-i18n="topics.validations.desc">Pydantic 校验、回调钩子。</p>
+          <span class="feature-tag">Validation</span>
+        </a>
         <a href="./advanced.html" class="feature rise">
-          <div class="feature-num">06 / Advanced</div>
+          <div class="feature-num">10 / Advanced</div>
           <h3 class="feature-title">Advanced</h3>
-          <p class="feature-desc" data-i18n="topics.advanced.desc">Soft Delete, UUID, Hooks。</p>
+          <p class="feature-desc" data-i18n="topics.advanced.desc">性能优化、调试技巧。</p>
           <span class="feature-tag">Expert</span>
         </a>
       </div>
@@ -203,7 +227,7 @@
         <div class="feature-visual">
           <div class="code-block"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">example.py</span></div>
             <div class="code-body"><pre><span class="tok-c"># 读取 like English</span>
-user = <span class="tok-cls">User</span>.where(username=<span class="tok-s">'Alice'</span>).first()
+user = <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.username == <span class="tok-s">'Alice'</span>).one()
 
 <span class="tok-c"># 保存 like English</span>
 user.save()

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>rhosocial ActiveRecord — CRUD</title>
+<title>rhosocial ActiveRecord — Query</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
@@ -60,8 +60,8 @@
 <link rel="stylesheet" href="../assets/fonts/dm.css">
 <link rel="stylesheet" href="../assets/fonts/outfit.css">
 <link rel="stylesheet" href="../assets/fonts/literata.css">
-<script src="crud/zh-CN.js"></script>
-<script src="crud/en-US.js"></script>
+<script src="query/zh-CN.js"></script>
+<script src="query/en-US.js"></script>
 </head>
 <body>
 <header class="control-bar">
@@ -142,74 +142,168 @@
   <section class="hero section">
     <div class="container hero-inner">
       <div class="hero-eyebrow rise"><a href="./index.html">&larr; <span data-i18n="hero.back">ActiveRecord</span></div>
-      <h1 class="hero-title rise">CRUD</h1>
-      <p class="hero-sub rise" data-i18n="hero.sub">Create, Read, Update, Delete。</p>
+      <h1 class="hero-title rise">Query</h1>
+      <p class="hero-sub rise" data-i18n="hero.sub">链式查询构建器，从简单到复杂。</p>
     </div>
   </section>
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <div class="section-label" data-i18n="create.label">Create</div>
-        <h2 class="section-title" data-i18n="create.title">创建记录。</h2>
+        <div class="section-label" data-i18n="entry.label">Entry</div>
+        <h2 class="section-title" data-i18n="entry.title">查询入口。</h2>
       </div>
       <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
-        <div class="code-body"><pre><span class="tok-c"># 方式一：实例化后保存</span>
-user = <span class="tok-cls">User</span>(username=<span class="tok-s">'Alice'</span>, email=<span class="tok-s">'alice@example.com'</span>)
-user.save()
+        <div class="code-body"><pre><span class="tok-c"># 同步入口</span>
+query = <span class="tok-cls">User</span>.query()  <span class="tok-c"># -> ActiveQuery</span>
 
-<span class="tok-c"># 方式二：直接创建并保存</span>
-user = <span class="tok-cls">User</span>.create(username=<span class="tok-s">'Bob'</span>, email=<span class="tok-s">'bob@example.com'</span>)</pre></div>
-      </div>
-    </div>
-  </section>
-  <section class="section">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-label" data-i18n="read.label">Read</div>
-        <h2 class="section-title" data-i18n="read.title">读取记录。</h2>
-      </div>
-      <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
-        <div class="code-body"><pre><span class="tok-c"># 按主键获取 (find_one 接受 PK 值作为参数)</span>
-user = <span class="tok-cls">User</span>.find_one(1)
-
-<span class="tok-c"># 条件查询 (query().where().one())</span>
-user = <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.username == <span class="tok-s">'Alice'</span>).one()
-
-<span class="tok-c"># 获取全部 (query().all())</span>
-users = <span class="tok-cls">User</span>.query().all()</pre></div>
+<span class="tok-c"># 异步入口</span>
+<span class="tok-c"># query = await User.query()  # -> AsyncActiveQuery</span></pre></div>
       </div>
     </div>
   </section>
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <div class="section-label" data-i18n="update.label">Update</div>
-        <h2 class="section-title" data-i18n="update.title">更新记录。</h2>
+        <div class="section-label" data-i18n="where.label">WHERE</div>
+        <h2 class="section-title" data-i18n="where.title">条件过滤。</h2>
       </div>
       <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
-        <div class="code-body"><pre><span class="tok-c"># 修改属性后保存</span>
-user = <span class="tok-cls">User</span>.find_one(1)
-user.email = <span class="tok-s">'new@example.com'</span>
-user.save()
+        <div class="code-body"><pre><span class="tok-c"># FieldProxy 等值比较</span>
+users = <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.username == <span class="tok-s">'Alice'</span>).all()
 
-<span class="tok-c"># 批量更新 (query().where().update())</span>
-<span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.username == <span class="tok-s">'Alice'</span>).update({email: <span class="tok-s">'alice@new.com'</span>})</pre></div>
+<span class="tok-c"># 范围比较</span>
+users = <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.age > <span class="tok-num">18</span>).all()
+
+<span class="tok-c"># 组合条件 (AND)</span>
+users = <span class="tok-cls">User</span>.query().where(
+    (<span class="tok-cls">User</span>.c.age > <span class="tok-num">18</span>) & (<span class="tok-cls">User</span>.c.status == <span class="tok-s">'active'</span>)
+).all()
+
+<span class="tok-c"># IN 谓词</span>
+users = <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.role.in_(['admin', 'moderator'])).all()
+
+<span class="tok-c"># LIKE 模糊匹配</span>
+users = <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.email.like(<span class="tok-s">'%@example.com'</span>)).all()
+
+<span class="tok-c"># IS NULL</span>
+users = <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.phone.is_null()).all()</pre></div>
       </div>
     </div>
   </section>
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <div class="section-label" data-i18n="delete.label">Delete</div>
-        <h2 class="section-title" data-i18n="delete.title">删除记录。</h2>
+        <div class="section-label" data-i18n="order.label">ORDER BY</div>
+        <h2 class="section-title" data-i18n="order.title">排序。</h2>
       </div>
       <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
-        <div class="code-body"><pre><span class="tok-c"># 实例方法删除</span>
-user = <span class="tok-cls">User</span>.find_one(1)
-user.delete()
+        <div class="code-body"><pre><span class="tok-c"># 升序</span>
+users = <span class="tok-cls">User</span>.query().order_by(<span class="tok-cls">User</span>.c.username.asc()).all()
 
-<span class="tok-c"># 条件删除 (query().where().delete())</span>
-<span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.username == <span class="tok-s">'Alice'</span>).delete()</pre></div>
+<span class="tok-c"># 降序</span>
+users = <span class="tok-cls">User</span>.query().order_by(<span class="tok-cls">User</span>.c.created_at.desc()).all()
+
+<span class="tok-c"># 多列排序</span>
+users = <span class="tok-cls">User</span>.query().order_by(
+    <span class="tok-cls">User</span>.c.status.asc(),
+    <span class="tok-cls">User</span>.c.created_at.desc()
+).all()</pre></div>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label" data-i18n="limit.label">LIMIT / OFFSET</div>
+        <h2 class="section-title" data-i18n="limit.title">分页。</h2>
+      </div>
+      <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
+        <div class="code-body"><pre><span class="tok-c"># 限制返回数量</span>
+users = <span class="tok-cls">User</span>.query().limit(<span class="tok-num">10</span>).all()
+
+<span class="tok-c"># 分页 (跳过前 20 条，取 10 条)</span>
+users = <span class="tok-cls">User</span>.query().limit(<span class="tok-num">10</span>).offset(<span class="tok-num">20</span>).all()</pre></div>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label" data-i18n="join.label">JOIN</div>
+        <h2 class="section-title" data-i18n="join.title">连接查询。</h2>
+      </div>
+      <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
+        <div class="code-body"><pre><span class="tok-c"># INNER JOIN</span>
+posts = <span class="tok-cls">Post</span>.query().join(
+    <span class="tok-cls">User</span>, 
+    on=(<span class="tok-cls">Post</span>.c.user_id == <span class="tok-cls">User</span>.c.id)
+).all()
+
+<span class="tok-c"># LEFT JOIN</span>
+posts = <span class="tok-cls">Post</span>.query().left_join(
+    <span class="tok-cls">User</span>, 
+    on=(<span class="tok-cls">Post</span>.c.user_id == <span class="tok-cls">User</span>.c.id)
+).all()</pre></div>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label" data-i18n="eager.label">Eager Loading</div>
+        <h2 class="section-title" data-i18n="eager.title">预加载。</h2>
+      </div>
+      <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
+        <div class="code-body"><pre><span class="tok-c"># 简单预加载</span>
+users = <span class="tok-cls">User</span>.query().with_(<span class="tok-s">'posts'</span>).all()
+
+<span class="tok-c"># 嵌套预加载</span>
+users = <span class="tok-cls">User</span>.query().with_(<span class="tok-s">'posts.comments'</span>).all()
+
+<span class="tok-c"># 条件预加载</span>
+users = <span class="tok-cls">User</span>.query().with_(
+    (<span class="tok-s">'posts'</span>, <span class="tok-kw">lambda</span> q: q.where(<span class="tok-cls">Post</span>.c.published == <span class="tok-kw">True</span>))
+).all()</pre></div>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label" data-i18n="aggregate.label">Aggregate</div>
+        <h2 class="section-title" data-i18n="aggregate.title">聚合函数。</h2>
+      </div>
+      <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
+        <div class="code-body"><pre><span class="tok-c"># COUNT</span>
+total = <span class="tok-cls">User</span>.query().count()
+
+<span class="tok-c"># SUM</span>
+total_age = <span class="tok-cls">User</span>.query().sum_(<span class="tok-cls">User</span>.c.age)
+
+<span class="tok-c"># AVG</span>
+avg_age = <span class="tok-cls">User</span>.query().avg(<span class="tok-cls">User</span>.c.age)
+
+<span class="tok-c"># MIN / MAX</span>
+min_age = <span class="tok-cls">User</span>.query().min_(<span class="tok-cls">User</span>.c.age)
+max_age = <span class="tok-cls">User</span>.query().max_(<span class="tok-cls">User</span>.c.age)</pre></div>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label" data-i18n="terminal.label">Terminal</div>
+        <h2 class="section-title" data-i18n="terminal.title">终端方法。</h2>
+      </div>
+      <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
+        <div class="code-body"><pre><span class="tok-c"># .all() - 返回所有匹配记录列表</span>
+users = <span class="tok-cls">User</span>.query().all()
+
+<span class="tok-c"># .one() - 返回单条记录或 None (等价于 LIMIT 1)</span>
+user = <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.id == <span class="tok-num">1</span>).one()
+
+<span class="tok-c"># .to_sql() - 获取 SQL 语句和参数</span>
+sql, params = <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.status == <span class="tok-s">'active'</span>).to_sql()</pre></div>
       </div>
     </div>
   </section>

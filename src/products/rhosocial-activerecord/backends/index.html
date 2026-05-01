@@ -138,87 +138,308 @@
     </div>
   </div>
 </header>
-<main class="page">
-  <section class="hero section">
-    <div class="container hero-inner">
-      <div class="hero-eyebrow rise" data-i18n="hero.eyebrow">Pluggable Backends</div>
-      <h1 class="hero-title rise" data-i18n="hero.title">用 <em>Backend ABC</em> 写你的数据库。</h1>
-      <p class="hero-sub rise" data-i18n="hero.sub">后端可插拔，一套 API 兼容多方言。</p>
-    </div>
-  </section>
-  <section class="section">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-label" data-i18n="backends.label">Supported</div>
-        <h2 class="section-title" data-i18n="backends.title">选择你的<em>后端</em>。</h2>
+  <main class="page">
+    <section class="hero section">
+      <div class="container hero-inner">
+        <div class="hero-eyebrow rise" data-i18n="hero.eyebrow">Pluggable Backends</div>
+        <h1 class="hero-title rise" data-i18n="hero.title">用 <em>Backend ABC</em> 写你的数据库。</h1>
+        <p class="hero-sub rise" data-i18n="hero.sub">后端可插拔，一套 API 兼容多方言。</p>
       </div>
-<div class="features-grid">
-        <a href="./sqlite.html" class="feature rise">
-          <div class="feature-num">01 / SQLite</div>
-          <div class="feature-icon db-icon" data-light="003B57" data-dark="EEE"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/sqlite.svg" alt="SQLite" style="height:32px;max-width:100%;object-fit:contain;"></div>
-          <h3 class="feature-title">SQLite</h3>
-          <p class="feature-desc" data-i18n="backends.sqlite.desc">内置，无需安装。</p>
-          <span class="feature-tag">Built-in</span>
-        </a>
-        <a href="./postgres.html" class="feature rise">
-          <div class="feature-num">02 / PostgreSQL</div>
-          <div class="feature-icon db-icon" data-light="336791" data-dark="EEE"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/postgresql.svg" alt="PostgreSQL" style="height:32px;max-width:100%;object-fit:contain;"></div>
-          <h3 class="feature-title">PostgreSQL</h3>
-          <p class="feature-desc" data-i18n="backends.postgres.desc">30+ 扩展，支持向量搜索。</p>
-          <span class="feature-tag">Stable</span>
-        </a>
-        <a href="./mysql.html" class="feature rise">
-          <div class="feature-num">03 / MySQL</div>
-          <div class="feature-icon db-icon" data-light="4479A1" data-dark="EEE"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/mysql.svg" alt="MySQL" style="height:32px;max-width:100%;object-fit:contain;"></div>
-          <h3 class="feature-title">MySQL</h3>
-          <p class="feature-desc" data-i18n="backends.mysql.desc">JSON、全文搜索、空间数据。</p>
-          <span class="feature-tag">Beta</span>
-        </a>
-        <a href="./mariadb.html" class="feature rise">
-          <div class="feature-num">04 / MariaDB</div>
-          <div class="feature-icon db-icon" data-light="003545" data-dark="EEE"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/mariadb.svg" alt="MariaDB" style="height:32px;max-width:100%;object-fit:contain;"></div>
-          <h3 class="feature-title">MariaDB</h3>
-          <p class="feature-desc" data-i18n="backends.mariadb.desc">MySQL 分支，GaussDB 兼容。</p>
-          <span class="feature-tag">Beta</span>
-        </a>
-        <a href="./sqlserver.html" class="feature rise">
-          <div class="feature-num">05 / SQL Server</div>
-          <div class="feature-icon db-icon" data-light="CC2927" data-dark="EEE"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/microsoftsqlserver.svg" alt="SQL Server" style="height:32px;max-width:100%;object-fit:contain;"></div>
-          <h3 class="feature-title">SQL Server</h3>
-          <p class="feature-desc" data-i18n="backends.sqlserver.desc">T-SQL，Window Functions。</p>
-          <span class="feature-tag">Beta</span>
-        </a>
-        <a href="./oracle.html" class="feature rise">
-          <div class="feature-num">06 / Oracle</div>
-          <div class="feature-icon db-icon" data-light="F80000" data-dark="EEE"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/oracle.svg" alt="Oracle" style="height:32px;max-width:100%;object-fit:contain;"></div>
-          <h3 class="feature-title">Oracle</h3>
-          <p class="feature-desc" data-i18n="backends.oracle.desc">PL/SQL，企业级。</p>
-          <span class="feature-tag">Alpha</span>
-        </a>
-      </div>
-    </div>
-  </section>
-  <section class="section">
-    <div class="container">
-      <div class="feature-split">
-        <div class="feature-split-text">
-          <div class="section-label" data-i18n="abc.label">Backend ABC</div>
-          <h2 class="section-title" data-i18n="abc.title">写你自己的<em>后端</em>，也就几十行。</h2>
-          <p class="section-intro" data-i18n="abc.intro">实现 Backend 接口，即可接入新数据库。</p>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label" data-i18n="backends.label">Supported</div>
+          <h2 class="section-title" data-i18n="backends.title">选择你的<em>后端</em>。</h2>
         </div>
-        <div class="feature-visual">
-          <div class="code-block"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">my_backend.py</span></div>
+        <div class="features-grid">
+          <a href="./sqlite.html" class="feature rise">
+            <div class="feature-num">01 / SQLite</div>
+            <div class="feature-icon db-icon" data-light="003B57" data-dark="EEE"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/sqlite.svg" alt="SQLite" style="height:32px;max-width:100%;object-fit:contain;"></div>
+            <h3 class="feature-title">SQLite</h3>
+            <p class="feature-desc" data-i18n="backends.sqlite.desc">内置、零依赖、单文件。WAL 并发，PRAGMA 精细控制。</p>
+            <span class="feature-tag">Built-in</span>
+          </a>
+          <a href="./postgres.html" class="feature rise">
+            <div class="feature-num">02 / PostgreSQL</div>
+            <div class="feature-icon db-icon" data-light="336791" data-dark="EEE"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/postgresql.svg" alt="PostgreSQL" style="height:32px;max-width:100%;object-fit:contain;"></div>
+            <h3 class="feature-title">PostgreSQL</h3>
+            <p class="feature-desc" data-i18n="backends.postgres.desc">30+ 扩展生态，Advisory Lock，DEFERRABLE 事务，向量搜索。</p>
+            <span class="feature-tag">Stable</span>
+          </a>
+          <a href="./mysql.html" class="feature rise">
+            <div class="feature-num">03 / MySQL</div>
+            <div class="feature-icon db-icon" data-light="4479A1" data-dark="EEE"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/mysql.svg" alt="MySQL" style="height:32px;max-width:100%;object-fit:contain;"></div>
+            <h3 class="feature-title">MySQL</h3>
+            <p class="feature-desc" data-i18n="backends.mysql.desc">JSON、全文搜索、空间数据、分区表、17 种 SHOW 命令。</p>
+            <span class="feature-tag">Beta</span>
+          </a>
+          <a href="./mariadb.html" class="feature rise">
+            <div class="feature-num">04 / MariaDB</div>
+            <div class="feature-icon db-icon" data-light="003545" data-dark="EEE"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/mariadb.svg" alt="MariaDB" style="height:32px;max-width:100%;object-fit:contain;"></div>
+            <h3 class="feature-title">MariaDB</h3>
+            <p class="feature-desc" data-i18n="backends.mariadb.desc">SEQUENCE、RETURNING、系统版本化表、INTERSECT/EXCEPT。</p>
+            <span class="feature-tag">Beta</span>
+          </a>
+          <a href="./sqlserver.html" class="feature rise">
+            <div class="feature-num">05 / SQL Server</div>
+            <div class="feature-icon db-icon" data-light="CC2927" data-dark="EEE"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/microsoftsqlserver.svg" alt="SQL Server" style="height:32px;max-width:100%;object-fit:contain;"></div>
+            <h3 class="feature-title">SQL Server</h3>
+            <p class="feature-desc" data-i18n="backends.sqlserver.desc">OUTPUT 子句、SNAPSHOT 隔离、CROSS/OUTER APPLY、表提示。</p>
+            <span class="feature-tag">Beta</span>
+          </a>
+          <a href="./oracle.html" class="feature rise">
+            <div class="feature-num">06 / Oracle</div>
+            <div class="feature-icon db-icon" data-light="F80000" data-dark="EEE"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/oracle.svg" alt="Oracle" style="height:32px;max-width:100%;object-fit:contain;"></div>
+            <h3 class="feature-title">Oracle</h3>
+            <p class="feature-desc" data-i18n="backends.oracle.desc">层次查询 CONNECT BY、PIVOT/UNPIVOT、Flashback、MERGE。</p>
+            <span class="feature-tag">Alpha</span>
+          </a>
+          <a href="./develop.html" class="feature rise">
+            <div class="feature-num">07 / Develop</div>
+            <div class="feature-icon db-icon" data-light="6C31B3" data-dark="EEE"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/python.svg" alt="Develop" style="height:32px;max-width:100%;object-fit:contain;"></div>
+            <h3 class="feature-title" data-i18n="backends.develop.title">Develop</h3>
+            <p class="feature-desc" data-i18n="backends.develop.desc">实现 Backend ABC，33 协议驱动，命名空间包架构。</p>
+            <span class="feature-tag">Guide</span>
+          </a>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label" data-i18n="architecture.label">Architecture</div>
+          <h2 class="section-title" data-i18n="architecture.title">表达式-方言-后端。</h2>
+        </div>
+        <div class="features-grid">
+          <div class="feature rise">
+            <div class="feature-num">01 / Expression</div>
+            <h3 class="feature-title">Expression</h3>
+            <p class="feature-desc" data-i18n="architecture.expression">收集语义参数，不含 SQL 细节。BaseExpression.to_sql(dialect) 委托方言生成目标 SQL。</p>
+          </div>
+          <div class="feature rise">
+            <div class="feature-num">02 / Dialect</div>
+            <h3 class="feature-title">Dialect</h3>
+            <p class="feature-desc" data-i18n="architecture.dialect">format_*() 方法生成目标数据库 SQL。33 @runtime_checkable 协议声明能力边界。</p>
+          </div>
+          <div class="feature rise">
+            <div class="feature-num">03 / Backend</div>
+            <h3 class="feature-title">Backend</h3>
+            <p class="feature-desc" data-i18n="architecture.backend">执行 SQL、管理连接、处理结果。12 层 Mixin MRO 组合，Template Method 模式。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="feature-split">
+          <div class="feature-split-text">
+            <div class="section-label" data-i18n="sync_async.label">Sync / Async</div>
+            <h2 class="section-title" data-i18n="sync_async.title">同步/异步<em>对等</em>。</h2>
+            <p class="section-intro" data-i18n="sync_async.desc">StorageBackend / AsyncStorageBackend API 完全一致，切换成本为零。非 I/O 逻辑放 Mixin 共享，I/O 逻辑分别实现。</p>
+          </div>
+          <div class="feature-visual">
+            <div class="code-block"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">sync_async.py</span></div>
+            <div class="code-body"><pre><span class="tok-c"># 同步 — SQLite</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlite <span class="tok-k">import</span> <span class="tok-cls">SQLiteBackend</span>
+backend = <span class="tok-cls">SQLiteBackend</span>(database=<span class="tok-s">'app.db'</span>)
+backend.connect()
+result = backend.execute(<span class="tok-s">"SELECT 1"</span>)
+
+<span class="tok-c"># 异步 — 同样的 API</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlite <span class="tok-k">import</span> <span class="tok-cls">AsyncSQLiteBackend</span>
+async_backend = <span class="tok-cls">AsyncSQLiteBackend</span>(database=<span class="tok-s">'app.db'</span>)
+<span class="tok-k">await</span> async_backend.connect()
+result = <span class="tok-k">await</span> async_backend.execute(<span class="tok-s">"SELECT 1"</span>)</pre></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="feature-split">
+          <div class="feature-split-text">
+            <div class="section-label" data-i18n="protocol_driven.label">Protocol Driven</div>
+            <h2 class="section-title" data-i18n="protocol_driven.title">协议<em>驱动</em>。</h2>
+            <p class="section-intro" data-i18n="protocol_driven.desc">@runtime_checkable 协议检测后端能力，不支持的特性抛出 UnsupportedFeatureError 而非静默失败。isinstance(dialect, Protocol) 安全使用。</p>
+          </div>
+          <div class="feature-visual">
+            <div class="code-block"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">protocol_check.py</span></div>
+            <div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.dialect.protocols <span class="tok-k">import</span> (
+    <span class="tok-cls">CTESupport</span>, <span class="tok-cls">ReturningSupport</span>, <span class="tok-cls">MergeSupport</span>
+)
+
+dialect = backend.dialect
+
+<span class="tok-k">if</span> <span class="tok-f">isinstance</span>(dialect, <span class="tok-cls">CTESupport</span>):
+    <span class="tok-c"># 安全使用 CTE</span>
+    query.with_(cte)
+<span class="tok-k">elif</span> <span class="tok-f">isinstance</span>(dialect, <span class="tok-cls">ReturningSupport</span>):
+    query.returning(User.c.id)
+<span class="tok-k">else</span>:
+    <span class="tok-k">raise</span> <span class="tok-cls">UnsupportedFeatureError</span>(<span class="tok-s">'...'</span>)</pre></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-label" data-i18n="comparison.label">Comparison</div>
+          <h2 class="section-title" data-i18n="comparison.title">后端<em>对比</em>。</h2>
+        </div>
+        <div style="overflow-x: auto;">
+          <table class="data-table striped">
+            <thead>
+              <tr>
+                <th data-i18n="comparison.headers.feature">Feature</th>
+                <th data-i18n="comparison.headers.sqlite">SQLite</th>
+                <th data-i18n="comparison.headers.mysql">MySQL</th>
+                <th data-i18n="comparison.headers.postgres">PostgreSQL</th>
+                <th data-i18n="comparison.headers.mariadb">MariaDB</th>
+                <th data-i18n="comparison.headers.oracle">Oracle</th>
+                <th data-i18n="comparison.headers.sqlserver">SQL Server</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td data-i18n="comparison.rows.cte">CTE</td>
+                <td><span class="badge badge-success">3.8.3+</span></td>
+                <td><span class="badge badge-success">8.0+</span></td>
+                <td><span class="badge badge-success">8.0+</span></td>
+                <td><span class="badge badge-success">10.2+</span></td>
+                <td><span class="badge badge-success">11g+</span></td>
+                <td><span class="badge badge-success">2012+</span></td>
+              </tr>
+              <tr>
+                <td data-i18n="comparison.rows.window">Window Functions</td>
+                <td><span class="badge badge-success">3.25+</span></td>
+                <td><span class="badge badge-success">8.0+</span></td>
+                <td><span class="badge badge-success">8.4+</span></td>
+                <td><span class="badge badge-success">10.2+</span></td>
+                <td><span class="badge badge-success">12c+</span></td>
+                <td><span class="badge badge-success">2012+</span></td>
+              </tr>
+              <tr>
+                <td data-i18n="comparison.rows.returning">RETURNING</td>
+                <td><span class="badge badge-success">3.35+</span></td>
+                <td><span class="badge badge-neutral">No</span></td>
+                <td><span class="badge badge-success">8.2+</span></td>
+                <td><span class="badge badge-success">10.5+</span></td>
+                <td><span class="badge badge-success">All</span></td>
+                <td><span class="badge badge-info">OUTPUT</span></td>
+              </tr>
+              <tr>
+                <td data-i18n="comparison.rows.merge">MERGE</td>
+                <td><span class="badge badge-neutral">No</span></td>
+                <td><span class="badge badge-neutral">No</span></td>
+                <td><span class="badge badge-success">15+</span></td>
+                <td><span class="badge badge-neutral">No</span></td>
+                <td><span class="badge badge-success">All</span></td>
+                <td><span class="badge badge-success">2008+</span></td>
+              </tr>
+              <tr>
+                <td data-i18n="comparison.rows.lateral">LATERAL</td>
+                <td><span class="badge badge-neutral">No</span></td>
+                <td><span class="badge badge-success">8.0+</span></td>
+                <td><span class="badge badge-success">9.3+</span></td>
+                <td><span class="badge badge-success">10.2+</span></td>
+                <td><span class="badge badge-info">APPLY</span></td>
+                <td><span class="badge badge-info">APPLY</span></td>
+              </tr>
+              <tr>
+                <td data-i18n="comparison.rows.json">JSON</td>
+                <td><span class="badge badge-success">3.9+</span></td>
+                <td><span class="badge badge-success">5.7+</span></td>
+                <td><span class="badge badge-success">9.2+</span></td>
+                <td><span class="badge badge-success">10.2+</span></td>
+                <td><span class="badge badge-success">12.2+</span></td>
+                <td><span class="badge badge-success">2016+</span></td>
+              </tr>
+              <tr>
+                <td data-i18n="comparison.rows.array">Array</td>
+                <td><span class="badge badge-neutral">No</span></td>
+                <td><span class="badge badge-neutral">No</span></td>
+                <td><span class="badge badge-success">All</span></td>
+                <td><span class="badge badge-neutral">No</span></td>
+                <td><span class="badge badge-neutral">No</span></td>
+                <td><span class="badge badge-neutral">No</span></td>
+              </tr>
+              <tr>
+                <td data-i18n="comparison.rows.ilike">ILIKE</td>
+                <td><span class="badge badge-info">GLOB</span></td>
+                <td><span class="badge badge-neutral">No</span></td>
+                <td><span class="badge badge-success">All</span></td>
+                <td><span class="badge badge-neutral">No</span></td>
+                <td><span class="badge badge-neutral">No</span></td>
+                <td><span class="badge badge-neutral">No</span></td>
+              </tr>
+              <tr>
+                <td data-i18n="comparison.rows.upsert">Upsert</td>
+                <td><span class="badge badge-success">ON CONFLICT</span></td>
+                <td><span class="badge badge-success">ON DUPLICATE KEY</span></td>
+                <td><span class="badge badge-success">ON CONFLICT</span></td>
+                <td><span class="badge badge-success">ON DUPLICATE KEY</span></td>
+                <td><span class="badge badge-info">MERGE</span></td>
+                <td><span class="badge badge-info">MERGE</span></td>
+              </tr>
+              <tr>
+                <td data-i18n="comparison.rows.partition">Partition</td>
+                <td><span class="badge badge-neutral">No</span></td>
+                <td><span class="badge badge-success">5.1+</span></td>
+                <td><span class="badge badge-success">10+</span></td>
+                <td><span class="badge badge-success">10.2+</span></td>
+                <td><span class="badge badge-success">All</span></td>
+                <td><span class="badge badge-success">2012+</span></td>
+              </tr>
+              <tr>
+                <td data-i18n="comparison.rows.savepoint">Savepoint</td>
+                <td><span class="badge badge-success">3.6+</span></td>
+                <td><span class="badge badge-success">All</span></td>
+                <td><span class="badge badge-success">All</span></td>
+                <td><span class="badge badge-success">All</span></td>
+                <td><span class="badge badge-success">All</span></td>
+                <td><span class="badge badge-success">All</span></td>
+              </tr>
+              <tr>
+                <td data-i18n="comparison.rows.async_driver">Async Driver</td>
+                <td>sqlite3 / aiosqlite</td>
+                <td>mysql-connector / aiomysql</td>
+                <td>psycopg / psycopg</td>
+                <td>mariadb / aiomysql</td>
+                <td>oracledb / oracledb</td>
+                <td>pyodbc / aioodbc</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container">
+        <div class="feature-split">
+          <div class="feature-split-text">
+            <div class="section-label" data-i18n="abc.label">Backend ABC</div>
+            <h2 class="section-title" data-i18n="abc.title">写你自己的<em>后端</em>，也就几十行。</h2>
+            <p class="section-intro" data-i18n="abc.intro">实现 Backend 接口，即可接入新数据库。12 层 Mixin MRO 组合，33 协议驱动，命名空间包架构自动发现。</p>
+          </div>
+          <div class="feature-visual">
+            <div class="code-block"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">my_backend.py</span></div>
             <div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend <span class="tok-k">import</span> <span class="tok-cls">Backend</span>
 
 <span class="tok-k">class</span> <span class="tok-cls">MyBackend</span>(<span class="tok-cls">Backend</span>):
-    <span class="tok-k">async def</span> <span class="tok-f">execute</span>(<span class="tok-self">self</span>, sql, params):
-        <span class="tok-c"># ... your implementation</span>
-        <span class="tok-k">pass</span></pre></div>
+  <span class="tok-k">async def</span> <span class="tok-f">execute</span>(<span class="tok-self">self</span>, sql, params):
+    <span class="tok-c"># ... your implementation</span>
+    <span class="tok-k">pass</span></pre></div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-  <footer class="footer">
+    </section>
+    <footer class="footer">
+
     <div>&copy; rhosocial &middot; rhosocial-activerecord &middot; Apache 2.0</div>
     <div data-i18n="footer.hotkeys">25 themes · <span class="kbd">Ctrl</span>+<span class="kbd">key</span> theme / <span class="kbd">Alt</span>+<span class="kbd">key</span> lang</div>
   </footer>
@@ -405,7 +626,8 @@ const ICON_NAME_MAP = {
   'MySQL': 'mysql',
   'MariaDB': 'mariadb',
   'SQL Server': 'microsoftsqlserver',
-  'Oracle': 'oracle'
+  'Oracle': 'oracle',
+  'Develop': 'python'
 };
 function updateDbIconColors() {
   const theme = html.getAttribute('data-theme');

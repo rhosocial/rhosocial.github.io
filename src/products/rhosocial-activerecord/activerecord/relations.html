@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>rhosocial ActiveRecord — CRUD</title>
+<title>rhosocial ActiveRecord — Relations</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
@@ -60,8 +60,8 @@
 <link rel="stylesheet" href="../assets/fonts/dm.css">
 <link rel="stylesheet" href="../assets/fonts/outfit.css">
 <link rel="stylesheet" href="../assets/fonts/literata.css">
-<script src="crud/zh-CN.js"></script>
-<script src="crud/en-US.js"></script>
+<script src="relations/zh-CN.js"></script>
+<script src="relations/en-US.js"></script>
 </head>
 <body>
 <header class="control-bar">
@@ -142,74 +142,106 @@
   <section class="hero section">
     <div class="container hero-inner">
       <div class="hero-eyebrow rise"><a href="./index.html">&larr; <span data-i18n="hero.back">ActiveRecord</span></div>
-      <h1 class="hero-title rise">CRUD</h1>
-      <p class="hero-sub rise" data-i18n="hero.sub">Create, Read, Update, Delete。</p>
+      <h1 class="hero-title rise">Relations</h1>
+      <p class="hero-sub rise" data-i18n="hero.sub">模型间关系映射，优雅解决 N+1。</p>
     </div>
   </section>
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <div class="section-label" data-i18n="create.label">Create</div>
-        <h2 class="section-title" data-i18n="create.title">创建记录。</h2>
+        <div class="section-label" data-i18n="belongs_to.label">BelongsTo</div>
+        <h2 class="section-title" data-i18n="belongs_to.title">多对一关系。</h2>
       </div>
       <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
-        <div class="code-body"><pre><span class="tok-c"># 方式一：实例化后保存</span>
-user = <span class="tok-cls">User</span>(username=<span class="tok-s">'Alice'</span>, email=<span class="tok-s">'alice@example.com'</span>)
-user.save()
+        <div class="code-body"><pre><span class="tok-kw">from</span> rhosocial.activerecord <span class="tok-kw">import</span> <span class="tok-cls">ActiveRecord</span>
+<span class="tok-kw">from</span> rhosocial.activerecord.relation <span class="tok-kw">import</span> <span class="tok-cls">BelongsTo</span>
 
-<span class="tok-c"># 方式二：直接创建并保存</span>
-user = <span class="tok-cls">User</span>.create(username=<span class="tok-s">'Bob'</span>, email=<span class="tok-s">'bob@example.com'</span>)</pre></div>
+<span class="tok-kw">class</span> <span class="tok-cls">Post</span>(<span class="tok-cls">ActiveRecord</span>):
+    __table_name__ = <span class="tok-s">'posts'</span>
+    
+    <span class="tok-c"># 外键在 Post 表，Post 属于 User</span>
+    user = <span class="tok-cls">BelongsTo</span>(<span class="tok-s">'User'</span>, foreign_key=<span class="tok-s">'user_id'</span>)
+    title: <span class="tok-kw">str</span>
+    content: <span class="tok-kw">str</span>
+
+<span class="tok-c"># 访问关联 — 自动延迟加载</span>
+post = <span class="tok-cls">Post</span>.find_one(1)
+user = post.user  <span class="tok-c"># 自动查询 User 表</span></pre></div>
       </div>
     </div>
   </section>
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <div class="section-label" data-i18n="read.label">Read</div>
-        <h2 class="section-title" data-i18n="read.title">读取记录。</h2>
+        <div class="section-label" data-i18n="has_many.label">HasMany</div>
+        <h2 class="section-title" data-i18n="has_many.title">一对多关系。</h2>
       </div>
       <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
-        <div class="code-body"><pre><span class="tok-c"># 按主键获取 (find_one 接受 PK 值作为参数)</span>
+        <div class="code-body"><pre><span class="tok-kw">from</span> rhosocial.activerecord.relation <span class="tok-kw">import</span> <span class="tok-cls">HasMany</span>
+
+<span class="tok-kw">class</span> <span class="tok-cls">User</span>(<span class="tok-cls">ActiveRecord</span>):
+    __table_name__ = <span class="tok-s">'users'</span>
+    
+    <span class="tok-c"># 一个用户有多篇文章</span>
+    posts = <span class="tok-cls">HasMany</span>(<span class="tok-s">'Post'</span>, foreign_key=<span class="tok-s">'user_id'</span>)
+    username: <span class="tok-kw">str</span>
+
+<span class="tok-c"># 访问关联 — 返回列表</span>
 user = <span class="tok-cls">User</span>.find_one(1)
-
-<span class="tok-c"># 条件查询 (query().where().one())</span>
-user = <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.username == <span class="tok-s">'Alice'</span>).one()
-
-<span class="tok-c"># 获取全部 (query().all())</span>
-users = <span class="tok-cls">User</span>.query().all()</pre></div>
+posts = user.posts  <span class="tok-c"># 返回 List[Post]</span></pre></div>
       </div>
     </div>
   </section>
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <div class="section-label" data-i18n="update.label">Update</div>
-        <h2 class="section-title" data-i18n="update.title">更新记录。</h2>
+        <div class="section-label" data-i18n="has_one.label">HasOne</div>
+        <h2 class="section-title" data-i18n="has_one.title">一对一关系。</h2>
       </div>
       <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
-        <div class="code-body"><pre><span class="tok-c"># 修改属性后保存</span>
-user = <span class="tok-cls">User</span>.find_one(1)
-user.email = <span class="tok-s">'new@example.com'</span>
-user.save()
+        <div class="code-body"><pre><span class="tok-kw">from</span> rhosocial.activerecord.relation <span class="tok-kw">import</span> <span class="tok-cls">HasOne</span>
 
-<span class="tok-c"># 批量更新 (query().where().update())</span>
-<span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.username == <span class="tok-s">'Alice'</span>).update({email: <span class="tok-s">'alice@new.com'</span>})</pre></div>
+<span class="tok-kw">class</span> <span class="tok-cls">User</span>(<span class="tok-cls">ActiveRecord</span>):
+    __table_name__ = <span class="tok-s">'users'</span>
+    
+    <span class="tok-c"># 一个用户只有一个个人资料</span>
+    profile = <span class="tok-cls">HasOne</span>(<span class="tok-s">'Profile'</span>, foreign_key=<span class="tok-s">'user_id'</span>)
+    username: <span class="tok-kw">str</span></pre></div>
       </div>
     </div>
   </section>
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <div class="section-label" data-i18n="delete.label">Delete</div>
-        <h2 class="section-title" data-i18n="delete.title">删除记录。</h2>
+        <div class="section-label" data-i18n="forward_ref.label">Forward Ref</div>
+        <h2 class="section-title" data-i18n="forward_ref.title">前向引用。</h2>
+      </div>
+      <p class="section-intro" data-i18n="forward_ref.desc">字符串引用解决循环依赖。</p>
+      <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
+        <div class="code-body"><pre><span class="tok-c"># 使用字符串 'Post' 而非 Post 类本身</span>
+<span class="tok-kw">class</span> <span class="tok-cls">User</span>(<span class="tok-cls">ActiveRecord</span>):
+    __table_name__ = <span class="tok-s">'users'</span>
+    posts = <span class="tok-cls">HasMany</span>(<span class="tok-s">'Post'</span>, foreign_key=<span class="tok-s">'user_id'</span>)
+
+<span class="tok-kw">class</span> <span class="tok-cls">Post</span>(<span class="tok-cls">ActiveRecord</span>):
+    __table_name__ = <span class="tok-s">'posts'</span>
+    user = <span class="tok-cls">BelongsTo</span>(<span class="tok-s">'User'</span>, foreign_key=<span class="tok-s">'user_id'</span>)</pre></div>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label" data-i18n="eager.label">Eager Loading</div>
+        <h2 class="section-title" data-i18n="eager.title">预加载避免 N+1。</h2>
       </div>
       <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
-        <div class="code-body"><pre><span class="tok-c"># 实例方法删除</span>
-user = <span class="tok-cls">User</span>.find_one(1)
-user.delete()
+        <div class="code-body"><pre><span class="tok-c"># 使用 query().with_() 预加载关联</span>
+users = <span class="tok-cls">User</span>.query().with_(<span class="tok-s">'posts'</span>).all()
 
-<span class="tok-c"># 条件删除 (query().where().delete())</span>
-<span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.username == <span class="tok-s">'Alice'</span>).delete()</pre></div>
+<span class="tok-c"># 访问预加载的关联不会触发新查询</span>
+<span class="tok-kw">for</span> user <span class="tok-kw">in</span> users:
+    <span class="tok-func">print</span>(user.username, user.posts)  <span class="tok-c"># 无额外查询</span></pre></div>
       </div>
     </div>
   </section>

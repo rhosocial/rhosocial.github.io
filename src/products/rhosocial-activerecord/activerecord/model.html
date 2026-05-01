@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>rhosocial ActiveRecord — CRUD</title>
+<title>rhosocial ActiveRecord — Model</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
@@ -60,8 +60,8 @@
 <link rel="stylesheet" href="../assets/fonts/dm.css">
 <link rel="stylesheet" href="../assets/fonts/outfit.css">
 <link rel="stylesheet" href="../assets/fonts/literata.css">
-<script src="crud/zh-CN.js"></script>
-<script src="crud/en-US.js"></script>
+<script src="model/zh-CN.js"></script>
+<script src="model/en-US.js"></script>
 </head>
 <body>
 <header class="control-bar">
@@ -142,75 +142,156 @@
   <section class="hero section">
     <div class="container hero-inner">
       <div class="hero-eyebrow rise"><a href="./index.html">&larr; <span data-i18n="hero.back">ActiveRecord</span></div>
-      <h1 class="hero-title rise">CRUD</h1>
-      <p class="hero-sub rise" data-i18n="hero.sub">Create, Read, Update, Delete。</p>
+      <h1 class="hero-title rise">Model</h1>
+      <p class="hero-sub rise" data-i18n="hero.sub">声明式模型定义，Pydantic 驱动。</p>
     </div>
   </section>
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <div class="section-label" data-i18n="create.label">Create</div>
-        <h2 class="section-title" data-i18n="create.title">创建记录。</h2>
+        <div class="section-label" data-i18n="basic.label">Basic</div>
+        <h2 class="section-title" data-i18n="basic.title">基本定义。</h2>
       </div>
       <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
-        <div class="code-body"><pre><span class="tok-c"># 方式一：实例化后保存</span>
-user = <span class="tok-cls">User</span>(username=<span class="tok-s">'Alice'</span>, email=<span class="tok-s">'alice@example.com'</span>)
-user.save()
+        <div class="code-body"><pre><span class="tok-c"># 基本模型定义</span>
+<span class="tok-kw">from</span> rhosocial.activerecord <span class="tok-kw">import</span> <span class="tok-cls">ActiveRecord</span>
 
-<span class="tok-c"># 方式二：直接创建并保存</span>
-user = <span class="tok-cls">User</span>.create(username=<span class="tok-s">'Bob'</span>, email=<span class="tok-s">'bob@example.com'</span>)</pre></div>
-      </div>
-    </div>
-  </section>
-  <section class="section">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-label" data-i18n="read.label">Read</div>
-        <h2 class="section-title" data-i18n="read.title">读取记录。</h2>
-      </div>
-      <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
-        <div class="code-body"><pre><span class="tok-c"># 按主键获取 (find_one 接受 PK 值作为参数)</span>
-user = <span class="tok-cls">User</span>.find_one(1)
-
-<span class="tok-c"># 条件查询 (query().where().one())</span>
-user = <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.username == <span class="tok-s">'Alice'</span>).one()
-
-<span class="tok-c"># 获取全部 (query().all())</span>
-users = <span class="tok-cls">User</span>.query().all()</pre></div>
+<span class="tok-kw">class</span> <span class="tok-cls">User</span>(<span class="tok-cls">ActiveRecord</span>):
+    __table_name__ = <span class="tok-s">'users'</span>
+    __primary_key__ = <span class="tok-s">'id'</span>  <span class="tok-c"># 默认值就是 'id'</span>
+    
+    <span class="tok-c"># 字段注解直接定义列</span>
+    username: <span class="tok-kw">str</span>
+    email: <span class="tok-kw">str</span>
+    age: <span class="tok-kw">int</span> | <span class="tok-kw">None</span> = <span class="tok-num">None</span></pre></div>
       </div>
     </div>
   </section>
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <div class="section-label" data-i18n="update.label">Update</div>
-        <h2 class="section-title" data-i18n="update.title">更新记录。</h2>
+        <div class="section-label" data-i18n="fields.label">Fields</div>
+        <h2 class="section-title" data-i18n="fields.title">字段类型。</h2>
       </div>
       <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
-        <div class="code-body"><pre><span class="tok-c"># 修改属性后保存</span>
-user = <span class="tok-cls">User</span>.find_one(1)
-user.email = <span class="tok-s">'new@example.com'</span>
-user.save()
+        <div class="code-body"><pre><span class="tok-c"># UseColumn — 自定义列名映射</span>
+<span class="tok-kw">from</span> typing <span class="tok-kw">import</span> Annotated
+<span class="tok-kw">from</span> rhosocial.activerecord.base.fields <span class="tok-kw">import</span> <span class="tok-cls">UseColumn</span>
 
-<span class="tok-c"># 批量更新 (query().where().update())</span>
-<span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.username == <span class="tok-s">'Alice'</span>).update({email: <span class="tok-s">'alice@new.com'</span>})</pre></div>
+<span class="tok-kw">class</span> <span class="tok-cls">User</span>(<span class="tok-cls">ActiveRecord</span>):
+    __table_name__ = <span class="tok-s">'users'</span>
+    
+    <span class="tok-c"># Python 字段名 user_name，数据库列名 username</span>
+    user_name: Annotated[<span class="tok-kw">str</span>, <span class="tok-cls">UseColumn</span>(<span class="tok-s">'username'</span>)]
+    
+    <span class="tok-c"># UseAdapter — 自定义类型适配器</span>
+    <span class="tok-c"># from rhosocial.activerecord.backend.type_adapter import JSONAdapter</span>
+    <span class="tok-c"># data: Annotated[dict, UseAdapter(JSONAdapter(), str)]</span></pre></div>
       </div>
     </div>
   </section>
   <section class="section">
     <div class="container">
       <div class="section-header">
-        <div class="section-label" data-i18n="delete.label">Delete</div>
-        <h2 class="section-title" data-i18n="delete.title">删除记录。</h2>
+        <div class="section-label" data-i18n="mixins.label">Field Mixins</div>
+        <h2 class="section-title" data-i18n="mixins.title">字段 Mixin 组合。</h2>
       </div>
       <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
-        <div class="code-body"><pre><span class="tok-c"># 实例方法删除</span>
-user = <span class="tok-cls">User</span>.find_one(1)
-user.delete()
+        <div class="code-body"><pre><span class="tok-kw">from</span> rhosocial.activerecord <span class="tok-kw">import</span> <span class="tok-cls">ActiveRecord</span>
+<span class="tok-kw">from</span> rhosocial.activerecord.field <span class="tok-kw">import</span> (
+    <span class="tok-cls">IntegerPKMixin</span>,
+    <span class="tok-cls">TimestampMixin</span>,
+    <span class="tok-cls">SoftDeleteMixin</span>,
+    <span class="tok-cls">OptimisticLockMixin</span>,
+    <span class="tok-cls">UUIDMixin</span>,
+)
 
-<span class="tok-c"># 条件删除 (query().where().delete())</span>
-<span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.username == <span class="tok-s">'Alice'</span>).delete()</pre></div>
+<span class="tok-c"># IntegerPKMixin: id 自增主键</span>
+<span class="tok-c"># TimestampMixin: created_at / updated_at</span>
+<span class="tok-c"># SoftDeleteMixin: deleted_at 逻辑删除</span>
+<span class="tok-c"># OptimisticLockMixin: version 乐观锁</span>
+<span class="tok-c"># UUIDMixin: id 自动生成 UUID</span>
+
+<span class="tok-kw">class</span> <span class="tok-cls">User</span>(<span class="tok-cls">ActiveRecord</span>,
+                 <span class="tok-cls">IntegerPKMixin</span>,
+                 <span class="tok-cls">TimestampMixin</span>,
+                 <span class="tok-cls">SoftDeleteMixin</span>,
+                 <span class="tok-cls">OptimisticLockMixin</span>):
+    __table_name__ = <span class="tok-s">'users'</span>
+    username: <span class="tok-kw">str</span>
+    email: <span class="tok-kw">str</span></pre></div>
       </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label" data-i18n="fieldproxy.label">FieldProxy</div>
+        <h2 class="section-title" data-i18n="fieldproxy.title">字段代理。</h2>
+      </div>
+      <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
+        <div class="code-body"><pre><span class="tok-kw">from</span> typing <span class="tok-kw">import</span> ClassVar
+<span class="tok-kw">from</span> rhosocial.activerecord <span class="tok-kw">import</span> <span class="tok-cls">ActiveRecord</span>
+<span class="tok-kw">from</span> rhosocial.activerecord.base.field_proxy <span class="tok-kw">import</span> <span class="tok-cls">FieldProxy</span>
+
+<span class="tok-kw">class</span> <span class="tok-cls">User</span>(<span class="tok-cls">ActiveRecord</span>):
+    __table_name__ = <span class="tok-s">'users'</span>
+    
+    <span class="tok-c"># 必须声明为 ClassVar</span>
+    c: ClassVar[<span class="tok-cls">FieldProxy</span>] = <span class="tok-cls">FieldProxy</span>()
+    
+    username: <span class="tok-kw">str</span>
+    email: <span class="tok-kw">str</span>
+    created_at: <span class="tok-kw">datetime</span>
+
+<span class="tok-c"># 在查询中使用 FieldProxy</span>
+users = <span class="tok-cls">User</span>.query().where(
+    <span class="tok-cls">User</span>.c.username == <span class="tok-s">'Alice'</span>
+).order_by(<span class="tok-cls">User</span>.c.created_at.desc()).all()
+
+<span class="tok-c"># 支持的操作符: ==, !=, >, <, >=, <=, .like(), .in_(), .is_null()</span></pre></div>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label" data-i18n="callbacks.label">Callbacks</div>
+        <h2 class="section-title" data-i18n="callbacks.title">事件钩子。</h2>
+      </div>
+      <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
+        <div class="code-body"><pre><span class="tok-kw">from</span> rhosocial.activerecord <span class="tok-kw">import</span> <span class="tok-cls">ActiveRecord</span>
+<span class="tok-kw">from</span> rhosocial.activerecord.interface.base <span class="tok-kw">import</span> <span class="tok-cls">ModelEvent</span>
+
+<span class="tok-kw">class</span> <span class="tok-cls">User</span>(<span class="tok-cls">ActiveRecord</span>):
+    __table_name__ = <span class="tok-s">'users'</span>
+    username: <span class="tok-kw">str</span>
+    email: <span class="tok-kw">str</span>
+    
+    <span class="tok-c"># 方式一：注册事件处理器</span>
+    <span class="tok-kw">def</span> <span class="tok-func">on_before_insert</span>(self, data):
+        self.email = self.email.lower()
+    
+    <span class="tok-kw">def</span> <span class="tok-func">on_after_create</span>(self):
+        <span class="tok-func">print</span>(<span class="tok-s">f'User {self.id} created'</span>)
+
+<span class="tok-c"># 手动注册更多回调</span>
+<span class="tok-cls">User</span>.register_handler(<span class="tok-cls">ModelEvent</span>.BEFORE_UPDATE, <span class="tok-kw">lambda</span> self, **kw: <span class="tok-func">print</span>(<span class="tok-s">'updating'</span>))
+
+<span class="tok-c"># 事件列表: BEFORE_VALIDATE, AFTER_VALIDATE,</span>
+<span class="tok-c"># BEFORE_INSERT, AFTER_INSERT,</span>
+<span class="tok-c"># BEFORE_UPDATE, AFTER_UPDATE,</span>
+<span class="tok-c"># BEFORE_DELETE, AFTER_DELETE</span></pre></div>
+      </div>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label" data-i18n="metaclass.label">Metaclass</div>
+        <h2 class="section-title" data-i18n="metaclass.title">元类机制。</h2>
+      </div>
+      <p class="section-intro" data-i18n="metaclass.desc">MetaclassMixin 自动完成：Pydantic 模型生成、表名推断、类方法注入。</p>
     </div>
   </section>
   <footer class="footer">
