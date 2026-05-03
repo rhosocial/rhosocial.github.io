@@ -1077,6 +1077,47 @@
   margin: 0;
 }
 
+/* Arch Comp D3 Tooltip */
+#arch-comp-tooltip {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .15s ease;
+  max-width: 260px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: 0 8px 24px rgba(0,0,0,.18);
+  font-family: var(--font-body);
+  font-size: .82rem;
+  line-height: 1.5;
+  color: var(--fg);
+}
+#arch-comp-tooltip.is-visible { opacity: 1; }
+#arch-comp-tooltip .tip-title {
+  font-weight: 700;
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--accent);
+  margin-bottom: 5px;
+}
+#arch-comp-d3 svg { display: block; margin: 0 auto; overflow: visible; }
+.arc-node rect {
+  rx: 8; ry: 8;
+  stroke-width: 1.5;
+  cursor: pointer;
+  transition: filter .15s;
+}
+.arc-node rect:hover, .arc-node.is-hovered rect { filter: brightness(1.12); }
+.arc-node text { pointer-events: none; dominant-baseline: central; text-anchor: middle; }
+.arc-edge { fill: none; stroke-width: 1.5; }
+.arc-edge.dashed { stroke-dasharray: 5 3; }
+.arc-group-label { font-weight: 700; letter-spacing: .04em; }
+.arc-badge { rx: 10; ry: 10; }
+
 
 [data-theme="terminal"] .tabs-row .tab.is-active
 [data-theme="wireframe"] .dropdown-menu { border: 2px solid var(--fg); transform: rotate(-0.3deg); }

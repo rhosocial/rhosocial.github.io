@@ -108,6 +108,7 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
 <script src="assets/themes.js"></script>
 <script src="assets/i18n-core.js"></script>
 <script src="assets/utils.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 </head>
 <body>
 <header class="control-bar" id="control-bar">
@@ -383,74 +384,27 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
     </div>
 </section>
 
-<!-- ── COMPONENT ARCHITECTURE ──────────────────────────── -->
+<!-- ARCH COMP -->
 <section id="arch-comp" class="section">
   <div class="container">
     <div class="section-header">
       <div class="section-label" data-i18n="arch_comp.label">Component Architecture</div>
-      <h2 class="section-title" data-i18n="arch_comp.title">ActiveRecord + Backend, <em>two independent layers</em>.</h2>
-      <p class="section-intro" style="max-width:640px;margin:0 auto;" data-i18n="arch_comp.intro">
+      <h2 class="section-title" data-i18n="arch_comp.title">
+        ActiveRecord + Backend, <em>two independent layers</em>.
+      </h2>
+      <p class="section-intro" style="max-width:640px;margin:0 auto;"
+         data-i18n="arch_comp.intro">
         ActiveRecord is the user of Backend; Backend can work standalone.
         Sync and async variants are paired but not interchangeable.
       </p>
     </div>
-
-    <!-- Two-panel layout -->
-    <div class="arch-comp-panels">
-
-      <!-- LEFT: ActiveRecord panel -->
-      <div class="arch-comp-panel">
-        <div class="arch-comp-badge" data-i18n="arch_comp.ar_badge">Application Layer</div>
-        <div class="arch-comp-panel-title" data-i18n="arch_comp.ar_title">ActiveRecord</div>
-        <p class="arch-comp-panel-desc" data-i18n="arch_comp.ar_desc">
-          Model definition, query building, relations, transactions.
-          Includes ActiveQuery, SetOperation, CTEQuery.
-        </p>
-      </div>
-
-      <!-- CENTER: Connector -->
-      <div class="arch-comp-connector">
-        <div class="arch-comp-connector-arrow">→</div>
-        <div class="arch-comp-connector-label" data-i18n="arch_comp.uses_label">uses</div>
-        <div class="arch-comp-connector-note" data-i18n="arch_comp.sync_async_note">sync ↔ sync · async ↔ async</div>
-      </div>
-
-      <!-- RIGHT: Backend panel -->
-      <div class="arch-comp-panel">
-        <div class="arch-comp-badge" data-i18n="arch_comp.be_badge">Independent Layer</div>
-        <div class="arch-comp-panel-title" data-i18n="arch_comp.be_title">Backend</div>
-        <p class="arch-comp-panel-desc" data-i18n="arch_comp.be_desc">
-          Database I/O layer; usable without ActiveRecord.
-          SQLite built-in; other databases as extension packages.
-        </p>
-      </div>
-
-    </div>
-
-    <!-- Notes row -->
-    <div class="arch-comp-notes">
-      <div class="arch-comp-note">
-        <div class="arch-comp-note-title" data-i18n="arch_comp.note1_title">Independent</div>
-        <p class="arch-comp-note-desc" data-i18n="arch_comp.note1_desc">
-          Backend exposes a clean ABC. Use it directly without ActiveRecord for lightweight scripts or embedded scenarios.
-        </p>
-      </div>
-      <div class="arch-comp-note">
-        <div class="arch-comp-note-title" data-i18n="arch_comp.note2_title">Extensible</div>
-        <p class="arch-comp-note-desc" data-i18n="arch_comp.note2_desc">
-          SQLite ships with the core package. MySQL, MariaDB, PostgreSQL, Oracle, and SQL Server are separate packages — install only what you need.
-        </p>
-      </div>
-      <div class="arch-comp-note">
-        <div class="arch-comp-note-title" data-i18n="arch_comp.note3_title">Type-safe pairing</div>
-        <p class="arch-comp-note-desc" data-i18n="arch_comp.note3_desc">
-          <code>ActiveRecord</code> pairs with <code>StorageBackend</code>; <code>AsyncActiveRecord</code> pairs with <code>AsyncStorageBackend</code>. Cross-pairing raises a type error.
-        </p>
-      </div>
-    </div>
-
+    <div id="arch-comp-d3" style="margin-top:48px;position:relative;"></div>
+    <div id="arch-comp-tooltip" role="tooltip" aria-live="polite"></div>
   </div>
 </section>
+
+<!-- arch-comp-section.js content via D3.js -->
+<script src="index/arch-comp-section.js"></script>
 
 <!-- COMPARE -->
   <section class="section">
