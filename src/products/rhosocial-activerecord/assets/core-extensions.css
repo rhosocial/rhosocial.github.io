@@ -922,6 +922,7 @@
 .tabs-display .code-body {
   padding: 12px 16px;
   overflow-x: auto;
+  background: var(--code-bg);
 }
 
 .tabs-display .code-body pre,
@@ -934,6 +935,26 @@
   margin: 0;
   padding: 0;
 }
+
+/* Override hljs colors to use CSS variables */
+.tabs-display .hljs {
+  background: transparent;
+  color: var(--fg);
+}
+
+.tabs-display .hljs-keyword,
+.tabs-display .hljs-selector-tag,
+.tabs-display .hljs-built_in { color: var(--accent, #00ff88); }
+.tabs-display .hljs-string,
+.tabs-display .hljs-attr { color: var(--accent-2, #ff6b35); }
+.tabs-display .hljs-number,
+.tabs-display .hljs-literal { color: var(--accent-3, #ff00ff); }
+.tabs-display .hljs-comment { color: var(--fg-muted); font-style: italic; }
+.tabs-display .hljs-function { color: var(--fg); }
+.tabs-display .hljs-class { color: var(--fg); }
+.tabs-display .hljs-params { color: var(--fg); }
+.tabs-display .hljs-variable,
+.tabs-display .hljs-template-variable { color: var(--fg); }
 
 .tabs-empty {
   padding: 24px;
