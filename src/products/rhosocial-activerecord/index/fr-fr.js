@@ -120,12 +120,12 @@ window.I18N['fr-fr'] = Object.assign(window.I18N['fr-fr'] || {}, {
     node_sqlite_s:'SQLiteBackend',
     node_sqlite_a:'AsyncSQLiteBackend',
     node_sb_a:   'AsyncStorageBackend',
-    node_ext:    'MySQL · PG · Oracle · SS',
-    node_ext_a:  'AsyncMySQL · AsyncPG · …',
+    node_ext:    'MySQL · PostgreSQL · SQL Server',
+    node_ext_a:  'AsyncMySQL · AsyncPostgreSQL · …',
 
     tip_ar_s:   'ActiveRecord sync. Héitez de cette classe pour définir un modèle, appelez les méthodes sync comme <code>.save()</code>, <code>.query()</code>.',
     tip_ar_a:   'Async ActiveRecord. API est le miroir de la version sync, toutes les méthodes sont <code>async/await</code>, pour FastAPI / asyncio.',
-    tip_aq_s:   'ActiveQuery (sync). Construction en chaîne de WHERE, ORDER BY, JOIN, pagination, à la fin <code>.all()</code> / <code>.first()</code> pour exécuter.',
+    tip_aq_s:   'ActiveQuery (sync). Construction en chaîne de WHERE, ORDER BY, JOIN, pagination, à la fin <code>.all()</code> / <code>.one()</code> pour exécuter.',
     tip_aq_a:   'AsyncActiveQuery (async). Même sémantique que sync, toutes les méthodes terminals sont des coroutines.',
     tip_so_s:   'SetOperation (sync). Combine plusieurs requêtes avec UNION / INTERSECT / EXCEPT, retourne un ensemble de résultats unifié.',
     tip_so_a:   'AsyncSetOperation (async). Même chose, exécution asynchrone.',
@@ -134,7 +134,7 @@ window.I18N['fr-fr'] = Object.assign(window.I18N['fr-fr'] || {}, {
     tip_sb_s:   'StorageBackend (sync). Définit l\'interface I/O minimale: execute / fetch / transaction. Utilisable sans ActiveRecord.',
     tip_sb_a:   'AsyncStorageBackend (async). Miroir de la version sync, toutes les méthodes I/O sont des coroutines.',
     tip_sqlite:  'Backend SQLite, inclus dans le paquet principal. Configuration zéro, adapté pour développement, tests et embarqué.',
-    tip_ext:    'Paquets backend d\'extension (sync): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver. Installer selon besoin, <code>configure()</code> une ligne.',
+    tip_ext:    'Paquets backend d\'extension (sync): rhosocial-activerecord-mysql, -postgres, -oracle, -sqlserver. Installer selon besoin, <code>configure()</code> une ligne.',
     tip_ext_a:  'Paquets backend d\'extension (async): correspondent aux paquets sync, fournissent support async/await complet.'
   },
 

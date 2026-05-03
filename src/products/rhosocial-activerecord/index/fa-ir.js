@@ -182,13 +182,13 @@ window.I18N['fa-ir'] = Object.assign(window.I18N['fa-ir'] || {}, {
     node_sqlite_s:'SQLiteBackend',
     node_sqlite_a:'AsyncSQLiteBackend',
     node_sb_a:    'AsyncStorageBackend',
-    node_ext:     'MySQL · PG · Oracle · SS',
-    node_ext_a:   'AsyncMySQL · AsyncPG · …',
+    node_ext:     'MySQL · PostgreSQL · SQL Server',
+    node_ext_a:   'AsyncMySQL · AsyncPostgreSQL · …',
 
     /* ── D3 diagram: tooltip descriptions ── */
     tip_ar_s:  'Sync ActiveRecord. Subclass this to define your model; call <code>.save()</code>, <code>.query()</code> and other sync methods to interact with the database.',
     tip_ar_a:  'Async ActiveRecord. API mirrors the sync version exactly — all methods are <code>async/await</code>, ideal for FastAPI / asyncio stacks.',
-    tip_aq_s:  'ActiveQuery (sync). Fluently chain WHERE, ORDER BY, JOIN, pagination, etc., then call <code>.all()</code> or <code>.first()</code> to execute.',
+    tip_aq_s:  'ActiveQuery (sync). Fluently chain WHERE, ORDER BY, JOIN, pagination, etc., then call <code>.all()</code> or <code>.one()</code> to execute.',
     tip_aq_a:  'AsyncActiveQuery (async). Same semantics as the sync version; all terminal methods are coroutines.',
     tip_so_s:  'SetOperation (sync). Combine multiple queries with UNION, INTERSECT, or EXCEPT into a single typed result set.',
     tip_so_a:  'AsyncSetOperation (async). Same as sync; executes asynchronously.',
@@ -197,7 +197,7 @@ window.I18N['fa-ir'] = Object.assign(window.I18N['fa-ir'] || {}, {
     tip_sb_s:  'StorageBackend ABC (sync). Defines the minimal database I/O interface: execute / fetch / transaction. Usable directly without ActiveRecord.',
     tip_sb_a:  'AsyncStorageBackend ABC (async). Mirrors the sync interface; all I/O methods are coroutines.',
     tip_sqlite: 'SQLite backend — ships with the core package. Zero configuration needed; perfect for development, testing, and embedded use.',
-    tip_ext:   'Extension backends (sync): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver. Install only what you need; switch with a single <code>configure()</code> call.',
+    tip_ext:   'Extension backends (sync): rhosocial-activerecord-mysql, -postgres, -oracle, -sqlserver. Install only what you need; switch with a single <code>configure()</code> call.',
     tip_ext_a: 'Extension backends (async): one-to-one counterparts of the sync packages, with full async/await support.'
   },
 

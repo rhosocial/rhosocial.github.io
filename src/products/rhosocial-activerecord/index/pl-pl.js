@@ -120,12 +120,12 @@ window.I18N['pl-pl'] = Object.assign(window.I18N['pl-pl'] || {}, {
     node_sqlite_s:'SQLiteBackend',
     node_sqlite_a:'AsyncSQLiteBackend',
     node_sb_a: 'AsyncStorageBackend',
-    node_ext: 'MySQL · PG · Oracle · SS',
-    node_ext_a: 'AsyncMySQL · AsyncPG · …',
+    node_ext: 'MySQL · PostgreSQL · SQL Server',
+    node_ext_a: 'AsyncMySQL · AsyncPostgreSQL · …',
 
     tip_ar_s: 'Sync ActiveRecord. Dziedzicz tę klasę aby definiować modele, wywołuj metody sync jak <code>.save()</code>, <code>.query()</code>.',
     tip_ar_a: 'Async ActiveRecord. API jest lustrzanym odbiciem wersji sync, wszystkie metody to <code>async/await</code>, dla FastAPI/asyncio.',
-    tip_aq_s: 'ActiveQuery (sync). Łączenie WHERE, ORDER BY, JOIN, paginacji, na końcu <code>.all()</code> / <code>.first()</code> do wykonania.',
+    tip_aq_s: 'ActiveQuery (sync). Łączenie WHERE, ORDER BY, JOIN, paginacji, na końcu <code>.all()</code> / <code>.one()</code> do wykonania.',
     tip_aq_a: 'AsyncActiveQuery (async). Ta sama semantyka co sync, wszystkie metody terminalowe to koryniny.',
     tip_so_s: 'SetOperation (sync). Łącz wiele zapytań przez UNION / INTERSECT / EXCEPT, zwróć ujednolicony wynik.',
     tip_so_a: 'AsyncSetOperation (async). To samo, wykonanie asynchroniczne.',
@@ -134,7 +134,7 @@ window.I18N['pl-pl'] = Object.assign(window.I18N['pl-pl'] || {}, {
     tip_sb_s: 'StorageBackend (sync). Definiuje minimalny interfejs I/O: execute / fetch / transaction. Używalny bez ActiveRecord.',
     tip_sb_a: 'AsyncStorageBackend (async). Lustrzane odbicie wersji sync, wszystkie metody I/O to koryniny.',
     tip_sqlite: 'SQLite backend — w pakiecie core. Brak konfiguracji; idealne dla rozwoju, testów i embedded.',
-    tip_ext: 'Pakiety rozszerzeń backend (sync): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver. Instaluj czego potrzebujesz; przełącz jedną linią <code>configure()</code>.',
+    tip_ext: 'Pakiety rozszerzeń backend (sync): rhosocial-activerecord-mysql, -postgres, -oracle, -sqlserver. Instaluj czego potrzebujesz; przełącz jedną linią <code>configure()</code>.',
     tip_ext_a: 'Pakiety rozszerzeń backend (async): odpowiedniki pakietów sync, z pełnym wsparciem async/await.'
   },
 

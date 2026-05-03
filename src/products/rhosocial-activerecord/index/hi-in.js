@@ -182,13 +182,13 @@ window.I18N['hi-in'] = Object.assign(window.I18N['hi-in'] || {}, {
     node_sqlite_s:'SQLiteBackend',
     node_sqlite_a:'AsyncSQLiteBackend',
     node_sb_a:    'AsyncStorageBackend',
-    node_ext:     'MySQL · PG · Oracle · SS',
-    node_ext_a:   'AsyncMySQL · AsyncPG · …',
+    node_ext:     'MySQL · PostgreSQL · SQL Server',
+    node_ext_a:   'AsyncMySQL · AsyncPostgreSQL · …',
 
     /* ── D3 diagram: tooltip descriptions ── */
     tip_ar_s:  'Sync ActiveRecord। अपना model define करने के लिए इसको subclass करें; database से interact करने के लिए <code>.save()</code>, <code>.query()</code> और other sync methods call करें।',
     tip_ar_a:  'Async ActiveRecord। API exact sync version को mirror करता है — सभी methods <code>async/await</code> हैं, FastAPI / asyncio stacks के लिए ideal।',
-    tip_aq_s:  'ActiveQuery (sync)। WHERE, ORDER BY, JOIN, pagination, etc. को fluent में chain करें, फिर <code>.all()</code> या <code>.first()</code> call करें execute करने के लिए।',
+    tip_aq_s:  'ActiveQuery (sync)। WHERE, ORDER BY, JOIN, pagination, etc. को fluent में chain करें, फिर <code>.all()</code> या <code>.one()</code> call करें execute करने के लिए।',
     tip_aq_a:  'AsyncActiveQuery (async)। Sync version के same semantics; सभी terminal methods coroutines हैं।',
     tip_so_s:  'SetOperation (sync)। Multiple queries को UNION, INTERSECT, या EXCEPT से combine करके single typed result set return करें।',
     tip_so_a:  'AsyncSetOperation (async)। Sync के समान; asynchronously execute करता है।',
@@ -197,7 +197,7 @@ window.I18N['hi-in'] = Object.assign(window.I18N['hi-in'] || {}, {
     tip_sb_s:  'StorageBackend ABC (sync)। Minimal database I/O interface define करता है: execute / fetch / transaction। ActiveRecord के बिना directly usable।',
     tip_sb_a:  'AsyncStorageBackend ABC (async)। Sync interface को mirror करता है; सभी I/O methods coroutines हैं।',
     tip_sqlite: 'SQLite backend — core package के साथ आता है। Zero configuration needed; development, testing, और embedded use के लिए perfect।',
-    tip_ext:   'Extension backends (sync): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver। जो चाहिए वही install करें; एक single <code>configure()</code> call से switch करें।',
+    tip_ext:   'Extension backends (sync): rhosocial-activerecord-mysql, -postgres, -oracle, -sqlserver। जो चाहिए वही install करें; एक single <code>configure()</code> call से switch करें।',
     tip_ext_a: 'Extension backends (async): sync packages के one-to-one counterparts, full async/await support के साथ।'
   },
 

@@ -120,12 +120,12 @@ window.I18N['el-gr'] = Object.assign(window.I18N['el-gr'] || {}, {
     node_sqlite_s:'SQLiteBackend',
     node_sqlite_a:'AsyncSQLiteBackend',
     node_sb_a:   'AsyncStorageBackend',
-    node_ext:    'MySQL · PG · Oracle · SS',
-    node_ext_a:  'AsyncMySQL · AsyncPG · …',
+    node_ext:    'MySQL · PostgreSQL · SQL Server',
+    node_ext_a:  'AsyncMySQL · AsyncPostgreSQL · …',
 
     tip_ar_s:   'Sync ActiveRecord. Κληρονομήστε αυτήν την κλάση για να ορίσετε μοντέλο, καλέστε sync μεθόδους όπως <code>.save()</code>, <code>.query()</code>.',
     tip_ar_a:   'Async ActiveRecord. Το API είναι καθρέφτης της sync έκδοσης, όλες οι μέθοδοι είναι <code>async/await</code>, για FastAPI / asyncio.',
-    tip_aq_s:   'ActiveQuery (sync). Αλυσίδα δημιουργίας WHERE, ORDER BY, JOIN, pagination, τέλος <code>.all()</code> / <code>.first()</code> για εκτέλεση.',
+    tip_aq_s:   'ActiveQuery (sync). Αλυσίδα δημιουργίας WHERE, ORDER BY, JOIN, pagination, τέλος <code>.all()</code> / <code>.one()</code> για εκτέλεση.',
     tip_aq_a:   'AsyncActiveQuery (async). Ίδια σημασιολογία με sync, όλες οι τελικές μέθοδοι είναι coroutines.',
     tip_so_s:   'SetOperation (sync). Συνδυασμός πολλαπλών ερωτημάτων με UNION / INTERSECT / EXCEPT, επιστρέφει ενοποιημένο σύνολο αποτελεσμάτων.',
     tip_so_a:   'AsyncSetOperation (async). Το ίδιο, ασύγχρονη εκτέλεση.',
@@ -134,7 +134,7 @@ window.I18N['el-gr'] = Object.assign(window.I18N['el-gr'] || {}, {
     tip_sb_s:   'StorageBackend (sync). Ορίζει ελάχιστο interface I/O: execute / fetch / transaction. Μπορεί να χρησιμοποιηθεί χωρίς ActiveRecord.',
     tip_sb_a:   'AsyncStorageBackend (async). Καθρέφτης της sync έκδοσης, όλες οι μέθοδοι I/O είναι coroutines.',
     tip_sqlite:  'SQLite backend, ενσωματωμένο στο βασικό πακέτο. Μηδενική διαμόρφωση, κατάλληλο για ανάπτυξη, τεστ και embedded.',
-    tip_ext:    'Πακέτα επέκτασης backend (sync): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver. Εγκατάσταση κατά παραγγελία, <code>configure()</code> μία γραμμή.',
+    tip_ext:    'Πακέτα επέκτασης backend (sync): rhosocial-activerecord-mysql, -postgres, -oracle, -sqlserver. Εγκατάσταση κατά παραγγελία, <code>configure()</code> μία γραμμή.',
     tip_ext_a:  'Πακέτα επέκτασης backend (async): αντιστοιχούν στα sync πακέτα, παρέχουν πλήρη async/await υποστ��ρι��η.'
   },
 

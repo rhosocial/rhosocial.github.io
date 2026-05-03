@@ -224,6 +224,14 @@
     var dict = window.I18N && window.I18N[lang];
     if (!dict) return;
 
+    window.CURRENT_LANG = lang;
+
+    if (window.RENDER_ADAPTERS) {
+      window.RENDER_ADAPTERS.forEach(function(adapter) {
+        if (adapter.onLang) adapter.onLang(lang);
+      });
+    }
+
     document.querySelectorAll('[data-i18n]').forEach(function(el) {
       var key = el.dataset.i18n;
       var parts = key.split('.');

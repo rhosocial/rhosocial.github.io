@@ -182,13 +182,13 @@ window.I18N['zh-cn'] = Object.assign(window.I18N['zh-cn'] || {}, {
     node_sqlite_s:'SQLiteBackend',
     node_sqlite_a:'AsyncSQLiteBackend',
     node_sb_a:   'AsyncStorageBackend',
-    node_ext:    'MySQL · PG · Oracle · SS',
-    node_ext_a:  'AsyncMySQL · AsyncPG · …',
+    node_ext:    'MySQL · PostgreSQL · SQL Server',
+    node_ext_a:  'AsyncMySQL · AsyncPostgreSQL · …',
 
     /* ── D3 图：tooltip 详细说明 ── */
     tip_ar_s:   '同步 ActiveRecord。继承此类定义模型，调用 <code>.save()</code>、<code>.query()</code> 等同步方法操作数据库。',
     tip_ar_a:   '异步 ActiveRecord。API 与同步版完全镜像，所有方法均为 <code>async/await</code>，适合 FastAPI / asyncio 场景。',
-    tip_aq_s:   'ActiveQuery（同步）。链式构建 WHERE、ORDER BY、JOIN、分页等查询条件，最终调用 <code>.all()</code> / <code>.first()</code> 执行。',
+    tip_aq_s:   'ActiveQuery（同步）。链式构建 WHERE、ORDER BY、JOIN、分页等查询条件，最终调用 <code>.all()</code> / <code>.one()</code> 执行。',
     tip_aq_a:   'AsyncActiveQuery（异步）。与同步版语义一致，所有终止方法均为 coroutine。',
     tip_so_s:   'SetOperation（同步）。将多个查询以 UNION / INTERSECT / EXCEPT 组合，返回统一类型的结果集。',
     tip_so_a:   'AsyncSetOperation（异步）。同上，异步执行。',
@@ -197,7 +197,7 @@ window.I18N['zh-cn'] = Object.assign(window.I18N['zh-cn'] || {}, {
     tip_sb_s:   'StorageBackend 抽象基类（同步）。定义数据库 I/O 的最小接口：execute / fetch / transaction。可不依赖 ActiveRecord 直接使用。',
     tip_sb_a:   'AsyncStorageBackend 抽象基类（异步）。与同步版接口镜像，所有 I/O 方法均为 coroutine。',
     tip_sqlite:  'SQLite 后端，随核心包内置。零配置即可使用，适合开发、测试和嵌入式场景。',
-    tip_ext:    '扩展后端包（同步）：rhosocial-activerecord-mysql、-postgresql、-oracle、-sqlserver。按需 pip 安装，<code>configure()</code> 一行切换。',
+    tip_ext:    '扩展后端包（同步）：rhosocial-activerecord-mysql、-postgres、-oracle、-sqlserver。按需 pip 安装，<code>configure()</code> 一行切换。',
     tip_ext_a:  '扩展后端包（异步）：与同步包一一对应，提供完整 async/await 支持。'
   },
 

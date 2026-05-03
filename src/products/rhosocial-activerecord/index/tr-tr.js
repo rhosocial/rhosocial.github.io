@@ -182,13 +182,13 @@ window.I18N['tr-tr'] = Object.assign(window.I18N['tr-tr'] || {}, {
     node_sqlite_s:'SQLiteBackend',
     node_sqlite_a:'AsyncSQLiteBackend',
     node_sb_a:   'AsyncStorageBackend',
-    node_ext:    'MySQL · PG · Oracle · SS',
-    node_ext_a:  'AsyncMySQL · AsyncPG · …',
+    node_ext:    'MySQL · PostgreSQL · SQL Server',
+    node_ext_a:  'AsyncMySQL · AsyncPostgreSQL · …',
 
     /* ── D3 diagram: tooltip descriptions ── */
     tip_ar_s:   'Senkron ActiveRecord. Model tanımlamak için bu sınıftan türetin, veritabanı işlemleri için <code>.save()</code>, <code>.query()</code> vb. senkron yöntemleri çağırın.',
     tip_ar_a:   'Asenkron ActiveRecord. API senkron versiyonun tam yansıması, tüm yöntemler <code>async/await</code>, FastAPI/asyncio senaryolarına uygun.',
-    tip_aq_s:   'ActiveQuery (senkron). WHERE, ORDER BY, JOIN, sayfalandırma vb. koşulları zincirle oluşturur, sonunda <code>.all()</code> / <code>.first()</code> yürütür.',
+    tip_aq_s:   'ActiveQuery (senkron). WHERE, ORDER BY, JOIN, sayfalandırma vb. koşulları zincirle oluşturur, sonunda <code>.all()</code> / <code>.one()</code> yürütür.',
     tip_aq_a:   'AsyncActiveQuery (asenkron). Anlam senkron versiyonla aynı, tüm sonlandırıcı yöntemler coroutine.',
     tip_so_s:   'SetOperation (senkron). Birden fazla sorguyu UNION / INTERSECT / EXCEPT ile birleştirir, tek tip sonuç kümesi döndürür.',
     tip_so_a:   'AsyncSetOperation (asenkron). Aynı, asenkron yürütür.',
@@ -197,7 +197,7 @@ window.I18N['tr-tr'] = Object.assign(window.I18N['tr-tr'] || {}, {
     tip_sb_s:   'StorageBackend soyut temel sınıfı (senkron). Veritabanı I/O minimum arayüzünü tanımlar: execute / fetch / transaction. ActiveRecord olmadan kullanılabilir.',
     tip_sb_a:   'AsyncStorageBackend soyut temel sınıfı (asenkron). Arayüz senkron versiyonun yansıması, tüm I/O yöntemleri coroutine.',
     tip_sqlite:  'SQLite arka ucu, çekirdek paketle birlikte gelir. Sıfır yapılandırma ile kullanıma hazır, geliştirme/test/embedded senaryolarına uygun.',
-    tip_ext:    'Arka uç paketleri (senkron): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver. İhtiyaca göre pip kurulum, tek satır <code>configure()</code> ile geçiş.',
+    tip_ext:    'Arka uç paketleri (senkron): rhosocial-activerecord-mysql, -postgres, -oracle, -sqlserver. İhtiyaca göre pip kurulum, tek satır <code>configure()</code> ile geçiş.',
     tip_ext_a:  'Arka uç paketleri (asenkron): Senkron paketlerin birebir karşılığı, tam async/await desteği sağlar.'
   },
 

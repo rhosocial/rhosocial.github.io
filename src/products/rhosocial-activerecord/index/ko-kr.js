@@ -120,12 +120,12 @@ window.I18N['ko-kr'] = Object.assign(window.I18N['ko-kr'] || {}, {
     node_sqlite_s:'SQLiteBackend',
     node_sqlite_a:'AsyncSQLiteBackend',
     node_sb_a: 'AsyncStorageBackend',
-    node_ext: 'MySQL · PG · Oracle · SS',
-    node_ext_a: 'AsyncMySQL · AsyncPG · …',
+node_ext:    'MySQL · PostgreSQL · SQL Server',
+    node_ext_a:  'AsyncMySQL · AsyncPostgreSQL · …',
 
     tip_ar_s: 'Sync ActiveRecord. 이 클래스를 상속하여 모델을 정의하고 <code>.save()</code>, <code>.query()</code> 등의 Sync 메서드를 호출.',
     tip_ar_a: 'Async ActiveRecord. API는 Sync 버전의 미러, 모든 메서드는 <code>async/await</code>, FastAPI / asyncio 용.',
-    tip_aq_s: 'ActiveQuery (sync). WHERE, ORDER BY, JOIN, 페지네이션 체인 빌딩, 마지막에 <code>.all()</code> / <code>.first()</code>로 실행.',
+    tip_aq_s: 'ActiveQuery (sync). WHERE, ORDER BY, JOIN, 페지네이션 체인 빌딩, 마지막에 <code>.all()</code> / <code>.one()</code>로 실행.',
     tip_aq_a: 'AsyncActiveQuery (async). Sync와 동일한 시맨틱스, 모든 터미널 메서드는 코루틴.',
     tip_so_s: 'SetOperation (sync). 여러 쿼리를 UNION / INTERSECT / EXCEPT로 결합, 통합 결과 세트 반환.',
     tip_so_a: 'AsyncSetOperation (async). 동일, 비동기 실행.',
@@ -134,7 +134,7 @@ window.I18N['ko-kr'] = Object.assign(window.I18N['ko-kr'] || {}, {
     tip_sb_s: 'StorageBackend (sync). 최소 I/O 인터페이스 정의: execute / fetch / transaction. ActiveRecord 없이 사용 가능.',
     tip_sb_a: 'AsyncStorageBackend (async). Sync 버전의 미러, 모든 I/O 메서드는 코루틴.',
     tip_sqlite: 'SQLite Backend — 코어 패키지에 포함됨. 설정 불필요, 개발, 테스트, 임베디드用途에 최적.',
-    tip_ext: '확장 Backend 패키지 (sync): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver. 필요에 따라 pip install, <code>configure()</code> 한 줄.',
+    tip_ext: '확장 Backend 패키지 (sync): rhosocial-activerecord-mysql, -postgres, -oracle, -sqlserver. 필요에 따라 pip install, <code>configure()</code> 한 줄.',
     tip_ext_a: '확장 Backend 패키지 (async): Sync 패키지의 대응 판, 완전한 async/await 지원.'
   },
 

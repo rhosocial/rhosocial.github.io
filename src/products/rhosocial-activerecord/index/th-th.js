@@ -182,13 +182,13 @@ window.I18N['th-th'] = Object.assign(window.I18N['th-th'] || {}, {
     node_sqlite_s:'SQLiteBackend',
     node_sqlite_a:'AsyncSQLiteBackend',
     node_sb_a:   'AsyncStorageBackend',
-    node_ext:    'MySQL · PG · Oracle · SS',
-    node_ext_a:  'AsyncMySQL · AsyncPG · …',
+    node_ext:    'MySQL · PostgreSQL · SQL Server',
+    node_ext_a:  'AsyncMySQL · AsyncPostgreSQL · …',
 
     /* ── D3 diagram: tooltip descriptions ── */
     tip_ar_s:   'ActiveRecord sync สืบทอด class นี้ define model เรียก <code>.save()</code> <code>.query()</code> ทำงานกับ database',
     tip_ar_a:   'AsyncActiveRecord API สะท้อน sync ทุก method เป็น <code>async/await</code> เหมาะกับ FastAPI/asyncio',
-    tip_aq_s:   'ActiveQuery (sync) chain build WHERE ORDER BY JOIN pagination สุดท้ายเรียก <code>.all()</code> <code>.first()</code> execute',
+    tip_aq_s:   'ActiveQuery (sync) chain build WHERE ORDER BY JOIN pagination สุดท้ายเรียก <code>.all()</code> <code>.one()</code> execute',
     tip_aq_a:   'AsyncActiveQuery (async) semantic เหมือน sync ทุก terminating method เป็น coroutine',
     tip_so_s:   'SetOperation (sync) รวมหลาย query ด้วย UNION INTERSECT EXCEPT return result set type เดียวกัน',
     tip_so_a:   'AsyncSetOperation (async) เหมือนกัน async execute',
@@ -197,7 +197,7 @@ window.I18N['th-th'] = Object.assign(window.I18N['th-th'] || {}, {
     tip_sb_s:   'StorageBackend abstract base class (sync) define database I/O interface ขั้นต่ำ: execute fetch transaction ใช้โดยไม่ต้องมี ActiveRecord',
     tip_sb_a:   'AsyncStorageBackend abstract base class (async) interface สะท้อน sync ทุก I/O method เป็น coroutine',
     tip_sqlite:  'SQLite backend มากับแพ็กเกจหลัก ใช้ได้ทันที เหมาะกับ dev test และ embedded',
-    tip_ext:    'Backend แพ็กเกจ (sync): rhosocial-activerecord-mysql -postgresql -oracle -sqlserver ติดตั้งตามต้องการ <code>configure()</code> สลับได้',
+    tip_ext:    'Backend แพ็กเกจ (sync): rhosocial-activerecord-mysql -postgres -oracle -sqlserver ติดตั้งตามต้องการ <code>configure()</code> สลับได้',
     tip_ext_a:  'Backend แพ็กเกจ (async): คู่กับ sync package ทุกตัว ให้ async/await สมบูรณ์'
   },
 

@@ -182,13 +182,13 @@ window.I18N['vi-vn'] = Object.assign(window.I18N['vi-vn'] || {}, {
     node_sqlite_s:'SQLiteBackend',
     node_sqlite_a:'AsyncSQLiteBackend',
     node_sb_a:   'AsyncStorageBackend',
-    node_ext:    'MySQL · PG · Oracle · SS',
-    node_ext_a:  'AsyncMySQL · AsyncPG · …',
+    node_ext:    'MySQL · PostgreSQL · SQL Server',
+    node_ext_a:  'AsyncMySQL · AsyncPostgreSQL · …',
 
     /* ── D3 diagram: tooltip descriptions ── */
     tip_ar_s:   'ActiveRecord đồng bộ. Kế thừa class này để định nghĩa model, gọi sync methods <code>.save()</code>, <code>.query()</code> để làm việc với DB.',
     tip_ar_a:   'AsyncActiveRecord. API phản chiếu hoàn toàn phiên bản sync, tất cả methods là <code>async/await</code>, phù hợp FastAPI/asyncio.',
-    tip_aq_s:   'ActiveQuery (đồng bộ). Chain build WHERE ORDER BY JOIN pagination... cuối gọi <code>.all()</code> / <code>.first()</code> để execute.',
+    tip_aq_s:   'ActiveQuery (đồng bộ). Chain build WHERE ORDER BY JOIN pagination... cuối gọi <code>.all()</code> / <code>.one()</code> để execute.',
     tip_aq_a:   'AsyncActiveQuery (bất đồng bộ). Ngữ nghĩa giống phiên bản sync, tất cả terminating methods là coroutine.',
     tip_so_s:   'SetOperation (đồng bộ). Kết hợp nhiều query với UNION / INTERSECT / EXCEPT, trả về result set cùng kiểu.',
     tip_so_a:   'AsyncSetOperation (bất đồng bộ). Tương tự, async execute.',
@@ -197,7 +197,7 @@ window.I18N['vi-vn'] = Object.assign(window.I18N['vi-vn'] || {}, {
     tip_sb_s:   'StorageBackend abstract base class (đồng bộ). Định nghĩa interface I/O DB tối thiểu: execute / fetch / transaction. Có thể dùng không cần ActiveRecord.',
     tip_sb_a:   'AsyncStorageBackend abstract base class (bất đồng bộ). Interface phản chiếu phiên bản sync, tất cả I/O methods là coroutine.',
     tip_sqlite:  'SQLite backend, đi với gói lõi. Sẵn sàng sử dụng với config zero, phù hợp dev/test/embedded.',
-    tip_ext:    'Backend packages (đồng bộ): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver. Cài theo nhu cầu qua pip, <code>configure()</code> chuyển đổi.',
+    tip_ext:    'Backend packages (đồng bộ): rhosocial-activerecord-mysql, -postgres, -oracle, -sqlserver. Cài theo nhu cầu qua pip, <code>configure()</code> chuyển đổi.',
     tip_ext_a:  'Backend packages (bất đồng bộ): tương ứng 1-1 với packages sync, hỗ trợ đầy đủ async/await.'
   },
 

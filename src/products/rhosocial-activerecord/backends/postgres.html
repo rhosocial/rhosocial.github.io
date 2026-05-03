@@ -635,7 +635,7 @@ sql, params = dialect.format_set_transaction(
 <p class="section-intro" data-i18n="async.desc">AsyncPostgresBackend / AsyncPostgresTransactionManager 懒加载，需安装 asyncpg。</p>
 <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">async_postgres.py</span></div>
 <div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.postgresql <span class="tok-k">import</span> <span class="tok-cls">AsyncPostgresBackend</span>
-<span class="tok-c"># 需安装: pip install rhosocial-activerecord-postgresql[async]</span>
+<span class="tok-c"># 需安装: pip install rhosocial-activerecord-postgres[async]</span>
 
 backend = <span class="tok-cls">AsyncPostgresBackend</span>(
     host=<span class="tok-s">'127.0.0.1'</span>,

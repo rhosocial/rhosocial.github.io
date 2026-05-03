@@ -182,13 +182,13 @@ window.I18N['id-id'] = Object.assign(window.I18N['id-id'] || {}, {
     node_sqlite_s:'SQLiteBackend',
     node_sqlite_a:'AsyncSQLiteBackend',
     node_sb_a:    'AsyncStorageBackend',
-    node_ext:     'MySQL · PG · Oracle · SS',
-    node_ext_a:   'AsyncMySQL · AsyncPG · …',
+    node_ext:     'MySQL · PostgreSQL · SQL Server',
+    node_ext_a:   'AsyncMySQL · AsyncPostgreSQL · …',
 
     /* ── D3 diagram: tooltip descriptions ── */
     tip_ar_s:  'ActiveRecord sync. Subclass ini untuk define model Anda; call <code>.save()</code>, <code>.query()</code> dan method sync lain untuk interaksi dengan database.',
     tip_ar_a:  'Async ActiveRecord. API mencerminkan versi sync dengan tepat — semua method adalah <code>async/await</code>, ideal untuk FastAPI / asyncio stacks.',
-    tip_aq_s:  'ActiveQuery (sync). Chain WHERE, ORDER BY, JOIN, pagination, dll dengan fluent, lalu call <code>.all()</code> atau <code>.first()</code> untuk execute.',
+    tip_aq_s:  'ActiveQuery (sync). Chain WHERE, ORDER BY, JOIN, pagination, dll dengan fluent, lalu call <code>.all()</code> atau <code>.one()</code> untuk execute.',
     tip_aq_a:  'AsyncActiveQuery (async). Same semantics dengan versi sync; semua method terminal adalah coroutines.',
     tip_so_s:  'SetOperation (sync). Gabungkan multiple queries dengan UNION, INTERSECT, atau EXCEPT menjadi single typed result set.',
     tip_so_a:  'AsyncSetOperation (async). Sama seperti sync; executes asynchronously.',
@@ -197,7 +197,7 @@ window.I18N['id-id'] = Object.assign(window.I18N['id-id'] || {}, {
     tip_sb_s:  'StorageBackend ABC (sync). Mendefinisikan minimal database I/O interface: execute / fetch / transaction. Langsung usable tanpa ActiveRecord.',
     tip_sb_a:  'AsyncStorageBackend ABC (async). Mencerminkan interface sync; semua method I/O adalah coroutines.',
     tip_sqlite: 'SQLite backend — dikirim dengan package core. Zero configuration needed; sempurna untuk development, testing, dan embedded use.',
-    tip_ext:   'Extension backends (sync): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver. Install hanya yang dibutuhkan; switch dengan satu panggilan <code>configure()</code>.',
+    tip_ext:   'Extension backends (sync): rhosocial-activerecord-mysql, -postgres, -oracle, -sqlserver. Install hanya yang dibutuhkan; switch dengan satu panggilan <code>configure()</code>.',
     tip_ext_a: 'Extension backends (async): one-to-one counterparts dari sync packages, dengan full async/await support.'
   },
 

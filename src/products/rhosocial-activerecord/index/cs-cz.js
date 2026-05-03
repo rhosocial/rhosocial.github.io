@@ -120,12 +120,12 @@ window.I18N['cs-cz'] = Object.assign(window.I18N['cs-cz'] || {}, {
     node_sqlite_s:'SQLiteBackend',
     node_sqlite_a:'AsyncSQLiteBackend',
     node_sb_a:   'AsyncStorageBackend',
-    node_ext:    'MySQL · PG · Oracle · SS',
-    node_ext_a:  'AsyncMySQL · AsyncPG · …',
+    node_ext:    'MySQL · PostgreSQL · SQL Server',
+    node_ext_a:  'AsyncMySQL · AsyncPostgreSQL · …',
 
     tip_ar_s:   'Sync ActiveRecord. Děděním této třídy definujte model, volejte sync metody jako <code>.save()</code>, <code>.query()</code>.',
     tip_ar_a:   'Async ActiveRecord. API je zrcadlem sync verze, všechny metody jsou <code>async/await</code>, pro FastAPI / asyncio.',
-    tip_aq_s:   'ActiveQuery (sync). Řetězcové_build WHERE, ORDER BY, JOIN, stránkování, nakonec <code>.all()</code> / <code>.first()</code>.',
+    tip_aq_s:   'ActiveQuery (sync). Řetězcové_build WHERE, ORDER BY, JOIN, stránkování, nakonec <code>.all()</code> / <code>.one()</code>.',
     tip_aq_a:   'AsyncActiveQuery (async). Stejná sémantika jako sync, všechny terminální metody jsou coroutines.',
     tip_so_s:   'SetOperation (sync). Kombinace více dotazů přes UNION / INTERSECT / EXCEPT, vrací sjednocený výsledek.',
     tip_so_a:   'AsyncSetOperation (async). Totéž, asynchronn�� provádění.',
@@ -134,7 +134,7 @@ window.I18N['cs-cz'] = Object.assign(window.I18N['cs-cz'] || {}, {
     tip_sb_s:   'StorageBackend (sync). Definuje minimální I/O rozhraní: execute / fetch / transaction. Lze používat bez ActiveRecord.',
     tip_sb_a:   'AsyncStorageBackend (async). Zrcadlo sync verze, všechny I/O metody jsou coroutines.',
     tip_sqlite:  'SQLite backend, zabudovaný v základním balíčku. Nulová konfigurace, vhodné pro vývoj, testy a embedded.',
-    tip_ext:    'Rozšíření backend balíčky (sync): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver. Nainstalujte podle potřeby, <code>configure()</code> jeden řádek.',
+    tip_ext:    'Rozšíření backend balíčky (sync): rhosocial-activerecord-mysql, -postgres, -oracle, -sqlserver. Nainstalujte podle potřeby, <code>configure()</code> jeden řádek.',
     tip_ext_a:  'Rozšíření backend balíčky (async): odpovídají sync balíčkům, poskytují kompletní async/await podporu.'
   },
 

@@ -413,7 +413,7 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
       <h2 class="section-title" data-i18n="arch_comp.title">
         ActiveRecord + Backend, <em>two independent layers</em>.
       </h2>
-      <p class="section-intro" style="max-width:640px;margin:0 auto;"
+      <p class="section-intro"
          data-i18n="arch_comp.intro">
         ActiveRecord is the user of Backend; Backend can work standalone.
         Sync and async variants are paired but not interchangeable.
@@ -467,7 +467,7 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
             <div class="arch-subgroup-label" data-i18n="arch_comp.node_sync_group">Sync</div>
             <div class="arch-node is-root" tabindex="0" role="button" data-tip="tip_sb_s" data-tip-name="node_sb_s">StorageBackend</div>
             <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_sqlite" data-tip-name="node_sqlite_s">SQLiteBackend</div>
-            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_ext" data-tip-name="node_ext"><span data-i18n="arch_comp.node_ext">MySQL · PG · …</span></div>
+            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_ext" data-tip-name="node_ext"><span data-i18n="arch_comp.node_ext">MySQL · PostgreSQL · …</span></div>
           </div>
           <div class="arch-subgroup async">
             <div class="arch-subgroup-label" data-i18n="arch_comp.node_async_group">Async</div>
@@ -555,6 +555,8 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
         e.preventDefault();
         showTip(e.changedTouches[0], nameKey, descKey);
       });
+      el.addEventListener('touchend', hideTip);
+      el.addEventListener('touchcancel', hideTip);
     });
   }
   function refreshText() {

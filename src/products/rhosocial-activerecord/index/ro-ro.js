@@ -120,12 +120,12 @@ window.I18N['ro-ro'] = Object.assign(window.I18N['ro-ro'] || {}, {
     node_sqlite_s:'SQLiteBackend',
     node_sqlite_a:'AsyncSQLiteBackend',
     node_sb_a: 'AsyncStorageBackend',
-    node_ext: 'MySQL · PG · Oracle · SS',
-    node_ext_a: 'AsyncMySQL · AsyncPG · …',
+    node_ext: 'MySQL · PostgreSQL · SQL Server',
+    node_ext_a: 'AsyncMySQL · AsyncPostgreSQL · …',
 
     tip_ar_s: 'Sync ActiveRecord. Eredită această clasă pentru a defini modele, apelează metode sync ca <code>.save()</code>, <code>.query()</code>.',
     tip_ar_a: 'Async ActiveRecord. API este oglinda versiunii sync, toate metodele sunt <code>async/await</code>, pentru FastAPI / asyncio.',
-    tip_aq_s: 'ActiveQuery (sync). Construcție în lanț WHERE, ORDER BY, JOIN, paginare, la final <code>.all()</code> / <code>.first()</code> pentru execuție.',
+    tip_aq_s: 'ActiveQuery (sync). Construcție în lanț WHERE, ORDER BY, JOIN, paginare, la final <code>.all()</code> / <code>.one()</code> pentru execuție.',
     tip_aq_a: 'AsyncActiveQuery (async). Aceeași semantică ca sync, toate metodele terminale sunt corutine.',
     tip_so_s: 'SetOperation (sync). Combină multiple interogări cu UNION / INTERSECT / EXCEPT, returnează set de rezultate unificat.',
     tip_so_a: 'AsyncSetOperation (async). La fel, execuție async.',
@@ -134,7 +134,7 @@ window.I18N['ro-ro'] = Object.assign(window.I18N['ro-ro'] || {}, {
     tip_sb_s: 'StorageBackend (sync). Definește interfața I/O minimă: execute / fetch / transaction. Utilizabil fără ActiveRecord.',
     tip_sb_a: 'AsyncStorageBackend (async). Oglinda versiunii sync, toate metodele I/O sunt corutine.',
     tip_sqlite: 'SQLite backend — încorporat în pachetul core. Zero configurare; perfect pentru dezvoltare, teste și embedded.',
-    tip_ext: 'Pachete de extensie backend (sync): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver. Instalează ce ai nevoie; schimbă cu o linie <code>configure()</code>.',
+    tip_ext: 'Pachete de extensie backend (sync): rhosocial-activerecord-mysql, -postgres, -oracle, -sqlserver. Instalează ce ai nevoie; schimbă cu o linie <code>configure()</code>.',
     tip_ext_a: 'Pachete de extensie backend (async): omologii pachetelor sync, cu suport complet async/await.'
   },
 

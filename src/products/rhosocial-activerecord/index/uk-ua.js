@@ -182,13 +182,13 @@ window.I18N['uk-ua'] = Object.assign(window.I18N['uk-ua'] || {}, {
     node_sqlite_s:'SQLiteBackend',
     node_sqlite_a:'AsyncSQLiteBackend',
     node_sb_a:   'AsyncStorageBackend',
-    node_ext:    'MySQL · PG · Oracle · SS',
-    node_ext_a:  'AsyncMySQL · AsyncPG · …',
+    node_ext:    'MySQL · PostgreSQL · SQL Server',
+    node_ext_a:  'AsyncMySQL · AsyncPostgreSQL · …',
 
     /* ── D3 diagram: tooltip descriptions ── */
     tip_ar_s:   'Синхронний ActiveRecord. Успадкуйте цей клас для визначення моделі, викликайте синхронні методи <code>.save()</code>, <code>.query()</code> тощо для роботи з БД.',
     tip_ar_a:   'Асинхронний ActiveRecord. API — повне дзеркало синхронної версії, усі методи <code>async/await</code>, підходить для FastAPI / asyncio.',
-    tip_aq_s:   'ActiveQuery (синхронний). Будує ланцюжком WHERE, ORDER BY, JOIN, пагінацію тощо, наприкінці викликає <code>.all()</code> / <code>.first()</code> для виконання.',
+    tip_aq_s:   'ActiveQuery (синхронний). Будує ланцюжком WHERE, ORDER BY, JOIN, пагінацію тощо, наприкінці викликає <code>.all()</code> / <code>.one()</code> для виконання.',
     tip_aq_a:   'AsyncActiveQuery (асинхронний). Семантика така ж, як у синхронної версії, усі термінальні методи — корутини.',
     tip_so_s:   'SetOperation (синхронний). Об\'єднує кілька запитів через UNION / INTERSECT / EXCEPT, повертає результат одного типу.',
     tip_so_a:   'AsyncSetOperation (асинхронний). Те саме, асинхронне виконання.',
@@ -197,7 +197,7 @@ window.I18N['uk-ua'] = Object.assign(window.I18N['uk-ua'] || {}, {
     tip_sb_s:   'StorageBackend абстрактний базовий клас (синхронний). Визначає мінімальний інтерфейс I/O БД: execute / fetch / transaction. Може використовуватися без ActiveRecord.',
     tip_sb_a:   'AsyncStorageBackend абстрактний базовий клас (асинхронний). Інтерфейс — дзеркало синхронної версії, усі I/O методи — корутини.',
     tip_sqlite:  'SQLite backend, йде з основним пакетом. Готовий до використання з нульовою конфігурацією, підходить для dev/test/embedded.',
-    tip_ext:    'Backend пакети (синхронні): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver. Встановлюйте за потреби через pip, <code>configure()</code> — перемикання.',
+    tip_ext:    'Backend пакети (синхронні): rhosocial-activerecord-mysql, -postgres, -oracle, -sqlserver. Встановлюйте за потреби через pip, <code>configure()</code> — перемикання.',
     tip_ext_a:  'Backend пакети (асинхронні): точна відповідність синхронним пакетам, повна підтримка async/await.'
   },
 

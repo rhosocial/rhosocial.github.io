@@ -120,12 +120,12 @@ window.I18N['pt-pt'] = Object.assign(window.I18N['pt-pt'] || {}, {
     node_sqlite_s:'SQLiteBackend',
     node_sqlite_a:'AsyncSQLiteBackend',
     node_sb_a: 'AsyncStorageBackend',
-    node_ext: 'MySQL · PG · Oracle · SS',
-    node_ext_a: 'AsyncMySQL · AsyncPG · …',
+    node_ext: 'MySQL · PostgreSQL · SQL Server',
+    node_ext_a: 'AsyncMySQL · AsyncPostgreSQL · …',
 
     tip_ar_s: 'Sync ActiveRecord. herde esta classe para definir modelos, chame métodos sync como <code>.save()</code>, <code>.query()</code>.',
     tip_ar_a: 'Async ActiveRecord. API é espelho da versão sync, todos os métodos são <code>async/await</code>, para FastAPI / asyncio.',
-    tip_aq_s: 'ActiveQuery (sync). Construção de cadeia WHERE, ORDER BY, JOIN, paginação, no final <code>.all()</code> / <code>.first()</code> para executar.',
+    tip_aq_s: 'ActiveQuery (sync). Construção de cadeia WHERE, ORDER BY, JOIN, paginação, no final <code>.all()</code> / <code>.one()</code> para executar.',
     tip_aq_a: 'AsyncActiveQuery (async). Mesma semântica que sync, todos os métodos terminais são corrotinas.',
     tip_so_s: 'SetOperation (sync). Combine múltiplas queries com UNION / INTERSECT / EXCEPT, retorne conjunto de resultados unificado.',
     tip_so_a: 'AsyncSetOperation (async). O mesmo, execução async.',
@@ -134,7 +134,7 @@ window.I18N['pt-pt'] = Object.assign(window.I18N['pt-pt'] || {}, {
     tip_sb_s: 'StorageBackend (sync). Define interface I/O mínima: execute / fetch / transaction. Utilizável sem ActiveRecord.',
     tip_sb_a: 'AsyncStorageBackend (async). Espelho da versão sync, todos os métodos I/O são corrotinas.',
     tip_sqlite: 'SQLite backend — incluído no pacote core. Zero configuração; perfeito para desenvolvimento, testes e embedded.',
-    tip_ext: 'Pacotes de extensão backend (sync): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver. Instale o que precisa; mude com uma linha <code>configure()</code>.',
+    tip_ext: 'Pacotes de extensão backend (sync): rhosocial-activerecord-mysql, -postgres, -oracle, -sqlserver. Instale o que precisa; mude com uma linha <code>configure()</code>.',
     tip_ext_a: 'Pacotes de extensão backend (async): homólogos dos pacotes sync, com suporte completo async/await.'
   },
 

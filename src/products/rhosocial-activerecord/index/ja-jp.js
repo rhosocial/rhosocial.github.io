@@ -120,12 +120,12 @@ window.I18N['ja-jp'] = Object.assign(window.I18N['ja-jp'] || {}, {
     node_sqlite_s:'SQLiteBackend',
     node_sqlite_a:'AsyncSQLiteBackend',
     node_sb_a: 'AsyncStorageBackend',
-    node_ext: 'MySQL · PG · Oracle · SS',
-    node_ext_a: 'AsyncMySQL · AsyncPG · …',
+node_ext: 'MySQL · PostgreSQL · SQL Server',
+    node_ext_a:  'AsyncMySQL · AsyncPostgreSQL · …',
 
     tip_ar_s: 'Sync ActiveRecord。このクラスを継承してモデルを定義、 <code>.save()</code>, <code>.query()</code> などの Sync メソッドを呼出。',
     tip_ar_a: 'Async ActiveRecord。API は Sync版のミラー、全メソッド <code>async/await</code>、 FastAPI / asyncio 用。',
-    tip_aq_s: 'ActiveQuery (sync)。WHERE、ORDER BY、JOIN、ペジネーションをチェーン、最後で <code>.all()</code> / <code>.first()</code> で実行。',
+    tip_aq_s: 'ActiveQuery (sync)。WHERE、ORDER BY、JOIN、ペジネーションをチェーン、最後で <code>.all()</code> / <code>.one()</code> で実行。',
     tip_aq_a: 'AsyncActiveQuery (async)。Sync と同じセマンティクス、全ターミナルメソッドはコルーチン。',
     tip_so_s: 'SetOperation (sync)。複数のクエリを UNION / INTERSECT / EXCEPT で結合、統合結果セットを返す。',
     tip_so_a: 'AsyncSetOperation (async)。同上、非同期実行。',
@@ -134,7 +134,7 @@ window.I18N['ja-jp'] = Object.assign(window.I18N['ja-jp'] || {}, {
     tip_sb_s: 'StorageBackend (sync)。最小限の I/O インターフェースを定義: execute / fetch / transaction。ActiveRecord なしで使用可能。',
     tip_sb_a: 'AsyncStorageBackend (async)。Sync 版のミラー、全 I/O メソッドはコルーチン。',
     tip_sqlite: 'SQLite Backend — コパッケージに含まれます。設定不要、開発、テスト、組込み用途に最適。',
-    tip_ext: '拡張 Backend パッケージ (sync): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver。必要に応じて pip install、<code>configure()</code> 一行。',
+    tip_ext: '拡張 Backend パッケージ (sync): rhosocial-activerecord-mysql, -postgres, -oracle, -sqlserver。必要に応じて pip install、<code>configure()</code> 一行。',
     tip_ext_a: '拡張 Backend パッケージ (async): Sync パッケージの対応版、完全な async/await サポート。'
   },
 

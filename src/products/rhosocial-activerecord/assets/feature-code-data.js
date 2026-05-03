@@ -508,7 +508,7 @@ print(users.to_sql())
 
 <span class="tok-c"># More chains</span>
 count = <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.status == <span class="tok-s">'active'</span>).count()
-first = <span class="tok-cls">User</span>.query().order_by(<span class="tok-cls">User</span>.name).first()
+first = <span class="tok-cls">User</span>.query().order_by(<span class="tok-cls">User</span>.name).one()
 exists = <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.name == <span class="tok-s">'Alice'</span>).exists()`,
       async: `<span class="tok-c"># Chain (same as sync, just await)</span>
 users = await (<span class="tok-cls">User</span>.aquery()
@@ -567,7 +567,7 @@ print(users.to_sql())`
 <span class="tok-k">def</span> <span class="tok-f">find_by_name</span>(<span class="tok-self">self</span>, name: str) -> <span class="tok-cls">Self</span> | <span class="tok-k">None</span>:
     <span class="tok-k">return</span> (<span class="tok-cls">User</span>.query()
         .where(<span class="tok-cls">User</span>.name == name)
-        .first())`,
+        .one())`,
       async: `<span class="tok-k">async def</span> <span class="tok-f">find_active</span>(<span class="tok-self">self</span>) -> list[<span class="tok-cls">'User'</span>]:
     <span class="tok-k">return</span> await (<span class="tok-cls">User</span>.aquery()
         .where(<span class="tok-cls">User</span>.age >= <span class="tok-num">18</span>)

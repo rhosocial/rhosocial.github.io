@@ -120,12 +120,12 @@ window.I18N['nl-nl'] = Object.assign(window.I18N['nl-nl'] || {}, {
     node_sqlite_s:'SQLiteBackend',
     node_sqlite_a:'AsyncSQLiteBackend',
     node_sb_a: 'AsyncStorageBackend',
-    node_ext: 'MySQL · PG · Oracle · SS',
-    node_ext_a: 'AsyncMySQL · AsyncPG · …',
+    node_ext: 'MySQL · PostgreSQL · SQL Server',
+    node_ext_a: 'AsyncMySQL · AsyncPostgreSQL · …',
 
     tip_ar_s: 'Sync ActiveRecord. Erf deze klasse om modellen te definiëren, roep sync-methoden zoals <code>.save()</code>, <code>.query()</code> aan.',
     tip_ar_a: 'Async ActiveRecord. API is spiegel van sync-versie, alle methoden zijn <code>async/await</code>, voor FastAPI / asyncio.',
-    tip_aq_s: 'ActiveQuery (sync). Chain-bouw van WHERE, ORDER BY, JOIN, paginatie, eind met <code>.all()</code> / <code>.first()</code> om uit te voeren.',
+    tip_aq_s: 'ActiveQuery (sync). Chain-bouw van WHERE, ORDER BY, JOIN, paginatie, eind met <code>.all()</code> / <code>.one()</code> om uit te voeren.',
     tip_aq_a: 'AsyncActiveQuery (async). Dezelfde semantiek als sync, alle terminal-methoden zijn coroutines.',
     tip_so_s: 'SetOperation (sync). Combineer multiple queries met UNION / INTERSECT / EXCEPT, return unified result set.',
     tip_so_a: 'AsyncSetOperation (async). Zelfde, async uitvoering.',
@@ -134,7 +134,7 @@ window.I18N['nl-nl'] = Object.assign(window.I18N['nl-nl'] || {}, {
     tip_sb_s: 'StorageBackend (sync). Definieert minimale I/O-interface: execute / fetch / transaction. Bruikbaar zonder ActiveRecord.',
     tip_sb_a: 'AsyncStorageBackend (async). Spiegel van sync-versie, alle I/O-methoden zijn coroutines.',
     tip_sqlite: 'SQLite backend — inbegrepen in kernpakket. Geen configuratie nodig; perfect voor ontwikkeling, testen en embedded.',
-    tip_ext: 'Uitbreidings-backend-pakketten (sync): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver. Installeer wat je nodig hebt; schakel met <code>configure()</code>.',
+    tip_ext: 'Uitbreidings-backend-pakketten (sync): rhosocial-activerecord-mysql, -postgres, -oracle, -sqlserver. Installeer wat je nodig hebt; schakel met <code>configure()</code>.',
     tip_ext_a: 'Uitbreidings-backend-pakketten (async): tegenhangers van sync-pakketten, met volledige async/await-ondersteuning.'
   },
 

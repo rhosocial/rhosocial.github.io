@@ -120,12 +120,12 @@ window.I18N['ru-ru'] = Object.assign(window.I18N['ru-ru'] || {}, {
     node_sqlite_s:'SQLiteBackend',
     node_sqlite_a:'AsyncSQLiteBackend',
     node_sb_a: 'AsyncStorageBackend',
-    node_ext: 'MySQL · PG · Oracle · SS',
-    node_ext_a: 'AsyncMySQL · AsyncPG · …',
+    node_ext: 'MySQL · PostgreSQL · SQL Server',
+    node_ext_a: 'AsyncMySQL · AsyncPostgreSQL · …',
 
     tip_ar_s: 'Sync ActiveRecord. Наследуйте этот класс для определения моделей, вызывайте sync методы как <code>.save()</code>, <code>.query()</code>.',
     tip_ar_a: 'Async ActiveRecord. API — зеркало sync версии, все методы <code>async/await</code>, для FastAPI / asyncio.',
-    tip_aq_s: 'ActiveQuery (sync). Построение цепочки WHERE, ORDER BY JOIN, пагинация, в конце <code>.all()</code> / <code>.first()</code> для выполнения.',
+    tip_aq_s: 'ActiveQuery (sync). Построение цепочки WHERE, ORDER BY JOIN, пагинация, в конце <code>.all()</code> / <code>.one()</code> для выполнения.',
     tip_aq_a: 'AsyncActiveQuery (async). Та же семантика что и sync, все терминальные методы — корутины.',
     tip_so_s: 'SetOperation (sync). Объедините несколько запросов через UNION / INTERSECT / EXCEPT, верните унифицированный набор результатов.',
     tip_so_a: 'AsyncSetOperation (async). То же, асинхронное выполнение.',
@@ -134,7 +134,7 @@ window.I18N['ru-ru'] = Object.assign(window.I18N['ru-ru'] || {}, {
     tip_sb_s: 'StorageBackend (sync). Определяет минимальный интерфейс ввода/вывода: execute / fetch / transaction. Можно использовать без ActiveRecord.',
     tip_sb_a: 'AsyncStorageBackend (async). Зеркало sync версии, все методы ввода/вывода — корутины.',
     tip_sqlite: 'SQLite backend — встроен в основной пакет. Без настройки; идеально для разработки, тестирования и встраивания.',
-    tip_ext: 'Пакеты расширений backend (sync): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver. Установите что нужно; переключите одной строкой <code>configure()</code>.',
+    tip_ext: 'Пакеты расширений backend (sync): rhosocial-activerecord-mysql, -postgres, -oracle, -sqlserver. Установите что нужно; переключите одной строкой <code>configure()</code>.',
     tip_ext_a: 'Пакеты расширений backend (async): аналоги sync пакетов, с полной поддержкой async/await.'
   },
 

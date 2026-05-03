@@ -120,12 +120,12 @@ window.I18N['bn-bd'] = Object.assign(window.I18N['bn-bd'] || {}, {
     node_sqlite_s:'SQLiteBackend',
     node_sqlite_a:'AsyncSQLiteBackend',
     node_sb_a:   'AsyncStorageBackend',
-    node_ext:    'MySQL · PG · Oracle · SS',
-    node_ext_a:  'AsyncMySQL · AsyncPG · …',
+    node_ext:    'MySQL · PostgreSQL · SQL Server',
+    node_ext_a:  'AsyncMySQL · AsyncPostgreSQL · …',
 
     tip_ar_s:   'sync ActiveRecord। মডেল সংজ্ঞার জন্য এই ক্লাস ইনহেরিট করুন, <code>.save()</code>, <code>.query()</code> ইত্যাদি sync মেথড কল করুন।',
     tip_ar_a:   'async ActiveRecord। sync ভার্সনের সম্পূর্ণ মিরর, সব মেথড <code>async/await</code>, FastAPI / asyncio এর জন্য উপযুক্ত।',
-    tip_aq_s:   'ActiveQuery (sync)। WHERE, ORDER BY, JOIN, পেজিনেশন কন্ডিশন চেইন বিল্ড করে, শেষে <code>.all()</code> / <code>.first()</code> দিয়ে এক্সিকিউট।',
+    tip_aq_s:   'ActiveQuery (sync)। WHERE, ORDER BY, JOIN, পেজিনেশন কন্ডিশন চেইন বিল্ড করে, শেষে <code>.all()</code> / <code>.one()</code> দিয়ে এক্সিকিউট।',
     tip_aq_a:   'AsyncActiveQuery (async)। sync ভার্সনের সম্পূর্ণ সিমান্টিক্স, সব টার্মিনেটিং মেথড coroutine।',
     tip_so_s:   'SetOperation (sync)। একাধিক কোয়েরিকে UNION / INTERSECT / EXCEPT দিয়ে জোড়া দেয়, ইউনিফাইড টাইপ রেজাল্ট সেট রিটার্ন করে।',
     tip_so_a:   'AsyncSetOperation (async)। একই, async এক্সিকিউশন।',
@@ -134,7 +134,7 @@ window.I18N['bn-bd'] = Object.assign(window.I18N['bn-bd'] || {}, {
     tip_sb_s:   'StorageBackend (sync)। I/O এর সর্বনিম্ন ইন্টারফেস সংজ্ঞায়িত করে: execute / fetch / transaction। ActiveRecord ছাড়া ব্যবহারযোগ্য।',
     tip_sb_a:   'AsyncStorageBackend (async)। sync ভার্সনের মিরর, সব I/O মেথড coroutine।',
     tip_sqlite:  'SQLite backend, কোর প্যাকেজে বিল্ট-ইন। জিরো কনফিগারেশন, ডেভেলপমেন্ট, টেস্ট, এম্বেডেড সিনারিওর জন্য উপযুক্ত।',
-    tip_ext:    'এক্সটেনশন ব্যাকএন্ড প্যাকেজ (sync): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver। চাহিদামতো pip install, <code>configure()</code> এক লাইনে সুইচ।',
+    tip_ext:    'এক্সটেনশন ব্যাকএন্ড প্যাকেজ (sync): rhosocial-activerecord-mysql, -postgres, -oracle, -sqlserver। চাহিদামতো pip install, <code>configure()</code> এক লাইনে সুইচ।',
     tip_ext_a:  'এক্সটেনশন ব্যাকএন্ড প্যাকেজ (async): sync প্যাকেজের সাথে এক-এক মিল, সম্পূর্ণ async/await সাপোর্ট।'
   },
 
