@@ -45,6 +45,7 @@ window.I18N['en-us'] = {
     back:     '← Back',
     copy:     'Copy',
     copied:   'Copied!',
+    failed:   'Copy failed',
     loading:  'Loading…',
     error:    'Failed to load',
     expand:   'Expand',

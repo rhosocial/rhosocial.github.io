@@ -45,6 +45,7 @@ window.I18N['id-id'] = {
     back:     '← Kembali',
     copy:     'Salin',
     copied:   'Tersalin!',
+    failed:   'Gagal menyalin',
     loading:  'Memuat…',
     error:    'Gagal memuat',
     expand:   'Perluas',

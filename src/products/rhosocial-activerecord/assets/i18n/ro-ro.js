@@ -45,6 +45,7 @@ window.I18N['ro-ro'] = {
     back:     '← Înapoi',
     copy:     'Copiază',
     copied:  'Copiat!',
+    failed:  'Copiere eșuată',
     loading: 'Se încarcă…',
     error:   'Eroare la încărcare',
     expand:  'Extinde',

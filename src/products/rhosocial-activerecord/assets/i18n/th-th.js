@@ -45,6 +45,7 @@ window.I18N['th-th'] = {
     back:     '← กลับ',
     copy:     'คัดลอก',
     copied:   'คัดลอกแล้ว!',
+    failed:   'คัดลอกไม่สำเร็จ',
     loading:  'กำลังโหลด…',
     error:    'โหลดล้มเหลว',
     expand:   'ขยาย',

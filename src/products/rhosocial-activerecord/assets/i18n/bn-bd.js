@@ -45,6 +45,7 @@ window.I18N['bn-bd'] = {
     back:     '← ফিরে যান',
     copy:     'কপি',
     copied:   'কপি হয়েছে!',
+    failed:   'কপি ব্যর্থ',
     loading:  'লোড হচ্ছে…',
     error:    'লোড ব্যর্থ',
     expand:   'সম্প্রসারণ',

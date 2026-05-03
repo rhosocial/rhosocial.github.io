@@ -113,6 +113,8 @@
 [data-theme="brutalist"] .stat:nth-child(4) { background: var(--accent-3); }
 
 [data-theme="brutalist"] .install-wrap { border: 3px solid var(--fg); border-radius: 0; background: var(--accent); box-shadow: 10px 10px 0 var(--fg); }
+[data-theme="brutalist"] .install-title { color: var(--fg); }
+[data-theme="brutalist"] .install-title em { color: var(--fg); font-style: normal; text-decoration: underline; }
 [data-theme="brutalist"] .install-cmd { border: 2px solid var(--fg); border-radius: 0; background: var(--fg); color: #fff; }
 [data-theme="brutalist"] .code-block { border: 3px solid var(--fg); border-radius: 0; box-shadow: 8px 8px 0 var(--fg); }
 

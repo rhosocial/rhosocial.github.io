@@ -93,8 +93,9 @@
   window.DEFAULT_LANG = 'zh-cn';
 
   window.LIGHT_THEMES = [
-    'editorial', 'wireframe', 'newsprint', 'parchment',
-    'botanical', 'nordic', 'riso', 'candy', 'solarpunk'
+    'editorial', 'brutalist', 'sumi', 'mocha', 'anderson',
+    'memphis', 'frutiger', 'glassmorphism', 'wireframe',
+    'newsprint', 'parchment', 'nordic', 'riso', 'candy', 'solarpunk'
   ];
 
   window.FONT_THEME_MAP = {

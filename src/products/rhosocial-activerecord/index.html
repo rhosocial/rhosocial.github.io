@@ -60,7 +60,7 @@
 <link rel="stylesheet" href="assets/fonts/dm.css">
 <link rel="stylesheet" href="assets/fonts/outfit.css">
 <link rel="stylesheet" href="assets/fonts/literata.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+
 
 <style>
 html[lang="ar"] { font-family: 'Noto Sans Arabic', var(--font-body); }
@@ -254,7 +254,7 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
             </div>
             <div class="tabs-display"></div>
           </div>
-          <a href="activerecord/type-safe.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;">查看详情 →</a>
+          <a href="activerecord/type-safe.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;" data-i18n="common.detail">查看详情 →</a>
         </div>
       </div>
     </div>
@@ -283,7 +283,7 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
             </div>
             <div class="tabs-display"></div>
           </div>
-          <a href="activerecord/async-first.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;">查看详情 →</a>
+          <a href="activerecord/async-first.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;" data-i18n="common.detail">查看详情 →</a>
         </div>
       </div>
     </div>
@@ -312,7 +312,7 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
             </div>
             <div class="tabs-display"></div>
           </div>
-          <a href="backends/index.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;">查看详情 →</a>
+          <a href="backends/index.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;" data-i18n="common.detail">查看详情 →</a>
         </div>
       </div>
     </div>
@@ -341,7 +341,7 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
             </div>
             <div class="tabs-display"></div>
           </div>
-          <a href="activerecord/explicit-relations.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;">查看详情 →</a>
+          <a href="activerecord/explicit-relations.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;" data-i18n="common.detail">查看详情 →</a>
         </div>
       </div>
     </div>
@@ -370,7 +370,7 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
             </div>
             <div class="tabs-display"></div>
           </div>
-          <a href="activerecord/transactions.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;">查看详情 →</a>
+          <a href="activerecord/transactions.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;" data-i18n="common.detail">查看详情 →</a>
         </div>
       </div>
     </div>
@@ -399,7 +399,7 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
             </div>
             <div class="tabs-display"></div>
           </div>
-          <a href="activerecord/pythonic.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;">查看详情 →</a>
+          <a href="activerecord/pythonic.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;" data-i18n="common.detail">查看详情 →</a>
         </div>
       </div>
     </div>
@@ -691,7 +691,7 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
         <div class="install-cmd">
           <span class="prompt">$</span>
           <span>pip install rhosocial-activerecord</span>
-          <button class="copy-btn" data-copy-text="pip install rhosocial-activerecord">Copy</button>
+          <button class="copy-btn" data-copy-text="pip install rhosocial-activerecord" data-i18n="common.copy">复制</button>
         </div>
         <div style="margin-top: 28px; display: flex; gap: 12px; flex-wrap: wrap;">
           <a href="backends/index.html" class="btn btn-primary" data-i18n="install.docs">阅读文档 →</a>
@@ -772,11 +772,13 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
 
     if (ddFont && window.FONTS) {
       var menu = ddFont.querySelector('.dropdown-menu');
+      var fontAutoText = getFontAutoText();
       window.FONTS.forEach(function(f) {
+        var label = f[0] === 'auto' ? fontAutoText : f[1];
         var btn = document.createElement('button');
         btn.className = 'dropdown-item' + (f[0] === fontVal ? ' is-active' : '');
         btn.dataset.value = f[0];
-        btn.innerHTML = '<span class="dropdown-item-label">' + f[1] + '</span>';
+        btn.innerHTML = '<span class="dropdown-item-label">' + label + '</span>';
         menu.appendChild(btn);
       });
     }
@@ -802,8 +804,21 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
     if (valueEl) valueEl.textContent = item.querySelector('.dropdown-item-label').textContent;
   }
 
+  function getFontAutoText() {
+    var lang = window.detectLang ? window.detectLang() : ((document.documentElement.getAttribute('lang') || 'zh-CN').toLowerCase().replace('_', '-'));
+    var dict = (window.I18N || {})[lang] || (window.I18N || {})['zh-cn'] || {};
+    return (dict.control && dict.control.font_auto) || 'Follow theme';
+  }
+
   // Build menus first
   buildDropdownMenus();
+
+  // Update auto option label after build
+  var fontDd = document.querySelector('[data-dropdown="font"]');
+  if (fontDd) {
+    var autoItem = fontDd.querySelector('.dropdown-item[data-value="auto"] .dropdown-item-label');
+    if (autoItem) autoItem.textContent = getFontAutoText();
+  }
 
   // Init theme controller
   ctrl.init();
@@ -857,6 +872,40 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
   // Initialize TabSwitchers
   window.initAllTabSwitchers({
     onSwitch: function(e) {}
+  });
+
+  // Update copy buttons on language change
+  window.RENDER_ADAPTERS = window.RENDER_ADAPTERS || [];
+  window.RENDER_ADAPTERS.push({
+    name:   'copy-btn',
+    onTheme: function() {},
+    onFont:  function() {},
+    onLang:  function() {
+      var lang = window.detectLang ? window.detectLang() : ((document.documentElement.getAttribute('lang') || 'zh-CN').toLowerCase().replace('_', '-'));
+      var dict = (window.I18N || {})[lang] || (window.I18N || {})['zh-cn'] || {};
+      var copyText = (dict.common && dict.common.copy) || 'Copy';
+      document.querySelectorAll('.copy-btn').forEach(function(btn) {
+        var icon = btn.textContent.match(/⎘\s*/);
+        if (icon) {
+          btn.textContent = icon[0] + copyText;
+        } else {
+          btn.textContent = copyText;
+        }
+      });
+
+      // Update font dropdown "auto" label
+      var fontAutoText = getFontAutoText();
+      var fontDd = document.querySelector('[data-dropdown="font"]');
+      if (fontDd) {
+        var autoItem = fontDd.querySelector('.dropdown-item[data-value="auto"] .dropdown-item-label');
+        if (autoItem) autoItem.textContent = fontAutoText;
+        var currValue = fontDd.querySelector('.dropdown-value');
+        var storedFont = localStorage.getItem('font');
+        if (!storedFont && currValue) {
+          currValue.textContent = fontAutoText;
+        }
+      }
+    }
   });
 
   // Setup copy buttons

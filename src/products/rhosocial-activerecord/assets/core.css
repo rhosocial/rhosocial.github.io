@@ -438,6 +438,75 @@ kbd {
 .tok-dim { color: var(--tok-dim); }
 .tok-attr{ color: var(--tok-attr); }
 
+/* ═══════════════════════════════════════════════════════════════════════
+   Light Theme Code Block Overrides
+   Use light background for code blocks on light themes for better contrast
+   ═══════════════════════════════════════════════════════════════════════ */
+[data-theme="editorial"] .code-block,
+[data-theme="brutalist"] .code-block,
+[data-theme="sumi"] .code-block,
+[data-theme="mocha"] .code-block,
+[data-theme="anderson"] .code-block,
+[data-theme="memphis"] .code-block,
+[data-theme="frutiger"] .code-block,
+[data-theme="glassmorphism"] .code-block,
+[data-theme="wireframe"] .code-block,
+[data-theme="newsprint"] .code-block,
+[data-theme="parchment"] .code-block,
+[data-theme="nordic"] .code-block,
+[data-theme="riso"] .code-block,
+[data-theme="candy"] .code-block,
+[data-theme="solarpunk"] .code-block {
+  --code-bg:        #FAFAFA;
+  --code-fg:        #1a1a1a;
+  --code-fg-muted:  #666666;
+  --code-border:    rgba(0,0,0,0.08);
+  --tok-keyword:    #D93636;
+  --tok-string:     #1A7F37;
+  --tok-func:       #0969DA;
+  --tok-comment:    #6E7781;
+  --tok-num:        #CF5C00;
+  --tok-class:      #A04100;
+  --tok-self:       #8250DF;
+  --tok-dec:        #116FEA;
+  --tok-dim:        #6E7781;
+  --tok-attr:       #8250DF;
+  background: var(--code-bg);
+  color: var(--code-fg);
+  border-color: var(--code-border);
+}
+
+/* Install command (always dark bg for contrast) */
+[data-theme="editorial"] .install-cmd,
+[data-theme="brutalist"] .install-cmd,
+[data-theme="sumi"] .install-cmd,
+[data-theme="mocha"] .install-cmd,
+[data-theme="anderson"] .install-cmd,
+[data-theme="memphis"] .install-cmd,
+[data-theme="frutiger"] .install-cmd,
+[data-theme="glassmorphism"] .install-cmd,
+[data-theme="wireframe"] .install-cmd,
+[data-theme="newsprint"] .install-cmd,
+[data-theme="parchment"] .install-cmd,
+[data-theme="nordic"] .install-cmd,
+[data-theme="riso"] .install-cmd,
+[data-theme="candy"] .install-cmd,
+[data-theme="solarpunk"] .install-cmd {
+  --code-bg:        #1a1a1a;
+  --code-fg:        #f5f5f5;
+  --code-fg-muted:  #999999;
+  --tok-keyword:    #FF7066;
+  --tok-string:     #8CE0A3;
+  --tok-func:       #6B9BFF;
+  --tok-comment:    #808080;
+  --tok-num:        #FFC077;
+  --tok-class:      #FFD966;
+  --tok-self:       #CCCCCC;
+  --tok-dec:        #FF9966;
+  --tok-dim:        #808080;
+  --tok-attr:       #CCCCCC;
+}
+
 /* ═══════════════════════════════════════════════════════════════
    10 · TABS (used for Python version selector & anywhere else)
    ═══════════════════════════════════════════════════════════════ */

@@ -45,6 +45,7 @@ window.I18N['ar'] = {
     back:     '← رجوع',
     copy:     'نسخ',
     copied:   'تم النسخ!',
+    failed:   'فشل النسخ',
     loading:  'جاري التحميل…',
     error:    'فشل التحميل',
     expand:   'توسيع',

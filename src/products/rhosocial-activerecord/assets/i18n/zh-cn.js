@@ -45,6 +45,7 @@ window.I18N['zh-cn'] = {
     back:     '← 返回',
     copy:     '复制',
     copied:   '已复制!',
+    failed:   '复制失败',
     loading:  '加载中…',
     error:    '加载失败',
     expand:   '展开',

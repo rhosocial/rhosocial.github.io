@@ -14,18 +14,36 @@
 
   window.escapeHtml = escapeHtml;
 
+  function t(key) {
+    var lang = document.documentElement.getAttribute('lang') || 'zh-cn';
+    var dict = (window.I18N || {})[lang] || (window.I18N || {})['zh-cn'] || {};
+    var parts = ('common.' + key).split('.');
+    var v = dict;
+    for (var i = 0; i < parts.length; i++) {
+      if (v == null) return key;
+      v = v[parts[i]];
+    }
+    return (typeof v === 'string') ? v : key;
+  }
+
   window.attachCopyBtn = function(btnEl, sourceEl) {
+    function getTexts() {
+      return { copy: t('copy'), copied: t('copied'), failed: t('failed') || 'Failed' };
+    }
+    var texts = getTexts();
+    btnEl.textContent = texts.copy;
     btnEl.addEventListener('click', function() {
+      var currentTexts = getTexts();
       var text = sourceEl.innerText || sourceEl.textContent;
-      var origText = btnEl.textContent;
+      var origText = currentTexts.copy;
       (navigator.clipboard
         ? navigator.clipboard.writeText(text)
         : Promise.resolve(document.execCommand('copy', false, text))
       ).then(function() {
-        btnEl.textContent = 'Copied';
+        btnEl.textContent = currentTexts.copied;
         setTimeout(function() { btnEl.textContent = origText; }, 2000);
       }).catch(function() {
-        btnEl.textContent = 'Failed';
+        btnEl.textContent = currentTexts.failed;
         setTimeout(function() { btnEl.textContent = origText; }, 2000);
       });
     });
@@ -160,9 +178,10 @@
     code: function(raw, state) {
       var lang = (state && state.lang) || 'python';
       var plainCode = stripHtmlTags(raw);
+      var copyText = t('copy');
       return '<div class="code-block">'
         + '<div class="code-header"><span class="code-lang">' + lang + '</span>'
-        + '<button class="copy-btn" aria-label="copy code">⎘ Copy</button></div>'
+        + '<button class="copy-btn" aria-label="copy code">⎘ ' + copyText + '</button></div>'
         + '<div class="code-body"><pre><code class="language-' + lang + ' hljs">'
         + window.escapeHtml(plainCode) + '</code></pre></div></div>';
     },

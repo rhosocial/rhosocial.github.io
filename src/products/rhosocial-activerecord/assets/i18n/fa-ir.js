@@ -45,6 +45,7 @@ window.I18N['fa-ir'] = {
     back:     '← بازگشت',
     copy:     'کپی',
     copied:   'کپی شد!',
+    failed:   'کپی ناموفق',
     loading:  'بارگذاری…',
     error:    'خطای بارگذاری',
     expand:   'گسترش',

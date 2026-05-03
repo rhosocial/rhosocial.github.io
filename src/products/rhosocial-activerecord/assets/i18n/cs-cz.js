@@ -45,6 +45,7 @@ window.I18N['cs-cz'] = {
     back:     '← Zpět',
     copy:     'Kopírovat',
     copied:   'Zkopírováno!',
+    failed:   'Kopírování selhalo',
     loading:  'Načítání…',
     error:    'Chyba načtení',
     expand:   'Rozšířit',

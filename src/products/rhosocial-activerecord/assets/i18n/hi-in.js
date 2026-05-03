@@ -45,6 +45,7 @@ window.I18N['hi-in'] = {
     back:     '← वापस',
     copy:     'कॉपी',
     copied:   'कॉपी!',
+    failed:   'कॉपी विफल',
     loading:  'लोड हो रहा…',
     error:    'लोड त्रुटि',
     expand:   'विस्तार',

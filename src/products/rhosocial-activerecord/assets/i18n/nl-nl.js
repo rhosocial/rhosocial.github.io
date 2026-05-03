@@ -45,6 +45,7 @@ window.I18N['nl-nl'] = {
     back:     '← Terug',
     copy:     'Kopieer',
     copied:  'Gekopieerd!',
+    failed:   'Kopiëren mislukt',
     loading: 'Laden…',
     error:   'Laden mislukt',
     expand:  'Uitbreiden',

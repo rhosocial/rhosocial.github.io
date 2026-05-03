@@ -45,6 +45,7 @@ window.I18N['it-it'] = {
     back:     '← Indietro',
     copy:     'Copia',
     copied:   'Copiato!',
+    failed:   'Copia fallita',
     loading:  'Caricamento…',
     error:    'Errore caricamento',
     expand:   'Espandi',

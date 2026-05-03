@@ -45,6 +45,7 @@ window.I18N['tr-tr'] = {
     back:     '← Geri',
     copy:     'Kopyala',
     copied:   'Kopyalandı!',
+    failed:   'Kopyalama başarısız',
     loading:  'Yükleniyor…',
     error:    'Yükleme hatası',
     expand:   'Genişlet',

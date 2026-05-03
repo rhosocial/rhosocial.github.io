@@ -45,6 +45,7 @@ window.I18N['ja-jp'] = {
     back:     '← 戻る',
     copy:     'コピー',
     copied:   'コピー完了!',
+    failed:   'コピー失敗',
     loading:  '読み込み中…',
     error:    '読み込みエラー',
     expand:   '展開',

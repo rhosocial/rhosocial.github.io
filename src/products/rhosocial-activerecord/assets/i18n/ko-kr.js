@@ -45,6 +45,7 @@ window.I18N['ko-kr'] = {
     back:     '← 뒤로',
     copy:     '복사',
     copied:   '복사됨!',
+    failed:   '복사 실패',
     loading:  '로딩 중…',
     error:    '로딩 오류',
     expand:   '펼치기',

@@ -45,6 +45,7 @@ window.I18N['vi-vn'] = {
     back:     '← Quay lại',
     copy:     'Sao chép',
     copied:   'Đã sao chép!',
+    failed:   'Sao chép thất bại',
     loading:  'Đang tải…',
     error:    'Tải thất bại',
     expand:   'Mở rộng',
