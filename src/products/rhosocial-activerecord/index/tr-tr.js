@@ -100,6 +100,64 @@ window.I18N['tr-tr'] = Object.assign(window.I18N['tr-tr'] || {}, {
     pair_sync_note:   'Eşleşme sync, async ile karıştırılamaz',
     pair_async_note:  'Eşleşme async, sync ile karıştırılamaz',
 
+    ar_diagram: `flowchart TB
+    subgraph AR_SYNC["ActiveRecord (sync)"]
+        direction TB
+        ARS["ActiveRecord"]
+        AQS["ActiveQuery"]
+        SOS["SetOperation\n(UNION / INTERSECT / EXCEPT)"]
+        CTES["CTEQuery\n(WITH ...)"]
+        ARS --> AQS
+        ARS --> SOS
+        ARS --> CTES
+    end
+    subgraph AR_ASYNC["AsyncActiveRecord (async)"]
+        direction TB
+        ARA["AsyncActiveRecord"]
+        AQA["AsyncActiveQuery"]
+        SOA["AsyncSetOperation"]
+        CTEA["AsyncCTEQuery"]
+        ARA --> AQA
+        ARA --> SOA
+        ARA --> CTEA
+    end
+    AR_SYNC ~~~ AR_ASYNC`,
+
+    be_diagram: `flowchart TB
+    subgraph SYNC["Sync backends"]
+        direction TB
+        SB["StorageBackend\n(Abstract Base Class)"]
+        subgraph Builtin["Built-in"]
+            SQLS["SQLiteBackend"]
+        end
+        subgraph Ext["Extension packages"]
+            direction LR
+            MYS["MySQL / MariaDB"]
+            PGS["PostgreSQL"]
+            ORS["Oracle"]
+            SSS["SQL Server"]
+        end
+        SB --> Builtin
+        SB --> Ext
+    end
+    subgraph ASYNC["Async backends"]
+        direction TB
+        ASB["AsyncStorageBackend\n(Abstract Base Class)"]
+        subgraph ABuiltin["Built-in"]
+            ASQLS["AsyncSQLiteBackend"]
+        end
+        subgraph AExt["Extension packages"]
+            direction LR
+            AMYS["MySQL / MariaDB"]
+            APGS["PostgreSQL"]
+            AORS["Oracle"]
+            ASSS["SQL Server"]
+        end
+        ASB --> ABuiltin
+        ASB --> AExt
+    end
+    SYNC ~~~ ASYNC`,
+
     note1_title: 'Bağımsız',
     note1_desc:  'Backend net ABC (Abstract Base Class) açığa çıkarır, ActiveRecord olmadan kullanılabilir, hafif script veya embedded senaryolar için uygun.',
     note2_title: 'İhtiyaca göre genişletilebilir',
@@ -107,8 +165,11 @@ window.I18N['tr-tr'] = Object.assign(window.I18N['tr-tr'] || {}, {
     note3_title: 'Type-safe eşleşme',
     note3_desc:  '<code>ActiveRecord</code>, <code>StorageBackend</code> ile eşleşir; <code>AsyncActiveRecord</code>, <code>AsyncStorageBackend</code> ile eşleşir. Çapraz kullanım tip hatası tetikler.',
 
+    /* ── D3 diagram: group labels ── */
     node_sync_group:  'Senkron',
     node_async_group: 'Asenkron',
+
+    /* ── D3 diagram: node display labels ── */
     node_ar_s:   'ActiveRecord',
     node_aq_s:   'ActiveQuery',
     node_so_s:   'SetOperation',
@@ -124,6 +185,7 @@ window.I18N['tr-tr'] = Object.assign(window.I18N['tr-tr'] || {}, {
     node_ext:    'MySQL · PG · Oracle · SS',
     node_ext_a:  'AsyncMySQL · AsyncPG · …',
 
+    /* ── D3 diagram: tooltip descriptions ── */
     tip_ar_s:   'Senkron ActiveRecord. Model tanımlamak için bu sınıftan türetin, veritabanı işlemleri için <code>.save()</code>, <code>.query()</code> vb. senkron yöntemleri çağırın.',
     tip_ar_a:   'Asenkron ActiveRecord. API senkron versiyonun tam yansıması, tüm yöntemler <code>async/await</code>, FastAPI/asyncio senaryolarına uygun.',
     tip_aq_s:   'ActiveQuery (senkron). WHERE, ORDER BY, JOIN, sayfalandırma vb. koşulları zincirle oluşturur, sonunda <code>.all()</code> / <code>.first()</code> yürütür.',
@@ -189,14 +251,18 @@ window.I18N['tr-tr'] = Object.assign(window.I18N['tr-tr'] || {}, {
     s1: 'Kullanılabilir DB dialectleri',
     s2: 'Tip açıklaması kapsamı',
     s3: 'Minimum Python sürümü',
-    s4: 'Harici ORM bağımlılığı'
+    s4: 'Harici ORM bağımlılığı',
+    s5: 'Capability protokolleri',
+    s6: 'Backend MRO katmanları'
+
   },
 
-  /* ── Install ─────────────────────────────────────────────── */
+  /* ── Install ─────────────────────────────────────────── */
   install: {
     label:     'Başlayın',
     title:     'Tek satırda kurulum, <em>on dakika</em>da ilk sorguya.',
     sub:       'PyPI\'de yayımlandı. SQLite arka ucu çekirdek pakette gelir; diğerleri talep üzerine kurulur.',
+
     docs:      'Belgeleri oku →',
     practices: 'Pratik senaryolar →'
   }

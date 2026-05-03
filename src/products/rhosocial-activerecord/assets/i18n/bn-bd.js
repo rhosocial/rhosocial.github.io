@@ -16,6 +16,14 @@ window.I18N['bn-bd'] = {
     subtitle: 'Theme Lab'
   },
 
+  /** Top navigation */
+  nav: {
+    index:        'হোম',
+    backends:     'ব্যাকএন্ড',
+    activerecord: 'ActiveRecord',
+    practices:    'অনুশীলন'
+  },
+
   /** Control bar (theme / font / language dropdowns) */
   control: {
     theme_label: 'থিম',

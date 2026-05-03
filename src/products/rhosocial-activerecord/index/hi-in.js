@@ -1,49 +1,269 @@
 /**
- * index/hi-in.js — 首页印地语词典
+ * index/hi-in.js — होमपेज हिंदी शब्दकोश
  *
- * 依赖：assets/i18n/hi-in.js 必须先加载。
- * 本文件通过 Object.assign 向已有的 window.I18N['hi-in'] 追加首页特有 key。
+ * निर्भरता: assets/i18n/hi-in.js पहले लोड होना चाहिए (meta/brand/nav/control/footer/common प्रदान करता है).
+ * यह फ़ाइल window.I18N['hi-in'] को Object.assign के माध्यम से विस्तारित करती है, होमपेज-विशिष्ट keys जोड़ती है।
  */
 window.I18N = window.I18N || {};
 window.I18N['hi-in'] = Object.assign(window.I18N['hi-in'] || {}, {
 
-hero: { eyebrow: 'v1.0 · Apache 2.0 · Pure Python', title: 'rhosocial ActiveRecord,<br>Python के लिए <em>फिर से डिज़ाइन</em>.', sub: '<strong>rhosocial-activerecord</strong> मॉडल को Python के native type annotations से परिभाषित करता है और <code>query().where(...).all()</code> चेन से क्वेरी करता है। पहले दिन से sync और async। बाहरी ORM dependencies नहीं — SQLite built-in, अन्य databases separate packages, अपना backend कुछ दर्जन लाइनों में लिख सकते हैं।', cta_secondary: 'फीचर्स देखें →' },
+  /* ── Hero ─────────────────────────────────────────────── */
+  hero: {
+    eyebrow:       'v1.0 · Apache 2.0 · Pure Python',
+    title:         'rhosocial ActiveRecord,<br><em>पुनः डिज़ाइन किया</em> for Python.',
+    sub:           '<strong>rhosocial-activerecord</strong> मॉडल को Python के native type annotations से परिभाषित करता है।',
+    cta_secondary: 'फीचर्स देखें →'
+  },
 
-features: { label: 'क्यों · 6 वादे', title: 'क्यों <em>rhosocial ActiveRecord</em>.', f1: { num: '01 / टाइप = फील्ड', title: 'निर्माण से <em>टाइप-सेफ</em>', desc: '<code>name: str</code> — स्टोरेज, वैलिडेशन और IDE auto-complete एक में।' }, f2: { num: '02 / Async first-class', title: 'Sync &amp; async, <em>एक API</em>', desc: '<code>ActiveRecord</code> / <code>AsyncActiveRecord</code> — identical shape।' }, f3: { num: '03 / Pluggable backends', title: '<em>बदलने योग्य backends</em>', desc: 'SQLite built-in; Postgres/MySQL/MSSQL/Oracle separate packages; या अपना।' }, f4: { num: '04 / Explicit relations', title: '<em>Relations</em> स्पष्ट रूप से', desc: 'has_many / belongs_to model पर declared; relations खुद <code>QuerySet</code> हैं।' }, f5: { num: '05 / Atomic transactions', title: 'Transactions, <em>सही तरीके से नेस्टेड</em>', desc: 'context manager + savepoints; exceptions clean rollback करते हैं।' }, f6: { num: '06 / Pythonic', title: '<em>अंग्रेज़ी</em> की तरह पढ़ता है', desc: '<code>User.query().where(...).all()</code> — कोई DSL नहीं, सिर्फ Python।' } },
+  /* ── 6-Feature cards ─────────────────────────────────── */
+  features: {
+    label: 'क्यों · छह मुख्य वादे',
+    title: 'क्यों <em>rhosocial ActiveRecord</em>.',
+    f1: { num: '01 / Type-safe',         title: '<em>Type-safe</em> by construction',       desc: 'Fields सिर्फ <code>name: str</code> — storage, validation, और IDE completion एकीकृत।' },
+    f2: { num: '02 / Async First',        title: 'Sync &amp; async, <em>एक API</em>',       desc: '<code>ActiveRecord</code> / <code>AsyncActiveRecord</code> समान semantics साझा करते हैं।' },
+    f3: { num: '03 / Pluggable',          title: 'Pluggable <em>backends</em>',              desc: 'SQLite built-in; Postgres/MySQL/SQLServer/Oracle अलग packages; या खुद का बनाएं।' },
+    f4: { num: '04 / Explicit Relations', title: '<em>Relations</em> को स्पष्ट बनाया',         desc: '<code>ClassVar</code> + descriptor protocol, runtime पर auto-replaced।' },
+    f5: { num: '05 / Transactions',       title: 'Transactions, <em>सही ढंग से nested</em>',   desc: 'Context manager + savepoints; exception auto rollback trigger करता है।' },
+    f6: { num: '06 / Pythonic',           title: '<em>अंग्रेज़ी</em> की तरह पढ़ता है',              desc: '<code>User.query().where(...).all()</code> — सिर्फ Python।' }
+  },
 
-f1: { label: '01 / Type-safe', title: '<em>टाइप = फील्ड</em>, 3.8 से 3.12।', intro: 'Python type annotations model definition हैं, कोई extra DSL नहीं। Pydantic runtime validation, IDE में full type inference।' },
-f2: { label: '02 / Async First', title: '<em>Sync = async</em>, same semantics।', intro: 'Sync और async same model definition share करते हैं। <code>for</code> → <code>async for</code>, बाकी same।' },
-f3: { label: '03 / Pluggable Backends', title: '<em>Backends बदलने योग्य</em>, जरूरत के हिसाब से।', intro: 'Core package सिर्फ Pydantic पर depends करती है। SQLite built-in, अन्य databases separate packages, <code>configure()</code> एक line।' },
-f4: { label: '04 / Relations', title: '<em>Explicit relations</em>, ClassVar + descriptor।', intro: 'Relation fields declare करने के लिए <code>ClassVar</code> use करें, Pydantic scanning से बचने के लिए। Runtime पर auto <code>relation()</code> में replace।' },
-f5: { label: '05 / Transactions', title: '<em>Atomic transactions</em>, nested savepoints।', intro: 'Nested transactions auto SAVEPOINT create करते हैं। Context manager auto commit/rollback, exceptions auto last savepoint पर व���पस।' },
-f6: { label: '06 / Pythonic', title: '<em>अंग्रेज़ी की तरह पढ़ना</em>, कोई DSL नहीं।', intro: 'Chain calls, smooth reading like English। <code>.to_sql()</code> generated SQL देखने के लिए।' },
+  /* ── Feature detail sections ─────────────────────────── */
+  f1: {
+    label: '01 / Type-safe',
+    title: '<em>Types फील्ड्स हैं</em>, 3.8 से 3.12 तक।',
+    intro: 'Python type annotations <em>हैं</em> model definition — कोई अतिरिक्त DSL नहीं। Pydantic runtime validation संभालता है; आपका IDE पूर्ण type inference पाता है।'
+  },
+  f2: {
+    label: '02 / Async First',
+    title: '<em>Sync = async</em>, same semantics।',
+    intro: 'Sync और async एक model definition साझा करते हैं। <code>for</code> को <code>async for</code> से बदलें — कुछ और नहीं बदलता।'
+  },
+  f3: {
+    label: '03 / Pluggable Backends',
+    title: '<em>Pluggable backends</em>, जरूरत के हिसाब से चुनें।',
+    intro: 'Core package सिर्फ Pydantic पर निर्भर करता है। SQLite built-in; अन्य databases अलग packages के रूप में आते हैं, एकल <code>configure()</code> कॉल से switchable।'
+  },
+  f4: {
+    label: '04 / Relations',
+    title: '<em>Explicit relations</em>, ClassVar + descriptor।',
+    intro: 'Relation fields को <code>ClassVar</code> के साथ declare करें ताकि वे Pydantic के scan से बाहर रहें। Runtime पर वे स्वचालित रूप से <code>relation()</code> से replace हो जाते हैं।'
+  },
+  f5: {
+    label: '05 / Transactions',
+    title: '<em>Atomic transactions</em>, nested savepoints।',
+    intro: 'Nested transactions स्वचालित रूप से SAVEPOINTs बनाते हैं। Context manager commit या rollback करता है; exceptions निकटतम savepoint पर snap करते हैं।'
+  },
+  f6: {
+    label: '06 / Pythonic',
+    title: '<em>अंग्रेज़ी की तरह पढ़ता है</em>, कोई DSL नहीं।',
+    intro: 'Fluent chained calls स्वाभाविक रूप से पढ़ते हैं। <code>.to_sql()</code> generated SQL को किसी भी बिंदु पर transparent बनाता है।'
+  },
 
-practice: { label: 'In practice · real code', title: '3.8 से 3.12 तक, <em>step by step</em>।', intro: 'testsuite repo के <code>models_py38.py</code> … <code>models_py312.py</code> files से match करती है।', p1: '<b>3.8 → 3.9</b>: <code>list[str]</code> instead of <code>List[str]</code> (PEP 585)।', p2: '<b>3.9 → 3.10</b>: <code>int | None</code> instead of <code>Optional[int]</code> (PEP 604)।', p3: '<b>3.10 → 3.11</b>: <code>Self</code> type (PEP 673)।', p4: '<b>3.11 → 3.12</b>: <code>@override</code> and PEP 695 generics <code>class Result[T]:</code>।' },
+  /* ── Architecture · Internal three layers ───────────── */
+  arch: {
+    label: 'Architecture · तीन Layers',
+    title: '<em>Expression → Dialect → Backend</em>, स्पष्ट जिम्मेदारियां।',
+    intro: 'Query logic, SQL generation, और database execution तीन layers में decoupled हैं। Protocols (<code>@runtime_checkable</code>) boundaries पर capabilities declare करते हैं — unsupported features <code>UnsupportedFeatureError</code> raise करते हैं silently fail करने के बजाय।',
+    col1: {
+      num:   'Expression Layer',
+      title: '<em>Semantic collection</em>, कोई SQL details नहीं',
+      desc:  '<code>BaseExpression.to_sql(dialect)</code> SQL generation को dialect को delegate करता है। Same expression object सभी dialects में reusable है — zero hardcoded SQL।'
+    },
+    col2: {
+      num:   'Dialect Layer (33 protocols)',
+      title: '<em>33 protocols</em> capability boundaries declare करते हैं',
+      desc:  '<code>format_*()</code> methods target-database SQL generate करते हैं। Capability check formula: \\(\\text{can\\_cte} = \\text{isinstance}(\\text{dialect},\\ \\text{SupportsCTE})\\)'
+    },
+    col3: {
+      num:   'Backend Layer (12-layer Mixin)',
+      title: '<em>12-layer Mixin</em> MRO composition',
+      desc:  'Template Method pattern: non-I/O logic shared Mixins में रहता है; I/O logic separately implemented है। \\(n = 12\\) MRO layers — zero duplicated code।'
+    }
+  },
 
-arch: { label: 'Architecture · तीन layers', title: '<em>Expression → Dialect → Backend</em>, clear responsibilities।', intro: 'Query logic, SQL generation, database execution separation। Protocols (<code>@runtime_checkable</code>) boundaries पर capabilities declare करते हैं — unsupported features <code>UnsupportedFeatureError</code> throw करते हैं, silent fail नहीं।', col1: { num: 'Expression layer', title: '<em>Semantic collection</em>, SQL details नहीं', desc: '<code>BaseExpression.to_sql(dialect)</code> target dialect को SQL generation delegate करती है। One expression object सभी dialects में reusable, zero hard-coded SQL।' }, col2: { num: 'Dialect layer (33 protocols)', title: '<em>33 protocols</em> declare capability boundaries', desc: '<code>format_*()</code> methods generate SQL for target database। Capability detection formula: \\(\\text{can\\_cte} = \\text{isinstance}(\text{dialect},\\ \\text{SupportsCTE})\\)' }, col3: { num: 'Backend layer (12 Mixins)', title: '<em>12 Mixins</em> MRO combination', desc: 'Template Method pattern: non-I/O logic in shared Mixin, I/O logic separately। \\(n = 12\\) MRO layer combination, zero code repetition।' } },
+  /* ── Component Architecture · ActiveRecord + Backend ── */
+  arch_comp: {
+    label: 'Component Architecture',
+    title: 'ActiveRecord + Backend, <em>दो स्वतंत्र layers</em>।',
+    intro: 'ActiveRecord Backend का user है; Backend अकेला काम कर सकता है। Sync और async variants जोड़े में हैं पर interchangeable नहीं।',
 
-arch_comp: { label: 'Component architecture', title: 'ActiveRecord + Backend, <em>two independent layers</em>।', intro: 'ActiveRecord Backend का user है; Backend independently काम कर सकती है। Sync और async paired हैं, interchangeable नहीं।', ar_badge: 'Application layer', ar_title: 'ActiveRecord', ar_desc: 'Model definition, query building, relation management, transaction handling। ActiveQuery, SetOperation, CTEQuery शामिल।', be_badge: 'Independent layer', be_title: 'Backend', be_desc: 'Database I/O layer, ActiveRecord के बिना usable। SQLite built-in, अन्य databases extension packages।', uses_label: 'uses', sync_async_note: 'sync ↔ sync · async ↔ async', pair_sync_note: 'Sync pair — async से mix न करें', pair_async_note: 'Async pair — sync से mix न करें', node_sync_group: 'sync', node_async_group: 'async', node_ar_s: 'ActiveRecord', node_aq_s: 'ActiveQuery', node_so_s: 'SetOperation', node_cte_s: 'CTEQuery', node_ar_a: 'AsyncActiveRecord', node_aq_a: 'AsyncActiveQuery', node_so_a: 'AsyncSetOperation', node_cte_a: 'AsyncCTEQuery', node_sb_s: 'StorageBackend', node_sqlite_s:'SQLiteBackend', node_sqlite_a:'AsyncSQLiteBackend', node_sb_a: 'AsyncStorageBackend', node_ext: 'MySQL · PG · Oracle · SS', node_ext_a: 'AsyncMySQL · AsyncPG · …', tip_ar_s: 'Sync ActiveRecord। Model define करने के लिए इस class से inherit करें, <code>.save()</code>, <code>.query()</code> जैसे sync methods call करें।', tip_ar_a: 'Async ActiveRecord। API sync version की mirror है, सभी methods <code>async/await</code> हैं, FastAPI / asyncio के लिए।', tip_aq_s: 'ActiveQuery (sync)। WHERE, ORDER BY, JOIN, pagination chain build करें, end में <code>.all()</code> / <code>.first()</code> execute करें।', tip_aq_a: 'AsyncActiveQuery (async)। Sync के same semantics, सभी terminating methods coroutines हैं।', tip_so_s: 'SetOperation (sync)। Multiple queries को UNION / INTERSECT / EXCEPT से combine करें, unified result set return करें।', tip_so_a: 'AsyncSetOperation (async)। Same, async execution।', tip_cte_s: 'CTEQuery (sync)। WITH clause से CTE build करें, recursive CTE support करें।', tip_cte_a: 'AsyncCTEQuery (async)। Same, async execution।', tip_sb_s: 'StorageBackend (sync)। Minimal I/O interface define करें: execute / fetch / transaction। ActiveRecord के बिना usable।', tip_sb_a: 'AsyncStorageBackend (async)। Sync version की mirror, सभी I/O methods coroutines हैं।', tip_sqlite: 'SQLite backend, core package में built-in। Zero configuration, development, tests, और embedded के लिए suitable।', tip_ext: 'Extension backend packages (sync): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver। Need per install, <code>configure()</code> एक line।', tip_ext_a: 'Extension backend packages (async): sync packages के बराबर, full async/await support।' },
+    ar_badge: 'Application Layer',
+    ar_title: 'ActiveRecord',
+    ar_desc:  'Model definition, query building, relation management, transaction handling। Includes ActiveQuery, SetOperation, CTEQuery।',
 
-qt: { label: 'Quick Taste · 30 seconds', title: 'Installation से <em>first query</em> तक, 30 lines तक।', btn_backends: 'Full backend documentation →', btn_ar: 'ActiveRecord details →', btn_practices:'Practice scenarios →' },
+    be_badge: 'Independent Layer',
+    be_title: 'Backend',
+    be_desc:  'Database I/O layer; ActiveRecord के बिना usable। SQLite core package के साथ आता है; अन्य databases extension packages हैं।',
 
-compare: { label: 'Compare', title: 'Other <em>Python ORM</em> के साथ compare।', col_feature: 'Feature', row1: 'Design pattern', row1r: 'ActiveRecord', row1sa: 'Data Mapper', row1dj: 'ActiveRecord', row1sm: 'Hybrid', row1pw: 'ActiveRecord', row1to: 'ActiveRecord', row2: 'Backend independently usable', row3: 'No session concept', row4: 'Consistent sync / async API', row5: 'Native Pydantic integration', row6: 'Runtime data validation', row7: 'Full SQL expressiveness', row8: 'Capability declaration mechanism', row9: 'SQL transparency <code>.to_sql()</code>', row10: 'No mandatory migration tool', row11: 'Minimal dependencies', row12: 'Explicit relation definition' },
+    uses_label:      'uses',
+    sync_async_note:  'sync ↔ sync · async ↔ async',
+    pair_sync_note:   'Sync pairing — async के साथ मिक्स नहीं कर सकता',
+    pair_async_note:  'Async pairing — sync के साथ मिक्स नहीं कर सकता',
 
-gallery: { label: 'Component Gallery · primitives', title: 'हर theme <em>UI primitives</em> को कैसे handle करती है।', c_buttons: 'Buttons', c_btngroup: 'Button group', c_form: 'Form controls', c_radio: 'Radio group', c_multi: 'Multi-select list', c_dropdown: 'Dropdown', c_alerts: 'Alerts', c_badges: 'Badges', c_progress: 'Progress', c_grid: 'Grid demo (12 col)', c_rtl: 'RTL preview', c_table: 'Striped table', form_email: 'Email address', form_note: 'Notes', form_preload: 'Preload', form_async: 'Async', radio_sync: 'Sync (sync mode)', radio_async: 'Async (async mode)', radio_both: 'Both (shared models)', alert_info: '<b>Tip.</b> SQLite backend core package में आता है।', alert_success: '<b>Ready.</b> <code>User.configure(...)</code> called।', alert_warn: '<b>Warning.</b> Window functions के लिए SQLite ≥ 3.25 required।', prog_coverage: 'Test coverage', prog_backend: 'Backend completion', prog_locale: 'Documentation localization', backend_note: 'Same component as top control bar।', multi1_t: 'PostgreSQL', multi1_d: 'Main production', multi2_t: 'MySQL', multi2_d: 'Legacy services', multi3_t: 'SQLite', multi3_d: 'Tests & prototypes' },
+    ar_diagram: `flowchart TB
+    subgraph AR_SYNC["ActiveRecord (sync)"]
+        direction TB
+        ARS["ActiveRecord"]
+        AQS["ActiveQuery"]
+        SOS["SetOperation\n(UNION / INTERSECT / EXCEPT)"]
+        CTES["CTEQuery\n(WITH ...)"]
+        ARS --> AQS
+        ARS --> SOS
+        ARS --> CTES
+    end
+    subgraph AR_ASYNC["AsyncActiveRecord (async)"]
+        direction TB
+        ARA["AsyncActiveRecord"]
+        AQA["AsyncActiveQuery"]
+        SOA["AsyncSetOperation"]
+        CTEA["AsyncCTEQuery"]
+        ARA --> AQA
+        ARA --> SOA
+        ARA --> CTEA
+    end
+    AR_SYNC ~~~ AR_ASYNC`,
 
-album: { label: 'Gallery · library', title: '<em>Examples</em> से learn करें।', a1: 'Your first model', a2: 'Async in FastAPI', a3: 'has_many in depth', a4: 'Write a backend', a5: 'Auto N+1 detection', a6: 'Nested transactions & savepoints' },
+    be_diagram: `flowchart TB
+    subgraph SYNC["Sync backends"]
+        direction TB
+        SB["StorageBackend\n(Abstract Base Class)"]
+        subgraph Builtin["Built-in"]
+            SQLS["SQLiteBackend"]
+        end
+        subgraph Ext["Extension packages"]
+            direction LR
+            MYS["MySQL / MariaDB"]
+            PGS["PostgreSQL"]
+            ORS["Oracle"]
+            SSS["SQL Server"]
+        end
+        SB --> Builtin
+        SB --> Ext
+    end
+    subgraph ASYNC["Async backends"]
+        direction TB
+        ASB["AsyncStorageBackend\n(Abstract Base Class)"]
+        subgraph ABuiltin["Built-in"]
+            ASQLS["AsyncSQLiteBackend"]
+        end
+        subgraph AExt["Extension packages"]
+            direction LR
+            AMYS["MySQL / MariaDB"]
+            APGS["PostgreSQL"]
+            AORS["Oracle"]
+            ASSS["SQL Server"]
+        end
+        ASB --> ABuiltin
+        ASB --> AExt
+    end
+    SYNC ~~~ ASYNC`,
 
-voices: { label: 'Voices · testimonials', title: 'वे <em>क्या कहते हैं</em>।', q1: 'rhosocial-activerecord से आखिरी बार ORM से नहीं लड़ा। Type annotations ही model हैं — बिल्कुल सही।', q1_role: 'Backend Engineer · Kyoto', q2: 'Sync और async एक API share करते हैं, refactor लगभग free। मेरा FastAPI migration दो lines था।', q2_role: 'Staff Engineer · Berlin', q3: 'मैंने DuckDB backend लिखी। Backend ABC lunch में पढ़ी, afternoon में prod में थी। यही real extensibility है।', q3_role: 'Data Platform · Singapore', q4: 'Chain का हर step सही type inference IDE में है। Pydantic, right place पर use हुई।', q4_role: 'Senior Python · São Paulo', q5: 'Zero runtime dependencies ही key है। Embedded deployments में SQLAlchemy की size को लेकर फिक्र नहीं।', q5_role: 'IoT Engineer · Shenzhen' },
+    note1_title: 'Independent',
+    note1_desc:  'Backend एक clean ABC expose करता है। Lightweight scripts या embedded scenarios के लिए ActiveRecord के बिना इसे सीधे use करें।',
+    note2_title: 'Extensible',
+    note2_desc:  'SQLite core package के साथ आता है। MySQL, MariaDB, PostgreSQL, Oracle, और SQL Server अलग packages हैं — जो चाहिए वही install करें।',
+    note3_title: 'Type-safe pairing',
+    note3_desc:  '<code>ActiveRecord</code> जोड़ता है <code>StorageBackend</code> के साथ; <code>AsyncActiveRecord</code> जोड़ता है <code>AsyncStorageBackend</code> के साथ। Cross-pairing type error raise करता है।',
 
-auth: { label: 'Auth · login demo', title: '<em>rhosocial</em> में login करें।', welcome: 'वापसी पर स्वागत है', sub: 'अपने rhosocial account से continue करें।', email: 'Email', password: 'Password', remember: 'Remember me', forgot: 'Forgot password?', login: 'Login', or: 'OR', github: 'Continue with GitHub', twitter: 'Continue with Twitter', no_account: 'No account?', register: 'Register' },
+    /* ── D3 diagram: group labels ── */
+    node_sync_group:  'Sync',
+    node_async_group: 'Async',
 
-stats: { label: 'In numbers', title: 'कुछ <em>numbers</em>।', s1: 'Available DB dialects', s2: 'Type annotation coverage', s3: 'Minimum Python', s4: 'External ORM dependencies' },
+    /* ── D3 diagram: node display labels ── */
+    node_ar_s:    'ActiveRecord',
+    node_aq_s:    'ActiveQuery',
+    node_so_s:    'SetOperation',
+    node_cte_s:   'CTEQuery',
+    node_ar_a:    'AsyncActiveRecord',
+    node_aq_a:    'AsyncActiveQuery',
+    node_so_a:    'AsyncSetOperation',
+    node_cte_a:   'AsyncCTEQuery',
+    node_sb_s:    'StorageBackend',
+    node_sqlite_s:'SQLiteBackend',
+    node_sqlite_a:'AsyncSQLiteBackend',
+    node_sb_a:    'AsyncStorageBackend',
+    node_ext:     'MySQL · PG · Oracle · SS',
+    node_ext_a:   'AsyncMySQL · AsyncPG · …',
 
-install: { label: 'Get started', title: 'एक line में install, <em>ten minutes</em> में first query।', sub: 'PyPI पर published। SQLite backend core package में शामिल; बाकी need per install करें।', docs: 'Read documentation →' },
+    /* ── D3 diagram: tooltip descriptions ── */
+    tip_ar_s:  'Sync ActiveRecord। अपना model define करने के लिए इसको subclass करें; database से interact करने के लिए <code>.save()</code>, <code>.query()</code> और other sync methods call करें।',
+    tip_ar_a:  'Async ActiveRecord। API exact sync version को mirror करता है — सभी methods <code>async/await</code> हैं, FastAPI / asyncio stacks के लिए ideal।',
+    tip_aq_s:  'ActiveQuery (sync)। WHERE, ORDER BY, JOIN, pagination, etc. को fluent में chain करें, फिर <code>.all()</code> या <code>.first()</code> call करें execute करने के लिए।',
+    tip_aq_a:  'AsyncActiveQuery (async)। Sync version के same semantics; सभी terminal methods coroutines हैं।',
+    tip_so_s:  'SetOperation (sync)। Multiple queries को UNION, INTERSECT, या EXCEPT से combine करके single typed result set return करें।',
+    tip_so_a:  'AsyncSetOperation (async)। Sync के समान; asynchronously execute करता है।',
+    tip_cte_s: 'CTEQuery (sync)। WITH clauses का उपयोग करके Common Table Expressions build करें; recursive CTEs supported हैं।',
+    tip_cte_a: 'AsyncCTEQuery (async)। Sync के समान; asynchronously execute करता है।',
+    tip_sb_s:  'StorageBackend ABC (sync)। Minimal database I/O interface define करता है: execute / fetch / transaction। ActiveRecord के बिना directly usable।',
+    tip_sb_a:  'AsyncStorageBackend ABC (async)। Sync interface को mirror करता है; सभी I/O methods coroutines हैं।',
+    tip_sqlite: 'SQLite backend — core package के साथ आता है। Zero configuration needed; development, testing, और embedded use के लिए perfect।',
+    tip_ext:   'Extension backends (sync): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver। जो चाहिए वही install करें; एक single <code>configure()</code> call से switch करें।',
+    tip_ext_a: 'Extension backends (async): sync packages के one-to-one counterparts, full async/await support के साथ।'
+  },
 
-split_sync: { label: 'Side by side', title: 'Sync = async, <em>same semantics</em>।', intro: '<code>for</code> को <code>async for</code> से replace करें — done। Type inference पूरे chain में बनी रहती है।', cta: 'Read async guide →' },
+  /* ── Quick Taste ─────────────────────────────────────── */
+  qt: {
+    label:         'Quick Taste · 30-सेकंड preview',
+    title:         'Install से <em>पहली query</em> तक 30 lines से कम में।',
+    btn_backends:  'पूर्ण backend docs →',
+    btn_ar:        'ActiveRecord details →',
+    btn_practices: 'Practice scenarios →'
+  },
 
-split_backend: { label: 'Backend freedom', title: 'अपना <em>backend</em> एक afternoon में लिखें।', intro: '<code>Backend</code> से inherit करें, कुछ dialect hooks implement करें। DuckDB और libSQL पहले से proven हैं।', cta: 'Backend dev guide →' },
+  /* ── Compare ─────────────────────────────────────────── */
+  compare: {
+    label:       'तुलना करें',
+    title:       'vs. अन्य Python ORMs।',
+    col_feature: 'Feature',
+    row1:  'Design pattern',              row1r: 'ActiveRecord', row1sa: 'Data Mapper', row1dj: 'ActiveRecord', row1sm: 'Hybrid', row1pw: 'ActiveRecord', row1to: 'ActiveRecord',
+    row2:  'Backend usable standalone',
+    row3:  'No Session concept',
+    row4:  'Sync / async API consistent',
+    row5:  'Native Pydantic integration',
+    row6:  'Runtime data validation',
+    row7:  'Full SQL expressiveness',
+    row8:  'Capability declaration mechanism',
+    row9:  'Transparent SQL <code>.to_sql()</code>',
+    row10: 'Zero forced migration dependency',
+    row11: 'Minimal dependencies',
+    row12: 'Explicit relation definition'
+  },
 
-pricing: { label: 'Plans · illustrative', title: 'अपना <em>plan</em> choose करें।', intro: '(Example cards — OSS project itself free forever। Pricing cards हर theme पर preview करने के लिए shown हैं।)', badge: 'Most Popular', c1: { tier: 'Community', desc: 'Individual devs और OSS contributors के लिए। Full functionality, no limits।', f1: 'SQLite / PostgreSQL / MySQL', f2: 'Full sync & async API', f3: 'Community forum support', f4: 'Team collaboration dashboard', f5: 'SLA response guarantee', cta: 'Get started' }, c2: { tier: 'Team', desc: 'Growing teams। Enterprise backends plus audit।', f1: 'Everything from Community', f2: 'MSSQL / Oracle backends', f3: 'Audit log & read/write split', f4: 'Priority private Discord', f5: 'SSO / SAML', cta: '14 day trial' }, c3: { tier: 'Enterprise', desc: 'Large organizations। On-prem, compliance, training।', price_label: 'Contact us', f1: 'Everything from Team', f2: 'Custom backends (DuckDB / libSQL / internal)', f3: 'SSO / SAML / LDAP', f4: '4 hour SLA', f5: 'Onsite training और dedicated solutions', cta: 'Contact sales' } }
+  /* ── Voices ──────────────────────────────────────────── */
+  voices: {
+    label:   'आवाजें · क्या कहते हैं users',
+    title:   'वे <em>क्या कहते हैं</em>।',
+    q1:      'rhosocial-activerecord finally let me stop fighting the ORM. Type annotations as model definitions — absolutely right.',
+    q1_role: 'Backend Engineer · Kyoto',
+    q2:      'Async और sync एक API share करते हैं — refactoring लगभग zero cost है। मेरा entire FastAPI project दो lines बदलकर migrate हुआ।',
+    q2_role: 'Staff Engineer · Berlin',
+    q3:      'I plugged in a DuckDB backend myself. Looked at the Backend ABC for less than an afternoon and it was running. That is extensibility.',
+    q3_role: 'Data Platform · Singapore',
+    q4:      'Fluent chain का हर step correct type inference IDE में है। Pydantic की power exact जहां matter करती है वहां applied।',
+    q4_role: 'Senior Python · São Paulo',
+    q5:      'Zero runtime dependencies key है। Embedded deployments में हम अब SQLAlchemy के footprint की चिंता नहीं करते।',
+    q5_role: 'IoT Engineer · Shenzhen'
+  },
+
+  /* ── Stats ───────────────────────────────────────────── */
+  stats: {
+    label: 'नंबरों में',
+    title: 'कुछ <em>numbers</em>।',
+    s1: 'Optional DB dialects',
+    s2: 'Type annotation coverage',
+    s3: 'Minimum Python version',
+    s4: 'External ORM dependencies',
+    s5: 'Capability protocols',
+    s6: 'Backend MRO layers'
+  },
+
+  /* ── Install ─────────────────────────────────────────── */
+  install: {
+    label:     'शुरू करें',
+    title:     'एक install, <em>ten minutes</em> में पहली query तक।',
+    sub:       'PyPI पर published। SQLite backend core package के साथ आता है। अन्य backends demand पर install होते हैं।',
+    docs:      'डॉक्स पढ़ें →',
+    practices: 'Practice scenarios →'
+  }
 
 });

@@ -218,7 +218,9 @@ window.I18N['bn-bd'] = Object.assign(window.I18N['bn-bd'] || {}, {
     s1: 'উপলব্ধ DB dialect',
     s2: 'টাইপ অ্যানোটেশন কভারেজ',
     s3: 'সর্বনিম্ন Python',
-    s4: 'বাহ্যিক ORM নির্ভরতা'
+    s4: 'বাহ্যিক ORM নির্ভরতা',
+    s5: 'ক্ষমতা ঘোষণা প্রক্রিয়া',
+    s6: 'Backend MRO লেয়ার'
   },
 
   install: {

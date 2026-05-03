@@ -185,9 +185,6 @@ window.I18N['zh-cn'] = Object.assign(window.I18N['zh-cn'] || {}, {
     node_ext:    'MySQL · PG · Oracle · SS',
     node_ext_a:  'AsyncMySQL · AsyncPG · …',
 
-    pair_sync_note:  '同步配对，不可混用',
-    pair_async_note: '异步配对，不可混用',
-
     /* ── D3 图：tooltip 详细说明 ── */
     tip_ar_s:   '同步 ActiveRecord。继承此类定义模型，调用 <code>.save()</code>、<code>.query()</code> 等同步方法操作数据库。',
     tip_ar_a:   '异步 ActiveRecord。API 与同步版完全镜像，所有方法均为 <code>async/await</code>，适合 FastAPI / asyncio 场景。',

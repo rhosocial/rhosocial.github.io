@@ -16,6 +16,14 @@ window.I18N['ar'] = {
     subtitle: 'Theme Lab'
   },
 
+  /** Top navigation */
+  nav: {
+    index:        'الرئيسية',
+    backends:     'الخوادم',
+    activerecord: 'ActiveRecord',
+    practices:    'الممارسات'
+  },
+
   /** Control bar (theme / font / language dropdowns) */
   control: {
     theme_label: 'السمة',

@@ -16,6 +16,14 @@ window.I18N['fa-ir'] = {
     subtitle: 'Theme Lab'
   },
 
+  /** Top navigation */
+  nav: {
+    index:        'خانه',
+    backends:     'Backends',
+    activerecord: 'ActiveRecord',
+    practices:    'تمرین‌ها'
+  },
+
   /** Control bar (theme / font / language dropdowns) */
   control: {
     theme_label: 'تم',

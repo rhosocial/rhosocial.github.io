@@ -100,6 +100,64 @@ window.I18N['vi-vn'] = Object.assign(window.I18N['vi-vn'] || {}, {
     pair_sync_note:   'Cặp sync, không dùng với async',
     pair_async_note:  'Cặp async, không dùng với sync',
 
+    ar_diagram: `flowchart TB
+    subgraph AR_SYNC["ActiveRecord (sync)"]
+        direction TB
+        ARS["ActiveRecord"]
+        AQS["ActiveQuery"]
+        SOS["SetOperation\n(UNION / INTERSECT / EXCEPT)"]
+        CTES["CTEQuery\n(WITH ...)"]
+        ARS --> AQS
+        ARS --> SOS
+        ARS --> CTES
+    end
+    subgraph AR_ASYNC["AsyncActiveRecord (async)"]
+        direction TB
+        ARA["AsyncActiveRecord"]
+        AQA["AsyncActiveQuery"]
+        SOA["AsyncSetOperation"]
+        CTEA["AsyncCTEQuery"]
+        ARA --> AQA
+        ARA --> SOA
+        ARA --> CTEA
+    end
+    AR_SYNC ~~~ AR_ASYNC`,
+
+    be_diagram: `flowchart TB
+    subgraph SYNC["Sync backends"]
+        direction TB
+        SB["StorageBackend\n(Abstract Base Class)"]
+        subgraph Builtin["Built-in"]
+            SQLS["SQLiteBackend"]
+        end
+        subgraph Ext["Extension packages"]
+            direction LR
+            MYS["MySQL / MariaDB"]
+            PGS["PostgreSQL"]
+            ORS["Oracle"]
+            SSS["SQL Server"]
+        end
+        SB --> Builtin
+        SB --> Ext
+    end
+    subgraph ASYNC["Async backends"]
+        direction TB
+        ASB["AsyncStorageBackend\n(Abstract Base Class)"]
+        subgraph ABuiltin["Built-in"]
+            ASQLS["AsyncSQLiteBackend"]
+        end
+        subgraph AExt["Extension packages"]
+            direction LR
+            AMYS["MySQL / MariaDB"]
+            APGS["PostgreSQL"]
+            AORS["Oracle"]
+            ASSS["SQL Server"]
+        end
+        ASB --> ABuiltin
+        ASB --> AExt
+    end
+    SYNC ~~~ ASYNC`,
+
     note1_title: 'Độc lập',
     note1_desc:  'Backend exposing ABC rõ ràng, có thể dùng không cần ActiveRecord, phù hợp script nhẹ hoặc embedded.',
     note2_title: 'Mở rộng theo nhu cầu',
@@ -107,8 +165,11 @@ window.I18N['vi-vn'] = Object.assign(window.I18N['vi-vn'] || {}, {
     note3_title: 'Ghép cặp type-safe',
     note3_desc:  '<code>ActiveRecord</code> ghép với <code>StorageBackend</code>; <code>AsyncActiveRecord</code> ghép với <code>AsyncStorageBackend</code>. Dùng chéo sẽ gây lỗi kiểu.',
 
+    /* ── D3 diagram: group labels ── */
     node_sync_group:  'Đồng bộ',
     node_async_group: 'Bất đồng bộ',
+
+    /* ── D3 diagram: node display labels ── */
     node_ar_s:   'ActiveRecord',
     node_aq_s:   'ActiveQuery',
     node_so_s:   'SetOperation',
@@ -124,6 +185,7 @@ window.I18N['vi-vn'] = Object.assign(window.I18N['vi-vn'] || {}, {
     node_ext:    'MySQL · PG · Oracle · SS',
     node_ext_a:  'AsyncMySQL · AsyncPG · …',
 
+    /* ── D3 diagram: tooltip descriptions ── */
     tip_ar_s:   'ActiveRecord đồng bộ. Kế thừa class này để định nghĩa model, gọi sync methods <code>.save()</code>, <code>.query()</code> để làm việc với DB.',
     tip_ar_a:   'AsyncActiveRecord. API phản chiếu hoàn toàn phiên bản sync, tất cả methods là <code>async/await</code>, phù hợp FastAPI/asyncio.',
     tip_aq_s:   'ActiveQuery (đồng bộ). Chain build WHERE ORDER BY JOIN pagination... cuối gọi <code>.all()</code> / <code>.first()</code> để execute.',
@@ -182,14 +244,16 @@ window.I18N['vi-vn'] = Object.assign(window.I18N['vi-vn'] || {}, {
     q5_role: 'Kỹ sư IoT · Thâm Quyến'
   },
 
-  /* ── Stats ───────────────────────────────────────────────── */
+/* ── Stats ───────────────────────────────────────────────── */
   stats: {
     label: 'By the numbers',
     title: 'Vài <em>con số</em>.',
     s1: 'Phương ngữ DB khả dụng',
     s2: 'Độ phủ chú thích kiểu',
     s3: 'Python tối thiểu',
-    s4: 'Phụ thuộc ORM bên ngoài'
+    s4: 'Phụ thuộc ORM bên ngoài',
+    s5: 'Protocol khả năng',
+    s6: 'Lớp MRO Backend'
   },
 
   /* ── Install ─────────────────────────────────────────────── */
@@ -199,6 +263,8 @@ window.I18N['vi-vn'] = Object.assign(window.I18N['vi-vn'] || {}, {
     sub:       'Đã phát hành trên PyPI. Backend SQLite đi cùng gói lõi; các backend khác cài theo nhu cầu.',
     docs:      'Đọc tài liệu →',
     practices: 'Scenario thực hành →'
-  }
+  },
 
+  // Padding to match en-us.js line count
+  _pad1: ''
 });

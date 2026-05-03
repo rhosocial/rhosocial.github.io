@@ -1,46 +1,269 @@
 /**
- * index/id-id.js — 首页印度尼西亚语词典
+ * index/id-id.js — Halaman utama kamus bahasa Indonesia
+ *
+ * Dependensi: assets/i18n/id-id.js harus dimuat dulu (menyediakan meta/brand/nav/control/footer/common).
+ * File ini memperluas window.I18N['id-id'] via Object.assign, menambahkan key khusus halaman utama.
  */
 window.I18N = window.I18N || {};
 window.I18N['id-id'] = Object.assign(window.I18N['id-id'] || {}, {
 
-hero: { eyebrow: 'v1.0 · Apache 2.0 · Pure Python', title: 'rhosocial ActiveRecord,<br>ditancang ulang untuk <em>Python</em>.', sub: '<strong>rhosocial-activerecord</strong> mendefinisikan model dengan Python native type annotations dan query dengan <code>query().where(...).all()</code>. Sync dan async dari awal. Tanpa external ORM dependencies — SQLite built-in, databases lain separate packages, custom backend puluhan baris.', cta_secondary: 'Lihat fitur →' },
+  /* ── Hero ─────────────────────────────────────────────── */
+  hero: {
+    eyebrow:       'v1.0 · Apache 2.0 · Pure Python',
+    title:         'rhosocial ActiveRecord,<br><em>ditancang ulang</em> untuk Python.',
+    sub:           '<strong>rhosocial-activerecord</strong> mendefinisikan model dengan Python native type annotations.',
+    cta_secondary: 'Jelajahi fitur →'
+  },
 
-features: { label: 'Mengapa · 6 janji', title: 'Mengapa <em>rhosocial ActiveRecord</em>.', f1: { num: '01 / Tipe = field', title: '<em>Type-safe</em> by construction', desc: '<code>name: str</code> — storage, validasi, IDE autocomplete jadi satu.' }, f2: { num: '02 / Async first-class', title: 'Sync &amp; async, <em>satu API</em>', desc: '<code>ActiveRecord</code> / <code>AsyncActiveRecord</code> — bentuk identik.' }, f3: { num: '03 / Backends portable', title: '<em>Backends</em> pluggable', desc: 'SQLite built-in; Postgres/MySQL/MSSQL/Oracle packages; atau custom.' }, f4: { num: '04 / Relations eksplisit', title: '<em>Relations</em> dibuat eksplisit', desc: 'has_many / belongs_to di model; relations adalah <code>QuerySet</code>.' }, f5: { num: '05 / Transactions atomik', title: 'Transactions, <em>properly nested</em>', desc: 'Context manager + savepoints; exceptions rollback.' }, f6: { num: '06 / Pythonic', title: 'Dibaca seperti <em>Inggris</em>', desc: '<code>User.query().where(...).all()</code> — tanpa DSL, hanya Python.' } },
+  /* ── 6-Feature cards ─────────────────────────────────── */
+  features: {
+    label: 'Mengapa · Enam Janji Utama',
+    title: 'Mengapa <em>rhosocial ActiveRecord</em>.',
+    f1: { num: '01 / Type-safe',         title: '<em>Type-safe</em> by construction',       desc: 'Fields hanya <code>name: str</code> — storage, validation, dan IDE completion disatukan.' },
+    f2: { num: '02 / Async First',        title: 'Sync &amp; async, <em>satu API</em>',       desc: '<code>ActiveRecord</code> / <code>AsyncActiveRecord</code> berbagi semantic yang sama.' },
+    f3: { num: '03 / Pluggable',          title: 'Pluggable <em>backends</em>',              desc: 'SQLite built-in; Postgres/MySQL/SQLServer/Oracle sebagai paket terpisah; buat sendiri.' },
+    f4: { num: '04 / Explicit Relations', title: '<em>Relations</em> dibuat eksplisit',         desc: '<code>ClassVar</code> + descriptor protocol, auto-replaced pada runtime.' },
+    f5: { num: '05 / Transactions',       title: 'Transactions, <em>properly nested</em>',   desc: 'Context manager + savepoints; exception memicu auto rollback.' },
+    f6: { num: '06 / Pythonic',           title: 'Dibaca seperti <em>Inggris</em>',              desc: '<code>User.query().where(...).all()</code> — hanya Python.' }
+  },
 
-f1: { label: '01 / Type-safe', title: '<em>Tipe = field</em>, dari 3.8 ke 3.12.', intro: 'Python type annotations adalah definisi model, tanpa DSL tambahan. Pydantic runtime validation, full type inference di IDE.' },
-f2: { label: '02 / Async First', title: '<em>Sync = async</em>, same semantics.', intro: 'Sync dan async berbagi definisi model sama. <code>for</code> → <code>async for</code>, sisanya sama.' },
-f3: { label: '03 / Pluggable Backends', title: '<em>Backends pluggable</em>, sesuai kebutuhan.', intro: 'Package core hanya bergantung pada Pydantic. SQLite built-in, database lain separate packages, <code>configure()</code> satu baris.' },
-f4: { label: '04 / Relations', title: '<em>Relations eksplisit</em>, ClassVar + descriptor.', intro: 'Gunakan <code>ClassVar</code> untuk declare relation fields, hindari Pydantic scanning. Replacement otomatis ke <code>relation()</code> runtime.' },
-f5: { label: '05 / Transactions', title: '<em>Transactions atomik</em>, nested savepoints.', intro: 'Nested transactions membuat SAVEPOINT otomatis. Context manager auto commit/rollback, exceptions otomatis ke savepoint terakhir.' },
-f6: { label: '06 / Pythonic', title: '<em>Dibaca seperti Inggris</em>, tanpa DSL.', intro: 'Chain calls, reading smooth seperti Inggris. <code>.to_sql()</code> untuk lihat SQL.' },
+  /* ── Feature detail sections ─────────────────────────── */
+  f1: {
+    label: '01 / Type-safe',
+    title: '<em>Types adalah fields</em>, dari 3.8 ke 3.12.',
+    intro: 'Python type annotations <em>adalah</em> model definition — tanpa DSL tambahan. Pydantic menangani runtime validation; IDE Anda mendapatkan full type inference.'
+  },
+  f2: {
+    label: '02 / Async First',
+    title: '<em>Sync = async</em>, same semantics.',
+    intro: 'Sync dan async berbagi satu model definition. Ganti <code>for</code> dengan <code>async for</code> — tidak ada yang lain berubah.'
+  },
+  f3: {
+    label: '03 / Pluggable Backends',
+    title: '<em>Pluggable backends</em>, pilih sesuai kebutuhan.',
+    intro: 'Package core hanya bergantung pada Pydantic. SQLite built-in; database lain dikirim sebagai paket terpisah, switchable dengan satu panggilan <code>configure()</code>.'
+  },
+  f4: {
+    label: '04 / Relations',
+    title: '<em>Explicit relations</em>, ClassVar + descriptor.',
+    intro: 'Declare relation fields dengan <code>ClassVar</code> agar tetap di luar Pydantic\'s scan. Pada runtime mereka secara otomatis diganti dengan <code>relation()</code>.'
+  },
+  f5: {
+    label: '05 / Transactions',
+    title: '<em>Atomic transactions</em>, nested savepoints.',
+    intro: 'Nested transactions otomatis membuat SAVEPOINTs. Context manager commit atau rollback; exception snap ke savepoint terdekat.'
+  },
+  f6: {
+    label: '06 / Pythonic',
+    title: '<em>Dibaca seperti Inggris</em>, tanpa DSL.',
+    intro: 'Fluent chained calls dibaca natural. <code>.to_sql()</code> membuat generated SQL transparan di titik mana pun.'
+  },
 
-practice: { label: 'Dalam praktik · kode nyata', title: 'Dari 3.8 ke 3.12, <em>step by step</em>.', intro: 'Sesuai fixture <code>models_py38.py</code> … <code>models_py312.py</code> di testsuite repo.', p1: '<b>3.8 → 3.9</b>: <code>list[str]</code> bukan <code>List[str]</code> (PEP 585).', p2: '<b>3.9 → 3.10</b>: <code>int | None</code> bukan <code>Optional[int]</code> (PEP 604).', p3: '<b>3.10 → 3.11</b>: tipe <code>Self</code> (PEP 673).', p4: '<b>3.11 → 3.12</b>: <code>@override</code> dan PEP 695 generics <code>class Result[T]:</code>.' },
+  /* ── Architecture · Internal three layers ───────────── */
+  arch: {
+    label: 'Architecture · Tiga Layers',
+    title: '<em>Expression → Dialect → Backend</em>, tanggung jawab jelas.',
+    intro: 'Query logic, SQL generation, dan database execution decoupling ke tiga layers. Protocols (<code>@runtime_checkable</code>) menyatakan capabilities di boundaries — unsupported features raise <code>UnsupportedFeatureError</code> bukan gagal diam-diam.',
+    col1: {
+      num:   'Expression Layer',
+      title: '<em>Semantic collection</em>, tanpa detail SQL',
+      desc:  '<code>BaseExpression.to_sql(dialect)</code> mendelegasikan SQL generation ke dialect. Object expression yang sama reusable di semua dialects — zero hardcoded SQL.'
+    },
+    col2: {
+      num:   'Dialect Layer (33 protocols)',
+      title: '<em>33 protocols</em> declares capability boundaries',
+      desc:  'Method <code>format_*()</code> menghasilkan SQL untuk target database. Formula capability check: \\(\\text{can\\_cte} = \\text{isinstance}(\\text{dialect},\\ \\text{SupportsCTE})\\)'
+    },
+    col3: {
+      num:   'Backend Layer (12-layer Mixin)',
+      title: '<em>12-layer Mixin</em> MRO composition',
+      desc:  'Template Method pattern: non-I/O logic ada di shared Mixins; I/O logic diimplementasikan terpisah. \\(n = 12\\) MRO layers — zero duplicated code.'
+    }
+  },
 
-arch: { label: 'Architecture · tiga layer', title: '<em>Expression → Dialect → Backend</em>, tanggung jawab jelas.', intro: 'Pemisahan query logic, SQL generation, database execution. Protocols (<code>@runtime_checkable</code>) declare capabilities di boundaries — unsupported features throw <code>UnsupportedFeatureError</code>, bukan silent fail.', col1: { num: 'Expression layer', title: '<em>Semantic collection</em>, tanpa detail SQL', desc: '<code>BaseExpression.to_sql(dialect)</code> delegate SQL generation ke target dialect. Satu expression object reusable di semua dialect, cero hard-coded SQL.' }, col2: { num: 'Dialect layer (33 protokol)', title: '<em>33 protokol</em> declare capability boundaries', desc: 'Metode <code>format_*()</code> generate SQL untuk database target. Formula deteksi capability: \\(\\text{can\\_cte} = \\text{isinstance}(\text{dialect},\\ \\text{SupportsCTE})\\)' }, col3: { num: 'Backend layer (12 Mixins)', title: '<em>12 Mixins</em> kombinasi MRO', desc: 'Template Method pattern: non-I/O logic di Mixin shared, I/O logic terpisah. \\(n = 12\\) layer MRO kombinasi, cero repeat kode.' } },
+  /* ── Component Architecture · ActiveRecord + Backend ── */
+  arch_comp: {
+    label: 'Component Architecture',
+    title: 'ActiveRecord + Backend, <em>dua layer independen</em>.',
+    intro: 'ActiveRecord adalah pengguna Backend; Backend bisa berdiri sendiri. Variant sync dan async berpasangan tapi tidak interchangeable.',
 
-arch_comp: { label: 'Arsitektur komponen', title: 'ActiveRecord + Backend, <em>dua layer independen</em>.', intro: 'ActiveRecord adalah user Backend; Backend bisa bekerja independen. Sync dan async paired, tidak interchangeable.', ar_badge: 'Application layer', ar_title: 'ActiveRecord', ar_desc: 'Definisi model, query building, relation management, transaction handling. Includes ActiveQuery, SetOperation, CTEQuery.', be_badge: 'Independent layer', be_title: 'Backend', be_desc: 'Database I/O layer, usable tanpa ActiveRecord. SQLite built-in, databases lain extension packages.', uses_label: 'menggunakan', sync_async_note: 'sync ↔ sync · async ↔ async', pair_sync_note: 'Pasangan sync — tidak boleh campur async', pair_async_note: 'Pasangan async — tidak boleh campur sync', node_sync_group: 'sync', node_async_group: 'async', node_ar_s: 'ActiveRecord', node_aq_s: 'ActiveQuery', node_so_s: 'SetOperation', node_cte_s: 'CTEQuery', node_ar_a: 'AsyncActiveRecord', node_aq_a: 'AsyncActiveQuery', node_so_a: 'AsyncSetOperation', node_cte_a: 'AsyncCTEQuery', node_sb_s: 'StorageBackend', node_sqlite_s:'SQLiteBackend', node_sqlite_a:'AsyncSQLiteBackend', node_sb_a: 'AsyncStorageBackend', node_ext: 'MySQL · PG · Oracle · SS', node_ext_a: 'AsyncMySQL · AsyncPG · …', tip_ar_s: 'ActiveRecord sync. Turunkan class ini untuk definisi model, panggil methods sync seperti <code>.save()</code>, <code>.query()</code>.', tip_ar_a: 'Async ActiveRecord. API adalah cermin versi sync, semua methods <code>async/await</code>, untuk FastAPI / asyncio.', tip_aq_s: 'ActiveQuery (sync). Chain building WHERE, ORDER BY, JOIN, pagination, akhirnya <code>.all()</code> / <code>.first()</code> untuk execute.', tip_aq_a: 'AsyncActiveQuery (async). Same semantics dengan sync, semua terminating methods adalah coroutines.', tip_so_s: 'SetOperation (sync). Gabungkan multiple queries dengan UNION / INTERSECT / EXCEPT, return unified result set.', tip_so_a: 'AsyncSetOperation (async). Same, async execution.', tip_cte_s: 'CTEQuery (sync). Bangun CTE dengan WITH clause, support recursive CTE.', tip_cte_a: 'AsyncCTEQuery (async). Same, async execution.', tip_sb_s: 'StorageBackend (sync). Define minimal I/O interface: execute / fetch / transaction. Usable tanpa ActiveRecord.', tip_sb_a: 'AsyncStorageBackend (async). Cermin versi sync, semua I/O methods adalah coroutines.', tip_sqlite: 'SQLite backend, included di core package. Zero configuration, untuk development, tests, embedded.', tip_ext: 'Extension backend packages (sync): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver. Install per kebutuhan, <code>configure()</code> satu baris.', tip_ext_a: 'Extension backend packages (async): sama dengan sync packages, full async/await support.' },
+    ar_badge: 'Application Layer',
+    ar_title: 'ActiveRecord',
+    ar_desc:  'Model definition, query building, relation management, transaction handling. Includes ActiveQuery, SetOperation, CTEQuery.',
 
-qt: { label: 'Quick Taste · 30 detik', title: 'Dari install ke <em>query pertama</em>, maksimal 30 baris.', btn_backends: 'Dokumentasi backend lengkap →', btn_ar: 'Detail ActiveRecord →', btn_practices:'Skenario praktis →' },
+    be_badge: 'Independent Layer',
+    be_title: 'Backend',
+    be_desc:  'Database I/O layer; usable tanpa ActiveRecord. SQLite shipped built-in; database lain adalah extension packages.',
 
-compare: { label: 'Bandingkan', title: 'Dibandingkan dengan <em>Python ORM</em> lainnya.', col_feature: 'Fitur', row1: 'Design pattern', row1r: 'ActiveRecord', row1sa: 'Data Mapper', row1dj: 'ActiveRecord', row1sm: 'Hybrid', row1pw: 'ActiveRecord', row1to: 'ActiveRecord', row2: 'Backend usable independently', row3: 'Tidak ada konsep session', row4: 'Konsisten sync / async API', row5: 'Integrasi native Pydantic', row6: 'Validasi data runtime', row7: 'Full SQL expressiveness', row8: 'Capability declaration', row9: 'SQL transparency <code>.to_sql()</code>', row10: 'Tanpa tools migrasi wajib', row11: 'Dependencies minimal', row12: 'Definisi relations eksplisit' },
+    uses_label:      'uses',
+    sync_async_note:  'sync ↔ sync · async ↔ async',
+    pair_sync_note:   'Pasangan sync — tidak bisa campur dengan async',
+    pair_async_note:  'Pasangan async — tidak bisa campur dengan sync',
 
-gallery: { label: 'Galeri komponen · primitives', title: 'Setiap theme bagaimana handle <em>UI primitives</em>.', c_buttons: 'Tombol', c_btngroup: 'Grup tombol', c_form: 'Kontrol form', c_radio: 'Grup radio', c_multi: 'List multi-pilih', c_dropdown: 'Dropdown', c_alerts: 'Peringatan', c_badges: 'Badges', c_progress: 'Progress', c_grid: 'Demo grid (12 kol)', c_rtl: 'RTL preview', c_table: 'Tabel striped', form_email: 'Alamat email', form_note: 'Catatan', form_preload: 'Preload', form_async: 'Async', radio_sync: 'Sync (mode sync)', radio_async: 'Async (mode async)', radio_both: 'Kedua (shared models)', alert_info: '<b>Tip.</b> SQLite backend included di core package.', alert_success: '<b>Siap.</b> <code>User.configure(...)</code> called.', alert_warn: '<b>Perhatian.</b> SQLite ≥ 3.25 diperlukan untuk window functions.', prog_coverage: 'Test coverage', prog_backend: 'Backend completion', prog_locale: 'Dokumentasi lokalisasi', backend_note: 'Sama komponen dengan control bar atas.', multi1_t: 'PostgreSQL', multi1_d: 'Produksi utama', multi2_t: 'MySQL', multi2_d: 'Layanan lama', multi3_t: 'SQLite', multi3_d: 'Tests & prototypes' },
+    ar_diagram: `flowchart TB
+    subgraph AR_SYNC["ActiveRecord (sync)"]
+        direction TB
+        ARS["ActiveRecord"]
+        AQS["ActiveQuery"]
+        SOS["SetOperation\n(UNION / INTERSECT / EXCEPT)"]
+        CTES["CTEQuery\n(WITH ...)"]
+        ARS --> AQS
+        ARS --> SOS
+        ARS --> CTES
+    end
+    subgraph AR_ASYNC["AsyncActiveRecord (async)"]
+        direction TB
+        ARA["AsyncActiveRecord"]
+        AQA["AsyncActiveQuery"]
+        SOA["AsyncSetOperation"]
+        CTEA["AsyncCTEQuery"]
+        ARA --> AQA
+        ARA --> SOA
+        ARA --> CTEA
+    end
+    AR_SYNC ~~~ AR_ASYNC`,
 
-album: { label: 'Galeri · pustaka', title: 'Belajar dari <em>contoh</em>.', a1: 'Model pertama Anda', a2: 'Async di FastAPI', a3: 'has_many dalam', a4: 'Tulis backend', a5: 'Auto N+1 detection', a6: 'Nested transactions & savepoints' },
+    be_diagram: `flowchart TB
+    subgraph SYNC["Sync backends"]
+        direction TB
+        SB["StorageBackend\n(Abstract Base Class)"]
+        subgraph Builtin["Built-in"]
+            SQLS["SQLiteBackend"]
+        end
+        subgraph Ext["Extension packages"]
+            direction LR
+            MYS["MySQL / MariaDB"]
+            PGS["PostgreSQL"]
+            ORS["Oracle"]
+            SSS["SQL Server"]
+        end
+        SB --> Builtin
+        SB --> Ext
+    end
+    subgraph ASYNC["Async backends"]
+        direction TB
+        ASB["AsyncStorageBackend\n(Abstract Base Class)"]
+        subgraph ABuiltin["Built-in"]
+            ASQLS["AsyncSQLiteBackend"]
+        end
+        subgraph AExt["Extension packages"]
+            direction LR
+            AMYS["MySQL / MariaDB"]
+            APGS["PostgreSQL"]
+            AORS["Oracle"]
+            ASSS["SQL Server"]
+        end
+        ASB --> ABuiltin
+        ASB --> AExt
+    end
+    SYNC ~~~ ASYNC`,
 
-voices: { label: 'Suara · kesaksian', title: 'Yang mereka <em>katakan</em>.', q1: 'Dengan rhosocial-activerecord akhirnya tidak lagi fighting ORM. Type annotations adalah model — tepat sekali.', q1_role: 'Backend Engineer · Kyoto', q2: 'Sync dan async berbagi satu API, refactor hampir gratis. Migrasi FastAPI saya dua baris.', q2_role: 'Staff Engineer · Berlin', q3: 'Saya tulis DuckDB backend. Baca Backend ABC saat makan siang, sore sudah di prod. Ini extensibility sejati.', q3_role: 'Data Platform · Singapore', q4: 'Setiap step chain dapat type inference yang benar di IDE saya. Pydantic, digunakan di tempat yang benar.', q4_role: 'Senior Python · São Paulo', q5: 'Zero runtime dependencies adalah kunci. Di embedded deployments tidak lagi khawatir ukuran SQLAlchemy.', q5_role: 'IoT Engineer · Shenzhen' },
+    note1_title: 'Independent',
+    note1_desc:  'Backend mengekspos ABC yang bersih. Gunakan langsung tanpa ActiveRecord untuk script ringan atau embedded scenarios.',
+    note2_title: 'Extensible',
+    note2_desc:  'SQLite dikirim dengan package core. MySQL, MariaDB, PostgreSQL, Oracle, dan SQL Server adalah paket terpisah — install hanya yang dibutuhkan.',
+    note3_title: 'Type-safe pairing',
+    note3_desc:  '<code>ActiveRecord</code> dipasangkan dengan <code>StorageBackend</code>; <code>AsyncActiveRecord</code> dipasangkan dengan <code>AsyncStorageBackend</code>. Cross-pairing raise type error.',
 
-auth: { label: 'Auth · demo login', title: 'Login ke <em>rhosocial</em>.', welcome: 'Selamat datang kembali', sub: 'Lanjutkan dengan akun rhosocial Anda.', email: 'Email', password: 'Password', remember: 'Ingat saya', forgot: 'Lupa password?', login: 'Login', or: 'ATAU', github: 'Lanjutkan dengan GitHub', twitter: 'Lanjutkan dengan Twitter', no_account: 'Belum punya akun?', register: 'Registrasi' },
+    /* ── D3 diagram: group labels ── */
+    node_sync_group:  'Sync',
+    node_async_group: 'Async',
 
-stats: { label: 'Dalam angka', title: 'Beberapa <em>angka</em>.', s1: 'DB dialects tersedia', s2: 'Type annotation coverage', s3: 'Python minimal', s4: 'External ORM dependencies' },
+    /* ── D3 diagram: node display labels ── */
+    node_ar_s:    'ActiveRecord',
+    node_aq_s:    'ActiveQuery',
+    node_so_s:    'SetOperation',
+    node_cte_s:   'CTEQuery',
+    node_ar_a:    'AsyncActiveRecord',
+    node_aq_a:    'AsyncActiveQuery',
+    node_so_a:    'AsyncSetOperation',
+    node_cte_a:   'AsyncCTEQuery',
+    node_sb_s:    'StorageBackend',
+    node_sqlite_s:'SQLiteBackend',
+    node_sqlite_a:'AsyncSQLiteBackend',
+    node_sb_a:    'AsyncStorageBackend',
+    node_ext:     'MySQL · PG · Oracle · SS',
+    node_ext_a:   'AsyncMySQL · AsyncPG · …',
 
-install: { label: 'Mulai', title: 'Install satu baris, <em>sepuluh menit</em> ke query pertama.', sub: 'Dipublikasikan di PyPI. SQLite backend di core package; yang lain install sesuai kebutuhan.', docs: 'Baca dokumentasi →' },
+    /* ── D3 diagram: tooltip descriptions ── */
+    tip_ar_s:  'ActiveRecord sync. Subclass ini untuk define model Anda; call <code>.save()</code>, <code>.query()</code> dan method sync lain untuk interaksi dengan database.',
+    tip_ar_a:  'Async ActiveRecord. API mencerminkan versi sync dengan tepat — semua method adalah <code>async/await</code>, ideal untuk FastAPI / asyncio stacks.',
+    tip_aq_s:  'ActiveQuery (sync). Chain WHERE, ORDER BY, JOIN, pagination, dll dengan fluent, lalu call <code>.all()</code> atau <code>.first()</code> untuk execute.',
+    tip_aq_a:  'AsyncActiveQuery (async). Same semantics dengan versi sync; semua method terminal adalah coroutines.',
+    tip_so_s:  'SetOperation (sync). Gabungkan multiple queries dengan UNION, INTERSECT, atau EXCEPT menjadi single typed result set.',
+    tip_so_a:  'AsyncSetOperation (async). Sama seperti sync; executes asynchronously.',
+    tip_cte_s: 'CTEQuery (sync). Build Common Table Expressions menggunakan WITH clause; recursive CTEs supported.',
+    tip_cte_a: 'AsyncCTEQuery (async). Sama seperti sync; executes asynchronously.',
+    tip_sb_s:  'StorageBackend ABC (sync). Mendefinisikan minimal database I/O interface: execute / fetch / transaction. Langsung usable tanpa ActiveRecord.',
+    tip_sb_a:  'AsyncStorageBackend ABC (async). Mencerminkan interface sync; semua method I/O adalah coroutines.',
+    tip_sqlite: 'SQLite backend — dikirim dengan package core. Zero configuration needed; sempurna untuk development, testing, dan embedded use.',
+    tip_ext:   'Extension backends (sync): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver. Install hanya yang dibutuhkan; switch dengan satu panggilan <code>configure()</code>.',
+    tip_ext_a: 'Extension backends (async): one-to-one counterparts dari sync packages, dengan full async/await support.'
+  },
 
-split_sync: { label: 'Side by side', title: 'Sync = async, <em>same semantics</em>.', intro: 'Ganti <code>for</code> dengan <code>async for</code> — selesai. Type inference mengalir ke seluruh chain.', cta: 'Baca panduan async →' },
+  /* ── Quick Taste ─────────────────────────────────────── */
+  qt: {
+    label:         'Quick Taste · Preview 30 detik',
+    title:         'Dari install ke <em>query pertama</em> dalam kurang dari 30 baris.',
+    btn_backends:  'Dokumentasi backend lengkap →',
+    btn_ar:        'Detail ActiveRecord →',
+    btn_practices: 'Skenario praktik →'
+  },
 
-split_backend: { label: 'Kebebasan backend', title: 'Tulis <em>backend</em> sendiri dalam sore.', intro: 'Turunkan dari <code>Backend</code>, implement beberapa dialect hooks. DuckDB dan libSQL sudah terbukti.', cta: 'Panduan developer backend →' },
+  /* ── Compare ─────────────────────────────────────────── */
+  compare: {
+    label:       'Bandingkan',
+    title:       'vs. Python ORMs lain.',
+    col_feature: 'Fitur',
+    row1:  'Design pattern',              row1r: 'ActiveRecord', row1sa: 'Data Mapper', row1dj: 'ActiveRecord', row1sm: 'Hybrid', row1pw: 'ActiveRecord', row1to: 'ActiveRecord',
+    row2:  'Backend usable standalone',
+    row3:  'No Session concept',
+    row4:  'Sync / async API consistent',
+    row5:  'Native Pydantic integration',
+    row6:  'Runtime data validation',
+    row7:  'Full SQL expressiveness',
+    row8:  'Capability declaration mechanism',
+    row9:  'Transparent SQL <code>.to_sql()</code>',
+    row10: 'Zero forced migration dependency',
+    row11: 'Minimal dependencies',
+    row12: 'Explicit relation definition'
+  },
 
-pricing: { label: 'Plans · ilustratif', title: 'Pilih <em>level</em> Anda.', intro: '(Kartu contoh — project OSS sendiri gratis selamanya. Ditampilkan untuk preview pricing di setiap theme.)', badge: 'Most Popular', c1: { tier: 'Community', desc: 'Untuk pengembang individu dan kontributor OSS. Fitur lengkap, tanpa batas.', f1: 'SQLite / PostgreSQL / MySQL', f2: 'API sync & async lengkap', f3: 'Dukungan forum komunitas', f4: 'Dashboard kolaborasi tim', f5: 'Jaminan respons SLA', cta: 'Mulai' }, c2: { tier: 'Team', desc: 'Tim yang berkembang. Backends enterprise plus audit.', f1: 'Semua dari Community', f2: 'Backends MSSQL / Oracle', f3: 'Audit log & read/write split', f4: 'Discord privat prioritas', f5: 'SSO / SAML', cta: 'Coba 14 hari' }, c3: { tier: 'Enterprise', desc: 'Organisasi besar. On-prem, compliance, pelatihan.', price_label: 'Hubungi kami', f1: 'Semua dari Team', f2: 'Backends custom (DuckDB / libSQL / internal)', f3: 'SSO / SAML / LDAP', f4: 'SLA 4 jam', f5: 'Pelatihan onsite dan solusi dedicated', cta: 'Hubungi sales' } }
+  /* ── Voices ──────────────────────────────────────────── */
+  voices: {
+    label:   'Suara · Apa yang pengguna katakan',
+    title:   'Apa yang mereka <em>katakan</em>.',
+    q1:      'rhosocial-activerecord akhirnya membiarkan saya berhenti bertengkar dengan ORM. Type annotations sebagai model definition — benar-benar tepat.',
+    q1_role: 'Backend Engineer · Kyoto',
+    q2:      'Async dan sync berbagi satu API — refactoring hampir tanpa biaya. Seluruh project FastAPI saya bermigrasi dengan dua baris berubah.',
+    q2_role: 'Staff Engineer · Berlin',
+    q3:      'Saya membuat backend DuckDB sendiri. Melihat Backend ABC kurang dari setengah hari dan sudah berjalan. Itu yang disebut extensibility.',
+    q3_role: 'Data Platform · Singapore',
+    q4:      'Setiap step dari fluent chain memiliki type inference yang benar di IDE. Kekuatan Pydantic diterapkan persis di tempat yang tepat.',
+    q4_role: 'Senior Python · São Paulo',
+    q5:      'Zero runtime dependencies adalah kuncinya. Di embedded deployments kami tidak lagi khawatir dengan footprint SQLAlchemy.',
+    q5_role: 'IoT Engineer · Shenzhen'
+  },
+
+  /* ── Stats ───────────────────────────────────────────── */
+  stats: {
+    label: 'Dalam angka',
+    title: 'Beberapa <em>angka</em>.',
+    s1: 'Optional DB dialects',
+    s2: 'Type annotation coverage',
+    s3: 'Minimum Python version',
+    s4: 'External ORM dependencies',
+    s5: 'Capability protocols',
+    s6: 'Backend MRO layers'
+  },
+
+  /* ── Install ─────────────────────────────────────────── */
+  install: {
+    label:     'Mulai',
+    title:     'Satu install, <em>sepuluh menit</em> ke query pertama.',
+    sub:       'Dipublikasikan di PyPI. Backend SQLite dikirim dengan package core. Backend lain install sesuai kebutuhan.',
+    docs:      'Baca dokumentasi →',
+    practices: 'Skenario praktik →'
+  }
 
 });

@@ -16,6 +16,14 @@ window.I18N['fr-fr'] = {
     subtitle: 'Theme Lab'
   },
 
+  /** Top navigation */
+  nav: {
+    index:        'Accueil',
+    backends:     'Backends',
+    activerecord: 'ActiveRecord',
+    practices:    'Pratiques'
+  },
+
   /** Control bar (theme / font / language dropdowns) */
   control: {
     theme_label: 'Thème',

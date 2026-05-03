@@ -16,6 +16,14 @@ window.I18N['el-gr'] = {
     subtitle: 'Theme Lab'
   },
 
+  /** Top navigation */
+  nav: {
+    index:        'Αρχική',
+    backends:     'Backends',
+    activerecord: 'ActiveRecord',
+    practices:    'Πρακτικές'
+  },
+
   /** Control bar (theme / font / language dropdowns) */
   control: {
     theme_label: 'Θέμα',

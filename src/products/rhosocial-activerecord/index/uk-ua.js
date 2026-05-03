@@ -100,6 +100,64 @@ window.I18N['uk-ua'] = Object.assign(window.I18N['uk-ua'] || {}, {
     pair_sync_note:   'Пара sync, не можна змішувати з async',
     pair_async_note:  'Пара async, не можна змішувати з sync',
 
+    ar_diagram: `flowchart TB
+    subgraph AR_SYNC["ActiveRecord (sync)"]
+        direction TB
+        ARS["ActiveRecord"]
+        AQS["ActiveQuery"]
+        SOS["SetOperation\n(UNION / INTERSECT / EXCEPT)"]
+        CTES["CTEQuery\n(WITH ...)"]
+        ARS --> AQS
+        ARS --> SOS
+        ARS --> CTES
+    end
+    subgraph AR_ASYNC["AsyncActiveRecord (async)"]
+        direction TB
+        ARA["AsyncActiveRecord"]
+        AQA["AsyncActiveQuery"]
+        SOA["AsyncSetOperation"]
+        CTEA["AsyncCTEQuery"]
+        ARA --> AQA
+        ARA --> SOA
+        ARA --> CTEA
+    end
+    AR_SYNC ~~~ AR_ASYNC`,
+
+    be_diagram: `flowchart TB
+    subgraph SYNC["Sync backends"]
+        direction TB
+        SB["StorageBackend\n(Abstract Base Class)"]
+        subgraph Builtin["Built-in"]
+            SQLS["SQLiteBackend"]
+        end
+        subgraph Ext["Extension packages"]
+            direction LR
+            MYS["MySQL / MariaDB"]
+            PGS["PostgreSQL"]
+            ORS["Oracle"]
+            SSS["SQL Server"]
+        end
+        SB --> Builtin
+        SB --> Ext
+    end
+    subgraph ASYNC["Async backends"]
+        direction TB
+        ASB["AsyncStorageBackend\n(Abstract Base Class)"]
+        subgraph ABuiltin["Built-in"]
+            ASQLS["AsyncSQLiteBackend"]
+        end
+        subgraph AExt["Extension packages"]
+            direction LR
+            AMYS["MySQL / MariaDB"]
+            APGS["PostgreSQL"]
+            AORS["Oracle"]
+            ASSS["SQL Server"]
+        end
+        ASB --> ABuiltin
+        ASB --> AExt
+    end
+    SYNC ~~~ ASYNC`,
+
     note1_title: 'Незалежні',
     note1_desc:  'Backend відкриває чіткі ABC (Abstract Base Class), може використовуватися без ActiveRecord, підходить для легких скриптів або embedded.',
     note2_title: 'Розширювані за потреби',
@@ -107,8 +165,11 @@ window.I18N['uk-ua'] = Object.assign(window.I18N['uk-ua'] || {}, {
     note3_title: 'Type-safe пари',
     note3_desc:  '<code>ActiveRecord</code> парує з <code>StorageBackend</code>; <code>AsyncActiveRecord</code> парує з <code>AsyncStorageBackend</code>. Перехресне використання викликає помилку типу.',
 
+    /* ── D3 diagram: group labels ── */
     node_sync_group:  'Синхронний',
     node_async_group: 'Асинхронний',
+
+    /* ── D3 diagram: node display labels ── */
     node_ar_s:   'ActiveRecord',
     node_aq_s:   'ActiveQuery',
     node_so_s:   'SetOperation',
@@ -124,6 +185,7 @@ window.I18N['uk-ua'] = Object.assign(window.I18N['uk-ua'] || {}, {
     node_ext:    'MySQL · PG · Oracle · SS',
     node_ext_a:  'AsyncMySQL · AsyncPG · …',
 
+    /* ── D3 diagram: tooltip descriptions ── */
     tip_ar_s:   'Синхронний ActiveRecord. Успадкуйте цей клас для визначення моделі, викликайте синхронні методи <code>.save()</code>, <code>.query()</code> тощо для роботи з БД.',
     tip_ar_a:   'Асинхронний ActiveRecord. API — повне дзеркало синхронної версії, усі методи <code>async/await</code>, підходить для FastAPI / asyncio.',
     tip_aq_s:   'ActiveQuery (синхронний). Будує ланцюжком WHERE, ORDER BY, JOIN, пагінацію тощо, наприкінці викликає <code>.all()</code> / <code>.first()</code> для виконання.',
@@ -182,23 +244,27 @@ window.I18N['uk-ua'] = Object.assign(window.I18N['uk-ua'] || {}, {
     q5_role: 'IoT-інженер · Шеньчжень'
   },
 
-  /* ── Stats ───────────────────────────────────────────────── */
+/* ── Stats ───────────────────────────────────────────────── */
   stats: {
     label: 'By the numbers',
     title: 'Кілька <em>цифр</em>.',
     s1: 'Доступні діалекти БД',
     s2: 'Покриття анотаціями типів',
     s3: 'Мінімальний Python',
-    s4: 'Зовнішні ORM-залежності'
+    s4: 'Зовнішні ORM-залежності',
+    s5: 'Протоколи можливостей',
+    s6: 'MRO шари Backend'
   },
 
-  /* ── Install ─────────────────────────────────────────────── */
+  /* ── Install ─────────────────────────────────────────── */
   install: {
     label:     'Почніть',
     title:     'Встановлення одним рядком, <em>десять хвилин</em> до першого запиту.',
     sub:       'Опубліковано на PyPI. Backend SQLite вбудовано; інші встановлюєте за потреби.',
     docs:      'Читати документацію →',
     practices: 'Практичні сценарії →'
-  }
+  },
 
+  // Padding to match en-us.js line count
+  _pad1: ''
 });

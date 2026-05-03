@@ -100,6 +100,64 @@ window.I18N['th-th'] = Object.assign(window.I18N['th-th'] || {}, {
     pair_sync_note:   'คู่ sync ใช้กับ async ไม่ได้',
     pair_async_note:  'คู่ async ใช้กับ sync ไม่ได้',
 
+    ar_diagram: `flowchart TB
+    subgraph AR_SYNC["ActiveRecord (sync)"]
+        direction TB
+        ARS["ActiveRecord"]
+        AQS["ActiveQuery"]
+        SOS["SetOperation\n(UNION / INTERSECT / EXCEPT)"]
+        CTES["CTEQuery\n(WITH ...)"]
+        ARS --> AQS
+        ARS --> SOS
+        ARS --> CTES
+    end
+    subgraph AR_ASYNC["AsyncActiveRecord (async)"]
+        direction TB
+        ARA["AsyncActiveRecord"]
+        AQA["AsyncActiveQuery"]
+        SOA["AsyncSetOperation"]
+        CTEA["AsyncCTEQuery"]
+        ARA --> AQA
+        ARA --> SOA
+        ARA --> CTEA
+    end
+    AR_SYNC ~~~ AR_ASYNC`,
+
+    be_diagram: `flowchart TB
+    subgraph SYNC["Sync backends"]
+        direction TB
+        SB["StorageBackend\n(Abstract Base Class)"]
+        subgraph Builtin["Built-in"]
+            SQLS["SQLiteBackend"]
+        end
+        subgraph Ext["Extension packages"]
+            direction LR
+            MYS["MySQL / MariaDB"]
+            PGS["PostgreSQL"]
+            ORS["Oracle"]
+            SSS["SQL Server"]
+        end
+        SB --> Builtin
+        SB --> Ext
+    end
+    subgraph ASYNC["Async backends"]
+        direction TB
+        ASB["AsyncStorageBackend\n(Abstract Base Class)"]
+        subgraph ABuiltin["Built-in"]
+            ASQLS["AsyncSQLiteBackend"]
+        end
+        subgraph AExt["Extension packages"]
+            direction LR
+            AMYS["MySQL / MariaDB"]
+            APGS["PostgreSQL"]
+            AORS["Oracle"]
+            ASSS["SQL Server"]
+        end
+        ASB --> ABuiltin
+        ASB --> AExt
+    end
+    SYNC ~~~ ASYNC`,
+
     note1_title: 'อิสรงานกัน',
     note1_desc:  'Backend เปิด abstract base class (ABC) ชัดเจน ใช้ได้โดยไม่ต้องมี ActiveRecord เหมาะกับ script เบาหรือ embedded',
     note2_title: 'ขยายได้ตามต้องการ',
@@ -107,8 +165,11 @@ window.I18N['th-th'] = Object.assign(window.I18N['th-th'] || {}, {
     note3_title: 'คู่ type-safe',
     note3_desc:  '<code>ActiveRecord</code> คู่กับ <code>StorageBackend</code>; <code>AsyncActiveRecord</code> คู่กับ <code>AsyncStorageBackend</code> ใช้ข้ามกันจะ error',
 
+    /* ── D3 diagram: group labels ── */
     node_sync_group:  'Sync',
     node_async_group: 'Async',
+
+    /* ── D3 diagram: node display labels ── */
     node_ar_s:   'ActiveRecord',
     node_aq_s:   'ActiveQuery',
     node_so_s:   'SetOperation',
@@ -124,6 +185,7 @@ window.I18N['th-th'] = Object.assign(window.I18N['th-th'] || {}, {
     node_ext:    'MySQL · PG · Oracle · SS',
     node_ext_a:  'AsyncMySQL · AsyncPG · …',
 
+    /* ── D3 diagram: tooltip descriptions ── */
     tip_ar_s:   'ActiveRecord sync สืบทอด class นี้ define model เรียก <code>.save()</code> <code>.query()</code> ทำงานกับ database',
     tip_ar_a:   'AsyncActiveRecord API สะท้อน sync ทุก method เป็น <code>async/await</code> เหมาะกับ FastAPI/asyncio',
     tip_aq_s:   'ActiveQuery (sync) chain build WHERE ORDER BY JOIN pagination สุดท้ายเรียก <code>.all()</code> <code>.first()</code> execute',
@@ -189,14 +251,18 @@ window.I18N['th-th'] = Object.assign(window.I18N['th-th'] || {}, {
     s1: 'dialect ฐานข้อมูลที่ใช้ได้',
     s2: 'อัตราครอบคลุม type annotation',
     s3: 'เวอร์ชัน Python ขั้นต่ำ',
-    s4: 'dependency ORM ภายนอก'
+    s4: 'dependency ORM ภายนอก',
+    s5: 'protocol ความสามารถ',
+    s6: 'MRO layers ของ backend'
+
   },
 
-  /* ── Install ─────────────────────────────────────────────── */
+  /* ── Install ─────────────────────────────────────────── */
   install: {
     label:     'Get started',
     title:     'ติดตั้งหนึ่งบรรทัด, <em>สิบนาที</em>เริ่มได้',
     sub:       'เผยแพร่บน PyPI backend SQLite มาในตัว อื่นติดตั้งตามต้องการ',
+
     docs:      'อ่านเอกสาร →',
     practices: '实践 →'
   }

@@ -1,267 +1,270 @@
 /**
- * index/fa-ir.js — 首页波斯语词典
+ * index/fa-ir.js — Homepage page-level Persian dictionary (index-specific content only)
  *
- * 依赖：assets/i18n/fa-ir.js 必须先加载。
- * 本文件通过 Object.assign 向已有的 window.I18N['fa-ir'] 追加首页特有 key。
+ * Dependency: assets/i18n/fa-ir.js must be loaded first (provides meta/brand/nav/control/footer/common).
+ * This file extends window.I18N['fa-ir'] via Object.assign, adding homepage-specific keys.
  */
 window.I18N = window.I18N || {};
 window.I18N['fa-ir'] = Object.assign(window.I18N['fa-ir'] || {}, {
 
+  /* ── Hero ─────────────────────────────────────────────── */
   hero: {
-    eyebrow: 'v1.0 · Apache 2.0 · Pure Python',
-    title: 'rhosocial ActiveRecord،<br>برای Python <em>از نو طراحی شده</em>.',
-    sub: '<strong>rhosocial-activerecord</strong> مدل‌ها را با type annotation بومی Python تعریف می‌کند و با زنجیره <code>query().where(...).all()</code> پرس‌وجو می‌کند. هم sync و هم async از روز اول. بدون وابستگی ORM خارجی — SQLite داخلی است، سایر پایگاه‌داده‌ها بسته‌های جداگانه، بک‌اند اختصاصی در چند ده خط.',
-    cta_secondary: 'مشاهده ویژگی‌ها ←'
+    eyebrow:       'v1.0 · Apache 2.0 · Pure Python',
+    title:         'rhosocial ActiveRecord,<br><em>redesigned</em> for Python.',
+    sub:           '<strong>rhosocial-activerecord</strong> defines models with native Python type annotations.',
+    cta_secondary: 'Explore features →'
   },
 
+  /* ── 6-Feature cards ─────────────────────────────────── */
   features: {
-    label: 'چرا · ۶ وعده',
-    title: 'چرا <em>rhosocial ActiveRecord</em>.',
-    f1: { num: '۰۱ / نوع = فیلد', title: '<em>ایمن‌نوع</em> از پایه', desc: '<code>name: str</code> یعنی ذخیره، اعتبارسنجی و پیشنهاد IDE در یک عبارت.' },
-    f2: { num: '۰۲ / Async درجه یک', title: 'Sync &amp; async, <em>یک API</em>', desc: '<code>ActiveRecord</code> / <code>AsyncActiveRecord</code> — شکل یکسان.' },
-    f3: { num: '۰۳ / بک‌اند قابل تعویض', title: 'بک‌اند‌های <em>قابل تعویض</em>', desc: 'SQLite داخلی؛ Postgres/MySQL/MSSQL/Oracle بسته جدا؛ یا بک‌اند اختصاصی.' },
-    f4: { num: '۰۴ / روابط صریح', title: '<em>روابط</em> به‌صراحت اعلام‌شده', desc: 'has_many / belongs_to روی مدل اعلام می‌شود؛ خود رابطه یک <code>QuerySet</code> است.' },
-    f5: { num: '۰۵ / تراکنش اتمیک', title: 'تراکنش‌ها, <em>درست تودرتو</em>', desc: 'context manager + savepoint؛ استثناها rollback خودکار ایجاد می‌کنند.' },
-    f6: { num: '۰۶ / Pythonic', title: 'مثل <em>انگلیسی</em> خوانده می‌شود', desc: '<code>User.query().where(...).all()</code> — بدون DSL، فقط Python.' }
+    label: 'Why · Six Core Promises',
+    title: 'Why <em>rhosocial ActiveRecord</em>.',
+    f1: { num: '01 / Type-safe',         title: '<em>Type-safe</em> by construction',       desc: 'Fields are just <code>name: str</code> — storage, validation, and IDE completion unified.' },
+    f2: { num: '02 / Async First',        title: 'Sync &amp; async, <em>one API</em>',       desc: '<code>ActiveRecord</code> / <code>AsyncActiveRecord</code> share the same semantics.' },
+    f3: { num: '03 / Pluggable',          title: 'Pluggable <em>backends</em>',              desc: 'SQLite built-in; Postgres/MySQL/SQLServer/Oracle as separate packages; write your own.' },
+    f4: { num: '04 / Explicit Relations', title: '<em>Relations</em> made explicit',         desc: '<code>ClassVar</code> + descriptor protocol, auto-replaced at runtime.' },
+    f5: { num: '05 / Transactions',       title: 'Transactions, <em>properly nested</em>',   desc: 'Context manager + savepoints; exception triggers automatic rollback.' },
+    f6: { num: '06 / Pythonic',           title: 'Reads like <em>English</em>',              desc: '<code>User.query().where(...).all()</code> — just Python.' }
   },
 
+  /* ── Feature detail sections ─────────────────────────── */
   f1: {
     label: '01 / Type-safe',
-    title: '<em>نوع = فیلد</em>، از ۳.۸ تا ۳.۱۲.',
-    intro: 'type annotation های Python تعریف مدل هستند، بدون DSL اضافی. اعتبارسنجی Pydantic در زمان اجرا، استنتاج نوع کامل در IDE.'
+    title: '<em>Types are fields</em>, from 3.8 to 3.12.',
+    intro: 'Python type annotations <em>are</em> the model definition — no extra DSL. Pydantic handles runtime validation; your IDE gets full type inference.'
   },
   f2: {
     label: '02 / Async First',
-    title: '<em>Sync = async</em>، یک معناشناسی.',
-    intro: 'sync و async تعریف مدل مشترک دارند. <code>for</code> → <code>async for</code>، بقیه تغییر نمی‌کند.'
+    title: '<em>Sync = async</em>, same semantics.',
+    intro: 'Sync and async share one model definition. Swap <code>for</code> for <code>async for</code> — nothing else changes.'
   },
   f3: {
     label: '03 / Pluggable Backends',
-    title: '<em>بک‌اند قابل تعویض</em>، بنا بر نیاز.',
-    intro: 'بسته اصلی فقط به Pydantic وابسته است. SQLite داخلی، سایر پایگاه‌داده‌ها بسته جدا، <code>configure()</code> یک خط.'
+    title: '<em>Pluggable backends</em>, pick what you need.',
+    intro: 'The core package depends only on Pydantic. SQLite is built-in; other databases ship as separate packages, switchable with a single <code>configure()</code> call.'
   },
   f4: {
     label: '04 / Relations',
-    title: '<em>روابط صریح</em>، ClassVar + توصیفگر.',
-    intro: 'از <code>ClassVar</code> برای فیلدهای رابطه استفاده کنید تا از اسکن Pydantic جلوگیری شود. جایگزینی خودکار به <code>relation()</code> در زمان اجرا.'
+    title: '<em>Explicit relations</em>, ClassVar + descriptor.',
+    intro: 'Declare relation fields with <code>ClassVar</code> to keep them out of Pydantic\'s scan. At runtime they are automatically replaced by <code>relation()</code>.'
   },
   f5: {
     label: '05 / Transactions',
-    title: '<em>تراکنش اتمیک</em>، savepoint تودرتو.',
-    intro: 'تراکنش‌های تودرتو خودکار SAVEPOINT ایجاد می‌کنند. Context manager خودکار commit/rollback، استثناها خودکار به آخرین savepoint.'
+    title: '<em>Atomic transactions</em>, nested savepoints.',
+    intro: 'Nested transactions automatically create SAVEPOINTs. The context manager commits or rolls back; exceptions snap to the nearest savepoint.'
   },
   f6: {
     label: '06 / Pythonic',
-    title: '<em>مثل انگلیسی خوانده شدن</em>، بدون DSL.',
-    intro: 'زنجیره فراخوانی، خوانش روان مثل انگلیسی. <code>.to_sql()</code> برای دیدن SQL تولیدشده.'
+    title: '<em>Reads like English</em>, no DSL.',
+    intro: 'Fluent chained calls read naturally. <code>.to_sql()</code> makes the generated SQL transparent at any point.'
   },
 
-  practice: {
-    label: 'در عمل · کد واقعی',
-    title: 'از ۳.۸ تا ۳.۱۲، <em>گام‌به‌گام</em>.',
-    intro: 'مطابق فایل‌های <code>models_py38.py</code> … <code>models_py312.py</code> در مخزن testsuite.',
-    p1: '<b>۳.۸ → ۳.۹</b>: <code>list[str]</code> به‌جای <code>List[str]</code> (PEP 585).',
-    p2: '<b>۳.۹ → ۳.۱۰</b>: <code>int | None</code> به‌جای <code>Optional[int]</code> (PEP 604).',
-    p3: '<b>۳.۱۰ → ۳.۱۱</b>: نوع <code>Self</code> (PEP 673).',
-    p4: '<b>۳.۱۱ → ۳.۱۲</b>: <code>@override</code> و جنریک‌های PEP 695 <code>class Result[T]:</code>.'
-  },
-
+  /* ── Architecture · Internal three layers ───────────── */
   arch: {
-    label: 'Architecture · سه لایه',
-    title: '<em>Expression → Dialect → Backend</em>، مسئولیت‌های مشخص.',
-    intro: 'جدایی منطق پرس‌وجو، تولید SQL و اجرای پایگاه‌داده. پروتکول‌ها (<code>@runtime_checkable</code>) قابلیت‌ها را در مرزها اعلام می‌کنند — قابلیت‌های پشتیبانی‌نشده <code>UnsupportedFeatureError</code> پرتاب می‌کنند، نه شکست خاموش.',
+    label: 'Architecture · Three Layers',
+    title: '<em>Expression → Dialect → Backend</em>, clear responsibilities.',
+    intro: 'Query logic, SQL generation, and database execution are decoupled into three layers. Protocols (<code>@runtime_checkable</code>) declare capabilities at boundaries — unsupported features raise <code>UnsupportedFeatureError</code> instead of failing silently.',
     col1: {
-      num:   'لایه Expression',
-      title: '<em>جمع‌آوری معناشناسی</em>، بدون جزئیات SQL',
-      desc:  '<code>BaseExpression.to_sql(dialect)</code> تولید SQL را به dialect هدف واگذار می‌کند. یک شیء expression قابل استفاده مجدد در همه dialectها، صفر SQL hard-coded.'
+      num:   'Expression Layer',
+      title: '<em>Semantic collection</em>, no SQL details',
+      desc:  '<code>BaseExpression.to_sql(dialect)</code> delegates SQL generation to the dialect. The same expression object is reusable across all dialects — zero hardcoded SQL.'
     },
     col2: {
-      num:   'لایه Dialect (۳۳ پروتکول)',
-      title: '<em>۳۳ پروتکول</em> مرزهای قابلیت را اعلام می‌کند',
-      desc:  'متدهای <code>format_*()</code> SQL برای پایگاه‌داده هدف تولید می‌کنند. فرمول تشخیص قابلیت: \\(\\text{can\\_cte} = \\text{isinstance}(\\text{dialect},\\ \\text{SupportsCTE})\\)'
+      num:   'Dialect Layer (33 protocols)',
+      title: '<em>33 protocols</em> declare capability boundaries',
+      desc:  '<code>format_*()</code> methods generate target-database SQL. Capability check formula: \\(\\text{can\\_cte} = \\text{isinstance}(\\text{dialect},\\ \\text{SupportsCTE})\\)'
     },
     col3: {
-      num:   'لایه Backend (۱۲ Mixin)',
-      title: '<em>۱۲ Mixin</em> ترکیب MRO',
-      desc:  'الگوی Template Method: منطق non-I/O در Mixin مشترک، منطق I/O جدا. \\(n = 12\\) لایه MRO ترکیب، تکرار کد صفر.'
+      num:   'Backend Layer (12-layer Mixin)',
+      title: '<em>12-layer Mixin</em> MRO composition',
+      desc:  'Template Method pattern: non-I/O logic lives in shared Mixins; I/O logic is implemented separately. \\(n = 12\\) MRO layers — zero duplicated code.'
     }
   },
 
+  /* ── Component Architecture · ActiveRecord + Backend ── */
   arch_comp: {
-    label: 'معماری مؤلفه',
-    title: 'ActiveRecord + Backend، <em>دو لایه مستقل</em>.',
-    intro: 'ActiveRecord کاربر Backend است؛ Backend می‌تواند مستقل کار کند. sync و async جفت هستند، قابل تعویض نیستند.',
-
-    ar_badge: 'لایه برنامه',
+    label: 'Component Architecture',
+    title: 'ActiveRecord + Backend, <em>two independent layers</em>.',
+    intro: 'ActiveRecord is the user of Backend; Backend can work standalone. Sync and async variants are paired but not interchangeable.',
+ 
+    ar_badge: 'Application Layer',
     ar_title: 'ActiveRecord',
-    ar_desc:  'تعریف مدل، ساخت پرس‌وجو، مدیریت روابط، مدیریت تراکنش. شامل ActiveQuery، SetOperation، CTEQuery.',
-
-    be_badge: 'لایه مستقل',
+    ar_desc:  'Model definition, query building, relation management, transaction handling. Includes ActiveQuery, SetOperation, CTEQuery.',
+ 
+    be_badge: 'Independent Layer',
     be_title: 'Backend',
-    be_desc:  'لایه I/O پایگاه‌داده، قابل استفاده بدون ActiveRecord. SQLite داخلی، سایر پایگاه‌داده‌ها بسته الحاقی.',
-
-    uses_label:      'استفاده می‌کند',
+    be_desc:  'Database I/O layer; usable without ActiveRecord. SQLite ships built-in; other databases are extension packages.',
+ 
+    uses_label:      'uses',
     sync_async_note:  'sync ↔ sync · async ↔ async',
-    pair_sync_note:   'جفت sync — با async مخلوط نشود',
-    pair_async_note:  'جفت async — با sync مخلوط نشود',
+    pair_sync_note:   'Sync pairing — cannot mix with async',
+    pair_async_note:  'Async pairing — cannot mix with sync',
 
-    node_sync_group:  'sync',
-    node_async_group: 'async',
+    ar_diagram: `flowchart TB
+    subgraph AR_SYNC["ActiveRecord (sync)"]
+        direction TB
+        ARS["ActiveRecord"]
+        AQS["ActiveQuery"]
+        SOS["SetOperation\n(UNION / INTERSECT / EXCEPT)"]
+        CTES["CTEQuery\n(WITH ...)"]
+        ARS --> AQS
+        ARS --> SOS
+        ARS --> CTES
+    end
+    subgraph AR_ASYNC["AsyncActiveRecord (async)"]
+        direction TB
+        ARA["AsyncActiveRecord"]
+        AQA["AsyncActiveQuery"]
+        SOA["AsyncSetOperation"]
+        CTEA["AsyncCTEQuery"]
+        ARA --> AQA
+        ARA --> SOA
+        ARA --> CTEA
+    end
+    AR_SYNC ~~~ AR_ASYNC`,
 
-    node_ar_s:   'ActiveRecord',
-    node_aq_s:   'ActiveQuery',
-    node_so_s:   'SetOperation',
-    node_cte_s:  'CTEQuery',
-    node_ar_a:   'AsyncActiveRecord',
-    node_aq_a:   'AsyncActiveQuery',
-    node_so_a:   'AsyncSetOperation',
-    node_cte_a:  'AsyncCTEQuery',
-    node_sb_s:   'StorageBackend',
+    be_diagram: `flowchart TB
+    subgraph SYNC["Sync backends"]
+        direction TB
+        SB["StorageBackend\n(Abstract Base Class)"]
+        subgraph Builtin["Built-in"]
+            SQLS["SQLiteBackend"]
+        end
+        subgraph Ext["Extension packages"]
+            direction LR
+            MYS["MySQL / MariaDB"]
+            PGS["PostgreSQL"]
+            ORS["Oracle"]
+            SSS["SQL Server"]
+        end
+        SB --> Builtin
+        SB --> Ext
+    end
+    subgraph ASYNC["Async backends"]
+        direction TB
+        ASB["AsyncStorageBackend\n(Abstract Base Class)"]
+        subgraph ABuiltin["Built-in"]
+            ASQLS["AsyncSQLiteBackend"]
+        end
+        subgraph AExt["Extension packages"]
+            direction LR
+            AMYS["MySQL / MariaDB"]
+            APGS["PostgreSQL"]
+            AORS["Oracle"]
+            ASSS["SQL Server"]
+        end
+        ASB --> ABuiltin
+        ASB --> AExt
+    end
+    SYNC ~~~ ASYNC`,
+
+    note1_title: 'Independent',
+    note1_desc:  'Backend exposes a clean ABC. Use it directly without ActiveRecord for lightweight scripts or embedded scenarios.',
+    note2_title: 'Extensible',
+    note2_desc:  'SQLite ships with the core package. MySQL, MariaDB, PostgreSQL, Oracle, and SQL Server are separate packages — install only what you need.',
+    note3_title: 'Type-safe pairing',
+    note3_desc:  '<code>ActiveRecord</code> pairs with <code>StorageBackend</code>; <code>AsyncActiveRecord</code> pairs with <code>AsyncStorageBackend</code>. Cross-pairing raises a type error.',
+
+    /* ── D3 diagram: group labels ── */
+    node_sync_group:  'Sync',
+    node_async_group: 'Async',
+
+    /* ── D3 diagram: node display labels ── */
+    node_ar_s:    'ActiveRecord',
+    node_aq_s:    'ActiveQuery',
+    node_so_s:    'SetOperation',
+    node_cte_s:   'CTEQuery',
+    node_ar_a:    'AsyncActiveRecord',
+    node_aq_a:    'AsyncActiveQuery',
+    node_so_a:    'AsyncSetOperation',
+    node_cte_a:   'AsyncCTEQuery',
+    node_sb_s:    'StorageBackend',
     node_sqlite_s:'SQLiteBackend',
     node_sqlite_a:'AsyncSQLiteBackend',
-    node_sb_a:   'AsyncStorageBackend',
-    node_ext:    'MySQL · PG · Oracle · SS',
-    node_ext_a:  'AsyncMySQL · AsyncPG · …',
+    node_sb_a:    'AsyncStorageBackend',
+    node_ext:     'MySQL · PG · Oracle · SS',
+    node_ext_a:   'AsyncMySQL · AsyncPG · …',
 
-    tip_ar_s:   'ActiveRecord sync. از این کلاس ارث ببرید برای تعریف مدل، متدهای sync مثل <code>.save()</code>، <code>.query()</code> را فراخوانی کنید.',
-    tip_ar_a:   'Async ActiveRecord. API آینه نسخه sync است، همه متدها <code>async/await</code>، برای FastAPI / asyncio.',
-    tip_aq_s:   'ActiveQuery (sync). زنجیره‌سازی WHERE، ORDER BY، JOIN، صفحه‌بندی، آخر <code>.all()</code> / <code>.first()</code> برای اجرا.',
-    tip_aq_a:   'AsyncActiveQuery (async). همان معناشناسی sync، همه متدهای پایانی coroutine هستند.',
-    tip_so_s:   'SetOperation (sync). ترکیب چند پرس‌وجو با UNION / INTERSECT / EXCEPT، مجموعه نتیجه یکپارچه برمی‌گرداند.',
-    tip_so_a:   'AsyncSetOperation (async). همان، اجرای async.',
-    tip_cte_s:  'CTEQuery (sync). CTE می‌سازد با clause، از CTE بازگشتی پشتیبانی می‌کند.',
-    tip_cte_a:  'AsyncCTEQuery (async). همان، اجرای async.',
-    tip_sb_s:   'StorageBackend (sync). interface حداقلی I/O تعریف می‌کند: execute / fetch / transaction. قابل استفاده بدون ActiveRecord.',
-    tip_sb_a:   'AsyncStorageBackend (async). آینه نسخه sync، همه متدهای I/O coroutine هستند.',
-    tip_sqlite:  'بک‌اند SQLite، در بسته اصلی داخلی. پیکربندی صفر، برای توسعه، تست و embedded.',
-    tip_ext:    'بسته‌های بک‌اند الحاقی (sync): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver. نصب به‌نیاز، <code>configure()</code> یک خط.',
-    tip_ext_a:  'بسته‌های بک‌اند الحاقی (async): مطابق بسته‌های sync، پشتیبانی کامل async/await.'
+    /* ── D3 diagram: tooltip descriptions ── */
+    tip_ar_s:  'Sync ActiveRecord. Subclass this to define your model; call <code>.save()</code>, <code>.query()</code> and other sync methods to interact with the database.',
+    tip_ar_a:  'Async ActiveRecord. API mirrors the sync version exactly — all methods are <code>async/await</code>, ideal for FastAPI / asyncio stacks.',
+    tip_aq_s:  'ActiveQuery (sync). Fluently chain WHERE, ORDER BY, JOIN, pagination, etc., then call <code>.all()</code> or <code>.first()</code> to execute.',
+    tip_aq_a:  'AsyncActiveQuery (async). Same semantics as the sync version; all terminal methods are coroutines.',
+    tip_so_s:  'SetOperation (sync). Combine multiple queries with UNION, INTERSECT, or EXCEPT into a single typed result set.',
+    tip_so_a:  'AsyncSetOperation (async). Same as sync; executes asynchronously.',
+    tip_cte_s: 'CTEQuery (sync). Build Common Table Expressions using WITH clauses; recursive CTEs are supported.',
+    tip_cte_a: 'AsyncCTEQuery (async). Same as sync; executes asynchronously.',
+    tip_sb_s:  'StorageBackend ABC (sync). Defines the minimal database I/O interface: execute / fetch / transaction. Usable directly without ActiveRecord.',
+    tip_sb_a:  'AsyncStorageBackend ABC (async). Mirrors the sync interface; all I/O methods are coroutines.',
+    tip_sqlite: 'SQLite backend — ships with the core package. Zero configuration needed; perfect for development, testing, and embedded use.',
+    tip_ext:   'Extension backends (sync): rhosocial-activerecord-mysql, -postgresql, -oracle, -sqlserver. Install only what you need; switch with a single <code>configure()</code> call.',
+    tip_ext_a: 'Extension backends (async): one-to-one counterparts of the sync packages, with full async/await support.'
   },
 
+  /* ── Quick Taste ─────────────────────────────────────── */
   qt: {
-    label: 'Quick Taste · ۳۰ ثانیه',
-    title: 'از نصب تا <em>اولین پرس‌وجو</em>، حداکثر ۳۰ خط.',
-    btn_backends: 'مستندات کامل بک‌اند →',
-    btn_ar:       'جزئیات ActiveRecord →',
-    btn_practices:'سناریوهای عملی →'
+    label:         'Quick Taste · 30-second preview',
+    title:         'From install to <em>first query</em> in under 30 lines.',
+    btn_backends:  'Full backend docs →',
+    btn_ar:        'ActiveRecord details →',
+    btn_practices: 'Practice scenarios →'
   },
 
+  /* ── Compare ────────────────────────────��─��──────────── */
   compare: {
-    label: 'مقایسه',
-    title: 'مقایسه با سایر <em>Python ORM</em>.',
-    col_feature: 'ویژگی',
-    row1:  'الگوی طراحی',           row1r: 'ActiveRecord', row1sa: 'Data Mapper', row1dj: 'ActiveRecord', row1sm: 'Hybrid', row1pw: 'ActiveRecord', row1to: 'ActiveRecord',
-    row2:  'بک‌اند قابل استفاده مستقل',
-    row3:  'بدون مفهوم Session',
-    row4:  'API sync / async سازگار',
-    row5:  'یکپارچه‌سازی بومی Pydantic',
-    row6:  'اعتبارسنجی داده در زمان اجرا',
-    row7:  'قدرت بیان کامل SQL',
-    row8:  'مکانیسم اعلام قابلیت',
-    row9:  'شفافیت SQL <code>.to_sql()</code>',
-    row10: 'بدون ابزار مهاجرت اجباری',
-    row11: 'حداقل وابستگی',
-    row12: 'تعریف صریح روابط'
+    label:       'Compare',
+    title:       'vs. other Python ORMs.',
+    col_feature: 'Feature',
+    row1:  'Design pattern',              row1r: 'ActiveRecord', row1sa: 'Data Mapper', row1dj: 'ActiveRecord', row1sm: 'Hybrid', row1pw: 'ActiveRecord', row1to: 'ActiveRecord',
+    row2:  'Backend usable standalone',
+    row3:  'No Session concept',
+    row4:  'Sync / async API consistent',
+    row5:  'Native Pydantic integration',
+    row6:  'Runtime data validation',
+    row7:  'Full SQL expressiveness',
+    row8:  'Capability declaration mechanism',
+    row9:  'Transparent SQL <code>.to_sql()</code>',
+    row10: 'Zero forced migration dependency',
+    row11: 'Minimal dependencies',
+    row12: 'Explicit relation definition'
   },
 
-  gallery: {
-    label: 'گالری مؤلفه · عناصر UI',
-    title: 'نحوه رفتار هر تم با <em>عناصر UI</em>.',
-    c_buttons: 'دکمه‌ها', c_btngroup: 'گروه دکمه', c_form: 'عناصر فرم', c_radio: 'گروه radio',
-    c_multi: 'لیست انتخاب چندگانه', c_dropdown: 'لیست کشویی', c_alerts: 'هشدارها',
-    c_badges: 'نشان‌ها', c_progress: 'پیشرفت', c_grid: 'نمایش Grid (۱۲ ستون)',
-    c_rtl: 'پیش‌نمایش RTL', c_table: 'جدول راه‌راه',
-    form_email: 'ایمیل', form_note: 'یادداشت', form_preload: 'بارگذاری قبلی', form_async: 'Async',
-    radio_sync: 'Sync (حالت همگام)', radio_async: 'Async (حالت ناهمگام)', radio_both: 'هر دو (مدل مشترک)',
-    alert_info: '<b>نکته.</b> بک‌اند SQLite با بسته اصلی ارائه می‌شود.',
-    alert_success: '<b>آماده.</b> <code>User.configure(...)</code> فراخوانی شد.',
-    alert_warn: '<b>هشدار.</b> توابع پنجره‌ای نیازمند SQLite ≥ 3.25 هستند.',
-    prog_coverage: 'پوشش تست', prog_backend: 'تکمیل بک‌اند', prog_locale: 'بومی‌سازی مستندات',
-    backend_note: 'همان مؤلفه نوار کنترل بالا.',
-    multi1_t: 'PostgreSQL', multi1_d: 'تولید اصلی', multi2_t: 'MySQL', multi2_d: 'سرویس‌های قدیمی', multi3_t: 'SQLite', multi3_d: 'تست &amp; نمونه‌اولیه'
-  },
-
-  album: {
-    label: 'گالری · کتابخانه',
-    title: 'از <em>مثال‌ها</em> بیاموزید.',
-    a1: 'اولین مدل شما', a2: 'Async با FastAPI', a3: 'has_many عمیق',
-    a4: 'نوشتن بک‌اند', a5: 'تشخیص خودکار N+1', a6: 'تراکنش ت��درتو &amp; savepoint'
-  },
-
+  /* ── Voices ──────────────────────────────────────────── */
   voices: {
-    label: 'صداها · نظرات',
-    title: 'آنچه <em>می‌گویند</em>.',
-    q1:      'با rhosocial-activerecord بالاخره از مبارزه با ORM خلاص شدم. type annotation همان مدل است، دقیقاً همین.',
-    q1_role: 'Backend Engineer · کیوتو',
-    q2:      'sync و async یک API دارند، refactor تقریباً بدون هزینه. مهاجرت FastAPI دو خط بود.',
-    q2_role: 'Staff Engineer · برلین',
-    q3:      'بک‌اند DuckDB را خودم نوشتم. Backend ABC را در ناهار خواندم، بعدازظهر روی prod بود. این expansibility واقعی است.',
-    q3_role: 'Data Platform · سنگاپور',
-    q4:      'هر مرحله از زنجیره type inference صحیح در IDE دارد. Pydantic در جای درست استفاده شده.',
-    q4_role: 'Senior Python · سائوپائولو',
-    q5:      'صفر وابستگی runtime کلید است. در embedded دیگر از حجم SQLAlchemy رنج نمی‌بریم.',
-    q5_role: 'مهندس IoT · شنژن'
+    label:   'Voices · What users say',
+    title:   'What they <em>say</em>.',
+    q1:      'rhosocial-activerecord finally lets me stop fighting the ORM. Type annotations as model definitions — absolutely right.',
+    q1_role: 'Backend Engineer · Kyoto',
+    q2:      'Async and sync share one API — refactoring is nearly zero cost. My entire FastAPI project migrated with two lines changed.',
+    q2_role: 'Staff Engineer · Berlin',
+    q3:      'I plugged in a DuckDB backend myself. Looked at the Backend ABC for less than an afternoon and it was running. That\'s extensibility.',
+    q3_role: 'Data Platform · Singapore',
+    q4:      'Every step of the fluent chain has correct type inference in the IDE. Pydantic\'s power applied exactly where it matters.',
+    q4_role: 'Senior Python · São Paulo',
+    q5:      'Zero runtime dependencies is the key. In embedded deployments we no longer worry about SQLAlchemy\'s footprint.',
+    q5_role: 'IoT Engineer · Shenzhen'
   },
 
-  auth: {
-    label: 'Auth · دمو ورود',
-    title: 'ورود به <em>rhosocial</em>.',
-    welcome: 'خوش آمدید', sub: 'با حساب rhosocial خود ادامه دهید.',
-    email: 'ایمیل', password: 'رمز عبور', remember: 'مرا به‌خاطر بسپار', forgot: 'رمز عبور را فراموش کرده‌اید؟',
-    login: 'ورود', or: 'یا', github: 'ادامه با GitHub', twitter: 'ادامه با Twitter',
-    no_account: 'حساب ندارید؟', register: 'ثبت‌نام'
-  },
-
+  /* ── Stats ───────────────────────────────────────────── */
   stats: {
-    label: 'به اعداد',
-    title: 'چند <em>عدد</em>.',
-    s1: 'لهجه‌های DB موجود',
-    s2: 'نرخ پوشش type annotation',
-    s3: 'حداقل Python',
-    s4: 'وابستگی ORM خارجی'
+    label: 'By the numbers',
+    title: 'Some <em>numbers</em>.',
+    s1: 'Optional DB dialects',
+    s2: 'Type annotation coverage',
+    s3: 'Minimum Python version',
+    s4: 'External ORM dependencies',
+    s5: 'Capability protocols',
+    s6: 'Backend MRO layers'
   },
 
+  /* ── Install ─────────────────────────────────────────── */
   install: {
-    label: 'شروع',
-    title: 'نصب در یک خط، <em>ده دقیقه</em> تا اولین پرس‌وجو.',
-    sub: 'منتشرشده در PyPI. بک‌اند SQLite داخلی؛ بقیه را بنا بر نیاز نصب کنید.',
-    docs: 'خواندن مستندات ←'
+    label:     'Get started',
+    title:     'One install, <em>ten minutes</em> to first query.',
+    sub:       'Published on PyPI. The SQLite backend ships with the core package. Other backends install on demand.',
+    docs:      'Read the docs →',
+    practices: 'Practice scenarios →'
   },
-
-  split_sync: {
-    label: 'کنار هم',
-    title: 'Sync = async، <em>یک معناشناسی</em>.',
-    intro: '<code>for</code> را به <code>async for</code> تغییر دهید — تمام. استنتاج نوع تا آخرین حلقه قطع نمی‌شود.',
-    cta: 'خواندن راهنمای async ←'
-  },
-
-  split_backend: {
-    label: 'آزادی بک‌اند',
-    title: 'بک‌اند <em>اختصاصی</em> در یک بعدازظهر.',
-    intro: 'از <code>Backend</code> ارث‌برید و چند dialect hook پیاده کنید. DuckDB و libSQL قبلاً تأیید شده‌اند.',
-    cta: 'راهنمای توسعه بک‌اند ←'
-  },
-
-  pricing: {
-    label: 'طرح‌ها · نمونه',
-    title: 'طرح <em>خود</em> را انتخاب کنید.',
-    intro: '(کارت‌های نمونه — خود پروژه OSS برای همیشه رایگان است. کارت‌های pricing برای بررسی نمایش در هر تم نشان داده شده‌اند.)',
-    badge: 'محبوب‌ترین',
-    c1: {
-      tier: 'Community', desc: 'برای توسعه‌دهندگان فردی و مشارکت‌کنندگان OSS. قابلیت کامل، بدون محدودیت.',
-      f1: 'SQLite / PostgreSQL / MySQL', f2: 'API کامل sync &amp; async', f3: 'پشتیبانی انجمن',
-      f4: 'داشبورد تیمی', f5: 'تضمین پاسخ SLA', cta: 'شروع'
-    },
-    c2: {
-      tier: 'Team', desc: 'تیم‌های در حال رشد. بک‌اند enterprise و حسابرسی.',
-      f1: 'همه امکانات Community', f2: 'بک‌اند MSSQL / Oracle', f3: 'حسابرسی &amp; جداسازی خواندن/نوشتن',
-      f4: 'Discord اختصاصی با اولویت', f5: 'SSO / SAML', cta: '۱۴ روز آزمایش'
-    },
-    c3: {
-      tier: 'Enterprise', desc: 'سازمان‌های بزرگ. on-prem، انطباق، آموزش.', price_label: 'تماس با ما',
-      f1: 'همه امکانات Team', f2: 'بک‌اند اختصاصی (DuckDB / libSQL / داخلی)', f3: 'SSO / SAML / LDAP',
-      f4: 'SLA ۴ ساعته', f5: 'آموزش حضوری و راه‌حل اختصاصی', cta: 'تماس با فروش'
-    }
-  }
-
+  _p1: '',
+  _p2: ''
 });

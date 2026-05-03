@@ -218,7 +218,9 @@ window.I18N['cs-cz'] = Object.assign(window.I18N['cs-cz'] || {}, {
     s1: 'Dostupné DB dialekty',
     s2: 'Pokrytí typovými anotacemi',
     s3: 'Minimální Python',
-    s4: 'Externí ORM závislosti'
+    s4: 'Externí ORM závislosti',
+    s5: 'Protokolů schopností',
+    s6: 'MRO vrstev Backend'
   },
 
   install: {
