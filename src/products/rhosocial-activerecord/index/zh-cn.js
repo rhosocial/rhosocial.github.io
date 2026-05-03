@@ -96,7 +96,9 @@ window.I18N['zh-cn'] = Object.assign(window.I18N['zh-cn'] || {}, {
     be_desc:  '数据库 I/O 层，可脱离 ActiveRecord 单独使用。SQLite 内置，其他数据库以扩展包形式提供。',
 
     uses_label:      '调用',
-    sync_async_note: '同步 ↔ 同步 · 异步 ↔ 异步',
+    sync_async_note:  '同步 ↔ 同步 · 异步 ↔ 异步',
+    pair_sync_note:   '同步配对，不可与异步混用',
+    pair_async_note:  '异步配对，不可与同步混用',
 
     ar_diagram: `flowchart TB
     subgraph AR_SYNC["ActiveRecord（同步）"]
@@ -182,6 +184,9 @@ window.I18N['zh-cn'] = Object.assign(window.I18N['zh-cn'] || {}, {
     node_sb_a:   'AsyncStorageBackend',
     node_ext:    'MySQL · PG · Oracle · SS',
     node_ext_a:  'AsyncMySQL · AsyncPG · …',
+
+    pair_sync_note:  '同步配对，不可混用',
+    pair_async_note: '异步配对，不可混用',
 
     /* ── D3 图：tooltip 详细说明 ── */
     tip_ar_s:   '同步 ActiveRecord。继承此类定义模型，调用 <code>.save()</code>、<code>.query()</code> 等同步方法操作数据库。',

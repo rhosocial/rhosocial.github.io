@@ -100,6 +100,27 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
 <!-- Page-specific i18n -->
 <script src="index/zh-cn.js"></script>
 <script src="index/en-us.js"></script>
+<script src="index/ar.js"></script>
+<script src="index/bn-bd.js"></script>
+<script src="index/cs-cz.js"></script>
+<script src="index/de-de.js"></script>
+<script src="index/el-gr.js"></script>
+<script src="index/es-es.js"></script>
+<script src="index/fa-ir.js"></script>
+<script src="index/fr-fr.js"></script>
+<script src="index/hi-in.js"></script>
+<script src="index/id-id.js"></script>
+<script src="index/ja-jp.js"></script>
+<script src="index/ko-kr.js"></script>
+<script src="index/nl-nl.js"></script>
+<script src="index/pl-pl.js"></script>
+<script src="index/pt-pt.js"></script>
+<script src="index/ro-ro.js"></script>
+<script src="index/ru-ru.js"></script>
+<script src="index/th-th.js"></script>
+<script src="index/tr-tr.js"></script>
+<script src="index/uk-ua.js"></script>
+<script src="index/vi-vn.js"></script>
 
 <!-- Feature code data -->
 <script src="assets/feature-code-data.js"></script>
@@ -108,7 +129,6 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
 <script src="assets/themes.js"></script>
 <script src="assets/i18n-core.js"></script>
 <script src="assets/utils.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 </head>
 <body>
 <header class="control-bar" id="control-bar">
@@ -215,9 +235,9 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
     <div class="container">
       <div class="feature-detail">
         <div class="feature-detail-text">
-          <div class="section-label">01 / Type-safe</div>
-          <h2 class="section-title"><em>类型即字段</em>，从 3.8 到 3.12。</h2>
-          <p class="section-intro">Python 类型注解即模型定义，无需额外 DSL。Pydantic 运行时验证，IDE 完整类型推导。</p>
+          <div class="section-label" data-i18n="f1.label">01 / Type-safe</div>
+          <h2 class="section-title" data-i18n="f1.title"><em>类型即字段</em>，从 3.8 到 3.12。</h2>
+          <p class="section-intro" data-i18n="f1.intro">Python 类型注解即模型定义，无需额外 DSL。Pydantic 运行时验证，IDE 完整类型推导。</p>
         </div>
         <div class="feature-detail-code">
           <div data-component="tabs-switcher" data-data-key="f1" data-renderer="code">
@@ -244,9 +264,9 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
     <div class="container">
       <div class="feature-detail">
         <div class="feature-detail-text">
-          <div class="section-label">02 / Async First</div>
-          <h2 class="section-title"><em>同步 = 异步</em>，语义一致。</h2>
-          <p class="section-intro">同步/异步共享同一套模型定义。for → async for，其他代码不变。</p>
+          <div class="section-label" data-i18n="f2.label">02 / Async First</div>
+          <h2 class="section-title" data-i18n="f2.title"><em>同步 = 异步</em>，语义一致。</h2>
+          <p class="section-intro" data-i18n="f2.intro">同步/异步共享同一套模型定义。for → async for，其他代码不变。</p>
         </div>
         <div class="feature-detail-code">
           <div data-component="tabs-switcher" data-data-key="f2" data-renderer="code">
@@ -273,9 +293,9 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
     <div class="container">
       <div class="feature-detail">
         <div class="feature-detail-text">
-          <div class="section-label">03 / Pluggable Backends</div>
-          <h2 class="section-title"><em>后端可插拔</em>，按需选用。</h2>
-          <p class="section-intro">核心包仅依赖 Pydantic。SQLite 内置，其他数据库以独立包发布。</p>
+          <div class="section-label" data-i18n="f3.label">03 / Pluggable Backends</div>
+          <h2 class="section-title" data-i18n="f3.title"><em>后端可插拔</em>，按需选用。</h2>
+          <p class="section-intro" data-i18n="f3.intro">核心包仅依赖 Pydantic。SQLite 内置，其他数据库以独立包发布。</p>
         </div>
         <div class="feature-detail-code">
           <div data-component="tabs-switcher" data-data-key="f3" data-renderer="code">
@@ -302,9 +322,9 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
     <div class="container">
       <div class="feature-detail">
         <div class="feature-detail-text">
-          <div class="section-label">04 / Relations</div>
-          <h2 class="section-title"><em>关系显式</em>，ClassVar + 描述符。</h2>
-          <p class="section-intro">使用 ClassVar 声明关系字段，避免 Pydantic 扫描。运行时自动替换为 relation()。</p>
+          <div class="section-label" data-i18n="f4.label">04 / Relations</div>
+          <h2 class="section-title" data-i18n="f4.title"><em>关系显式</em>，ClassVar + 描述符。</h2>
+          <p class="section-intro" data-i18n="f4.intro">使用 ClassVar 声明关系字段，避免 Pydantic 扫描。运行时自动替换为 relation()。</p>
         </div>
         <div class="feature-detail-code">
           <div data-component="tabs-switcher" data-data-key="f4" data-renderer="code">
@@ -331,9 +351,9 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
     <div class="container">
       <div class="feature-detail">
         <div class="feature-detail-text">
-          <div class="section-label">05 / Transactions</div>
-          <h2 class="section-title"><em>事务原子</em>，嵌套 savepoint。</h2>
-          <p class="section-intro">嵌套事务自动创建 savepoint。上下文管理器自动提交/回滚。</p>
+          <div class="section-label" data-i18n="f5.label">05 / Transactions</div>
+          <h2 class="section-title" data-i18n="f5.title"><em>事务原子</em>，嵌套 savepoint。</h2>
+          <p class="section-intro" data-i18n="f5.intro">嵌套事务自动创建 savepoint。上下文管理器自动提交/回滚。</p>
         </div>
         <div class="feature-detail-code">
           <div data-component="tabs-switcher" data-data-key="f5" data-renderer="code">
@@ -360,9 +380,9 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
     <div class="container">
       <div class="feature-detail">
         <div class="feature-detail-text">
-          <div class="section-label">06 / Pythonic</div>
-          <h2 class="section-title"><em>如英语般阅读</em>，无需 DSL。</h2>
-          <p class="section-intro">链式调用，阅读流畅如英语。.to_sql() 透明查看实际 SQL。</p>
+          <div class="section-label" data-i18n="f6.label">06 / Pythonic</div>
+          <h2 class="section-title" data-i18n="f6.title"><em>如英语般阅读</em>，无需 DSL。</h2>
+          <p class="section-intro" data-i18n="f6.intro">链式调用，阅读流畅如英语。.to_sql() 透明查看实际 SQL。</p>
         </div>
         <div class="feature-detail-code">
           <div data-component="tabs-switcher" data-data-key="f6" data-renderer="code">
@@ -398,13 +418,191 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
         Sync and async variants are paired but not interchangeable.
       </p>
     </div>
-    <div id="arch-comp-d3" style="margin-top:48px;position:relative;"></div>
-    <div id="arch-comp-tooltip" role="tooltip" aria-live="polite"></div>
+
+    <div class="arch-diagram">
+      <div class="arch-col-frame">
+        <div class="arch-col-frame-header">
+          <span class="arch-col-frame-dot"></span>
+          <span class="arch-col-frame-title" data-i18n="arch_comp.ar_title">ActiveRecord</span>
+        </div>
+        <div class="arch-col-frame-body">
+          <div class="arch-subgroup sync">
+            <div class="arch-subgroup-label" data-i18n="arch_comp.node_sync_group">Sync</div>
+            <div class="arch-node is-root" tabindex="0" role="button" data-tip="tip_ar_s" data-tip-name="node_ar_s">ActiveRecord</div>
+            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_aq_s" data-tip-name="node_aq_s">ActiveQuery</div>
+            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_so_s" data-tip-name="node_so_s">SetOperation</div>
+            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_cte_s" data-tip-name="node_cte_s">CTEQuery</div>
+          </div>
+          <div class="arch-subgroup async">
+            <div class="arch-subgroup-label" data-i18n="arch_comp.node_async_group">Async</div>
+            <div class="arch-node is-root" tabindex="0" role="button" data-tip="tip_ar_a" data-tip-name="node_ar_a">AsyncActiveRecord</div>
+            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_aq_a" data-tip-name="node_aq_a">AsyncActiveQuery</div>
+            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_so_a" data-tip-name="node_so_a">AsyncSetOperation</div>
+            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_cte_a" data-tip-name="node_cte_a">AsyncCTEQuery</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-connector" aria-hidden="true">
+        <div class="arch-conn-track">
+          <div class="arch-conn-line sync"></div>
+          <div class="arch-conn-arrow sync">→</div>
+          <div class="arch-conn-label sync" data-i18n="arch_comp.uses_label">uses</div>
+        </div>
+        <div class="arch-conn-track">
+          <div class="arch-conn-line async"></div>
+          <div class="arch-conn-arrow async">→</div>
+          <div class="arch-conn-label async" data-i18n="arch_comp.uses_label">uses</div>
+        </div>
+      </div>
+
+      <div class="arch-col-frame">
+        <div class="arch-col-frame-header">
+          <span class="arch-col-frame-dot async"></span>
+          <span class="arch-col-frame-title" data-i18n="arch_comp.be_title">Backend</span>
+        </div>
+        <div class="arch-col-frame-body">
+          <div class="arch-subgroup sync">
+            <div class="arch-subgroup-label" data-i18n="arch_comp.node_sync_group">Sync</div>
+            <div class="arch-node is-root" tabindex="0" role="button" data-tip="tip_sb_s" data-tip-name="node_sb_s">StorageBackend</div>
+            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_sqlite" data-tip-name="node_sqlite_s">SQLiteBackend</div>
+            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_ext" data-tip-name="node_ext"><span data-i18n="arch_comp.node_ext">MySQL · PG · …</span></div>
+          </div>
+          <div class="arch-subgroup async">
+            <div class="arch-subgroup-label" data-i18n="arch_comp.node_async_group">Async</div>
+            <div class="arch-node is-root" tabindex="0" role="button" data-tip="tip_sb_a" data-tip-name="node_sb_a">AsyncStorageBackend</div>
+            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_sqlite" data-tip-name="node_sqlite_a">AsyncSQLiteBackend</div>
+            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_ext_a" data-tip-name="node_ext_a"><span data-i18n="arch_comp.node_ext_a">AsyncMySQL · …</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arch-pairing">
+      <div class="arch-pairing-row">
+        <div class="arch-pairing-side ar-sync">ActiveRecord</div>
+        <div class="arch-pairing-mid sync">↔</div>
+        <div class="arch-pairing-side be-sync">StorageBackend</div>
+        <span class="arch-pairing-note" data-i18n="arch_comp.pair_sync_note">同步配对，不可混用</span>
+      </div>
+      <div class="arch-pairing-row">
+        <div class="arch-pairing-side ar-async">AsyncActiveRecord</div>
+        <div class="arch-pairing-mid async">↔</div>
+        <div class="arch-pairing-side be-async">AsyncStorageBackend</div>
+        <span class="arch-pairing-note" data-i18n="arch_comp.pair_async_note">异步配对，不可混用</span>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- arch-comp-section.js content via D3.js -->
-<script src="index/arch-comp-section.js"></script>
+<div id="arch-tip" role="tooltip" aria-live="polite"></div>
+
+<!-- ARCH COMP JS -->
+<script>
+(function () {
+  'use strict';
+  function t(key) {
+    var lang = window.CURRENT_LANG || 'zh-cn';
+    var dict = (window.I18N || {})[lang] || (window.I18N || {})['zh-cn'] || {};
+    var parts = ('arch_comp.' + key).split('.');
+    var v = dict;
+    for (var i = 0; i < parts.length; i++) {
+      if (v == null) return key;
+      v = v[parts[i]];
+    }
+    return (typeof v === 'string') ? v : key;
+  }
+  var tip = document.getElementById('arch-tip');
+  var tipHideTimer = null;
+  function showTip(event, nameKey, descKey) {
+    clearTimeout(tipHideTimer);
+    tip.innerHTML = '<div class="tip-name">' + t(nameKey) + '</div>' + t(descKey);
+    placeTip(event);
+    tip.classList.add('show');
+  }
+  function placeTip(event) {
+    var cx = event.clientX || (event.changedTouches && event.changedTouches[0].clientX) || 0;
+    var cy = event.clientY || (event.changedTouches && event.changedTouches[0].clientY) || 0;
+    var tw = tip.offsetWidth  || 260;
+    var th = tip.offsetHeight || 80;
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var left = cx + 14;
+    var top  = cy + 14;
+    if (left + tw > vw - 8) left = cx - tw - 14;
+    if (top  + th > vh - 8) top  = cy - th - 14;
+    tip.style.left = Math.max(8, left) + 'px';
+    tip.style.top  = Math.max(8, top)  + 'px';
+  }
+  function hideTip() {
+    tipHideTimer = setTimeout(function () { tip.classList.remove('show'); }, 120);
+  }
+  function bindNodes() {
+    document.querySelectorAll('#arch-comp .arch-node').forEach(function (el) {
+      var descKey = el.dataset.tip;
+      var nameKey = el.dataset.tipName;
+      if (!descKey) return;
+      el.addEventListener('mouseenter', function (e) { showTip(e, nameKey, descKey); });
+      el.addEventListener('mousemove',  function (e) { if (tip.classList.contains('show')) placeTip(e); });
+      el.addEventListener('mouseleave', hideTip);
+      el.addEventListener('focus',      function (e) {
+        var r = el.getBoundingClientRect();
+        showTip({ clientX: r.right, clientY: r.top }, nameKey, descKey);
+      });
+      el.addEventListener('blur', hideTip);
+      el.addEventListener('touchstart', function (e) {
+        e.preventDefault();
+        showTip(e.changedTouches[0], nameKey, descKey);
+      });
+    });
+  }
+  function refreshText() {
+    document.querySelectorAll('#arch-comp .arch-node[data-tip-name]').forEach(function (el) {
+      var span = el.querySelector('[data-i18n]');
+      if (!span) {
+        var nameKey = el.dataset.tipName;
+        var label = t(nameKey);
+        if (label !== nameKey) el.textContent = label;
+      }
+    });
+  }
+  function initEntranceAnim() {
+    var nodes = Array.from(document.querySelectorAll('#arch-comp .arch-node'));
+    if (!nodes.length) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var group = entry.target;
+        var items = group.querySelectorAll('.arch-node');
+        items.forEach(function (n, i) {
+          n.style.animationDelay = (i * 55) + 'ms';
+          n.classList.add('is-visible');
+        });
+        io.unobserve(group);
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('#arch-comp .arch-subgroup').forEach(function (g) {
+      io.observe(g);
+    });
+  }
+  window.RENDER_ADAPTERS = window.RENDER_ADAPTERS || [];
+  window.RENDER_ADAPTERS.push({
+    name:   'arch-comp',
+    onTheme: function () {},
+    onFont:  function () {},
+    onLang:  function () { refreshText(); }
+  });
+  function init() {
+    bindNodes();
+    initEntranceAnim();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
 
 <!-- COMPARE -->
   <section class="section">
@@ -608,6 +806,9 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
 
   // Init theme controller
   ctrl.init();
+
+  // Apply i18n for initial language (only once)
+  window.applyI18n(ctrl.state.lang);
   window.themeCtrl = ctrl;
 
   // Sync dropdown values - use localStorage directly to check if user manually selected

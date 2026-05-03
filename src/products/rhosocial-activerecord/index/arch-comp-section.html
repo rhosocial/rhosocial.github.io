@@ -1,0 +1,577 @@
+<!--
+  arch-comp-section.html — Component Architecture Section (v2, CSS-native)
+  =========================================================================
+  插入位置：id="architecture" 的 </section> 之后，<!-- QUICK TASTE 注释之前。
+
+  依赖（均来自 index.html 已有加载）：
+    · CSS 变量体系：--bg / --bg-2 / --fg / --fg-muted / --accent / --border /
+                    --radius / --font-body / --font-mono
+    · window.I18N[lang].arch_comp（页面级 zh-cn.js / en-us.js）
+    · window.RENDER_ADAPTERS（ThemeController 注册机制）
+    · 不再依赖 D3.js / Mermaid
+
+  功能：
+    · 全 HTML+CSS 布局，无 SVG 坐标计算，宽度与 .container 一致
+    · 所有颜色 = CSS 变量，主题切换自动同步，零 JS
+    · 节点 hover / tap → 浮层 tooltip（不透明背景，主题色）
+    · Intersection Observer 触发节点入场动画（依次 fade+slide-up）
+    · 底部"同步配对"可视化：双轨连线图
+    · RENDER_ADAPTERS.onLang → 刷新所有文本（切换语言）
+-->
+
+<!-- ─── Styles ─────────────────────────────────────────────────────── -->
+<style>
+/* ── Section layout ─────────────────────────────────── */
+#arch-comp .arch-diagram {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: 1fr 56px 1fr;
+  gap: 0;
+  align-items: start;
+}
+@media (max-width: 680px) {
+  #arch-comp .arch-diagram {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+  #arch-comp .arch-connector { transform: rotate(90deg); }
+}
+
+/* ── Column frames ───────────────────────────────────── */
+.arch-col-frame {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.arch-col-frame-header {
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-2);
+}
+.arch-col-frame-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+.arch-col-frame-dot.async { background: var(--fg-muted); }
+.arch-col-frame-title {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--fg);
+}
+.arch-col-frame-body {
+  padding: 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+@media (max-width: 480px) {
+  .arch-col-frame-body { grid-template-columns: 1fr; }
+}
+
+/* ── Subgroup (sync / async) ─────────────────────────── */
+.arch-subgroup {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.arch-subgroup-label {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  text-align: center;
+  margin-bottom: 2px;
+}
+.arch-subgroup.async .arch-subgroup-label {
+  border-color: var(--fg-muted);
+  color: var(--fg-muted);
+}
+
+/* ── Node cards ──────────────────────────────────────── */
+.arch-node {
+  position: relative;
+  padding: 7px 10px;
+  border-radius: 6px;
+  border: 1.5px solid var(--border);
+  background: var(--bg-2);
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--fg);
+  line-height: 1.3;
+  transition: border-color .18s, background .18s, transform .18s;
+  /* initial state for entrance animation */
+  opacity: 0;
+  transform: translateY(14px);
+}
+.arch-node.is-root {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+  font-weight: 700;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+}
+.arch-subgroup.async .arch-node.is-root {
+  background: var(--fg-muted);
+  border-color: var(--fg-muted);
+}
+.arch-node:hover, .arch-node:focus-visible {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  outline: none;
+  z-index: 2;
+}
+.arch-subgroup.async .arch-node:hover {
+  border-color: var(--fg-muted);
+}
+/* Animate in when visible */
+.arch-node.is-visible {
+  animation: archNodeIn .38s ease forwards;
+}
+@keyframes archNodeIn {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+/* Node tree connector (left border decoration) */
+.arch-node.is-child::before {
+  content: '';
+  position: absolute;
+  left: -10px; top: 50%;
+  width: 8px; height: 1px;
+  background: var(--border);
+}
+
+/* ── Centre connector ────────────────────────────────── */
+.arch-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 56px;
+  gap: 20px;
+  height: 100%;
+}
+.arch-conn-track {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.arch-conn-line {
+  width: 2px;
+  height: 28px;
+  border-radius: 1px;
+}
+.arch-conn-line.sync  { background: var(--accent); }
+.arch-conn-line.async { background: var(--fg-muted); }
+.arch-conn-arrow {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.arch-conn-arrow.sync  { color: var(--accent); }
+.arch-conn-arrow.async { color: var(--fg-muted); }
+.arch-conn-label {
+  font-family: var(--font-body);
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+.arch-conn-label.sync  { color: var(--accent); }
+.arch-conn-label.async { color: var(--fg-muted); }
+
+/* ── Pairing strip (bottom) ──────────────────────────── */
+.arch-pairing {
+  margin-top: 28px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.arch-pairing-row {
+  display: grid;
+  grid-template-columns: 1fr 48px 1fr;
+  align-items: center;
+  padding: 10px 20px;
+  gap: 8px;
+  transition: background .15s;
+}
+.arch-pairing-row:first-child {
+  border-bottom: 1px solid var(--border);
+}
+.arch-pairing-row:hover { background: var(--bg-2); }
+.arch-pairing-side {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 5px;
+  text-align: center;
+}
+.arch-pairing-side.ar-sync  { background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent); border: 1px solid var(--accent); }
+.arch-pairing-side.be-sync  { background: color-mix(in srgb, var(--accent) 12%, transparent); color: var(--accent); border: 1px solid var(--accent); }
+.arch-pairing-side.ar-async { background: color-mix(in srgb, var(--fg-muted) 12%, transparent); color: var(--fg-muted); border: 1px solid var(--fg-muted); }
+.arch-pairing-side.be-async { background: color-mix(in srgb, var(--fg-muted) 12%, transparent); color: var(--fg-muted); border: 1px solid var(--fg-muted); }
+/* fallback for browsers without color-mix */
+@supports not (color: color-mix(in srgb, red 10%, transparent)) {
+  .arch-pairing-side.ar-sync, .arch-pairing-side.be-sync   { background: var(--bg-2); }
+  .arch-pairing-side.ar-async,.arch-pairing-side.be-async  { background: var(--bg-2); }
+}
+.arch-pairing-mid {
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 700;
+  opacity: .5;
+}
+.arch-pairing-mid.sync  { color: var(--accent); }
+.arch-pairing-mid.async { color: var(--fg-muted); }
+.arch-pairing-note {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  color: var(--fg-muted);
+  padding: 0 8px;
+}
+
+/* ── Tooltip ─────────────────────────────────────────── */
+#arch-tip {
+  position: fixed;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .14s ease;
+  max-width: 280px;
+  min-width: 180px;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--bg);   /* solid, never transparent */
+  box-shadow: 0 6px 24px rgba(0,0,0,.22);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  line-height: 1.55;
+  color: var(--fg);
+}
+#arch-tip.show { opacity: 1; }
+#arch-tip .tip-name {
+  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+  margin-bottom: 5px;
+}
+#arch-tip code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  background: var(--bg-2);
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+</style>
+
+<!-- ─── HTML ──────────────────────────────────────────────────────── -->
+<section id="arch-comp" class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label" data-i18n="arch_comp.label">Component Architecture</div>
+      <h2 class="section-title" data-i18n="arch_comp.title">
+        ActiveRecord + Backend, <em>two independent layers</em>.
+      </h2>
+      <p class="section-intro" style="max-width:640px;margin:0 auto;"
+         data-i18n="arch_comp.intro">
+        ActiveRecord is the user of Backend; Backend can work standalone.
+        Sync and async variants are paired but not interchangeable.
+      </p>
+    </div>
+
+    <!-- Two-column diagram -->
+    <div class="arch-diagram">
+
+      <!-- LEFT: ActiveRecord -->
+      <div class="arch-col-frame">
+        <div class="arch-col-frame-header">
+          <span class="arch-col-frame-dot"></span>
+          <span class="arch-col-frame-title" data-i18n="arch_comp.ar_title">ActiveRecord</span>
+        </div>
+        <div class="arch-col-frame-body">
+          <!-- Sync subgroup -->
+          <div class="arch-subgroup sync">
+            <div class="arch-subgroup-label" data-i18n="arch_comp.node_sync_group">Sync</div>
+            <div class="arch-node is-root"
+                 tabindex="0" role="button"
+                 data-tip="tip_ar_s" data-tip-name="node_ar_s">
+              ActiveRecord
+            </div>
+            <div class="arch-node is-child"
+                 tabindex="0" role="button"
+                 data-tip="tip_aq_s" data-tip-name="node_aq_s">
+              ActiveQuery
+            </div>
+            <div class="arch-node is-child"
+                 tabindex="0" role="button"
+                 data-tip="tip_so_s" data-tip-name="node_so_s">
+              SetOperation
+            </div>
+            <div class="arch-node is-child"
+                 tabindex="0" role="button"
+                 data-tip="tip_cte_s" data-tip-name="node_cte_s">
+              CTEQuery
+            </div>
+          </div>
+          <!-- Async subgroup -->
+          <div class="arch-subgroup async">
+            <div class="arch-subgroup-label" data-i18n="arch_comp.node_async_group">Async</div>
+            <div class="arch-node is-root"
+                 tabindex="0" role="button"
+                 data-tip="tip_ar_a" data-tip-name="node_ar_a">
+              AsyncActiveRecord
+            </div>
+            <div class="arch-node is-child"
+                 tabindex="0" role="button"
+                 data-tip="tip_aq_a" data-tip-name="node_aq_a">
+              AsyncActiveQuery
+            </div>
+            <div class="arch-node is-child"
+                 tabindex="0" role="button"
+                 data-tip="tip_so_a" data-tip-name="node_so_a">
+              AsyncSetOperation
+            </div>
+            <div class="arch-node is-child"
+                 tabindex="0" role="button"
+                 data-tip="tip_cte_a" data-tip-name="node_cte_a">
+              AsyncCTEQuery
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CENTRE: Connector arrows -->
+      <div class="arch-connector" aria-hidden="true">
+        <div class="arch-conn-track">
+          <div class="arch-conn-line sync"></div>
+          <div class="arch-conn-arrow sync">→</div>
+          <div class="arch-conn-label sync" data-i18n="arch_comp.uses_label">uses</div>
+        </div>
+        <div class="arch-conn-track">
+          <div class="arch-conn-line async"></div>
+          <div class="arch-conn-arrow async">→</div>
+          <div class="arch-conn-label async" data-i18n="arch_comp.uses_label">uses</div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Backend -->
+      <div class="arch-col-frame">
+        <div class="arch-col-frame-header">
+          <span class="arch-col-frame-dot async"></span>
+          <span class="arch-col-frame-title" data-i18n="arch_comp.be_title">Backend</span>
+        </div>
+        <div class="arch-col-frame-body">
+          <!-- Sync subgroup -->
+          <div class="arch-subgroup sync">
+            <div class="arch-subgroup-label" data-i18n="arch_comp.node_sync_group">Sync</div>
+            <div class="arch-node is-root"
+                 tabindex="0" role="button"
+                 data-tip="tip_sb_s" data-tip-name="node_sb_s">
+              StorageBackend
+            </div>
+            <div class="arch-node is-child"
+                 tabindex="0" role="button"
+                 data-tip="tip_sqlite" data-tip-name="node_sqlite_s">
+              SQLiteBackend
+            </div>
+            <div class="arch-node is-child"
+                 tabindex="0" role="button"
+                 data-tip="tip_ext" data-tip-name="node_ext">
+              <span data-i18n="arch_comp.node_ext">MySQL · PG · …</span>
+            </div>
+          </div>
+          <!-- Async subgroup -->
+          <div class="arch-subgroup async">
+            <div class="arch-subgroup-label" data-i18n="arch_comp.node_async_group">Async</div>
+            <div class="arch-node is-root"
+                 tabindex="0" role="button"
+                 data-tip="tip_sb_a" data-tip-name="node_sb_a">
+              AsyncStorageBackend
+            </div>
+            <div class="arch-node is-child"
+                 tabindex="0" role="button"
+                 data-tip="tip_sqlite" data-tip-name="node_sqlite_a">
+              AsyncSQLiteBackend
+            </div>
+            <div class="arch-node is-child"
+                 tabindex="0" role="button"
+                 data-tip="tip_ext_a" data-tip-name="node_ext_a">
+              <span data-i18n="arch_comp.node_ext_a">AsyncMySQL · …</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /.arch-diagram -->
+
+    <!-- Pairing strip -->
+    <div class="arch-pairing">
+      <div class="arch-pairing-row">
+        <div class="arch-pairing-side ar-sync">ActiveRecord</div>
+        <div class="arch-pairing-mid sync">↔</div>
+        <div class="arch-pairing-side be-sync">StorageBackend</div>
+        <span class="arch-pairing-note" data-i18n="arch_comp.pair_sync_note">同步配对，不可混用</span>
+      </div>
+      <div class="arch-pairing-row">
+        <div class="arch-pairing-side ar-async">AsyncActiveRecord</div>
+        <div class="arch-pairing-mid async">↔</div>
+        <div class="arch-pairing-side be-async">AsyncStorageBackend</div>
+        <span class="arch-pairing-note" data-i18n="arch_comp.pair_async_note">异步配对，不可混用</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Tooltip DOM (singleton) -->
+<div id="arch-tip" role="tooltip" aria-live="polite"></div>
+
+<!-- ─── Script ────────────────────────────────────────────────────── -->
+<script>
+(function () {
+  'use strict';
+
+  /* ── i18n helper ───────────────────────── */
+  function t(key) {
+    var lang = window.CURRENT_LANG || 'zh-cn';
+    var dict = (window.I18N || {})[lang] || (window.I18N || {})['zh-cn'] || {};
+    var parts = ('arch_comp.' + key).split('.');
+    var v = dict;
+    for (var i = 0; i < parts.length; i++) {
+      if (v == null) return key;
+      v = v[parts[i]];
+    }
+    return (typeof v === 'string') ? v : key;
+  }
+
+  /* ── Tooltip ───────────────────────────── */
+  var tip = document.getElementById('arch-tip');
+  var tipHideTimer = null;
+
+  function showTip(event, nameKey, descKey) {
+    clearTimeout(tipHideTimer);
+    tip.innerHTML = '<div class="tip-name">' + t(nameKey) + '</div>' + t(descKey);
+    placeTip(event);
+    tip.classList.add('show');
+  }
+  function placeTip(event) {
+    var cx = event.clientX || (event.changedTouches && event.changedTouches[0].clientX) || 0;
+    var cy = event.clientY || (event.changedTouches && event.changedTouches[0].clientY) || 0;
+    var tw = tip.offsetWidth  || 260;
+    var th = tip.offsetHeight || 80;
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var left = cx + 14;
+    var top  = cy + 14;
+    if (left + tw > vw - 8) left = cx - tw - 14;
+    if (top  + th > vh - 8) top  = cy - th - 14;
+    tip.style.left = Math.max(8, left) + 'px';
+    tip.style.top  = Math.max(8, top)  + 'px';
+  }
+  function hideTip() {
+    tipHideTimer = setTimeout(function () { tip.classList.remove('show'); }, 120);
+  }
+
+  /* ── Bind tooltip events to nodes ─────── */
+  function bindNodes() {
+    document.querySelectorAll('#arch-comp .arch-node').forEach(function (el) {
+      var descKey = el.dataset.tip;
+      var nameKey = el.dataset.tipName;
+      if (!descKey) return;
+
+      el.addEventListener('mouseenter', function (e) { showTip(e, nameKey, descKey); });
+      el.addEventListener('mousemove',  function (e) { if (tip.classList.contains('show')) placeTip(e); });
+      el.addEventListener('mouseleave', hideTip);
+      el.addEventListener('focus',      function (e) {
+        var r = el.getBoundingClientRect();
+        showTip({ clientX: r.right, clientY: r.top }, nameKey, descKey);
+      });
+      el.addEventListener('blur', hideTip);
+      el.addEventListener('touchstart', function (e) {
+        e.preventDefault();
+        showTip(e.changedTouches[0], nameKey, descKey);
+      });
+    });
+  }
+
+  /* ── Update all text via i18n ──────────── */
+  function refreshText() {
+    /* data-i18n elements inside this section */
+    document.querySelectorAll('#arch-comp [data-i18n], #arch-comp [data-i18n] *').forEach(function() {});
+    /* node labels */
+    document.querySelectorAll('#arch-comp .arch-node[data-tip-name]').forEach(function (el) {
+      /* only update nodes that have a pure-text label (no child spans with data-i18n) */
+      var span = el.querySelector('[data-i18n]');
+      if (!span) {
+        var nameKey = el.dataset.tipName;
+        var label = t(nameKey);
+        if (label !== nameKey) el.textContent = label;
+      }
+    });
+  }
+
+  /* ── Entrance animation via IntersectionObserver ── */
+  function initEntranceAnim() {
+    var nodes = Array.from(document.querySelectorAll('#arch-comp .arch-node'));
+    if (!nodes.length) return;
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var group = entry.target;
+        var items = group.querySelectorAll('.arch-node');
+        items.forEach(function (n, i) {
+          n.style.animationDelay = (i * 55) + 'ms';
+          n.classList.add('is-visible');
+        });
+        io.unobserve(group);
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('#arch-comp .arch-subgroup').forEach(function (g) {
+      io.observe(g);
+    });
+  }
+
+  /* ── Register RENDER_ADAPTER ───────────── */
+  window.RENDER_ADAPTERS = window.RENDER_ADAPTERS || [];
+  window.RENDER_ADAPTERS.push({
+    name:   'arch-comp',
+    onTheme: function () { /* CSS vars handle everything */ },
+    onFont:  function () { /* CSS vars handle everything */ },
+    onLang:  function () { refreshText(); }
+  });
+
+  /* ── Init ──────────────────────────────── */
+  function init() {
+    bindNodes();
+    initEntranceAnim();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+})();
+</script>

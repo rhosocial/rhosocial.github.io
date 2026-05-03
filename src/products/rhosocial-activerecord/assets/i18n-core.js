@@ -95,7 +95,8 @@
     this._applyValue('font', font, true, true);
     this._applyValue('lang', lang, true, true);
 
-    window.applyI18n(lang);
+    // Removed: window.applyI18n(lang); 
+    // Language changes will be handled by onChange callback
 
     var s = this._state;
     var dark = currentIsDark();

@@ -96,7 +96,9 @@ window.I18N['en-us'] = Object.assign(window.I18N['en-us'] || {}, {
     be_desc:  'Database I/O layer; usable without ActiveRecord. SQLite ships built-in; other databases are extension packages.',
 
     uses_label:      'uses',
-    sync_async_note: 'sync ↔ sync · async ↔ async',
+    sync_async_note:  'sync ↔ sync · async ↔ async',
+    pair_sync_note:   'Sync pairing — cannot mix with async',
+    pair_async_note:  'Async pairing — cannot mix with sync',
 
     ar_diagram: `flowchart TB
     subgraph AR_SYNC["ActiveRecord (sync)"]
