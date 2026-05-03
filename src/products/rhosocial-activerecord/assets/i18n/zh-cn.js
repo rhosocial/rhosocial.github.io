@@ -35,12 +35,12 @@ window.I18N['zh-cn'] = {
   features: {
     label: 'Why · 六个核心承诺',
     title: '为什么是 <em>rhosocial ActiveRecord</em>。',
-    f1: { num: '01 / 类型即字段',  title: '<em>Type-safe</em> by construction',       desc: '字段就是 <code>name: str</code>，存储、校验、IDE 补全合而为一。' },
-    f2: { num: '02 / 异步一等',    title: 'Sync &amp; async, <em>one API</em>',       desc: '<code>ActiveRecord</code> / <code>AsyncActiveRecord</code>，语义一致。' },
-    f3: { num: '03 / 后端可插拔',  title: 'Pluggable <em>backends</em>',              desc: 'SQLite 内置；Postgres/MySQL/MSSQL/Oracle 独立包；可自写后端。' },
-    f4: { num: '04 / 关系显式',    title: '<em>Relations</em> made explicit',         desc: 'has_many / belongs_to 显式声明，关系即 <code>QuerySet</code>。' },
-    f5: { num: '05 / 事务原子',    title: 'Transactions, <em>properly nested</em>',   desc: '上下文管理器 + savepoint，异常即回滚。' },
-    f6: { num: '06 / Pythonic',   title: 'Reads like <em>English</em>',              desc: '<code>User.query().where(...).all()</code>——就是 Python。' }
+    f1: { num: '01 / 类型即字段',  title: '<em>类型即字段</em>，从定义开始',       desc: '字段就是 <code>name: str</code>，存储、校验、IDE 补全合而为一。' },
+    f2: { num: '02 / 异步一等',    title: '<em>同步 = 异步</em>，同一套 API',       desc: '<code>ActiveRecord</code> / <code>AsyncActiveRecord</code>，语义一致。' },
+    f3: { num: '03 / 后端可插拔',  title: '<em>后端可插拔</em>，按需选用',         desc: 'SQLite 内置；Postgres/MySQL/MSSQL/Oracle 独立包；可自写后端。' },
+    f4: { num: '04 / 关系显式',    title: '<em>关系显式</em>， ClassVar',            desc: 'has_many / belongs_to 显式声明，关系即 <code>QuerySet</code>。' },
+    f5: { num: '05 / 事务原子',    title: '<em>事务嵌套</em>，自动 savepoint',   desc: '上下文管理器 + savepoint，异常即回滚。' },
+    f6: { num: '06 / Pythonic',   title: '<em>如英语般阅读</em>，无需 DSL',      desc: '<code>User.query().where(...).all()</code>——就是 Python。' }
   },
 
   practice: {

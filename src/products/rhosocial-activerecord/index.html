@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="terminal" data-font="auto">
+<html lang="zh-CN" data-theme="terminal" data-font="tight">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -60,6 +60,7 @@
 <link rel="stylesheet" href="assets/fonts/dm.css">
 <link rel="stylesheet" href="assets/fonts/outfit.css">
 <link rel="stylesheet" href="assets/fonts/literata.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
 
 <style>
 html[lang="ar"] { font-family: 'Noto Sans Arabic', var(--font-body); }
@@ -95,10 +96,17 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
 <script src="assets/i18n/bn-bd.js"></script>
 <script src="assets/i18n/ro-ro.js"></script>
 <script src="assets/i18n/cs-cz.js"></script>
+
+<!-- Feature code data -->
 <script src="assets/feature-code-data.js"></script>
+
+<!-- Core JS -->
+<script src="assets/themes.js"></script>
+<script src="assets/i18n-core.js"></script>
+<script src="assets/utils.js"></script>
 </head>
 <body>
-<header class="control-bar">
+<header class="control-bar" id="control-bar">
   <div class="control-brand">
     <span class="brand-mark size-md">&rho;<sub>AR</sub></span>
     <span>rhosocial ActiveRecord</span>
@@ -110,102 +118,23 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
       <span class="dropdown-value">Terminal</span>
       <svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
-    <div class="dropdown-menu" role="listbox">
-      <button class="dropdown-item is-active" data-value="terminal"><span class="dropdown-item-label">Terminal</span></button>
-      <button class="dropdown-item" data-value="editorial"><span class="dropdown-item-label">Editorial</span></button>
-      <button class="dropdown-item" data-value="brutalist"><span class="dropdown-item-label">Brutalist</span></button>
-      <button class="dropdown-item" data-value="aurora"><span class="dropdown-item-label">Aurora</span></button>
-      <button class="dropdown-item" data-value="synthwave"><span class="dropdown-item-label">Synthwave</span></button>
-      <button class="dropdown-item" data-value="sumi"><span class="dropdown-item-label">Sumi 墨</span></button>
-      <button class="dropdown-item" data-value="blueprint"><span class="dropdown-item-label">Blueprint</span></button>
-      <button class="dropdown-item" data-value="noir"><span class="dropdown-item-label">Noir</span></button>
-      <button class="dropdown-item" data-value="riso"><span class="dropdown-item-label">Riso</span></button>
-      <button class="dropdown-item" data-value="nordic"><span class="dropdown-item-label">Nordic</span></button>
-      <button class="dropdown-item" data-value="solarpunk"><span class="dropdown-item-label">Solarpunk</span></button>
-      <button class="dropdown-item" data-value="mocha"><span class="dropdown-item-label">Mocha</span></button>
-      <button class="dropdown-item" data-value="wireframe"><span class="dropdown-item-label">Wireframe</span></button>
-      <button class="dropdown-item" data-value="anderson"><span class="dropdown-item-label">Anderson</span></button>
-      <button class="dropdown-item" data-value="tokyo"><span class="dropdown-item-label">Tokyo Night</span></button>
-      <button class="dropdown-item" data-value="memphis"><span class="dropdown-item-label">Memphis</span></button>
-      <button class="dropdown-item" data-value="chalkboard"><span class="dropdown-item-label">Chalkboard</span></button>
-      <button class="dropdown-item" data-value="matrix"><span class="dropdown-item-label">Matrix</span></button>
-      <button class="dropdown-item" data-value="steel"><span class="dropdown-item-label">Steel</span></button>
-      <button class="dropdown-item" data-value="frutiger"><span class="dropdown-item-label">Frutiger</span></button>
-      <button class="dropdown-item" data-value="newsprint"><span class="dropdown-item-label">Newsprint</span></button>
-      <button class="dropdown-item" data-value="candy"><span class="dropdown-item-label">Candy</span></button>
-      <button class="dropdown-item" data-value="botanical"><span class="dropdown-item-label">Botanical</span></button>
-      <button class="dropdown-item" data-value="cyberpunk"><span class="dropdown-item-label">Cyberpunk</span></button>
-      <button class="dropdown-item" data-value="parchment"><span class="dropdown-item-label">Parchment</span></button>
-      <button class="dropdown-item" data-value="glassmorphism"><span class="dropdown-item-label">Glassmorphism</span></button>
-    </div>
+    <div class="dropdown-menu" role="listbox"></div>
   </div>
   <div class="dropdown" data-dropdown="font">
     <button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
       <span class="dropdown-label" data-i18n="control.font_label">Font</span>
-      <span class="dropdown-value" id="font-value">Auto</span>
+      <span class="dropdown-value">Auto</span>
       <svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
-    <div class="dropdown-menu" role="listbox">
-      <button class="dropdown-item is-active" data-value="auto"><span class="dropdown-item-label" data-i18n="control.font_auto">Auto (theme default)</span></button>
-      <button class="dropdown-item" data-value="tight"><span class="dropdown-item-label">Tight Sans</span></button>
-      <button class="dropdown-item" data-value="serif"><span class="dropdown-item-label">Editorial Serif</span></button>
-      <button class="dropdown-item" data-value="geometric"><span class="dropdown-item-label">Geometric</span></button>
-      <button class="dropdown-item" data-value="heavy"><span class="dropdown-item-label">Heavy Display</span></button>
-      <button class="dropdown-item" data-value="allmono"><span class="dropdown-item-label">All Mono</span></button>
-      <button class="dropdown-item" data-value="reader"><span class="dropdown-item-label">Reader</span></button>
-      <button class="dropdown-item" data-value="display-serif"><span class="dropdown-item-label">Display Serif</span></button>
-      <button class="dropdown-item" data-value="neo-future"><span class="dropdown-item-label">Neo Future</span></button>
-      <button class="dropdown-item" data-value="plex"><span class="dropdown-item-label">IBM Plex</span></button>
-      <button class="dropdown-item" data-value="playful"><span class="dropdown-item-label">Playful (Caveat)</span></button>
-      <button class="dropdown-item" data-value="classic-serif"><span class="dropdown-item-label">Classic Serif (Garamond)</span></button>
-      <button class="dropdown-item" data-value="pixel"><span class="dropdown-item-label">Pixel (VT323)</span></button>
-      <button class="dropdown-item" data-value="monumental"><span class="dropdown-item-label">Monumental (Unbounded)</span></button>
-      <button class="dropdown-item" data-value="slab"><span class="dropdown-item-label">Slab (Roboto Slab)</span></button>
-      <button class="dropdown-item" data-value="condensed"><span class="dropdown-item-label">Condensed (Oswald)</span></button>
-      <button class="dropdown-item" data-value="expressive"><span class="dropdown-item-label">Expressive (Syne)</span></button>
-      <button class="dropdown-item" data-value="deco"><span class="dropdown-item-label">Deco (Abril Fatface)</span></button>
-      <button class="dropdown-item" data-value="stencil"><span class="dropdown-item-label">Stencil (Major Mono)</span></button>
-      <button class="dropdown-item" data-value="rubik"><span class="dropdown-item-label">Rubik</span></button>
-      <button class="dropdown-item" data-value="bricolage"><span class="dropdown-item-label">Bricolage</span></button>
-      <button class="dropdown-item" data-value="gloock"><span class="dropdown-item-label">Gloock</span></button>
-      <button class="dropdown-item" data-value="crimson"><span class="dropdown-item-label">Crimson</span></button>
-      <button class="dropdown-item" data-value="dm"><span class="dropdown-item-label">DM Sans / Mono</span></button>
-      <button class="dropdown-item" data-value="outfit"><span class="dropdown-item-label">Outfit</span></button>
-      <button class="dropdown-item" data-value="literata"><span class="dropdown-item-label">Literata</span></button>
-    </div>
+    <div class="dropdown-menu" role="listbox"></div>
   </div>
   <div class="dropdown" data-dropdown="lang">
     <button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
       <span class="dropdown-label" data-i18n="control.lang_label">Language</span>
-      <span class="dropdown-value"></span>
+      <span class="dropdown-value">简体中文</span>
       <svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
-    <div class="dropdown-menu" role="listbox">
-      <button class="dropdown-item is-active" data-value="zh-cn"><span class="dropdown-item-label">简体中文</span></button>
-      <button class="dropdown-item" data-value="en-us"><span class="dropdown-item-label">English</span></button>
-      <button class="dropdown-item" data-value="ja-jp"><span class="dropdown-item-label">日本語</span></button>
-      <button class="dropdown-item" data-value="de-de"><span class="dropdown-item-label">Deutsch</span></button>
-      <button class="dropdown-item" data-value="fr-fr"><span class="dropdown-item-label">Français</span></button>
-      <button class="dropdown-item" data-value="ko-kr"><span class="dropdown-item-label">한국어</span></button>
-      <button class="dropdown-item" data-value="pt-pt"><span class="dropdown-item-label">Português</span></button>
-      <button class="dropdown-item" data-value="nl-nl"><span class="dropdown-item-label">Nederlands</span></button>
-      <button class="dropdown-item" data-value="it-it"><span class="dropdown-item-label">Italiano</span></button>
-      <button class="dropdown-item" data-value="ru-ru"><span class="dropdown-item-label">Русский</span></button>
-      <button class="dropdown-item" data-value="es-es"><span class="dropdown-item-label">Español</span></button>
-      <button class="dropdown-item" data-value="tr-tr"><span class="dropdown-item-label">Türkçe</span></button>
-      <button class="dropdown-item" data-value="el-gr"><span class="dropdown-item-label">Ελληνικά</span></button>
-      <button class="dropdown-item" data-value="ar"><span class="dropdown-item-label">العربية</span></button>
-      <button class="dropdown-item" data-value="hi-in"><span class="dropdown-item-label">हिन्दी</span></button>
-      <button class="dropdown-item" data-value="id-id"><span class="dropdown-item-label">Bahasa Indonesia</span></button>
-      <button class="dropdown-item" data-value="vi-vn"><span class="dropdown-item-label">Tiếng Việt</span></button>
-      <button class="dropdown-item" data-value="pl-pl"><span class="dropdown-item-label">Polski</span></button>
-      <button class="dropdown-item" data-value="th-th"><span class="dropdown-item-label">ไทย</span></button>
-      <button class="dropdown-item" data-value="uk-ua"><span class="dropdown-item-label">Українська</span></button>
-      <button class="dropdown-item" data-value="fa-ir"><span class="dropdown-item-label">فارسی</span></button>
-      <button class="dropdown-item" data-value="bn-bd"><span class="dropdown-item-label">বাংলা</span></button>
-      <button class="dropdown-item" data-value="ro-ro"><span class="dropdown-item-label">Română</span></button>
-      <button class="dropdown-item" data-value="cs-cz"><span class="dropdown-item-label">Čeština</span></button>
-    </div>
+    <div class="dropdown-menu" role="listbox"></div>
   </div>
 </header>
 <main class="page">
@@ -276,7 +205,7 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
     </div>
   </section>
 
-  <!-- Feature 1: Type-safe -->
+  <!-- Feature 1: Type-safe (TabSwitcher) -->
   <section class="section">
     <div class="container">
       <div class="feature-detail">
@@ -285,25 +214,27 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
           <h2 class="section-title"><em>类型即字段</em>，从 3.8 到 3.12。</h2>
           <p class="section-intro">Python 类型注解即模型定义，无需额外 DSL。Pydantic 运行时验证，IDE 完整类型推导。</p>
         </div>
-        <div class="feature-detail-code" id="f1-code">
-          <div class="btn-group" role="group" style="margin-bottom: 16px;">
-            <button class="btn-group-btn is-active" data-f1-py="py38" onclick="switchF1Code('py38', 'sync')">Python 3.8</button>
-            <button class="btn-group-btn" data-f1-py="py39" onclick="switchF1Code('py39', 'sync')">3.9+</button>
-            <button class="btn-group-btn" data-f1-py="py310" onclick="switchF1Code('py310', 'sync')">3.10+</button>
-            <button class="btn-group-btn" data-f1-py="py311" onclick="switchF1Code('py311', 'sync')">3.11+</button>
+        <div class="feature-detail-code">
+          <div data-component="tabs-switcher" data-data-key="f1" data-renderer="code">
+            <div class="tabs-row" data-dim="pyver" data-label="Python">
+              <button class="tab is-active" data-tab="py38">3.8</button>
+              <button class="tab" data-tab="py39">3.9+</button>
+              <button class="tab" data-tab="py310">3.10+</button>
+              <button class="tab" data-tab="py311">3.11+</button>
+            </div>
+            <div class="tabs-row" data-dim="mode" data-label="Mode">
+              <button class="tab is-active" data-tab="sync">sync</button>
+              <button class="tab" data-tab="async">async</button>
+            </div>
+            <div class="tabs-display"></div>
           </div>
-          <div class="btn-group" role="group" style="margin-bottom: 16px;">
-            <button class="btn-group-btn is-active" data-f1-mode="sync" onclick="switchF1Code(getCurrentF1Py(), 'sync')">Sync</button>
-            <button class="btn-group-btn" data-f1-mode="async" onclick="switchF1Code(getCurrentF1Py(), 'async')">Async</button>
-          </div>
-          <div class="code-display" id="f1-code-display"></div>
           <a href="activerecord/type-safe.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;">查看详情 →</a>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Feature 2: Async First -->
+  <!-- Feature 2: Async First (TabSwitcher) -->
   <section class="section">
     <div class="container">
       <div class="feature-detail">
@@ -312,18 +243,20 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
           <h2 class="section-title"><em>同步 = 异步</em>，语义一致。</h2>
           <p class="section-intro">同步/异步共享同一套模型定义。for → async for，其他代码不变。</p>
         </div>
-        <div class="feature-detail-code" id="f2-code">
-          <div class="btn-group" role="group" style="margin-bottom: 16px;">
-            <button class="btn-group-btn is-active" data-f2-py="py38" onclick="switchF2Code('py38', 'sync')">Python 3.8</button>
-            <button class="btn-group-btn" data-f2-py="py39" onclick="switchF2Code('py39', 'sync')">3.9+</button>
-            <button class="btn-group-btn" data-f2-py="py310" onclick="switchF2Code('py310', 'sync')">3.10+</button>
-            <button class="btn-group-btn" data-f2-py="py311" onclick="switchF2Code('py311', 'sync')">3.11+</button>
+        <div class="feature-detail-code">
+          <div data-component="tabs-switcher" data-data-key="f2" data-renderer="code">
+            <div class="tabs-row" data-dim="pyver" data-label="Python">
+              <button class="tab is-active" data-tab="py38">3.8</button>
+              <button class="tab" data-tab="py39">3.9+</button>
+              <button class="tab" data-tab="py310">3.10+</button>
+              <button class="tab" data-tab="py311">3.11+</button>
+            </div>
+            <div class="tabs-row" data-dim="mode" data-label="Mode">
+              <button class="tab is-active" data-tab="sync">sync</button>
+              <button class="tab" data-tab="async">async</button>
+            </div>
+            <div class="tabs-display"></div>
           </div>
-          <div class="btn-group" role="group" style="margin-bottom: 16px;">
-            <button class="btn-group-btn is-active" data-f2-mode="sync" onclick="switchF2Code(getCurrentF2Py(), 'sync')">Sync</button>
-            <button class="btn-group-btn" data-f2-mode="async" onclick="switchF2Code(getCurrentF2Py(), 'async')">Async</button>
-          </div>
-          <div class="code-display" id="f2-code-display"></div>
           <a href="activerecord/async-first.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;">查看详情 →</a>
         </div>
       </div>
@@ -340,19 +273,18 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
           <p class="section-intro">核心包仅依赖 Pydantic。SQLite 内置，其他数据库以独立包发布。</p>
         </div>
         <div class="feature-detail-code">
-          <div class="btn-group" role="group" style="margin-bottom: 16px;">
-            <button class="btn-group-btn is-active">Python 3.8</button>
-            <button class="btn-group-btn">3.9+</button>
-            <button class="btn-group-btn">3.10+</button>
-            <button class="btn-group-btn">3.11+</button>
-          </div>
-          <div class="btn-group" role="group" style="margin-bottom: 16px;">
-            <button class="btn-group-btn is-active">Sync</button>
-            <button class="btn-group-btn">Async</button>
-          </div>
-          <div class="code-block">
-            <div class="code-header"><span class="code-badge">py 3.8</span><span class="code-badge">sync</span></div>
-            <div class="code-body"><pre>// 代码示例待添加</pre></div>
+          <div data-component="tabs-switcher" data-data-key="f3" data-renderer="code">
+            <div class="tabs-row" data-dim="pyver" data-label="Python">
+              <button class="tab is-active" data-tab="py38">3.8</button>
+              <button class="tab" data-tab="py39">3.9+</button>
+              <button class="tab" data-tab="py310">3.10+</button>
+              <button class="tab" data-tab="py311">3.11+</button>
+            </div>
+            <div class="tabs-row" data-dim="mode" data-label="Mode">
+              <button class="tab is-active" data-tab="sync">sync</button>
+              <button class="tab" data-tab="async">async</button>
+            </div>
+            <div class="tabs-display"></div>
           </div>
           <a href="backends/index.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;">查看详情 →</a>
         </div>
@@ -370,19 +302,18 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
           <p class="section-intro">使用 ClassVar 声明关系字段，避免 Pydantic 扫描。运行时自动替换为 relation()。</p>
         </div>
         <div class="feature-detail-code">
-          <div class="btn-group" role="group" style="margin-bottom: 16px;">
-            <button class="btn-group-btn is-active">Python 3.8</button>
-            <button class="btn-group-btn">3.9+</button>
-            <button class="btn-group-btn">3.10+</button>
-            <button class="btn-group-btn">3.11+</button>
-          </div>
-          <div class="btn-group" role="group" style="margin-bottom: 16px;">
-            <button class="btn-group-btn is-active">Sync</button>
-            <button class="btn-group-btn">Async</button>
-          </div>
-          <div class="code-block">
-            <div class="code-header"><span class="code-badge">py 3.8</span><span class="code-badge">sync</span></div>
-            <div class="code-body"><pre>// 代码示例待添加</pre></div>
+          <div data-component="tabs-switcher" data-data-key="f4" data-renderer="code">
+            <div class="tabs-row" data-dim="pyver" data-label="Python">
+              <button class="tab is-active" data-tab="py38">3.8</button>
+              <button class="tab" data-tab="py39">3.9+</button>
+              <button class="tab" data-tab="py310">3.10+</button>
+              <button class="tab" data-tab="py311">3.11+</button>
+            </div>
+            <div class="tabs-row" data-dim="mode" data-label="Mode">
+              <button class="tab is-active" data-tab="sync">sync</button>
+              <button class="tab" data-tab="async">async</button>
+            </div>
+            <div class="tabs-display"></div>
           </div>
           <a href="activerecord/explicit-relations.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;">查看详情 →</a>
         </div>
@@ -400,19 +331,18 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
           <p class="section-intro">嵌套事务自动创建 savepoint。上下文管理器自动提交/回滚。</p>
         </div>
         <div class="feature-detail-code">
-          <div class="btn-group" role="group" style="margin-bottom: 16px;">
-            <button class="btn-group-btn is-active">Python 3.8</button>
-            <button class="btn-group-btn">3.9+</button>
-            <button class="btn-group-btn">3.10+</button>
-            <button class="btn-group-btn">3.11+</button>
-          </div>
-          <div class="btn-group" role="group" style="margin-bottom: 16px;">
-            <button class="btn-group-btn is-active">Sync</button>
-            <button class="btn-group-btn">Async</button>
-          </div>
-          <div class="code-block">
-            <div class="code-header"><span class="code-badge">py 3.8</span><span class="code-badge">sync</span></div>
-            <div class="code-body"><pre>// 代码示例待添加</pre></div>
+          <div data-component="tabs-switcher" data-data-key="f5" data-renderer="code">
+            <div class="tabs-row" data-dim="pyver" data-label="Python">
+              <button class="tab is-active" data-tab="py38">3.8</button>
+              <button class="tab" data-tab="py39">3.9+</button>
+              <button class="tab" data-tab="py310">3.10+</button>
+              <button class="tab" data-tab="py311">3.11+</button>
+            </div>
+            <div class="tabs-row" data-dim="mode" data-label="Mode">
+              <button class="tab is-active" data-tab="sync">sync</button>
+              <button class="tab" data-tab="async">async</button>
+            </div>
+            <div class="tabs-display"></div>
           </div>
           <a href="activerecord/transactions.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;">查看详情 →</a>
         </div>
@@ -430,19 +360,18 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
           <p class="section-intro">链式调用，阅读流畅如英语。.to_sql() 透明查看实际 SQL。</p>
         </div>
         <div class="feature-detail-code">
-          <div class="btn-group" role="group" style="margin-bottom: 16px;">
-            <button class="btn-group-btn is-active">Python 3.8</button>
-            <button class="btn-group-btn">3.9+</button>
-            <button class="btn-group-btn">3.10+</button>
-            <button class="btn-group-btn">3.11+</button>
-          </div>
-          <div class="btn-group" role="group" style="margin-bottom: 16px;">
-            <button class="btn-group-btn is-active">Sync</button>
-            <button class="btn-group-btn">Async</button>
-          </div>
-          <div class="code-block">
-            <div class="code-header"><span class="code-badge">py 3.8</span><span class="code-badge">sync</span></div>
-            <div class="code-body"><pre>// 代码示例待添加</pre></div>
+          <div data-component="tabs-switcher" data-data-key="f6" data-renderer="code">
+            <div class="tabs-row" data-dim="pyver" data-label="Python">
+              <button class="tab is-active" data-tab="py38">3.8</button>
+              <button class="tab" data-tab="py39">3.9+</button>
+              <button class="tab" data-tab="py310">3.10+</button>
+              <button class="tab" data-tab="py311">3.11+</button>
+            </div>
+            <div class="tabs-row" data-dim="mode" data-label="Mode">
+              <button class="tab is-active" data-tab="sync">sync</button>
+              <button class="tab" data-tab="async">async</button>
+            </div>
+            <div class="tabs-display"></div>
           </div>
           <a href="activerecord/pythonic.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;">查看详情 →</a>
         </div>
@@ -536,7 +465,7 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
         <div class="install-cmd">
           <span class="prompt">$</span>
           <span>pip install rhosocial-activerecord</span>
-          <button class="copy-btn" onclick="navigator.clipboard.writeText('pip install rhosocial-activerecord'); this.textContent='Copied'; setTimeout(()=>this.textContent='Copy',1200)">Copy</button>
+          <button class="copy-btn" data-copy-text="pip install rhosocial-activerecord">Copy</button>
         </div>
         <div style="margin-top: 28px; display: flex; gap: 12px; flex-wrap: wrap;">
           <a href="backends/index.html" class="btn btn-primary" data-i18n="install.docs">阅读文档 →</a>
@@ -551,237 +480,170 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
   <div style="font-size: 12px; opacity: 0.6;">2025-04</div>
 </footer>
 <script>
-// Control bar dropdowns
-document.querySelectorAll('.dropdown').forEach(function(dropdown) {
-  const trigger = dropdown.querySelector('.dropdown-trigger');
-  const menu = dropdown.querySelector('.dropdown-menu');
-  trigger.addEventListener('click', function(e) {
-    e.stopPropagation();
-    dropdown.classList.toggle('is-open');
-    document.querySelectorAll('.dropdown').forEach(function(d) {
-      if (d !== dropdown) d.classList.remove('is-open');
-    });
-  });
-  menu.querySelectorAll('.dropdown-item').forEach(function(item) {
-    item.addEventListener('click', function(e) {
-      e.stopPropagation();
-      const type = dropdown.dataset.dropdown;
-      const value = item.dataset.value;
-      setValue(type, value);
-      dropdown.classList.remove('is-open');
-      menu.querySelectorAll('.dropdown-item').forEach(function(i) { i.classList.remove('is-active'); });
-      item.classList.add('is-active');
-      dropdown.querySelector('.dropdown-value').textContent = item.querySelector('.dropdown-item-label').textContent;
-    });
-  });
-});
-document.addEventListener('click', function() {
-  document.querySelectorAll('.dropdown').forEach(function(d) { d.classList.remove('is-open'); });
-});
+// Convert FEATURE_CODE_DATA to CONTENT_DATA structure for TabSwitcher
+(function() {
+  var data = window.FEATURE_CODE_DATA || {};
+  var result = {};
 
-// Tab switching
-document.querySelectorAll('.tabs').forEach(function(tabs) {
-  const group = tabs.dataset.tabs;
-  tabs.querySelectorAll('.tab').forEach(function(tab) {
-    tab.addEventListener('click', function(e) {
-      e.stopPropagation();
-      const target = tab.dataset.tab;
-      tabs.querySelectorAll('.tab').forEach(function(t) { t.classList.remove('is-active'); });
-      tab.classList.add('is-active');
-      tabs.querySelectorAll('.tab-panel').forEach(function(panel) {
-        panel.classList.toggle('is-active', panel.dataset.panel === target);
-      });
-    });
-  });
-});
+  var features = ['f1', 'f2', 'f3', 'f4', 'f5', 'f6'];
+  var versions = ['py38', 'py39', 'py310', 'py311'];
+  var modes = ['sync', 'async'];
 
-// i18n
-const LANGS = ['zh-cn', 'en-us', 'ja-jp', 'de-de', 'fr-fr', 'ko-kr', 'pt-pt', 'nl-nl', 'it-it', 'ru-ru', 'es-es', 'tr-tr', 'el-gr', 'ar', 'hi-in', 'id-id', 'vi-vn', 'pl-pl', 'th-th', 'uk-ua', 'fa-ir', 'bn-bd', 'ro-ro', 'cs-cz'];
-function detectLang() {
-  const params = new URLSearchParams(location.search);
-  if (params.has('lang')) return params.get('lang');
-  const stored = localStorage.getItem('rhosocial-lang');
-  if (LANGS.includes(stored)) return stored;
-  const nav = navigator.languages || [navigator.language];
-  for (const l of nav) {
-    const code = l.replace('-', '_').toLowerCase();
-    if (LANGS.includes(code)) return code;
-    const prefix = code.split('_')[0];
-    const found = LANGS.find(function(x) { return x.startsWith(prefix); });
-    if (found) return found;
-  }
-  return 'zh-cn';
-}
-function refreshDropdownValueLabel(kind, value) {
-  var dd = document.querySelector('[data-dropdown="' + kind + '"]');
-  if (!dd) return;
-  var item = dd.querySelector('.dropdown-item[data-value="' + value + '"]');
-  if (!item) return;
-  var valueEl = dd.querySelector('.dropdown-value');
-  if (valueEl) valueEl.textContent = item.querySelector('.dropdown-item-label')?.textContent || value;
-}
+  for (var fi = 0; fi < features.length; fi++) {
+    var fid = features[fi];
+    var fdata = data[fid];
+    if (!fdata) continue;
 
-var FONT_THEME_MAP = {
-  'terminal': 'tight', 'editorial': 'serif', 'brutalist': 'geometric',
-  'aurora': 'heavy', 'synthwave': 'allmono', 'sumi': 'reader',
-  'blueprint': 'display-serif', 'noir': 'neo-future', 'riso': 'plex',
-  'nordic': 'playful', 'solarpunk': 'classic-serif', 'mocha': 'pixel',
-  'wireframe': 'monumental', 'anderson': 'slab', 'tokyo': 'condensed',
-  'memphis': 'expressive', 'chalkboard': 'deco', 'matrix': 'stencil',
-  'steel': 'rubik', 'frutiger': 'bricolage', 'newsprint': 'gloock',
-  'candy': 'crimson', 'botanical': 'dm', 'cyberpunk': 'outfit',
-  'parchment': 'literata', 'glassmorphism': 'auto'
-};
+    result[fid] = {};
+    for (var vi = 0; vi < versions.length; vi++) {
+      var pyver = versions[vi];
+      var vdata = fdata[pyver];
+      if (!vdata) continue;
 
-function setValue(type, value, skipStorage) {
-  if (type === 'theme') {
-    document.documentElement.setAttribute('data-theme', value);
-    if (!skipStorage) localStorage.setItem('rhosocial-theme', value);
-    refreshDropdownValueLabel('theme', value);
-    document.documentElement.setAttribute('data-font', 'auto');
-    localStorage.removeItem('rhosocial-font');
-    refreshDropdownValueLabel('font', 'auto');
-    document.querySelectorAll('[data-dropdown="font"] .dropdown-item').forEach(function(i) { i.classList.remove('is-active'); });
-    var autoItem = document.querySelector('[data-dropdown="font"] .dropdown-item[data-value="auto"]');
-    if (autoItem) autoItem.classList.add('is-active');
-  }
-  else if (type === 'font') {
-    document.documentElement.setAttribute('data-font', value);
-    if (value === 'auto') {
-      localStorage.removeItem('rhosocial-font');
-    } else if (!skipStorage) {
-      localStorage.setItem('rhosocial-font', value);
+      result[fid][pyver] = {};
+      for (var mi = 0; mi < modes.length; mi++) {
+        var mode = modes[mi];
+        var mdata = vdata[mode];
+        if (mdata) result[fid][pyver][mode] = mdata;
+      }
     }
-    refreshDropdownValueLabel('font', value);
   }
-  else if (type === 'lang') {
-    document.documentElement.setAttribute('lang', value);
-    var rtlLangs = ['ar', 'fa-ir', 'he-il', 'yi'];
-    document.documentElement.setAttribute('dir', rtlLangs.includes(value) ? 'rtl' : 'ltr');
-    localStorage.setItem('rhosocial-lang', value);
-    applyI18n(value);
-    refreshDropdownValueLabel('lang', value);
-  }
-}
-function applyI18n(lang) {
-  const dict = window.I18N && window.I18N[lang];
-  if (!dict) return;
-  document.querySelectorAll('[data-i18n]').forEach(function(el) {
-    const key = el.dataset.i18n;
-    const parts = key.split('.');
-    let value = dict;
-    for (const p of parts) { value = value && value[p]; }
-    if (value) el.innerHTML = value;
-  });
-  document.querySelectorAll('[data-i18n-value]').forEach(function(el) {
-    const key = el.dataset.i18nValue;
-    const parts = key.split('.');
-    let value = dict;
-    for (const p of parts) { value = value && value[p]; }
-    if (value) el.textContent = value;
-  });
-  refreshDropdownValueLabel('theme', document.documentElement.getAttribute('data-theme'));
-  refreshDropdownValueLabel('font', document.documentElement.getAttribute('data-font'));
-  refreshDropdownValueLabel('lang', lang);
-}
-const currentLang = detectLang();
-document.documentElement.setAttribute('lang', currentLang);
-var rtlLangs = ['ar', 'fa-ir', 'he-il', 'yi'];
-document.documentElement.setAttribute('dir', rtlLangs.includes(currentLang) ? 'rtl' : 'ltr');
-applyI18n(currentLang);
 
-// Theme and font initialization from URL params or localStorage
-(function() {
-  const params = new URLSearchParams(window.location.search);
-  const themeFromUrl = params.get('theme');
-  const fontFromUrl = params.get('font');
-  const themeFromStorage = localStorage.getItem('rhosocial-theme');
-  const fontFromStorage = localStorage.getItem('rhosocial-font');
-
-  let finalTheme = themeFromUrl || themeFromStorage || 'terminal';
-  let explicitFont = fontFromUrl || fontFromStorage;
-
-  setValue('theme', finalTheme, true);
-
-  if (explicitFont && explicitFont !== 'auto') {
-    document.documentElement.setAttribute('data-font', explicitFont);
-    document.querySelectorAll('[data-dropdown="font"] .dropdown-item').forEach(function(i) { i.classList.remove('is-active'); });
-    var fontItem = document.querySelector('[data-dropdown="font"] .dropdown-item[data-value="' + explicitFont + '"]');
-    if (fontItem) fontItem.classList.add('is-active');
-    refreshDropdownValueLabel('font', explicitFont);
-  } else {
-    document.documentElement.setAttribute('data-font', 'auto');
-    document.querySelectorAll('[data-dropdown="font"] .dropdown-item').forEach(function(i) { i.classList.remove('is-active'); });
-    var autoItem = document.querySelector('[data-dropdown="font"] .dropdown-item[data-value="auto"]');
-    if (autoItem) autoItem.classList.add('is-active');
-    refreshDropdownValueLabel('font', 'auto');
-  }
+  window.CONTENT_DATA = result;
 })();
 
-// Initialize feature code from external data
+// Initialize dropdowns and ThemeController
 (function() {
-  if (!window.FEATURE_CODE_DATA) return;
-  const features = ['f1', 'f2', 'f3', 'f4', 'f5', 'f6'];
-  const versions = ['py38', 'py39', 'py310', 'py311'];
-  const modes = ['sync', 'async'];
-  features.forEach(function(fid) {
-    const data = window.FEATURE_CODE_DATA[fid];
-    if (!data) return;
-    versions.forEach(function(pyver) {
-      modes.forEach(function(mode) {
-        var id = fid + '-' + pyver + '-' + mode + '-code';
-        var el = document.getElementById(id);
-        if (el && data[pyver] && data[pyver][mode]) {
-          el.innerHTML = '<pre>' + data[pyver][mode] + '</pre>';
+  var ctrl = new ThemeController({
+    container: document.getElementById('control-bar'),
+    onChange: function(e) {
+      if (e.type === 'lang') {
+        window.applyI18n(e.value);
+      }
+    }
+  });
+
+  // Build dropdown menus
+  function buildDropdownMenus() {
+    var ddTheme = document.querySelector('[data-dropdown="theme"]');
+    var ddFont = document.querySelector('[data-dropdown="font"]');
+    var ddLang = document.querySelector('[data-dropdown="lang"]');
+    var params = new URLSearchParams(location.search);
+    var themeVal = params.get('theme') || localStorage.getItem('theme') || 'terminal';
+    var fontVal = params.get('font') || localStorage.getItem('font');
+    var langVal = params.get('lang') || localStorage.getItem('lang') || 'zh-cn';
+
+    if (ddTheme && window.THEMES) {
+      var menu = ddTheme.querySelector('.dropdown-menu');
+      window.THEMES.forEach(function(t) {
+        var btn = document.createElement('button');
+        btn.className = 'dropdown-item' + (t[0] === themeVal ? ' is-active' : '');
+        btn.dataset.value = t[0];
+        btn.innerHTML = '<span class="dropdown-item-label">' + t[1] + '</span>';
+        menu.appendChild(btn);
+      });
+    }
+
+    if (ddFont && window.FONTS) {
+      var menu = ddFont.querySelector('.dropdown-menu');
+      window.FONTS.forEach(function(f) {
+        var btn = document.createElement('button');
+        btn.className = 'dropdown-item' + (f[0] === fontVal ? ' is-active' : '');
+        btn.dataset.value = f[0];
+        btn.innerHTML = '<span class="dropdown-item-label">' + f[1] + '</span>';
+        menu.appendChild(btn);
+      });
+    }
+
+    if (ddLang && window.LANGS) {
+      var menu = ddLang.querySelector('.dropdown-menu');
+      window.LANGS.forEach(function(l) {
+        var btn = document.createElement('button');
+        btn.className = 'dropdown-item' + (l[0] === langVal ? ' is-active' : '');
+        btn.dataset.value = l[0];
+        btn.innerHTML = '<span class="dropdown-item-label">' + l[1] + '</span>';
+        menu.appendChild(btn);
+      });
+    }
+  }
+
+  function refreshDropdownValueLabel(kind, value) {
+    var dd = document.querySelector('[data-dropdown="' + kind + '"]');
+    if (!dd) return;
+    var item = dd.querySelector('.dropdown-item[data-value="' + value + '"]');
+    if (!item) return;
+    var valueEl = dd.querySelector('.dropdown-value');
+    if (valueEl) valueEl.textContent = item.querySelector('.dropdown-item-label').textContent;
+  }
+
+  // Build menus first
+  buildDropdownMenus();
+
+  // Init theme controller
+  ctrl.init();
+  window.themeCtrl = ctrl;
+
+  // Sync dropdown values - use localStorage directly to check if user manually selected
+  var storedFont = localStorage.getItem('font');
+  var displayFont = storedFont || 'auto';  // Show "auto" if never manually selected
+  refreshDropdownValueLabel('theme', ctrl.state.theme);
+  refreshDropdownValueLabel('font', displayFont);
+  refreshDropdownValueLabel('lang', ctrl.state.lang);
+
+  // Setup dropdown interactions
+  document.querySelectorAll('.dropdown').forEach(function(dropdown) {
+    var trigger = dropdown.querySelector('.dropdown-trigger');
+    var menu = dropdown.querySelector('.dropdown-menu');
+    trigger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      dropdown.classList.toggle('is-open');
+      document.querySelectorAll('.dropdown').forEach(function(d) {
+        if (d !== dropdown) d.classList.remove('is-open');
+      });
+    });
+    menu.querySelectorAll('.dropdown-item').forEach(function(item) {
+      item.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var type = dropdown.dataset.dropdown;
+        var value = item.dataset.value;
+        ctrl.setValue(type, value);
+        dropdown.classList.remove('is-open');
+        menu.querySelectorAll('.dropdown-item').forEach(function(i) { i.classList.remove('is-active'); });
+        item.classList.add('is-active');
+
+        // If user selects "auto" (follow theme), clear stored preference
+        if (type === 'font' && value === 'auto') {
+          localStorage.removeItem('font');
         }
+
+        refreshDropdownValueLabel(type, value);
       });
     });
   });
-  // Show default f1 code on page load
-  if (window.FEATURE_CODE_DATA.f1) {
-    switchF1Code('py311', 'sync');
-  }
+
+  document.addEventListener('click', function() {
+    document.querySelectorAll('.dropdown').forEach(function(d) { d.classList.remove('is-open'); });
+  });
+
+  // Initialize TabSwitchers
+  window.initAllTabSwitchers({
+    onSwitch: function(e) {}
+  });
+
+  // Setup copy buttons
+  document.querySelectorAll('.copy-btn[data-copy-text]').forEach(function(btn) {
+    window.attachCopyBtn(btn, { textContent: btn.dataset.copyText });
+  });
 })();
-
-// Feature code switcher functions
-function getCurrentF1Py() {
-  var btn = document.querySelector('#f1-code .btn-group:first-child .btn-group-btn.is-active');
-  return btn ? btn.dataset.f1Py : 'py38';
-}
-
-function switchF1Code(pyVer, mode) {
-  var data = window.FEATURE_CODE_DATA && window.FEATURE_CODE_DATA.f1;
-  if (!data || !data[pyVer] || !data[pyVer][mode]) return;
-
-  var codeDiv = document.getElementById('f1-code');
-  codeDiv.querySelectorAll('.btn-group-btn').forEach(function(btn) {
-    if (btn.dataset.f1Py) btn.classList.toggle('is-active', btn.dataset.f1Py === pyVer);
-    if (btn.dataset.f1Mode) btn.classList.toggle('is-active', btn.dataset.f1Mode === mode);
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.tabs-display code.hljs').forEach(function(el) {
+    if (typeof hljs !== 'undefined') hljs.highlightElement(el);
   });
-
-  var display = document.getElementById('f1-code-display');
-  display.innerHTML = '<div class="code-block"><div class="code-body"><pre>' + data[pyVer][mode] + '</pre></div></div>';
-}
-
-// F2 functions
-function getCurrentF2Py() {
-  var btn = document.querySelector('#f2-code .btn-group:first-child .btn-group-btn.is-active');
-  return btn ? btn.dataset.f2Py : 'py38';
-}
-
-function switchF2Code(pyVer, mode) {
-  var data = window.FEATURE_CODE_DATA && window.FEATURE_CODE_DATA.f2;
-  if (!data || !data[pyVer] || !data[pyVer][mode]) return;
-
-  var codeDiv = document.getElementById('f2-code');
-  codeDiv.querySelectorAll('.btn-group-btn').forEach(function(btn) {
-    if (btn.dataset.f2Py) btn.classList.toggle('is-active', btn.dataset.f2Py === pyVer);
-    if (btn.dataset.f2Mode) btn.classList.toggle('is-active', btn.dataset.f2Mode === mode);
-  });
-
-  var display = document.getElementById('f2-code-display');
-display.innerHTML = '<div class="code-block"><div class="code-body"><pre>' + data[pyVer][mode] + '</pre></div></div>';
-}
+});
 </script>
 </body>
 </html>
