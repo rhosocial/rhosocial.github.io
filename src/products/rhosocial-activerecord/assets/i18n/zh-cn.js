@@ -1,243 +1,56 @@
 /**
- * i18n · zh-cn · 简体中文  (source-of-truth)
- * ═══════════════════════════════════════════════════════════════════════
- * Structure: window.I18N['<code>'][<section>][<key>] = 'text (HTML allowed)'
+ * assets/i18n/zh-cn.js — Global Chinese dictionary
  *
- * To add a new language:
- *   1. copy this file to assets/i18n/<code>.js
- *   2. change the key on line `window.I18N['zh-cn']` to your code
- *   3. translate each string in place — HTML (<em>, <code>, <br>, <strong>)
- *      must be preserved; don't translate tag names, code, or brand.
- *   4. add a <script src="assets/i18n/<code>.js"> to themes.html
- *   5. add a <button class="dropdown-item"> to the Language dropdown
- *   6. append '<code>' to the LANGS array in the bottom <script>
+ * Contains UI text shared across all pages (nav, controls, brand, common, footer).
+ * Load order: must be loaded BEFORE page-level dictionaries (e.g., index/zh-cn.js).
+ * Page-level dictionaries extend this via Object.assign, adding page-specific keys.
  */
 window.I18N = window.I18N || {};
 window.I18N['zh-cn'] = {
+  /** Language meta */
   meta: { name: '简体中文' },
 
+  /** Brand / Logo */
+  brand: {
+    name:     'rhosocial ActiveRecord',
+    subtitle: '· Theme Lab'
+  },
+
+  /** Top navigation */
+  nav: {
+    index:        '首页',
+    backends:     '后端',
+    activerecord: 'ActiveRecord',
+    practices:    '实践'
+  },
+
+  /** Control bar (theme / font / language dropdowns) */
   control: {
     theme_label: '主题',
     font_label:  '字体',
     lang_label:  '语言',
-    font_auto:   '自动（跟随主题）'
+    font_auto:  '跟随主题'
   },
 
-  brand: { subtitle: 'Theme Lab' },
-
-  hero: {
-    eyebrow: 'v1.0 · Apache 2.0 · Pure Python',
-    title:   'rhosocial ActiveRecord,<br>为 Python <em>重新设计</em>。',
-    sub:     '<strong>rhosocial-activerecord</strong> 用 Python 原生类型注解定义模型，用链式 <code>query().where(...).all()</code> 表达查询，原生支持同步与异步。无外部 ORM 依赖，后端可插拔——SQLite 内置，其它数据库以独立包发布，你也可以几十行代码自己写一个。',
-    cta_secondary: '查看特性 →'
-  },
-
-  features: {
-    label: 'Why · 六个核心承诺',
-    title: '为什么是 <em>rhosocial ActiveRecord</em>。',
-    f1: { num: '01 / 类型即字段',  title: '<em>类型即字段</em>，从定义开始',       desc: '字段就是 <code>name: str</code>，存储、校验、IDE 补全合而为一。' },
-    f2: { num: '02 / 异步一等',    title: '<em>同步 = 异步</em>，同一套 API',       desc: '<code>ActiveRecord</code> / <code>AsyncActiveRecord</code>，语义一致。' },
-    f3: { num: '03 / 后端可插拔',  title: '<em>后端可插拔</em>，按需选用',         desc: 'SQLite 内置；Postgres/MySQL/MSSQL/Oracle 独立包；可自写后端。' },
-    f4: { num: '04 / 关系显式',    title: '<em>关系显式</em>， ClassVar',            desc: 'has_many / belongs_to 显式声明，关系即 <code>QuerySet</code>。' },
-    f5: { num: '05 / 事务原子',    title: '<em>事务嵌套</em>，自动 savepoint',   desc: '上下文管理器 + savepoint，异常即回滚。' },
-    f6: { num: '06 / Pythonic',   title: '<em>如英语般阅读</em>，无需 DSL',      desc: '<code>User.query().where(...).all()</code>——就是 Python。' }
-  },
-
-  practice: {
-    label: 'In Practice · 实际代码',
-    title: '从 3.8 到 3.12，<em>一路升级</em>。',
-    intro: '对应 testsuite 仓库 <code>models_py38.py</code> … <code>models_py312.py</code>。',
-    p1: '<b>3.8 → 3.9</b>：<code>list[str]</code>（PEP 585）。',
-    p2: '<b>3.9 → 3.10</b>：<code>int | None</code>（PEP 604）。',
-    p3: '<b>3.10 → 3.11</b>：<code>Self</code> 类型（PEP 673）。',
-    p4: '<b>3.11 → 3.12</b>：<code>@override</code> 与 <code>class Result[T]:</code>。'
-  },
-
-  split_sync: {
-    label: 'Side by side',
-    title: '同步 = 异步，<em>语义一致</em>。',
-    intro: '把 <code>for</code> 换成 <code>async for</code>，其他什么都不变。IDE 的类型推导一路到底。',
-    cta:   '阅读 async 指南 →'
-  },
-
-  split_backend: {
-    label: 'Backend freedom',
-    title: '写你自己的<em>后端</em>，也就几十行。',
-    intro: '继承 <code>Backend</code>，实现几个方言钩子即可。DuckDB、libSQL 已被社区证明可行。',
-    cta:   '后端开发指南 →'
-  },
-
-  pricing: {
-    label:  'Plans · 商业化示例',
-    title:  '选择你的<em>档位</em>。',
-    intro:  '（示例卡片——开源本身永远免费。用于演示 pricing 组件在不同主题下的表现。）',
-    badge:  'Most Popular',
-    c1: { tier: 'Community',  desc: '个人项目和开源贡献者。完整功能无限制。',
-          f1: 'SQLite / PostgreSQL / MySQL', f2: '完整 async &amp; sync API', f3: '社区论坛支持',
-          f4: '团队协作仪表盘', f5: 'SLA 响应保证', cta: 'Get Started' },
-    c2: { tier: 'Team',       desc: '成长中的团队。含企业级后端 + 审计。',
-          f1: '全部 Community 特性', f2: 'MSSQL / Oracle 后端', f3: '审计日志 &amp; 读写分离',
-          f4: '私有 Discord 优先支持', f5: 'SSO / SAML', cta: 'Start 14-day trial' },
-    c3: { tier: 'Enterprise', desc: '大型组织。私有化部署、合规与培训。', price_label: '联系我们',
-          f1: '全部 Team 特性', f2: '自定义后端（DuckDB / libSQL / 自研）', f3: 'SSO / SAML / LDAP',
-          f4: '4 小时 SLA 响应', f5: '上门培训与专属解决方案', cta: 'Contact Sales' }
-  },
-
-  compare: {
-    label: 'Compare',
-    title: '与其它 Python ORM <em>对比</em>。',
-    col_feature:  '特性',
-    row1:  '设计模式',   row1r: 'ActiveRecord', row1sa: 'Data Mapper', row1dj: 'ActiveRecord', row1sm: 'Hybrid', row1pw: 'ActiveRecord', row1to: 'ActiveRecord',
-    row2:  '后端可独立使用',
-    row3:  '无 Session 概念',
-    row4:  '同步 / 异步 API 一致',
-    row5:  '原生 Pydantic 集成',
-    row6:  '运行时数据验证',
-    row7:  '完整 SQL 表达力',
-    row8:  '能力声明机制',
-    row9:  'SQL 透明 <code>.to_sql()</code>',
-    row10: '零强制迁移依赖',
-    row11: '最小依赖',
-    row12: '显式关系定义'
-  },
-
-  gallery: {
-    label: 'Component Gallery · UI 基元',
-    title: '每种主题下的<em>控件表现</em>。',
-    c_buttons: 'Buttons', c_btngroup: 'Button group', c_form: 'Form controls',
-    c_radio:   'Radio group', c_multi: 'Multi-select list', c_dropdown: 'Dropdown',
-    c_alerts:  'Alerts', c_badges: 'Badges', c_progress: 'Progress',
-    c_grid:    'Grid showcase (12 col)', c_rtl: 'RTL preview', c_table: 'Striped data table',
-    form_email: '邮箱地址', form_note: '备注',
-    form_preload: '预加载', form_async: '异步',
-    radio_sync:  'Sync（同步模式）', radio_async: 'Async（异步模式）', radio_both: 'Both（双栈，共享模型）',
-    alert_info:    '<b>提示。</b> SQLite 后端随核心包一起。',
-    alert_success: '<b>已就绪。</b> <code>User.configure(...)</code> 完成。',
-    alert_warn:    '<b>注意。</b> SQLite ≥ 3.25 才支持窗口函数。',
-    prog_coverage: '测试覆盖率', prog_backend: '后端完成度', prog_locale: '文档本地化',
-    backend_note:  '这个下拉与顶部控件栏使用同一组件。',
-    multi1_t: 'PostgreSQL', multi1_d: '主生产',
-    multi2_t: 'MySQL',      multi2_d: '旧服务',
-    multi3_t: 'SQLite',     multi3_d: '测试与原型'
-  },
-
-  album: {
-    label: 'Gallery · 相册',
-    title: '从<em>案例</em>学起。',
-    a1: '第一个 Model', a2: 'FastAPI 中的 async', a3: 'has_many 深入',
-    a4: '写自己的后端', a5: 'N+1 自动检测',        a6: '嵌套事务与 savepoint'
-  },
-
-  voices: {
-    label: 'Voices · 用户之声',
-    title: '他们<em>这样说</em>。',
-    q1: 'rhosocial-activerecord 终于让我不再和 ORM 搏斗了。类型注解就是模型定义，太对了。',
-    q1_role: 'Backend Engineer · Kyoto',
-    q2: 'Async 和 sync 共用一套 API，重构时几乎零成本。我的 FastAPI 项目整个迁移只改了两行。',
-    q2_role: 'Staff Engineer · Berlin',
-    q3: '我自己接了 DuckDB 后端，看了 Backend ABC 不到一个下午就跑通了。这才是可扩展。',
-    q3_role: 'Data Platform · Singapore',
-    q4: 'IDE 里每一步链式调用都有正确的类型推导。Pydantic 的力量用在了刀刃上。',
-    q4_role: 'Senior Python · São Paulo',
-    q5: '零运行时依赖是关键。嵌入式部署场景里我们再也不用为 SQLAlchemy 的体积头疼了。',
-    q5_role: 'IoT 工程师 · 深圳'
-  },
-
-  auth: {
-    label:      'Auth · 登录演示',
-    title:      '登录到 <em>rhosocial</em>。',
-    welcome:    '欢迎回来',
-    sub:        '使用你的 rhosocial 账号继续。',
-    email:      '邮箱',
-    password:   '密码',
-    remember:   '记住我',
-    forgot:     '忘记密码？',
-    login:      '登录',
-    or:         'OR',
-    github:     'Continue with GitHub',
-    twitter:    'Continue with Twitter',
-    no_account: '还没有账号？',
-    register:   '注册'
-  },
-
-  stats: {
-    label: 'By the numbers',
-    title: '一些<em>数字</em>。',
-    s1: '可选数据库方言', s2: '类型注解覆盖', s3: '最低 Python 版本', s4: '外部 ORM 依赖'
-  },
-
-  install: {
-    label: 'Get started',
-    title: '一行安装，<em>十分钟</em>上手。',
-    sub:   '已在 PyPI 发布。SQLite 后端随核心包一起。其他后端按需安装对应包即可。',
-    docs:  '阅读文档 →'
-  },
-
+  /** Footer */
   footer: {
-    hotkeys: '23 themes × 24 font packs · <span class="kbd">Ctrl</span>+<span class="kbd">letter</span> theme / <span class="kbd">Shift</span>+<span class="kbd">letter</span> font / <span class="kbd">Alt</span>+<span class="kbd">letter</span> language',
-    backends: '后端',
-    themes: '主题展示',
-    github: 'GitHub',
-    copyright: '© 2015–2026 rhosocial. Apache 2.0.'
+    license: 'Apache 2.0 许可',
+    github:  'GitHub',
+    hotkeys: '26 主题 · Ctrl+键主题 · Shift+键字体 · Alt+键语言'
   },
 
-  numbers: {
-    label: 'By the Numbers',
-    title: '关键<em>指标</em>。',
-    n1: '数据库后端',
-    n1_sub: 'SQLite/PostgreSQL/MySQL/SQLServer/Oracle + 自定义',
-    n2: 'Python 版本',
-    n2_sub: '3.8 / 3.9 / 3.10 / 3.11 / 3.12',
-    n3: '语言支持',
-    n3_sub: 'UN 6 官方语言 + 全球主要语言',
-    n4: '主题支持',
-    n4_sub: '10 暗色 + 16 亮色',
-    n5: '核心依赖',
-    n5_sub: '仅 Pydantic',
-    n6: '开源协议',
-    n6_sub: '商业友好，免费使用'
-  },
-
-  started: {
-    label: 'Get Started',
-    title: '快速<em>入门</em>。',
-    step1_title: '安装',
-    step2_title: '定义模型',
-    step3_title: '使用',
-    cta_docs: '阅读文档 →',
-    cta_github: 'GitHub →'
-  },
-
-  voices: {
-    label: 'Voices · 用户之声',
-    title: '他们<em>这样说</em>。',
-    q1: 'rhosocial-activerecord 终于让我不再和 ORM 搏斗了。类型注解就是模型定义，太对了。',
-    q1_role: 'Backend Engineer · Kyoto',
-    q2: 'Async 和 sync 共用一套 API，重构时几乎零成本。我的 FastAPI 项目整个迁移只改了两行。',
-    q2_role: 'Staff Engineer · Berlin',
-    q3: '我自己接了 DuckDB 后端，看了 Backend ABC 不到一个下午就跑通了。这才是可扩展。',
-    q3_role: 'Data Platform · Singapore',
-    q4: 'IDE 里每一步链式调用都有正确的类型推导。Pydantic 的力量用在了刀刃上。',
-    q4_role: 'Senior Python · São Paulo',
-    q5: '零运行时依赖是关键。嵌入式部署场景里我们再也不用为 SQLAlchemy 的体积头疼了。',
-    q5_role: 'IoT 工程师 · 深圳'
-  },
-
-  compare: {
-    label: 'Compare',
-    title: '与其它 Python ORM <em>对比</em>。',
-    col_feature: '特性',
-    row1: '设计模式',   row1r: 'ActiveRecord', row1sa: 'Data Mapper', row1dj: 'ActiveRecord', row1sm: 'Hybrid', row1pw: 'ActiveRecord', row1to: 'ActiveRecord',
-    row2: '后端可独立使用',
-    row3: '无 Session 概念',
-    row4: '同步 / 异步 API 一致',
-    row5: '原生 Pydantic 集成',
-    row6: '运行时数据验证',
-    row7: '完整 SQL 表达力',
-    row8: '能力声明机制',
-    row9: 'SQL 透明 <code>.to_sql()</code>',
-    row10: '零强制迁移依赖',
-    row11: '最小依赖',
-    row12: '显式关系定义'
+  /** Cross-page common buttons / labels */
+  common: {
+    detail:   '查看详情 →',
+    back:     '← 返回',
+    copy:     '复制',
+    copied:   '已复制!',
+    loading:  '加载中…',
+    error:    '加载失败',
+    expand:   '展开',
+    collapse: '收起',
+    prev:     '上一个',
+    next:     '下一个',
+    close:    '关闭'
   }
 };
