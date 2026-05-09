@@ -6,7 +6,7 @@
 <title>rhosocial ActiveRecord — Python ORM</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/core.css">
 <link rel="stylesheet" href="assets/themes/terminal.css">
 <link rel="stylesheet" href="assets/themes/editorial.css">
@@ -60,18 +60,480 @@
 <link rel="stylesheet" href="assets/fonts/dm.css">
 <link rel="stylesheet" href="assets/fonts/outfit.css">
 <link rel="stylesheet" href="assets/fonts/literata.css">
-
-
 <style>
 html[lang="ar"] { font-family: 'Noto Sans Arabic', var(--font-body); }
 html[lang="ar"] code, html[lang="ar"] pre, html[lang="ar"] .install-cmd { direction: ltr; unicode-bidi: embed; text-align: left; }
-html[lang="hi-in"] { font-family: 'Noto Sans Devanagari', var(--font-body); }
 html[lang="fa-ir"] { font-family: 'Noto Sans Arabic', var(--font-body); }
 html[lang="fa-ir"] code, html[lang="fa-ir"] pre, html[lang="fa-ir"] .install-cmd { direction: ltr; unicode-bidi: embed; text-align: left; }
+html[lang="hi-in"] { font-family: 'Noto Sans Devanagari', var(--font-body); }
 html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
 </style>
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   rhoar-concept 设计语言 — 通过 CSS 变量适配所有主题
+═══════════════════════════════════════════════════════════════ */
+:root {
+  --r-bg: var(--bg, #080a0f);
+  --r-bg2: var(--surface-0, #0d1117);
+  --r-bg3: var(--surface-1, #111822);
+  --r-surface: var(--surface-1, #161d2a);
+  --r-surface2: var(--surface-2, #1c2535);
+  --r-border: var(--border, rgba(255,255,255,0.06));
+  --r-border2: var(--border-strong, rgba(255,255,255,0.12));
+  --r-accent: var(--accent, #f5a623);
+  --r-accent-dim: var(--accent-soft, rgba(245,166,35,0.15));
+  --r-accent-glow: var(--accent-soft, rgba(245,166,35,0.08));
+  --r-cyan: var(--accent-secondary, #22d3ee);
+  --r-cyan-dim: var(--accent-secondary-soft, rgba(34,211,238,0.12));
+  --r-green: var(--ok, #34d399);
+  --r-green-dim: var(--ok-soft, rgba(52,211,153,0.12));
+  --r-red: var(--err, #f87171);
+  --r-purple: #a78bfa;
+  --r-text: var(--text-primary, #e2e8f0);
+  --r-text2: var(--text-secondary, #8892a4);
+  --r-text3: var(--text-muted, #4a5568);
+  --r-font-display: 'Syne', var(--font-display, sans-serif);
+  --r-font-mono: var(--font-mono, 'JetBrains Mono', monospace);
+  --r-font-body: var(--font-body, 'Inter', sans-serif);
+}
 
-<!-- i18n dictionaries -->
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--r-bg);
+  color: var(--r-text);
+  font-family: var(--r-font-body);
+  overflow-x: hidden;
+  line-height: 1.6;
+  margin: 0;
+}
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat; background-size: 200px 200px;
+}
+section { position: relative; z-index: 1; }
+a { color: var(--r-cyan); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ── LABEL TAG ── */
+.label {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--r-font-mono); font-size: 11px; letter-spacing: 0.12em;
+  color: var(--r-accent); text-transform: uppercase;
+  padding: 4px 10px; border-radius: 3px;
+  border: 1px solid rgba(245,166,35,0.25);
+  background: var(--r-accent-glow);
+}
+.label::before { content: '//'; opacity: 0.5; }
+
+/* ── HERO ── */
+.rho-hero { min-height: 100vh; display: grid; grid-template-rows: auto 1fr auto; padding: 0 0 4rem; }
+.rho-hero-body {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
+  align-items: center; padding: 2rem 3rem 0;
+  max-width: 1280px; margin: 0 auto; width: 100%;
+}
+.rho-hero-left { max-width: 540px; }
+.hero-eyebrow {
+  font-family: var(--r-font-mono); font-size: 12px;
+  color: var(--r-accent); letter-spacing: 0.1em; margin-bottom: 1.5rem;
+}
+.hero-eyebrow span { color: var(--r-text3); }
+h1 {
+  font-family: var(--r-font-display);
+  font-size: clamp(2.4rem, 4vw, 3.6rem);
+  font-weight: 800; line-height: 1.1;
+  letter-spacing: -0.03em; margin-bottom: 1.5rem;
+  color: var(--r-text);
+}
+h1 .hl { color: var(--r-accent); }
+h1 .dim { color: var(--r-text2); }
+h2 {
+  font-family: var(--r-font-display); font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 700; line-height: 1.15;
+  letter-spacing: -0.03em; color: var(--r-text); margin: 0;
+}
+h2 .hl { color: var(--r-accent); }
+.hero-sub {
+  font-size: 16px; color: var(--r-text2); line-height: 1.7;
+  margin-bottom: 2.5rem; max-width: 420px;
+}
+.hero-sub strong { color: var(--r-text); font-weight: 500; }
+.hero-actions { display: flex; gap: 12px; align-items: center; }
+.btn-primary, .btn-ghost {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 11px 22px; border-radius: 4px;
+  font-weight: 600; font-size: 14px; text-decoration: none; cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.btn-primary { background: var(--r-accent); color: #000; }
+.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); text-decoration: none; }
+.btn-ghost {
+  color: var(--r-text2); border: 1px solid var(--r-border2);
+  background: transparent;
+}
+.btn-ghost:hover { color: var(--r-text); border-color: var(--r-border2); text-decoration: none; }
+.hero-stats {
+  display: flex; gap: 2rem; margin-top: 3rem;
+  padding-top: 2rem; border-top: 1px solid var(--r-border);
+}
+.stat-item { display: flex; flex-direction: column; gap: 4px; }
+.stat-num {
+  font-family: var(--r-font-display); font-size: 1.8rem;
+  font-weight: 700; color: var(--r-text);
+}
+.stat-num span { color: var(--r-accent); }
+.stat-label { font-size: 12px; color: var(--r-text3); letter-spacing: 0.04em; }
+
+/* ── DEMO TERMINAL ── */
+.demo-terminal {
+  background: var(--r-bg2); border: 1px solid var(--r-border2);
+  border-radius: 10px; overflow: hidden;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.5);
+}
+.term-bar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 16px;
+  background: var(--r-surface);
+  border-bottom: 1px solid var(--r-border);
+}
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+.dot-r { background: #ff5f57; }
+.dot-y { background: #febc2e; }
+.dot-g { background: #28c840; }
+.term-title {
+  margin-left: auto; font-family: var(--r-font-mono); font-size: 11px;
+  color: var(--r-text3); margin-right: auto;
+}
+.badge-run {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: var(--r-cyan-dim); color: var(--r-cyan);
+  font-family: var(--r-font-mono); font-size: 10px;
+  padding: 2px 8px; border-radius: 3px;
+  border: 1px solid rgba(34,211,238,0.2);
+  margin-left: auto;
+}
+.term-split { display: grid; grid-template-columns: 1fr 1fr; }
+.term-pane { padding: 20px; }
+.term-pane-header {
+  font-family: var(--r-font-mono); font-size: 10px;
+  color: var(--r-text3); letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 6px;
+}
+.term-pane-header::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+}
+.pane-python .term-pane-header::before { background: var(--r-accent); }
+.pane-sql .term-pane-header::before { background: var(--r-cyan); }
+.pane-divider { width: 1px; background: var(--r-border); margin: 16px 0; }
+.code-block {
+  font-family: var(--r-font-mono); font-size: 12px;
+  line-height: 1.8; display: block; margin: 0;
+}
+.code-block .kw { color: var(--r-purple); }
+.code-block .cls { color: var(--r-accent); }
+.code-block .fn { color: var(--r-cyan); }
+.code-block .str { color: var(--r-green); }
+.code-block .cm { color: var(--r-text3); font-style: italic; }
+.code-block .op { color: var(--r-text2); }
+.code-block .num { color: #fb923c; }
+.code-block .sql-kw { color: var(--r-cyan); font-weight: 700; }
+.code-block .sql-val { color: var(--r-green); }
+.code-block .sql-tbl { color: var(--r-accent); }
+.code-block .sql-cm { color: var(--r-text3); font-style: italic; }
+.cursor-blink {
+  display: inline-block; width: 7px; height: 13px;
+  background: var(--r-accent); vertical-align: middle;
+  animation: blink 1s step-end infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+.sql-result {
+  margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--r-border);
+}
+.result-row {
+  display: flex; gap: 12px; font-family: var(--r-font-mono); font-size: 11px;
+  color: var(--r-text2); padding: 3px 0;
+}
+.result-row .col { color: var(--r-text3); min-width: 60px; }
+.result-row .val { color: var(--r-green); }
+
+/* ── TICKER ── */
+.ticker {
+  overflow: hidden; padding: 14px 0;
+  border-top: 1px solid var(--r-border);
+  border-bottom: 1px solid var(--r-border);
+  background: var(--r-surface);
+}
+.ticker-inner {
+  display: flex; gap: 0;
+  animation: rho-scroll-left 25s linear infinite;
+  white-space: nowrap;
+}
+.ticker-item {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 0 2.5rem;
+  font-family: var(--r-font-mono); font-size: 12px;
+  color: var(--r-text3); border-right: 1px solid var(--r-border);
+}
+.ticker-item .tag {
+  background: var(--r-accent-dim); color: var(--r-accent);
+  padding: 1px 6px; border-radius: 2px; font-size: 10px;
+}
+.ticker-item .tag-cyan {
+  background: var(--r-cyan-dim); color: var(--r-cyan);
+  padding: 1px 6px; border-radius: 2px; font-size: 10px;
+}
+@keyframes rho-scroll-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── SECTION COMMON ── */
+.rho-section { padding: 6rem 3rem; max-width: 1280px; margin: 0 auto; }
+.rho-section-header { margin-bottom: 3rem; }
+.rho-section-sub { color: var(--r-text2); font-size: 15px; margin-top: 0.75rem; max-width: 480px; }
+.gradient-sep {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--r-border2) 20%, var(--r-border2) 80%, transparent 100%);
+  margin: 0 3rem;
+}
+
+/* ── INTERACTIVE CHAIN BUILDER ── */
+.interactive-demo { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.demo-panel {
+  background: var(--r-bg2); border: 1px solid var(--r-border2);
+  border-radius: 8px; overflow: hidden;
+}
+.demo-panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; border-bottom: 1px solid var(--r-border);
+  background: var(--r-surface);
+}
+.demo-panel-title {
+  font-family: var(--r-font-mono); font-size: 11px;
+  color: var(--r-text3); letter-spacing: 0.08em; text-transform: uppercase;
+  display: flex; align-items: center; gap: 8px;
+}
+.demo-panel-title .dot-lang { width: 8px; height: 8px; border-radius: 50%; background: var(--r-accent); }
+.dot-lang-cyan { background: var(--r-cyan) !important; }
+.demo-panel-body { padding: 20px; }
+.chain-builder { display: flex; flex-direction: column; gap: 8px; }
+.chain-step {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px; background: var(--r-surface);
+  border: 1px solid var(--r-border); border-radius: 6px;
+  cursor: pointer; transition: all 0.2s; user-select: none;
+}
+.chain-step:hover { border-color: var(--r-border2); background: var(--r-surface2); }
+.chain-step.active {
+  border-color: rgba(245,166,35,0.4); background: var(--r-accent-glow);
+}
+.chain-step-icon { font-family: var(--r-font-mono); font-size: 10px; color: var(--r-accent); min-width: 20px; }
+.chain-step-label { font-family: var(--r-font-mono); font-size: 12px; color: var(--r-text); }
+.chain-step-hint { margin-left: auto; font-size: 11px; color: var(--r-text3); }
+.chain-step.active .chain-step-hint { color: var(--r-accent); opacity: 0.7; }
+.chain-connector { font-family: var(--r-font-mono); font-size: 18px; color: var(--r-border2); text-align: center; line-height: 1; margin: -4px 0; }
+.chain-connector.lit { color: var(--r-accent); opacity: 0.5; }
+.sql-output { font-family: var(--r-font-mono); font-size: 12px; line-height: 1.9; min-height: 220px; }
+.sql-line { display: flex; gap: 12px; }
+.sql-line-num { color: var(--r-text3); min-width: 16px; text-align: right; user-select: none; }
+.sql-line-content { flex: 1; }
+.sql-line.highlight .sql-line-content { background: rgba(34,211,238,0.07); border-radius: 2px; padding: 0 4px; margin: 0 -4px; }
+.sql-compile-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--r-font-mono); font-size: 10px;
+  padding: 4px 10px; border-radius: 20px;
+  background: var(--r-green-dim); color: var(--r-green);
+  border: 1px solid rgba(52,211,153,0.2);
+}
+.pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--r-green); animation: rho-pulse 2s ease-in-out infinite; }
+@keyframes rho-pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
+
+/* ── FEATURE CARDS (HORIZONTAL SCROLL) ── */
+.features-scroll-container { overflow-x: auto; padding: 1rem 0 2rem; scrollbar-width: none; }
+.features-scroll-container::-webkit-scrollbar { display: none; }
+.features-track { display: flex; gap: 20px; width: max-content; }
+.feat-card {
+  width: 300px; flex-shrink: 0;
+  background: var(--r-bg2); border: 1px solid var(--r-border);
+  border-radius: 10px; padding: 28px;
+  transition: border-color 0.3s, transform 0.3s;
+  position: relative; overflow: hidden;
+}
+.feat-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--r-accent), transparent);
+  opacity: 0; transition: opacity 0.3s;
+}
+.feat-card:hover { border-color: var(--r-border2); transform: translateY(-4px); }
+.feat-card:hover::before { opacity: 1; }
+.feat-num {
+  font-family: var(--r-font-mono); font-size: 11px;
+  color: var(--r-text3); margin-bottom: 20px; letter-spacing: 0.06em;
+}
+.feat-icon {
+  width: 40px; height: 40px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; margin-bottom: 18px;
+  background: var(--r-surface);
+}
+.feat-title {
+  font-family: var(--r-font-display); font-size: 1.1rem;
+  font-weight: 600; color: var(--r-text);
+  margin-bottom: 10px; line-height: 1.3;
+}
+.feat-desc { font-size: 13px; color: var(--r-text2); line-height: 1.65; }
+.feat-code-snip {
+  margin-top: 18px; padding: 12px;
+  background: var(--r-surface); border-radius: 5px;
+  font-family: var(--r-font-mono); font-size: 11px; line-height: 1.7;
+  border-left: 2px solid rgba(245,166,35,0.3);
+}
+.feat-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 16px; }
+.feat-tag {
+  font-family: var(--r-font-mono); font-size: 10px;
+  padding: 2px 7px; border-radius: 3px;
+  background: var(--r-surface2); color: var(--r-text3);
+  border: 1px solid var(--r-border);
+}
+.feat-link { font-family: var(--r-font-mono); font-size: 11px; color: var(--r-cyan); font-weight: 700; text-decoration: none; display: inline-block; margin-top: 12px; }
+.feat-link:hover { text-decoration: underline; }
+
+/* ── ARCHITECTURE ── */
+.arch-diagram {
+  margin-top: 3rem;
+  display: grid; grid-template-columns: 1fr 80px 1fr;
+  align-items: center;
+}
+.arch-col { display: flex; flex-direction: column; gap: 12px; }
+.arch-label {
+  font-family: var(--r-font-mono); font-size: 11px;
+  color: var(--r-text3); text-transform: uppercase; letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+.arch-box {
+  background: var(--r-bg2); border: 1px solid var(--r-border2);
+  border-radius: 8px; padding: 16px 20px; transition: all 0.2s;
+}
+.arch-box:hover { border-color: var(--r-accent); }
+.arch-box.is-ar { border-left: 3px solid var(--r-accent); }
+.arch-box.is-be { border-left: 3px solid var(--r-cyan); }
+.arch-box-name { font-family: var(--r-font-mono); font-size: 13px; font-weight: 700; color: var(--r-accent); margin-bottom: 4px; }
+.arch-box-name.cyan { color: var(--r-cyan); }
+.arch-box-sub { font-size: 12px; color: var(--r-text3); line-height: 1.5; }
+.arch-arrow-col {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 8px;
+}
+.arch-arrow-line {
+  width: 2px; height: 40px;
+  background: linear-gradient(180deg, var(--r-accent), var(--r-cyan));
+}
+.arch-arrow-label {
+  font-family: var(--r-font-mono); font-size: 9px;
+  color: var(--r-text3); text-transform: uppercase; letter-spacing: 0.1em;
+}
+.arch-sync-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-family: var(--r-font-mono); font-size: 10px;
+  padding: 3px 8px; border-radius: 20px;
+  border: 1px solid var(--r-border);
+  color: var(--r-text3); white-space: nowrap; margin-top: 8px;
+}
+
+/* ── COMPARE GRID ── */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 200px repeat(6, 1fr);
+  margin-top: 2rem;
+  border: 1px solid var(--r-border);
+  border-radius: 10px; overflow: hidden;
+}
+.cg-header {
+  background: var(--r-surface);
+  padding: 14px 16px;
+  font-family: var(--r-font-mono); font-size: 11px; font-weight: 500;
+  border-bottom: 1px solid var(--r-border2);
+  border-right: 1px solid var(--r-border);
+}
+.cg-header:first-child { color: var(--r-text3); font-family: var(--r-font-body); font-size: 12px; }
+.cg-header.is-ar {
+  background: var(--r-accent-glow);
+  border-top: 2px solid var(--r-accent);
+  color: var(--r-accent);
+}
+.cg-header.other { color: var(--r-text2); }
+.cg-cell {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--r-border);
+  border-right: 1px solid var(--r-border);
+  font-size: 13px;
+  display: flex; align-items: center;
+}
+.cg-cell.feat-name { color: var(--r-text2); font-size: 12px; background: var(--r-bg2); }
+.cg-cell.is-ar { background: rgba(245,166,35,0.03); }
+.cg-cell .chk { color: var(--r-green); font-size: 14px; font-weight: 700; }
+.cg-cell .cross { color: var(--r-text3); font-size: 14px; }
+.cg-cell .half { color: var(--r-accent); font-size: 12px; }
+
+/* ── INSTALL ── */
+.install-inner { max-width: 600px; margin: 0 auto; text-align: center; }
+.install-title {
+  font-family: var(--r-font-display); font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800; line-height: 1.1; letter-spacing: -0.03em;
+  color: var(--r-text); margin-bottom: 1rem;
+}
+.install-sub { color: var(--r-text2); font-size: 15px; margin-bottom: 2.5rem; }
+.install-cmd {
+  display: flex; align-items: center;
+  background: var(--r-bg2); border: 1px solid var(--r-border2);
+  border-radius: 8px; padding: 16px 20px;
+  font-family: var(--r-font-mono); font-size: 14px;
+  color: var(--r-text); margin-bottom: 2rem; cursor: pointer; transition: border-color 0.2s;
+}
+.install-cmd:hover { border-color: var(--r-accent); }
+.install-cmd .prompt { color: var(--r-accent); margin-right: 10px; }
+.install-cmd .cmd-text { flex: 1; }
+.install-cmd .copy-hint { font-size: 11px; color: var(--r-text3); cursor: pointer; }
+.install-cmd .copy-hint:hover { color: var(--r-accent); }
+
+/* ── FOOTER ── */
+.rho-footer {
+  border-top: 1px solid var(--r-border);
+  padding: 2rem 3rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.rho-footer .logo { font-family: var(--r-font-mono); font-size: 13px; color: var(--r-text3); }
+.rho-footer .links { display: flex; gap: 1.5rem; }
+.rho-footer .links a { color: var(--r-text3); text-decoration: none; font-size: 13px; }
+.rho-footer .links a:hover { color: var(--r-text); }
+
+/* ── SCROLL REVEAL ── */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-d1 { transition-delay: 0.1s; }
+.reveal-d2 { transition-delay: 0.2s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width:900px) {
+  .rho-hero-body { grid-template-columns: 1fr; gap: 2rem; padding: 1.5rem; }
+  .interactive-demo { grid-template-columns: 1fr; }
+  .arch-diagram { grid-template-columns: 1fr; gap: 1rem; }
+  .compare-grid { grid-template-columns: 140px repeat(6, 1fr); }
+  .cg-cell, .cg-header { font-size: 11px; padding: 8px 6px; }
+  .hero-stats { gap: 1rem; flex-wrap: wrap; }
+  .rho-section { padding: 3rem 1.5rem; }
+  .gradient-sep { margin: 0 1.5rem; }
+}
+@media (max-width:640px) {
+  .term-split { grid-template-columns: 1fr; }
+  .pane-divider { display: none; }
+}
+</style>
+
 <script src="assets/i18n/zh-cn.js"></script>
 <script src="assets/i18n/en-us.js"></script>
 <script src="assets/i18n/ja-jp.js"></script>
@@ -96,43 +558,19 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
 <script src="assets/i18n/bn-bd.js"></script>
 <script src="assets/i18n/ro-ro.js"></script>
 <script src="assets/i18n/cs-cz.js"></script>
-
-<!-- Page-specific i18n -->
 <script src="index/zh-cn.js"></script>
 <script src="index/en-us.js"></script>
-<script src="index/ar.js"></script>
-<script src="index/bn-bd.js"></script>
-<script src="index/cs-cz.js"></script>
-<script src="index/de-de.js"></script>
-<script src="index/el-gr.js"></script>
-<script src="index/es-es.js"></script>
-<script src="index/fa-ir.js"></script>
-<script src="index/fr-fr.js"></script>
-<script src="index/hi-in.js"></script>
-<script src="index/id-id.js"></script>
-<script src="index/it-it.js"></script>
-<script src="index/ja-jp.js"></script>
-<script src="index/ko-kr.js"></script>
-<script src="index/nl-nl.js"></script>
-<script src="index/pl-pl.js"></script>
-<script src="index/pt-pt.js"></script>
-<script src="index/ro-ro.js"></script>
-<script src="index/ru-ru.js"></script>
-<script src="index/th-th.js"></script>
-<script src="index/tr-tr.js"></script>
-<script src="index/uk-ua.js"></script>
-<script src="index/vi-vn.js"></script>
-
-<!-- Feature code data -->
-<script src="assets/feature-code-data.js"></script>
-
-<!-- Core JS -->
 <script src="assets/themes.js"></script>
 <script src="assets/i18n-core.js"></script>
 <script src="assets/utils.js"></script>
 </head>
 <body>
-<header class="control-bar" id="control-bar">
+<div class="grid-bg" style="position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:60px 60px"></div>
+
+<!-- ════════════════════════════════════════════
+     TopBar — theme/font/lang control
+════════════════════════════════════════════ -->
+<header class="control-bar" id="control-bar" style="position:sticky;top:0;z-index:100">
   <div class="control-brand">
     <span class="brand-mark size-md">&rho;<sub>AR</sub></span>
     <span>rhosocial ActiveRecord</span>
@@ -163,595 +601,497 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
     <div class="dropdown-menu" role="listbox"></div>
   </div>
 </header>
-<main class="page">
-  <!-- Hero -->
-  <section class="hero section">
-    <div class="container hero-inner">
-      <div class="hero-eyebrow rise" data-i18n="hero.eyebrow">v1.0 · Apache 2.0 · Pure Python</div>
-      <h1 class="hero-title rise" data-i18n="hero.title">rhosocial ActiveRecord,<br>为 Python <em>重新设计</em>。</h1>
-      <p class="hero-sub rise" data-i18n="hero.sub"><strong>rhosocial-activerecord</strong> 用 Python 原生类型注解定义模型。</p>
-      <div class="hero-ctas rise">
-        <a href="#get-started" class="btn btn-primary">pip install rhosocial-activerecord</a>
-        <a href="#why" class="btn btn-ghost" data-i18n="hero.cta_secondary">查看特性 →</a>
-      </div>
-    </div>
-  </section>
 
-  <!-- WHY - 6 Core Features -->
-  <section id="why" class="section">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-label" data-i18n="features.label">Why · 六个核心承诺</div>
-        <h2 class="section-title" data-i18n="features.title">为什么是 <em>rhosocial ActiveRecord</em>。</h2>
-      </div>
-      <div class="features-grid">
-        <article class="feature rise">
-          <div class="feature-num" data-i18n="features.f1.num">01 / 类型即字段</div>
-          <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m9 12 2 2 4-4"/><path d="M12 2 4 6v6c0 5.5 3.8 10.7 8 12 4.2-1.3 8-6.5 8-12V6l-8-4Z"/></svg></div>
-          <h3 class="feature-title" data-i18n="features.f1.title"><em>Type-safe</em> by construction</h3>
-          <p class="feature-desc" data-i18n="features.f1.desc">字段就是 <code>name: str</code>，存储、校验、IDE 补全合而为一。</p>
-          <span class="feature-tag">typing</span>
-        </article>
-        <article class="feature rise">
-          <div class="feature-num" data-i18n="features.f2.num">02 / 异步一等</div>
-          <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.22-8.56"/><path d="M21 3v6h-6"/></svg></div>
-          <h3 class="feature-title" data-i18n="features.f2.title">Sync &amp; async, <em>one API</em></h3>
-          <p class="feature-desc" data-i18n="features.f2.desc"><code>ActiveRecord</code> / <code>AsyncActiveRecord</code>，语义一致。</p>
-          <span class="feature-tag">asyncio</span>
-        </article>
-        <article class="feature rise">
-          <div class="feature-num" data-i18n="features.f3.num">03 / 后端可插拔</div>
-          <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="5" rx="1"/><rect x="2" y="10" width="20" height="5" rx="1"/><rect x="2" y="17" width="20" height="4" rx="1"/></svg></div>
-          <h3 class="feature-title" data-i18n="features.f3.title">Pluggable <em>backends</em></h3>
-          <p class="feature-desc" data-i18n="features.f3.desc">SQLite 内置；Postgres/MySQL/SQLServer/Oracle 独立包；可自写后端。</p>
-          <span class="feature-tag">backend abc</span>
-        </article>
-        <article class="feature rise">
-          <div class="feature-num" data-i18n="features.f4.num">04 / 关系显式</div>
-          <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M9 6h8a2 2 0 0 1 2 2v7"/><path d="M15 18H7a2 2 0 0 1-2-2V9"/></svg></div>
-          <h3 class="feature-title" data-i18n="features.f4.title"><em>Relations</em> made explicit</h3>
-          <p class="feature-desc" data-i18n="features.f4.desc"><code>ClassVar</code> + 描述符协议，运行时自动替换。</p>
-          <span class="feature-tag">descriptor</span>
-        </article>
-        <article class="feature rise">
-          <div class="feature-num" data-i18n="features.f5.num">05 / 事务原子</div>
-          <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg></div>
-          <h3 class="feature-title" data-i18n="features.f5.title">Transactions, <em>properly nested</em></h3>
-          <p class="feature-desc" data-i18n="features.f5.desc">上下文管理器 + savepoint，异常即回滚。</p>
-          <span class="feature-tag">savepoint</span>
-        </article>
-        <article class="feature rise">
-          <div class="feature-num" data-i18n="features.f6.num">06 / Pythonic</div>
-          <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10"/><path d="M8 21h8"/><path d="M12 17v4"/><path d="m9 10 3 3 3-3"/></svg></div>
-          <h3 class="feature-title" data-i18n="features.f6.title">Reads like <em>English</em></h3>
-          <p class="feature-desc" data-i18n="features.f6.desc"><code>User.query().where(...).all()</code>——就是 Python。</p>
-          <span class="feature-tag">no DSL</span>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- Feature 1: Type-safe (TabSwitcher) -->
-  <section class="section">
-    <div class="container">
-      <div class="feature-detail">
-        <div class="feature-detail-text">
-          <div class="section-label" data-i18n="f1.label">01 / Type-safe</div>
-          <h2 class="section-title" data-i18n="f1.title"><em>类型即字段</em>，从 3.8 到 3.12。</h2>
-          <p class="section-intro" data-i18n="f1.intro">Python 类型注解即模型定义，无需额外 DSL。Pydantic 运行时验证，IDE 完整类型推导。</p>
-        </div>
-        <div class="feature-detail-code">
-          <div data-component="tabs-switcher" data-data-key="f1" data-renderer="code">
-            <div class="tabs-row" data-dim="pyver" data-label="Python">
-              <button class="tab is-active" data-tab="py38">3.8</button>
-              <button class="tab" data-tab="py39">3.9+</button>
-              <button class="tab" data-tab="py310">3.10+</button>
-              <button class="tab" data-tab="py311">3.11+</button>
-            </div>
-            <div class="tabs-row" data-dim="mode" data-label="Mode">
-              <button class="tab is-active" data-tab="sync">sync</button>
-              <button class="tab" data-tab="async">async</button>
-            </div>
-            <div class="tabs-display"></div>
-          </div>
-          <a href="activerecord/type-safe.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;" data-i18n="common.detail">查看详情 →</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Feature 2: Async First (TabSwitcher) -->
-  <section class="section">
-    <div class="container">
-      <div class="feature-detail">
-        <div class="feature-detail-text">
-          <div class="section-label" data-i18n="f2.label">02 / Async First</div>
-          <h2 class="section-title" data-i18n="f2.title"><em>同步 = 异步</em>，语义一致。</h2>
-          <p class="section-intro" data-i18n="f2.intro">同步/异步共享同一套模型定义。for → async for，其他代码不变。</p>
-        </div>
-        <div class="feature-detail-code">
-          <div data-component="tabs-switcher" data-data-key="f2" data-renderer="code">
-            <div class="tabs-row" data-dim="pyver" data-label="Python">
-              <button class="tab is-active" data-tab="py38">3.8</button>
-              <button class="tab" data-tab="py39">3.9+</button>
-              <button class="tab" data-tab="py310">3.10+</button>
-              <button class="tab" data-tab="py311">3.11+</button>
-            </div>
-            <div class="tabs-row" data-dim="mode" data-label="Mode">
-              <button class="tab is-active" data-tab="sync">sync</button>
-              <button class="tab" data-tab="async">async</button>
-            </div>
-            <div class="tabs-display"></div>
-          </div>
-          <a href="activerecord/async-first.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;" data-i18n="common.detail">查看详情 →</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Feature 3: Pluggable Backends -->
-  <section class="section">
-    <div class="container">
-      <div class="feature-detail">
-        <div class="feature-detail-text">
-          <div class="section-label" data-i18n="f3.label">03 / Pluggable Backends</div>
-          <h2 class="section-title" data-i18n="f3.title"><em>后端可插拔</em>，按需选用。</h2>
-          <p class="section-intro" data-i18n="f3.intro">核心包仅依赖 Pydantic。SQLite 内置，其他数据库以独立包发布。</p>
-        </div>
-        <div class="feature-detail-code">
-          <div data-component="tabs-switcher" data-data-key="f3" data-renderer="code">
-            <div class="tabs-row" data-dim="pyver" data-label="Python">
-              <button class="tab is-active" data-tab="py38">3.8</button>
-              <button class="tab" data-tab="py39">3.9+</button>
-              <button class="tab" data-tab="py310">3.10+</button>
-              <button class="tab" data-tab="py311">3.11+</button>
-            </div>
-            <div class="tabs-row" data-dim="mode" data-label="Mode">
-              <button class="tab is-active" data-tab="sync">sync</button>
-              <button class="tab" data-tab="async">async</button>
-            </div>
-            <div class="tabs-display"></div>
-          </div>
-          <a href="backends/index.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;" data-i18n="common.detail">查看详情 →</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Feature 4: Relations -->
-  <section class="section">
-    <div class="container">
-      <div class="feature-detail">
-        <div class="feature-detail-text">
-          <div class="section-label" data-i18n="f4.label">04 / Relations</div>
-          <h2 class="section-title" data-i18n="f4.title"><em>关系显式</em>，ClassVar + 描述符。</h2>
-          <p class="section-intro" data-i18n="f4.intro">使用 ClassVar 声明关系字段，避免 Pydantic 扫描。运行时自动替换为 relation()。</p>
-        </div>
-        <div class="feature-detail-code">
-          <div data-component="tabs-switcher" data-data-key="f4" data-renderer="code">
-            <div class="tabs-row" data-dim="pyver" data-label="Python">
-              <button class="tab is-active" data-tab="py38">3.8</button>
-              <button class="tab" data-tab="py39">3.9+</button>
-              <button class="tab" data-tab="py310">3.10+</button>
-              <button class="tab" data-tab="py311">3.11+</button>
-            </div>
-            <div class="tabs-row" data-dim="mode" data-label="Mode">
-              <button class="tab is-active" data-tab="sync">sync</button>
-              <button class="tab" data-tab="async">async</button>
-            </div>
-            <div class="tabs-display"></div>
-          </div>
-          <a href="activerecord/explicit-relations.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;" data-i18n="common.detail">查看详情 →</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Feature 5: Transactions -->
-  <section class="section">
-    <div class="container">
-      <div class="feature-detail">
-        <div class="feature-detail-text">
-          <div class="section-label" data-i18n="f5.label">05 / Transactions</div>
-          <h2 class="section-title" data-i18n="f5.title"><em>事务原子</em>，嵌套 savepoint。</h2>
-          <p class="section-intro" data-i18n="f5.intro">嵌套事务自动创建 savepoint。上下文管理器自动提交/回滚。</p>
-        </div>
-        <div class="feature-detail-code">
-          <div data-component="tabs-switcher" data-data-key="f5" data-renderer="code">
-            <div class="tabs-row" data-dim="pyver" data-label="Python">
-              <button class="tab is-active" data-tab="py38">3.8</button>
-              <button class="tab" data-tab="py39">3.9+</button>
-              <button class="tab" data-tab="py310">3.10+</button>
-              <button class="tab" data-tab="py311">3.11+</button>
-            </div>
-            <div class="tabs-row" data-dim="mode" data-label="Mode">
-              <button class="tab is-active" data-tab="sync">sync</button>
-              <button class="tab" data-tab="async">async</button>
-            </div>
-            <div class="tabs-display"></div>
-          </div>
-          <a href="activerecord/transactions.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;" data-i18n="common.detail">查看详情 →</a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Feature 6: Pythonic -->
-  <section class="section">
-    <div class="container">
-      <div class="feature-detail">
-        <div class="feature-detail-text">
-          <div class="section-label" data-i18n="f6.label">06 / Pythonic</div>
-          <h2 class="section-title" data-i18n="f6.title"><em>如英语般阅读</em>，无需 DSL。</h2>
-          <p class="section-intro" data-i18n="f6.intro">链式调用，阅读流畅如英语。.to_sql() 透明查看实际 SQL。</p>
-        </div>
-        <div class="feature-detail-code">
-          <div data-component="tabs-switcher" data-data-key="f6" data-renderer="code">
-            <div class="tabs-row" data-dim="pyver" data-label="Python">
-              <button class="tab is-active" data-tab="py38">3.8</button>
-              <button class="tab" data-tab="py39">3.9+</button>
-              <button class="tab" data-tab="py310">3.10+</button>
-              <button class="tab" data-tab="py311">3.11+</button>
-            </div>
-            <div class="tabs-row" data-dim="mode" data-label="Mode">
-              <button class="tab is-active" data-tab="sync">sync</button>
-              <button class="tab" data-tab="async">async</button>
-            </div>
-            <div class="tabs-display"></div>
-          </div>
-          <a href="activerecord/pythonic.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;" data-i18n="common.detail">查看详情 →</a>
-        </div>
-      </div>
-    </div>
-</section>
-
-<!-- ARCH COMP -->
-<section id="arch-comp" class="section">
-  <div class="container">
-    <div class="section-header">
-      <div class="section-label" data-i18n="arch_comp.label">Component Architecture</div>
-      <h2 class="section-title" data-i18n="arch_comp.title">
-        ActiveRecord + Backend, <em>two independent layers</em>.
-      </h2>
-      <p class="section-intro"
-         data-i18n="arch_comp.intro">
-        ActiveRecord is the user of Backend; Backend can work standalone.
-        Sync and async variants are paired but not interchangeable.
+<!-- ════════════════════════════════════════════
+     HERO — split pane with demo terminal
+════════════════════════════════════════════ -->
+<section class="rho-hero">
+  <div style="min-height:0"></div>
+  <div class="rho-hero-body">
+    <div class="rho-hero-left">
+      <p class="hero-eyebrow">rhosocial-activerecord <span>· v1.0 · Apache 2.0</span></p>
+      <h1>Python ORM<br><span class="hl">重新设计</span><br><span class="dim">从类型开始。</span></h1>
+      <p class="hero-sub">
+        用 <strong>Python 原生类型注解</strong>定义模型。链式查询透明生成 SQL。
+        同步与异步，<strong>同一套 API</strong>。
       </p>
-    </div>
-
-    <div class="arch-diagram">
-      <div class="arch-col-frame">
-        <div class="arch-col-frame-header">
-          <span class="arch-col-frame-dot"></span>
-          <span class="arch-col-frame-title" data-i18n="arch_comp.ar_title">ActiveRecord</span>
-        </div>
-        <div class="arch-col-frame-body">
-          <div class="arch-subgroup sync">
-            <div class="arch-subgroup-label" data-i18n="arch_comp.node_sync_group">Sync</div>
-            <div class="arch-node is-root" tabindex="0" role="button" data-tip="tip_ar_s" data-tip-name="node_ar_s">ActiveRecord</div>
-            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_aq_s" data-tip-name="node_aq_s">ActiveQuery</div>
-            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_so_s" data-tip-name="node_so_s">SetOperation</div>
-            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_cte_s" data-tip-name="node_cte_s">CTEQuery</div>
-          </div>
-          <div class="arch-subgroup async">
-            <div class="arch-subgroup-label" data-i18n="arch_comp.node_async_group">Async</div>
-            <div class="arch-node is-root" tabindex="0" role="button" data-tip="tip_ar_a" data-tip-name="node_ar_a">AsyncActiveRecord</div>
-            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_aq_a" data-tip-name="node_aq_a">AsyncActiveQuery</div>
-            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_so_a" data-tip-name="node_so_a">AsyncSetOperation</div>
-            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_cte_a" data-tip-name="node_cte_a">AsyncCTEQuery</div>
-          </div>
-        </div>
+      <div class="hero-actions">
+        <a href="#install" class="btn-primary">
+          pip install
+          <span style="opacity:0.6;font-size:12px;">→</span>
+        </a>
+        <a href="https://github.com/rhosocial/python-activerecord" target="_blank" class="btn-ghost">GitHub</a>
       </div>
-
-      <div class="arch-connector" aria-hidden="true">
-        <div class="arch-conn-track">
-          <div class="arch-conn-line sync"></div>
-          <div class="arch-conn-arrow sync">→</div>
-          <div class="arch-conn-label sync" data-i18n="arch_comp.uses_label">uses</div>
-        </div>
-        <div class="arch-conn-track">
-          <div class="arch-conn-line async"></div>
-          <div class="arch-conn-arrow async">→</div>
-          <div class="arch-conn-label async" data-i18n="arch_comp.uses_label">uses</div>
-        </div>
-      </div>
-
-      <div class="arch-col-frame">
-        <div class="arch-col-frame-header">
-          <span class="arch-col-frame-dot async"></span>
-          <span class="arch-col-frame-title" data-i18n="arch_comp.be_title">Backend</span>
-        </div>
-        <div class="arch-col-frame-body">
-          <div class="arch-subgroup sync">
-            <div class="arch-subgroup-label" data-i18n="arch_comp.node_sync_group">Sync</div>
-            <div class="arch-node is-root" tabindex="0" role="button" data-tip="tip_sb_s" data-tip-name="node_sb_s">StorageBackend</div>
-            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_sqlite" data-tip-name="node_sqlite_s">SQLiteBackend</div>
-            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_ext" data-tip-name="node_ext"><span data-i18n="arch_comp.node_ext">MySQL · PostgreSQL · …</span></div>
-          </div>
-          <div class="arch-subgroup async">
-            <div class="arch-subgroup-label" data-i18n="arch_comp.node_async_group">Async</div>
-            <div class="arch-node is-root" tabindex="0" role="button" data-tip="tip_sb_a" data-tip-name="node_sb_a">AsyncStorageBackend</div>
-            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_sqlite" data-tip-name="node_sqlite_a">AsyncSQLiteBackend</div>
-            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_ext_a" data-tip-name="node_ext_a"><span data-i18n="arch_comp.node_ext_a">AsyncMySQL · …</span></div>
-          </div>
-        </div>
+      <div class="hero-stats">
+        <div class="stat-item"><div class="stat-num">6<span>+</span></div><div class="stat-label">Database backends</div></div>
+        <div class="stat-item"><div class="stat-num">100<span>%</span></div><div class="stat-label">Type annotated</div></div>
+        <div class="stat-item"><div class="stat-num">3.8<span>+</span></div><div class="stat-label">Python support</div></div>
+        <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">ORM deps</div></div>
       </div>
     </div>
-
-    <div class="arch-pairing">
-      <div class="arch-pairing-row">
-        <div class="arch-pairing-side ar-sync">ActiveRecord</div>
-        <div class="arch-pairing-mid sync">↔</div>
-        <div class="arch-pairing-side be-sync">StorageBackend</div>
-        <span class="arch-pairing-note" data-i18n="arch_comp.pair_sync_note">同步配对，不可混用</span>
+    <div class="demo-terminal" id="hero-demo">
+      <div class="term-bar">
+        <div class="dot dot-r"></div>
+        <div class="dot dot-y"></div>
+        <div class="dot dot-g"></div>
+        <div class="term-title">demo.py — rhosocial-activerecord</div>
+        <div class="badge-run"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#22d3ee"/></svg> live</div>
       </div>
-      <div class="arch-pairing-row">
-        <div class="arch-pairing-side ar-async">AsyncActiveRecord</div>
-        <div class="arch-pairing-mid async">↔</div>
-        <div class="arch-pairing-side be-async">AsyncStorageBackend</div>
-        <span class="arch-pairing-note" data-i18n="arch_comp.pair_async_note">异步配对，不可混用</span>
+      <div class="term-split">
+        <div class="term-pane pane-python">
+          <div class="term-pane-header">Python model</div>
+          <div class="code-block">
+<span class="kw">class</span> <span class="cls">User</span>(<span class="cls">ActiveRecord</span>):
+    __table_name__ = <span class="str">"users"</span>
+    id: Optional[<span class="cls">int</span>] = <span class="kw">None</span>
+    name: <span class="cls">str</span>
+    email: <span class="cls">str</span>
+    age: <span class="cls">int</span> = <span class="num">0</span>
+
+
+<span class="cm"># Query builder</span>
+results = (
+    <span class="cls">User</span>.<span class="fn">query</span>()
+        .<span class="fn">where</span>(<span class="cls">User</span>.c.age &gt;= <span class="num">18</span>)
+        .<span class="fn">where</span>(<span class="cls">User</span>.c.name.<span class="fn">like</span>(<span class="str">"%alice%"</span>))
+        .<span class="fn">order_by</span>(<span class="cls">User</span>.c.name)
+        .<span class="fn">limit</span>(<span class="num">10</span>)
+        .<span class="fn">all</span>()
+)<span class="cursor-blink"></span>
+          </div>
+        </div>
+        <div class="pane-divider"></div>
+        <div class="term-pane pane-sql">
+          <div class="term-pane-header">Generated SQL <span style="margin-left:auto;font-size:10px;color:var(--r-cyan);opacity:0.7;">.to_sql()</span></div>
+          <div class="code-block">
+<span class="sql-kw">SELECT</span> *
+<span class="sql-kw">FROM</span> <span class="sql-tbl">"users"</span>
+<span class="sql-kw">WHERE</span>
+    <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"age"</span> &gt;= <span class="sql-val">?</span>
+    <span class="sql-kw">AND</span> <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"name"</span>
+    <span class="sql-kw">LIKE</span> <span class="sql-val">?</span>
+<span class="sql-kw">ORDER BY</span> <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"name"</span> <span class="sql-kw">ASC</span>
+<span class="sql-kw">LIMIT</span> <span class="sql-val">10</span>
+          </div>
+          <div class="sql-result">
+            <div style="font-family:var(--r-font-mono);font-size:10px;color:var(--r-text3);margin-bottom:8px;letter-spacing:0.06em;">PARAMS: (18, "%alice%")</div>
+            <div class="result-row"><span class="col">id</span><span class="col">name</span><span class="val">age</span></div>
+            <div class="result-row"><span class="col">→ 3</span><span class="col">Alice</span><span class="val">24</span></div>
+            <div class="result-row"><span class="col">→ 7</span><span class="col">alice_dev</span><span class="val">31</span></div>
+            <div class="result-row" style="color:var(--r-text3)"><span>2 rows in 0.8ms</span></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<div id="arch-tip" role="tooltip" aria-live="polite"></div>
+<!-- ════════════════════════════════════════════
+     TICKER
+════════════════════════════════════════════ -->
+<div class="ticker">
+  <div class="ticker-inner" id="ticker-inner"></div>
+</div>
 
-<!-- ARCH COMP JS -->
-<script>
-(function () {
-  'use strict';
-  function t(key) {
-    var lang = window.CURRENT_LANG || 'zh-cn';
-    var dict = (window.I18N || {})[lang] || (window.I18N || {})['zh-cn'] || {};
-    var parts = ('arch_comp.' + key).split('.');
-    var v = dict;
-    for (var i = 0; i < parts.length; i++) {
-      if (v == null) return key;
-      v = v[parts[i]];
-    }
-    return (typeof v === 'string') ? v : key;
-  }
-  var tip = document.getElementById('arch-tip');
-  var tipHideTimer = null;
-  function showTip(event, nameKey, descKey) {
-    clearTimeout(tipHideTimer);
-    tip.innerHTML = '<div class="tip-name">' + t(nameKey) + '</div>' + t(descKey);
-    placeTip(event);
-    tip.classList.add('show');
-  }
-  function placeTip(event) {
-    var cx = event.clientX || (event.changedTouches && event.changedTouches[0].clientX) || 0;
-    var cy = event.clientY || (event.changedTouches && event.changedTouches[0].clientY) || 0;
-    var tw = tip.offsetWidth  || 260;
-    var th = tip.offsetHeight || 80;
-    var vw = window.innerWidth;
-    var vh = window.innerHeight;
-    var left = cx + 14;
-    var top  = cy + 14;
-    if (left + tw > vw - 8) left = cx - tw - 14;
-    if (top  + th > vh - 8) top  = cy - th - 14;
-    tip.style.left = Math.max(8, left) + 'px';
-    tip.style.top  = Math.max(8, top)  + 'px';
-  }
-  function hideTip() {
-    tipHideTimer = setTimeout(function () { tip.classList.remove('show'); }, 120);
-  }
-  function bindNodes() {
-    document.querySelectorAll('#arch-comp .arch-node').forEach(function (el) {
-      var descKey = el.dataset.tip;
-      var nameKey = el.dataset.tipName;
-      if (!descKey) return;
-      el.addEventListener('mouseenter', function (e) { showTip(e, nameKey, descKey); });
-      el.addEventListener('mousemove',  function (e) { if (tip.classList.contains('show')) placeTip(e); });
-      el.addEventListener('mouseleave', hideTip);
-      el.addEventListener('focus',      function (e) {
-        var r = el.getBoundingClientRect();
-        showTip({ clientX: r.right, clientY: r.top }, nameKey, descKey);
-      });
-      el.addEventListener('blur', hideTip);
-      el.addEventListener('touchstart', function (e) {
-        e.preventDefault();
-        showTip(e.changedTouches[0], nameKey, descKey);
-      });
-      el.addEventListener('touchend', hideTip);
-      el.addEventListener('touchcancel', hideTip);
-    });
-  }
-  function refreshText() {
-    document.querySelectorAll('#arch-comp .arch-node[data-tip-name]').forEach(function (el) {
-      var span = el.querySelector('[data-i18n]');
-      if (!span) {
-        var nameKey = el.dataset.tipName;
-        var label = t(nameKey);
-        if (label !== nameKey) el.textContent = label;
-      }
-    });
-  }
-  function initEntranceAnim() {
-    var nodes = Array.from(document.querySelectorAll('#arch-comp .arch-node'));
-    if (!nodes.length) return;
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        var group = entry.target;
-        var items = group.querySelectorAll('.arch-node');
-        items.forEach(function (n, i) {
-          n.style.animationDelay = (i * 55) + 'ms';
-          n.classList.add('is-visible');
-        });
-        io.unobserve(group);
-      });
-    }, { threshold: 0.15 });
-    document.querySelectorAll('#arch-comp .arch-subgroup').forEach(function (g) {
-      io.observe(g);
-    });
-  }
-  window.RENDER_ADAPTERS = window.RENDER_ADAPTERS || [];
-  window.RENDER_ADAPTERS.push({
-    name:   'arch-comp',
-    onTheme: function () {},
-    onFont:  function () {},
-    onLang:  function () { refreshText(); }
-  });
-  function init() {
-    bindNodes();
-    initEntranceAnim();
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
-  } else {
-    init();
-  }
-})();
-</script>
-
-<!-- COMPARE -->
-  <section class="section">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-label" data-i18n="compare.label">Compare</div>
-        <h2 class="section-title" data-i18n="compare.title">与其它 Python ORM <em>对比</em>。</h2>
+<!-- ════════════════════════════════════════════
+     INTERACTIVE CHAIN BUILDER
+════════════════════════════════════════════ -->
+<section class="rho-section" id="features">
+  <div class="rho-section-header reveal">
+    <div class="label">Interactive</div>
+    <h2 style="margin-top:1rem;">点击构建查询，<span class="hl">实时看 SQL</span></h2>
+    <p class="rho-section-sub">每一个链式方法对应一行 SQL。透明，可控，无魔法。</p>
+  </div>
+  <div class="interactive-demo reveal reveal-d1">
+    <div class="demo-panel">
+      <div class="demo-panel-header">
+        <div class="demo-panel-title"><div class="dot-lang"></div> Query Builder</div>
+        <span style="font-family:var(--r-font-mono);font-size:10px;color:var(--r-text3)">点击开关</span>
       </div>
-      <div class="feature-compare">
-        <table>
-          <thead><tr><th data-i18n="compare.col_feature">特性</th><th class="col-featured">ρAR</th><th>SQLAlchemy</th><th>Django ORM</th><th>SQLModel</th><th>Peewee</th><th>Tortoise</th></tr></thead>
-          <tbody>
-            <tr><td data-i18n="compare.row1">设计模式</td><td class="col-featured" data-i18n="compare.row1r">ActiveRecord</td><td data-i18n="compare.row1sa">Data Mapper</td><td data-i18n="compare.row1dj">ActiveRecord</td><td data-i18n="compare.row1sm">Hybrid</td><td data-i18n="compare.row1pw">ActiveRecord</td><td data-i18n="compare.row1to">ActiveRecord</td></tr>
-            <tr><td data-i18n="compare.row2">后端可独立使用</td><td class="col-featured"><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td></tr>
-            <tr><td data-i18n="compare.row3">无 Session 概念</td><td class="col-featured"><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-warn">½</span></td><td><span class="check-no">—</span></td><td><span class="check-warn">½</span></td><td><span class="check-warn">½</span></td></tr>
-            <tr><td data-i18n="compare.row4">同步 / 异步 API 一致</td><td class="col-featured"><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td></tr>
-            <tr><td data-i18n="compare.row5">原生 Pydantic 集成</td><td class="col-featured"><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td></tr>
-            <tr><td data-i18n="compare.row6">运行时数据验证</td><td class="col-featured"><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-warn">½</span></td><td><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td></tr>
-            <tr><td data-i18n="compare.row7">完整 SQL 表达力</td><td class="col-featured"><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td></tr>
-            <tr><td data-i18n="compare.row8">能力声明机制</td><td class="col-featured"><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td></tr>
-            <tr><td data-i18n="compare.row9">SQL 透明 <code>.to_sql()</code></td><td class="col-featured"><span class="check-yes">✓</span></td><td><span class="check-warn">½</span></td><td><span class="check-warn">½</span></td><td><span class="check-warn">½</span></td><td><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td></tr>
-            <tr><td data-i18n="compare.row10">零强制迁移依赖</td><td class="col-featured"><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
-            <tr><td data-i18n="compare.row11">最小依赖</td><td class="col-featured">Pydantic</td><td>Self-contained</td><td>Django</td><td>SQLAlchemy</td><td>Self-contained</td><td>None</td></tr>
-            <tr><td data-i18n="compare.row12">显式关系定义</td><td class="col-featured"><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-warn">½</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <!-- VOICES -->
-  <section class="section">
-    <div class="container" style="padding: 0 clamp(20px, 5vw, 80px);">
-      <div class="section-header">
-        <div class="section-label" data-i18n="voices.label">Voices · 用户之声</div>
-        <h2 class="section-title" data-i18n="voices.title">他们<em>这样说</em>。</h2>
-      </div>
-    </div>
-    <div class="carousel">
-      <div class="carousel-track">
-        <article class="carousel-card">
-          <p class="carousel-quote" data-i18n="voices.q1">rhosocial-activerecord 终于让我不再和 ORM 搏斗了。类型注解就是模型定义，太对了。</p>
-          <div class="carousel-author"><span class="carousel-avatar">JL</span><div><div class="carousel-name">Jamie Lee</div><div class="carousel-role" data-i18n="voices.q1_role">Backend Engineer · Kyoto</div></div></div>
-        </article>
-        <article class="carousel-card">
-          <p class="carousel-quote" data-i18n="voices.q2">Async 和 sync 共用一套 API，重构时几乎零成本。我的 FastAPI 项目整个迁移只改了两行。</p>
-          <div class="carousel-author"><span class="carousel-avatar">MN</span><div><div class="carousel-name">Mira Nakamura</div><div class="carousel-role" data-i18n="voices.q2_role">Staff Engineer · Berlin</div></div></div>
-        </article>
-        <article class="carousel-card">
-          <p class="carousel-quote" data-i18n="voices.q3">我自己接了 DuckDB 后端，看了 Backend ABC 不到一个下午就跑通了。这才是可扩展。</p>
-          <div class="carousel-author"><span class="carousel-avatar">DK</span><div><div class="carousel-name">David Koh</div><div class="carousel-role" data-i18n="voices.q3_role">Data Platform · Singapore</div></div></div>
-        </article>
-        <article class="carousel-card">
-          <p class="carousel-quote" data-i18n="voices.q4">IDE 里每一步链式调用都有正确的类型推导。Pydantic 的力量用在了刀刃上。</p>
-          <div class="carousel-author"><span class="carousel-avatar">RP</span><div><div class="carousel-name">Rafael Pereira</div><div class="carousel-role" data-i18n="voices.q4_role">Senior Python · São Paulo</div></div></div>
-        </article>
-        <article class="carousel-card">
-          <p class="carousel-quote" data-i18n="voices.q5">零运行时依赖是关键。嵌入式部署场景里我们再也不用为 SQLAlchemy 的体积头疼了。</p>
-          <div class="carousel-author"><span class="carousel-avatar">YX</span><div><div class="carousel-name">于夏</div><div class="carousel-role" data-i18n="voices.q5_role">IoT 工程师 · 深圳</div></div></div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <!-- BY THE NUMBERS -->
-  <section class="section">
-    <div class="container">
-      <div class="section-header"><div class="section-label" data-i18n="stats.label">By the numbers</div><h2 class="section-title" data-i18n="stats.title">一些<em>数字</em>。</h2></div>
-      <div class="stats-grid">
-        <div class="stat"><div class="stat-num">6<span class="unit">backends</span></div><div class="stat-label" data-i18n="stats.s1">可选数据库方言</div></div>
-        <div class="stat"><div class="stat-num">100<span class="unit">%</span></div><div class="stat-label" data-i18n="stats.s2">类型注解覆盖</div></div>
-        <div class="stat"><div class="stat-num">3.8<span class="unit">+</span></div><div class="stat-label" data-i18n="stats.s3">最低 Python 版本</div></div>
-        <div class="stat"><div class="stat-num">0<span class="unit">deps</span></div><div class="stat-label" data-i18n="stats.s4">外部 ORM 依赖</div></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- GET STARTED -->
-  <section id="install" class="section">
-    <div class="container-narrow">
-      <div class="install-wrap">
-        <div class="section-label" style="margin-bottom: 18px;" data-i18n="install.label">Get started</div>
-        <h2 class="install-title" data-i18n="install.title">一行安装，<em>十分钟</em>上手。</h2>
-        <p class="install-sub" data-i18n="install.sub">已在 PyPI 发布。SQLite 后端随核心包一起。其他后端按需安装对应包即可。</p>
-        <div class="install-cmd">
-          <span class="prompt">$</span>
-          <span>pip install rhosocial-activerecord</span>
-          <button class="copy-btn" data-copy-text="pip install rhosocial-activerecord" data-i18n="common.copy">复制</button>
-        </div>
-        <div style="margin-top: 28px; display: flex; gap: 12px; flex-wrap: wrap;">
-          <a href="backends/index.html" class="btn btn-primary" data-i18n="install.docs">阅读文档 →</a>
-          <a href="https://github.com/rhosocial/python-activerecord" class="btn btn-ghost">GitHub →</a>
+      <div class="demo-panel-body">
+        <div class="chain-builder" id="chain-builder">
+          <div class="chain-step active" data-id="base">
+            <div class="chain-step-icon">▶</div>
+            <div class="chain-step-label"><span class="code-block" style="display:inline;font-size:12px"><span class="cls">User</span>.<span class="fn">query</span>()</span></div>
+            <div class="chain-step-hint">必选</div>
+          </div>
+          <div class="chain-connector lit">│</div>
+          <div class="chain-step active" data-id="where1">
+            <div class="chain-step-icon">⬡</div>
+            <div class="chain-step-label">.<span class="fn">where</span>(age &gt;= <span class="num">18</span>)</div>
+            <div class="chain-step-hint">WHERE</div>
+          </div>
+          <div class="chain-connector" data-conn="where2">│</div>
+          <div class="chain-step" data-id="where2">
+            <div class="chain-step-icon">⬡</div>
+            <div class="chain-step-label">.<span class="fn">where</span>(name.like(…))</div>
+            <div class="chain-step-hint">AND</div>
+          </div>
+          <div class="chain-connector" data-conn="join">│</div>
+          <div class="chain-step" data-id="join">
+            <div class="chain-step-icon">⬡</div>
+            <div class="chain-step-label">.<span class="fn">join</span>(<span class="cls">Post</span>, …)</div>
+            <div class="chain-step-hint">JOIN</div>
+          </div>
+          <div class="chain-connector" data-conn="order">│</div>
+          <div class="chain-step active" data-id="order">
+            <div class="chain-step-icon">⬡</div>
+            <div class="chain-step-label">.<span class="fn">order_by</span>(name)</div>
+            <div class="chain-step-hint">ORDER BY</div>
+          </div>
+          <div class="chain-connector" data-conn="limit">│</div>
+          <div class="chain-step active" data-id="limit">
+            <div class="chain-step-icon">⬡</div>
+            <div class="chain-step-label">.<span class="fn">limit</span>(<span class="num">10</span>)</div>
+            <div class="chain-step-hint">LIMIT</div>
+          </div>
+          <div class="chain-connector" data-conn="all">│</div>
+          <div class="chain-step active" data-id="all">
+            <div class="chain-step-icon">◉</div>
+            <div class="chain-step-label">.<span class="fn">all</span>()</div>
+            <div class="chain-step-hint">执行</div>
+          </div>
         </div>
       </div>
     </div>
-  </section>
-</main>
-<footer class="footer">
-  <div>&copy; rhosocial &middot; rhosocial-activerecord &middot; Apache 2.0</div>
-  <div style="font-size: 12px; opacity: 0.6;">2025-04</div>
+    <div class="demo-panel">
+      <div class="demo-panel-header">
+        <div class="demo-panel-title"><div class="dot-lang dot-lang-cyan"></div> Generated SQL</div>
+        <div class="sql-compile-badge"><div class="pulse"></div> compiled</div>
+      </div>
+      <div class="demo-panel-body">
+        <div class="sql-output" id="sql-output"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gradient-sep"></div>
+
+<!-- ════════════════════════════════════════════
+     FEATURE CARDS — horizontal scroll, 6 promises
+════════════════════════════════════════════ -->
+<section class="rho-section">
+  <div class="rho-section-header reveal">
+    <div class="label">Six promises</div>
+    <h2 style="margin-top:1rem;">六个核心<span class="hl">设计决策</span>。</h2>
+  </div>
+  <div class="features-scroll-container reveal reveal-d1">
+    <div class="features-track" id="features-track"></div>
+  </div>
+</section>
+
+<div class="gradient-sep"></div>
+
+<!-- ════════════════════════════════════════════
+     ARCHITECTURE
+════════════════════════════════════════════ -->
+<section class="rho-section" id="arch">
+  <div class="reveal">
+    <div class="label">Architecture</div>
+    <h2 style="margin-top:1rem;">两层独立，<span class="hl">按需组合</span>。</h2>
+    <p class="rho-section-sub">ActiveRecord 是 Backend 的用户；Backend 可独立运行。同步/异步配对，不可混用。</p>
+  </div>
+  <div class="arch-diagram reveal reveal-d1">
+    <div class="arch-col">
+      <div class="arch-label">ActiveRecord Layer</div>
+      <div class="arch-box is-ar">
+        <div class="arch-box-name">ActiveRecord</div>
+        <div class="arch-box-sub">ActiveQuery · SetOperation · CTEQuery</div>
+      </div>
+      <div class="arch-box" style="opacity:0.5;border-style:dashed;">
+        <div class="arch-box-name" style="color:var(--r-text2)">AsyncActiveRecord</div>
+        <div class="arch-box-sub">AsyncActiveQuery · AsyncCTEQuery</div>
+      </div>
+      <div style="margin-top:4px;">
+        <div class="arch-sync-badge"><span style="color:var(--r-accent)">●</span> sync</div>
+        <div class="arch-sync-badge" style="opacity:0.5"><span style="color:var(--r-cyan)">●</span> async</div>
+      </div>
+    </div>
+    <div class="arch-arrow-col">
+      <div class="arch-arrow-label" style="margin-bottom:6px;">uses</div>
+      <div style="width:40px;height:2px;background:linear-gradient(90deg,var(--r-accent),var(--r-cyan));position:relative">
+        <div style="position:absolute;right:-4px;top:-3px;border:4px solid transparent;border-left-color:var(--r-cyan)"></div>
+      </div>
+      <div class="arch-arrow-label" style="margin-top:6px;">ABC</div>
+    </div>
+    <div class="arch-col">
+      <div class="arch-label">Backend Layer</div>
+      <div class="arch-box is-be">
+        <div class="arch-box-name cyan">StorageBackend</div>
+        <div class="arch-box-sub">SQLite · PostgreSQL · MySQL · MariaDB · SQL Server · Oracle</div>
+      </div>
+      <div class="arch-box is-be" style="opacity:0.6">
+        <div class="arch-box-name cyan">AsyncStorageBackend</div>
+        <div class="arch-box-sub">AsyncSQLite · AsyncPG · AsyncMySQL · …</div>
+      </div>
+      <div style="margin-top:4px;">
+        <div class="arch-sync-badge"><span style="color:var(--r-cyan)">●</span> all backends</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="gradient-sep"></div>
+
+<!-- ════════════════════════════════════════════
+     COMPARE
+════════════════════════════════════════════ -->
+<section class="rho-section" id="compare">
+  <div class="reveal">
+    <div class="label">Compare</div>
+    <h2 style="margin-top:1rem;">与其它 ORM <span class="hl">对比</span>。</h2>
+  </div>
+  <div class="compare-grid reveal reveal-d1">
+    <div class="cg-header">特性</div>
+    <div class="cg-header is-ar">ρAR</div>
+    <div class="cg-header other">SQLAlchemy</div>
+    <div class="cg-header other">Django ORM</div>
+    <div class="cg-header other">SQLModel</div>
+    <div class="cg-header other">Peewee</div>
+    <div class="cg-header other">Tortoise</div>
+
+    <div class="cg-cell feat-name">后端可独立使用</div>
+    <div class="cg-cell is-ar"><span class="chk">✓</span></div>
+    <div class="cg-cell"><span class="cross">—</span></div>
+    <div class="cg-cell"><span class="cross">—</span></div>
+    <div class="cg-cell"><span class="cross">—</span></div>
+    <div class="cg-cell"><span class="cross">—</span></div>
+    <div class="cg-cell"><span class="cross">—</span></div>
+
+    <div class="cg-cell feat-name">Sync/Async API 一致</div>
+    <div class="cg-cell is-ar"><span class="chk">✓</span></div>
+    <div class="cg-cell"><span class="cross">—</span></div>
+    <div class="cg-cell"><span class="cross">—</span></div>
+    <div class="cg-cell"><span class="cross">—</span></div>
+    <div class="cg-cell"><span class="cross">—</span></div>
+    <div class="cg-cell"><span class="cross">—</span></div>
+
+    <div class="cg-cell feat-name">原生 Pydantic v2</div>
+    <div class="cg-cell is-ar"><span class="chk">✓</span></div>
+    <div class="cg-cell"><span class="cross">—</span></div>
+    <div class="cg-cell"><span class="cross">—</span></div>
+    <div class="cg-cell"><span class="chk">✓</span></div>
+    <div class="cg-cell"><span class="cross">—</span></div>
+    <div class="cg-cell"><span class="cross">—</span></div>
+
+    <div class="cg-cell feat-name">无 Session 概念</div>
+    <div class="cg-cell is-ar"><span class="chk">✓</span></div>
+    <div class="cg-cell"><span class="cross">—</span></div>
+    <div class="cg-cell"><span class="half">½</span></div>
+    <div class="cg-cell"><span class="cross">—</span></div>
+    <div class="cg-cell"><span class="half">½</span></div>
+    <div class="cg-cell"><span class="half">½</span></div>
+
+    <div class="cg-cell feat-name">SQL 透明 .to_sql()</div>
+    <div class="cg-cell is-ar"><span class="chk">✓</span></div>
+    <div class="cg-cell"><span class="half">½</span></div>
+    <div class="cg-cell"><span class="half">½</span></div>
+    <div class="cg-cell"><span class="half">½</span></div>
+    <div class="cg-cell"><span class="chk">✓</span></div>
+    <div class="cg-cell"><span class="cross">—</span></div>
+
+    <div class="cg-cell feat-name">零强制迁移依赖</div>
+    <div class="cg-cell is-ar"><span class="chk">✓</span></div>
+    <div class="cg-cell"><span class="chk">✓</span></div>
+    <div class="cg-cell"><span class="cross">—</span></div>
+    <div class="cg-cell"><span class="chk">✓</span></div>
+    <div class="cg-cell"><span class="chk">✓</span></div>
+    <div class="cg-cell"><span class="chk">✓</span></div>
+  </div>
+</section>
+
+<div class="gradient-sep"></div>
+
+<!-- ════════════════════════════════════════════
+     INSTALL
+════════════════════════════════════════════ -->
+<section class="rho-section" id="install">
+  <div class="install-inner">
+    <div class="label" style="margin:0 auto 1.5rem;width:fit-content;">Get started</div>
+    <h2 class="install-title">一行安装，<span class="hl">十分钟</span>上手。</h2>
+    <p class="install-sub">SQLite 随核心包一起。Pydantic 是唯一依赖。其他后端按需安装。</p>
+    <div class="install-cmd" id="install-cmd">
+      <span class="prompt">$</span>
+      <span class="cmd-text">pip install rhosocial-activerecord</span>
+      <span class="copy-hint" id="copy-hint">点击复制</span>
+    </div>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+      <a href="backends/index.html" class="btn-primary">阅读文档 →</a>
+      <a href="https://github.com/rhosocial/python-activerecord" target="_blank" class="btn-ghost">GitHub →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════ -->
+<footer class="rho-footer">
+  <div class="logo">ρ rhosocial-activerecord · Apache 2.0</div>
+  <div class="links">
+    <a href="https://github.com/rhosocial/python-activerecord" target="_blank">GitHub</a>
+    <a href="https://pypi.org/project/rhosocial-activerecord/" target="_blank">PyPI</a>
+  </div>
 </footer>
+
 <script>
-// Convert FEATURE_CODE_DATA to CONTENT_DATA structure for TabSwitcher
-(function() {
-  var data = window.FEATURE_CODE_DATA || {};
-  var result = {};
-
-  var features = ['f1', 'f2', 'f3', 'f4', 'f5', 'f6'];
-  var versions = ['py38', 'py39', 'py310', 'py311'];
-  var modes = ['sync', 'async'];
-
-  for (var fi = 0; fi < features.length; fi++) {
-    var fid = features[fi];
-    var fdata = data[fid];
-    if (!fdata) continue;
-
-    result[fid] = {};
-    for (var vi = 0; vi < versions.length; vi++) {
-      var pyver = versions[vi];
-      var vdata = fdata[pyver];
-      if (!vdata) continue;
-
-      result[fid][pyver] = {};
-      for (var mi = 0; mi < modes.length; mi++) {
-        var mode = modes[mi];
-        var mdata = vdata[mode];
-        if (mdata) result[fid][pyver][mode] = mdata;
+// ═══════════════════════════════════════════════
+// Ticker
+// ═══════════════════════════════════════════════
+(function(){
+  var items = [
+    { tag:'Python', text:'Type annotations = model fields' },
+    { tag:'SQL', text:'.to_sql() on every query', cyan:true },
+    { tag:'Async', text:'Same API, just add await', cyan:true },
+    { tag:'Pydantic', text:'Runtime validation built-in' },
+    { tag:'SQLite', text:'Built-in backend, zero setup', cyan:true },
+    { tag:'v1.0', text:'Apache 2.0 · Pure Python' },
+    { tag:'ORM', text:'No Session concept' },
+    { tag:'CTE', text:'WITH clauses, recursive queries', cyan:true },
+  ];
+  var ti = document.getElementById('ticker-inner');
+  if (ti) {
+    var html = '';
+    for (var r = 0; r < 2; r++) {
+      for (var i = 0; i < items.length; i++) {
+        var cls = items[i].cyan ? ' tag-cyan' : '';
+        html += '<div class="ticker-item"><span class="tag' + cls + '">' + items[i].tag + '</span>' + items[i].text + '</div>';
       }
     }
+    ti.innerHTML = html;
   }
-
-  window.CONTENT_DATA = result;
 })();
 
-// Initialize dropdowns and ThemeController
-(function() {
+// ═══════════════════════════════════════════════
+// Chain Builder — interactive SQL
+// ═══════════════════════════════════════════════
+(function(){
+  var sqlParts = {
+    base:   { line: '<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> <span class="sql-tbl">"users"</span>', h: false },
+    where1: { line: '<span class="sql-kw">WHERE</span> <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"age"</span> >= <span class="sql-val">?</span>', h: true },
+    where2: { line: '<span class="sql-kw">  AND</span> <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"name"</span> <span class="sql-kw">LIKE</span> <span class="sql-val">?</span>', h: true },
+    join:   { line: '<span class="sql-kw">JOIN</span> <span class="sql-tbl">"posts"</span> <span class="sql-kw">ON</span> <span class="sql-tbl">"posts"</span>.<span class="sql-tbl">"author_id"</span> = <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"id"</span>', h: true },
+    order:  { line: '<span class="sql-kw">ORDER BY</span> <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"name"</span> <span class="sql-kw">ASC</span>', h: false },
+    limit:  { line: '<span class="sql-kw">LIMIT</span> <span class="sql-val">10</span>', h: false },
+    all:    { line: '<span class="sql-cm">-- execute & return List[User]</span>', h: false },
+  };
+
+  function renderSQL() {
+    var active = [];
+    document.querySelectorAll('.chain-step.active').forEach(function(el) { active.push(el.dataset.id); });
+    var out = document.getElementById('sql-output');
+    if (!out) return;
+    var html = '';
+    var lineNum = 1;
+    for (var i = 0; i < active.length; i++) {
+      var id = active[i];
+      if (!sqlParts[id] || id === 'all') continue;
+      var p = sqlParts[id];
+      html += '<div class="sql-line' + (p.h ? ' highlight' : '') + '"><span class="sql-line-num">' + lineNum + '</span><span class="sql-line-content">' + p.line + '</span></div>';
+      lineNum++;
+    }
+    if (active.indexOf('all') !== -1) {
+      html += '<div class="sql-line" style="margin-top:4px;"><span class="sql-line-num">' + lineNum + '</span><span class="sql-line-content"><span class="sql-cm">-- execute & return List[User]</span></span></div>';
+    }
+    out.innerHTML = html || '<div style="color:var(--r-text3);font-size:12px">No clauses selected</div>';
+  }
+
+  document.querySelectorAll('.chain-step').forEach(function(step) {
+    if (step.dataset.id === 'base') return;
+    step.addEventListener('click', function() {
+      step.classList.toggle('active');
+      document.querySelectorAll('.chain-connector[data-conn]').forEach(function(conn) {
+        var sid = conn.dataset.conn;
+        var s = document.querySelector('.chain-step[data-id="' + sid + '"]');
+        if (s && s.classList.contains('active')) conn.classList.add('lit');
+        else conn.classList.remove('lit');
+      });
+      renderSQL();
+    });
+  });
+
+  document.querySelectorAll('.chain-connector[data-conn]').forEach(function(conn) {
+    var sid = conn.dataset.conn;
+    var s = document.querySelector('.chain-step[data-id="' + sid + '"]');
+    if (s && s.classList.contains('active')) conn.classList.add('lit');
+  });
+  renderSQL();
+})();
+
+// ═══════════════════════════════════════════════
+// Feature Cards — 6 promises, JS generated
+// ═══════════════════════════════════════════════
+(function(){
+  var features = [
+    { num:'01 / type-safe', icon:'⬡', title:'<span class="hl">类型</span>即字段', desc:'Python 类型注解直接成为模型定义。IDE 完整推导，Pydantic 运行时验证，无额外 DSL。', code:'<span class="kw">class</span> <span class="cls">User</span>(<span class="cls">ActiveRecord</span>):\n    name: <span class="cls">str</span>\n    age:  <span class="cls">int</span> = <span class="num">0</span>', tags:['typing','pydantic','3.8+'], link:'activerecord/model.html' },
+    { num:'02 / async-first', icon:'⟳', title:'Sync & async<span class="hl">，一套 API</span>', desc:'同步 ActiveRecord 与异步 AsyncActiveRecord 语义完全一致。for → async for，其他不变。', code:'<span class="cm"># sync</span>\n<span class="cls">User</span>.<span class="fn">query</span>().<span class="fn">all</span>()\n<span class="cm"># async — same API</span>\n<span class="kw">await</span> <span class="cls">User</span>.<span class="fn">query</span>().<span class="fn">all</span>()', tags:['asyncio','parity','awaitable'] },
+    { num:'03 / backends', icon:'◈', title:'后端<span class="hl">可插拔</span>', desc:'核心包仅依赖 Pydantic。SQLite 内置；MySQL/Postgres 独立包；可自写 Backend ABC。', code:'<span class="cm"># configure backend</span>\n<span class="fn">configure</span>(backend=<span class="str">"postgresql"</span>)', tags:['SQLite','MySQL','Postgres','custom'], link:'backends/index.html' },
+    { num:'04 / relations', icon:'⟶', title:'关系<span class="hl">显式</span>声明', desc:'用 ClassVar 声明关系字段，避免 Pydantic 扫描。运行时自动替换为 relation 描述符。', code:'posts: <span class="cls">ClassVar</span>[<span class="cls">HasMany</span>[<span class="str">"Post"</span>]]\n    = <span class="cls">HasMany</span>(foreign_key=<span class="str">"author_id"</span>)', tags:['HasMany','BelongsTo','HasOne','eager-load'], link:'activerecord/relations.html' },
+    { num:'05 / transactions', icon:'⊞', title:'事务<span class="hl">原子嵌套</span>', desc:'上下文管理器 + savepoint，异常即回滚。嵌套事务自动创建 savepoint，语义清晰。', code:'<span class="kw">with</span> <span class="cls">User</span>.<span class="fn">transaction</span>():\n    user.<span class="fn">save</span>()\n    <span class="kw">with</span> <span class="cls">User</span>.<span class="fn">transaction</span>():\n        post.<span class="fn">save</span>()  <span class="cm"># savepoint</span>', tags:['SAVEPOINT','rollback','ACID'], link:'activerecord/transactions.html' },
+    { num:'06 / pythonic', icon:'∿', title:'读如<span class="hl">英语</span>', desc:'链式调用语义直观。.to_sql() 随时透明查看实际生成的 SQL，无黑盒。', code:'<span class="cls">User</span>.<span class="fn">query</span>()\n    .<span class="fn">where</span>(<span class="cls">User</span>.c.age &gt;= <span class="num">18</span>)\n    .<span class="fn">order_by</span>(<span class="cls">User</span>.c.name)\n    .<span class="fn">all</span>()', tags:['chaining','.to_sql()','no DSL'], link:'activerecord/query.html' },
+  ];
+  var track = document.getElementById('features-track');
+  if (track) {
+    for (var i = 0; i < features.length; i++) {
+      var f = features[i];
+      var card = document.createElement('div');
+      card.className = 'feat-card';
+      card.style.transitionDelay = (i * 0.05) + 's';
+      var codeHtml = '<div class="feat-code-snip"><div class="code-block">' + f.code + '</div></div>';
+      var tagsHtml = '<div class="feat-tags">' + f.tags.map(function(t) { return '<span class="feat-tag">' + t + '</span>'; }).join('') + '</div>';
+      var linkHtml = f.link ? '<a href="' + f.link + '" class="feat-link">查看详情 →</a>' : '';
+      card.innerHTML = '<div class="feat-num">' + f.num + '</div><div class="feat-icon">' + f.icon + '</div><div class="feat-title">' + f.title + '</div><div class="feat-desc">' + f.desc + '</div>' + codeHtml + tagsHtml + linkHtml;
+      track.appendChild(card);
+    }
+  }
+})();
+
+// ═══════════════════════════════════════════════
+// Scroll Reveal
+// ═══════════════════════════════════════════════
+(function(){
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+})();
+
+// ═══════════════════════════════════════════════
+// Copy install command
+// ═══════════════════════════════════════════════
+(function(){
+  var cmd = document.getElementById('install-cmd');
+  var hint = document.getElementById('copy-hint');
+  if (cmd && hint) {
+    cmd.addEventListener('click', function() {
+      navigator.clipboard.writeText('pip install rhosocial-activerecord').then(function() {
+        hint.textContent = '已复制 ✓';
+        hint.style.color = 'var(--r-green)';
+        setTimeout(function() {
+          hint.textContent = '点击复制';
+          hint.style.color = '';
+        }, 2000);
+      });
+    });
+  }
+})();
+
+// ═══════════════════════════════════════════════
+// ThemeController + dropdowns (from legacy)
+// ═══════════════════════════════════════════════
+(function(){
   var ctrl = new ThemeController({
     container: document.getElementById('control-bar'),
     onChange: function(e) {
-      if (e.type === 'lang') {
-        window.applyI18n(e.value);
-      }
+      if (e.type === 'lang') window.applyI18n(e.value);
     }
   });
 
-  // Build dropdown menus
   function buildDropdownMenus() {
     var ddTheme = document.querySelector('[data-dropdown="theme"]');
     var ddFont = document.querySelector('[data-dropdown="font"]');
@@ -774,7 +1114,7 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
 
     if (ddFont && window.FONTS) {
       var menu = ddFont.querySelector('.dropdown-menu');
-      var fontAutoText = getFontAutoText();
+      var fontAutoText = (window.I18N && (window.I18N['zh-cn'] || {}).control && (window.I18N['zh-cn']).control.font_auto) || 'Follow theme';
       window.FONTS.forEach(function(f) {
         var label = f[0] === 'auto' ? fontAutoText : f[1];
         var btn = document.createElement('button');
@@ -806,46 +1146,23 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
     if (valueEl) valueEl.textContent = item.querySelector('.dropdown-item-label').textContent;
   }
 
-  function getFontAutoText() {
-    var lang = window.detectLang ? window.detectLang() : ((document.documentElement.getAttribute('lang') || 'zh-CN').toLowerCase().replace('_', '-'));
-    var dict = (window.I18N || {})[lang] || (window.I18N || {})['zh-cn'] || {};
-    return (dict.control && dict.control.font_auto) || 'Follow theme';
-  }
-
-  // Build menus first
   buildDropdownMenus();
-
-  // Update auto option label after build
-  var fontDd = document.querySelector('[data-dropdown="font"]');
-  if (fontDd) {
-    var autoItem = fontDd.querySelector('.dropdown-item[data-value="auto"] .dropdown-item-label');
-    if (autoItem) autoItem.textContent = getFontAutoText();
-  }
-
-  // Init theme controller
   ctrl.init();
-
-  // Apply i18n for initial language (only once)
   window.applyI18n(ctrl.state.lang);
   window.themeCtrl = ctrl;
 
-  // Sync dropdown values - use localStorage directly to check if user manually selected
   var storedFont = localStorage.getItem('font');
-  var displayFont = storedFont || 'auto';  // Show "auto" if never manually selected
   refreshDropdownValueLabel('theme', ctrl.state.theme);
-  refreshDropdownValueLabel('font', displayFont);
+  refreshDropdownValueLabel('font', storedFont || 'auto');
   refreshDropdownValueLabel('lang', ctrl.state.lang);
 
-  // Setup dropdown interactions
   document.querySelectorAll('.dropdown').forEach(function(dropdown) {
     var trigger = dropdown.querySelector('.dropdown-trigger');
     var menu = dropdown.querySelector('.dropdown-menu');
     trigger.addEventListener('click', function(e) {
       e.stopPropagation();
       dropdown.classList.toggle('is-open');
-      document.querySelectorAll('.dropdown').forEach(function(d) {
-        if (d !== dropdown) d.classList.remove('is-open');
-      });
+      document.querySelectorAll('.dropdown').forEach(function(d) { if (d !== dropdown) d.classList.remove('is-open'); });
     });
     menu.querySelectorAll('.dropdown-item').forEach(function(item) {
       item.addEventListener('click', function(e) {
@@ -856,12 +1173,7 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
         dropdown.classList.remove('is-open');
         menu.querySelectorAll('.dropdown-item').forEach(function(i) { i.classList.remove('is-active'); });
         item.classList.add('is-active');
-
-        // If user selects "auto" (follow theme), clear stored preference
-        if (type === 'font' && value === 'auto') {
-          localStorage.removeItem('font');
-        }
-
+        if (type === 'font' && value === 'auto') localStorage.removeItem('font');
         refreshDropdownValueLabel(type, value);
       });
     });
@@ -870,63 +1182,9 @@ html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
   document.addEventListener('click', function() {
     document.querySelectorAll('.dropdown').forEach(function(d) { d.classList.remove('is-open'); });
   });
-
-  // Initialize TabSwitchers
-  window.initAllTabSwitchers({
-    onSwitch: function(e) {}
-  });
-
-  // Update copy buttons on language change
-  window.RENDER_ADAPTERS = window.RENDER_ADAPTERS || [];
-  window.RENDER_ADAPTERS.push({
-    name:   'copy-btn',
-    onTheme: function() {},
-    onFont:  function() {},
-    onLang:  function() {
-      var lang = window.detectLang ? window.detectLang() : ((document.documentElement.getAttribute('lang') || 'zh-CN').toLowerCase().replace('_', '-'));
-      var dict = (window.I18N || {})[lang] || (window.I18N || {})['zh-cn'] || {};
-      var copyText = (dict.common && dict.common.copy) || 'Copy';
-      document.querySelectorAll('.copy-btn').forEach(function(btn) {
-        var icon = btn.textContent.match(/⎘\s*/);
-        if (icon) {
-          btn.textContent = icon[0] + copyText;
-        } else {
-          btn.textContent = copyText;
-        }
-      });
-
-      // Update font dropdown "auto" label
-      var fontAutoText = getFontAutoText();
-      var fontDd = document.querySelector('[data-dropdown="font"]');
-      if (fontDd) {
-        var autoItem = fontDd.querySelector('.dropdown-item[data-value="auto"] .dropdown-item-label');
-        if (autoItem) autoItem.textContent = fontAutoText;
-        var currValue = fontDd.querySelector('.dropdown-value');
-        var storedFont = localStorage.getItem('font');
-        if (!storedFont && currValue) {
-          currValue.textContent = fontAutoText;
-        }
-      }
-    }
-  });
-
-  // Setup copy buttons
-  document.querySelectorAll('.copy-btn[data-copy-text]').forEach(function(btn) {
-    window.attachCopyBtn(btn, { textContent: btn.dataset.copyText });
-  });
 })();
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.tabs-display code.hljs').forEach(function(el) {
-    if (typeof hljs !== 'undefined') hljs.highlightElement(el);
-  });
-});
-</script>
 
-<!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-VPM29QVEST"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -934,19 +1192,10 @@ document.addEventListener('DOMContentLoaded', function() {
   gtag('js', new Date());
   gtag('config', 'G-VPM29QVEST');
 </script>
-
-<!-- Baidu tongji -->
 <script>
 var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?94120eca87dedf57cf0c46979991365b";
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(hm, s);
-})();
+(function() { var hm = document.createElement("script"); hm.src = "https://hm.baidu.com/hm.js?94120eca87dedf57cf0c46979991365b"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s); })();
 </script>
-
-<!-- Analytics tracker -->
 <script src="assets/analytics.js"></script>
 </body>
 </html>

@@ -62,423 +62,947 @@
 <link rel="stylesheet" href="../assets/fonts/literata.css">
 <script src="query/zh-CN.js"></script>
 <script src="query/en-US.js"></script>
+<link rel="stylesheet" href="../assets/shared.css">
+<script src="../assets/shared-header.js" data-header-variant="ar"></script>
 </head>
 <body>
-<header class="control-bar">
-  <div class="control-brand">
-    <span class="brand-mark size-md">&rho;<sub>AR</sub></span>
-    <span>rhosocial ActiveRecord</span>
-    <span class="dim"><a href="../index.html" data-i18n="nav.themes">Theme Lab</a> / <a href="../backends/index.html" data-i18n="nav.backends">Backends</a> / <a href="./index.html" data-i18n="nav.activerecord">ActiveRecord</a></span>
-  </div>
-  <div class="dropdown" data-dropdown="theme">
-    <button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
-      <span class="dropdown-label" data-i18n="control.theme_label">Theme</span>
-      <span class="dropdown-value">Terminal</span>
-      <svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="dropdown-menu" role="listbox">
-      <button class="dropdown-item is-active" data-value="terminal"><span class="dropdown-item-label">Terminal</span><span class="dropdown-item-kbd">&#8963;Q</span></button>
-      <button class="dropdown-item" data-value="editorial"><span class="dropdown-item-label">Editorial</span><span class="dropdown-item-kbd">&#8963;W</span></button>
-      <button class="dropdown-item" data-value="brutalist"><span class="dropdown-item-label">Brutalist</span><span class="dropdown-item-kbd">&#8963;E</span></button>
-      <button class="dropdown-item" data-value="aurora"><span class="dropdown-item-label">Aurora</span><span class="dropdown-item-kbd">&#8963;R</span></button>
-      <button class="dropdown-item" data-value="synthwave"><span class="dropdown-item-label">Synthwave</span><span class="dropdown-item-kbd">&#8963;T</span></button>
-      <button class="dropdown-item" data-value="sumi"><span class="dropdown-item-label">Sumi 墨</span><span class="dropdown-item-kbd">&#8963;Y</span></button>
-      <button class="dropdown-item" data-value="blueprint"><span class="dropdown-item-label">Blueprint</span><span class="dropdown-item-kbd">&#8963;U</span></button>
-      <button class="dropdown-item" data-value="noir"><span class="dropdown-item-label">Noir</span><span class="dropdown-item-kbd">&#8963;I</span></button>
-      <button class="dropdown-item" data-value="riso"><span class="dropdown-item-label">Riso</span><span class="dropdown-item-kbd">&#8963;O</span></button>
-      <button class="dropdown-item" data-value="nordic"><span class="dropdown-item-label">Nordic</span><span class="dropdown-item-kbd">&#8963;P</span></button>
-      <button class="dropdown-item" data-value="solarpunk"><span class="dropdown-item-label">Solarpunk</span><span class="dropdown-item-kbd">&#8963;A</span></button>
-      <button class="dropdown-item" data-value="mocha"><span class="dropdown-item-label">Mocha</span><span class="dropdown-item-kbd">&#8963;S</span></button>
-      <button class="dropdown-item" data-value="wireframe"><span class="dropdown-item-label">Wireframe</span><span class="dropdown-item-kbd">&#8963;D</span></button>
-      <button class="dropdown-item" data-value="anderson"><span class="dropdown-item-label">Anderson</span><span class="dropdown-item-kbd">&#8963;F</span></button>
-      <button class="dropdown-item" data-value="tokyo"><span class="dropdown-item-label">Tokyo Night</span><span class="dropdown-item-kbd">&#8963;G</span></button>
-      <button class="dropdown-item" data-value="memphis"><span class="dropdown-item-label">Memphis</span><span class="dropdown-item-kbd">&#8963;H</span></button>
-      <button class="dropdown-item" data-value="chalkboard"><span class="dropdown-item-label">Chalkboard</span><span class="dropdown-item-kbd">&#8963;J</span></button>
-      <button class="dropdown-item" data-value="matrix"><span class="dropdown-item-label">Matrix</span><span class="dropdown-item-kbd">&#8963;K</span></button>
-      <button class="dropdown-item" data-value="steel"><span class="dropdown-item-label">Steel</span><span class="dropdown-item-kbd">&#8963;L</span></button>
-      <button class="dropdown-item" data-value="frutiger"><span class="dropdown-item-label">Frutiger</span><span class="dropdown-item-kbd">&#8963;Z</span></button>
-      <button class="dropdown-item" data-value="newsprint"><span class="dropdown-item-label">Newsprint</span><span class="dropdown-item-kbd">&#8963;X</span></button>
-      <button class="dropdown-item" data-value="candy"><span class="dropdown-item-label">Candy</span><span class="dropdown-item-kbd">&#8963;C</span></button>
-      <button class="dropdown-item" data-value="botanical"><span class="dropdown-item-label">Botanical</span><span class="dropdown-item-kbd">&#8963;V</span></button>
-      <button class="dropdown-item" data-value="cyberpunk"><span class="dropdown-item-label">Cyberpunk</span><span class="dropdown-item-kbd">&#8963;1</span></button>
-      <button class="dropdown-item" data-value="parchment"><span class="dropdown-item-label">Parchment</span><span class="dropdown-item-kbd">&#8963;2</span></button>
-      <button class="dropdown-item" data-value="glassmorphism"><span class="dropdown-item-label">Glassmorphism</span><span class="dropdown-item-kbd">&#8963;3</span></button>
-    </div>
-  </div>
-  <div class="dropdown" data-dropdown="font">
-    <button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
-      <span class="dropdown-label" data-i18n="control.font_label">Font</span>
-      <span class="dropdown-value" data-i18n-value="auto">Auto</span>
-      <svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="dropdown-menu" role="listbox">
-      <button class="dropdown-item is-active" data-value="auto"><span class="dropdown-item-label" data-i18n="control.font_auto">Auto (theme default)</span><span class="dropdown-item-kbd">&#8679;Q</span></button>
-      <button class="dropdown-item" data-value="tight"><span class="dropdown-item-label">Tight Sans</span><span class="dropdown-item-kbd">&#8679;W</span></button>
-      <button class="dropdown-item" data-value="serif"><span class="dropdown-item-label">Editorial Serif</span><span class="dropdown-item-kbd">&#8679;E</span></button>
-      <button class="dropdown-item" data-value="geometric"><span class="dropdown-item-label">Geometric</span><span class="dropdown-item-kbd">&#8679;R</span></button>
-      <button class="dropdown-item" data-value="heavy"><span class="dropdown-item-label">Heavy Display</span><span class="dropdown-item-kbd">&#8679;T</span></button>
-      <button class="dropdown-item" data-value="allmono"><span class="dropdown-item-label">All Mono</span><span class="dropdown-item-kbd">&#8679;Y</span></button>
-      <button class="dropdown-item" data-value="reader"><span class="dropdown-item-label">Reader</span><span class="dropdown-item-kbd">&#8679;U</span></button>
-      <button class="dropdown-item" data-value="display-serif"><span class="dropdown-item-label">Display Serif</span><span class="dropdown-item-kbd">&#8679;I</span></button>
-      <button class="dropdown-item" data-value="neo-future"><span class="dropdown-item-label">Neo Future</span><span class="dropdown-item-kbd">&#8679;O</span></button>
-      <button class="dropdown-item" data-value="plex"><span class="dropdown-item-label">IBM Plex</span><span class="dropdown-item-kbd">&#8679;P</span></button>
-      <button class="dropdown-item" data-value="playful"><span class="dropdown-item-label">Playful (Caveat)</span><span class="dropdown-item-kbd">&#8679;A</span></button>
-      <button class="dropdown-item" data-value="classic-serif"><span class="dropdown-item-label">Classic Serif (Garamond)</span><span class="dropdown-item-kbd">&#8679;S</span></button>
-    </div>
-  </div>
-  <div class="dropdown" data-dropdown="lang">
-    <button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
-      <span class="dropdown-label" data-i18n="control.lang_label">Language</span>
-      <span class="dropdown-value"></span>
-      <svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="dropdown-menu" role="listbox">
-      <button class="dropdown-item is-active" data-value="zh-cn"><span class="dropdown-item-label">简体中文</span><span class="dropdown-item-kbd">&#8997;Q</span></button>
-      <button class="dropdown-item" data-value="en-us"><span class="dropdown-item-label">English</span><span class="dropdown-item-kbd">&#8997;W</span></button>
-    </div>
-  </div>
-</header>
+<style>
+/* ════════════════════════════════════════════════
+   Theme variable mapping
+   ════════════════════════════════════════════════ */
+:root, body {
+  --code-keyword:   var(--tok-keyword);
+  --code-class:     var(--tok-class);
+  --code-fn:        var(--tok-func);
+  --code-string:    var(--tok-string);
+  --code-number:    var(--tok-num);
+  --code-comment:   var(--tok-comment);
+  --code-op:        var(--tok-op);
+
+  --surface-0:      var(--bg-2);
+  --surface-1:      var(--bg-elevated);
+  --surface-2:      var(--bg-2);
+  --surface-3:      color-mix(in srgb, var(--fg) 8%, var(--bg));
+  --text-primary:   var(--fg);
+  --text-secondary: var(--fg-muted);
+  --text-muted:     var(--fg-faint);
+  --accent-soft:    color-mix(in srgb, var(--accent) 15%, transparent);
+  --accent-secondary:      var(--accent-2);
+  --accent-secondary-soft: color-mix(in srgb, var(--accent-2) 12%, transparent);
+  --accent-fg:      var(--bg);
+  --ok:             var(--success);
+  --ok-soft:        color-mix(in srgb, var(--success) 12%, transparent);
+  --err:            var(--danger);
+  --err-soft:       color-mix(in srgb, var(--danger) 12%, transparent);
+  --info:           var(--info);
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 9999px;
+}
+/* ════════════════════════════════════════════════
+   Scroll Reveal
+   ════════════════════════════════════════════════ */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-d1 { transition-delay:0.1s; }
+.reveal-d2 { transition-delay:0.2s; }
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+.section {
+  padding:var(--space-7) 0;
+  border-top:1px solid var(--border);
+  scroll-margin-top:80px;
+}
+.section:first-of-type { border-top:none; padding-top:0; }
+.section-eyebrow {
+  font-family:var(--font-mono); font-size:var(--type-mono-sm);
+  color:var(--text-muted); letter-spacing:0.18em; text-transform:uppercase;
+  margin-bottom:var(--space-3); display:flex; align-items:center; gap:var(--space-2);
+}
+.section-eyebrow .num {
+  color:var(--accent); font-weight:700;
+  padding:2px 8px; background:var(--accent-soft); border-radius:var(--radius-sm);
+}
+.section h2 {
+  font-family:var(--font-display); font-weight:600;
+  font-size:var(--type-display-lg); line-height:1.15;
+  letter-spacing:-0.01em; margin-bottom:var(--space-4);
+  max-width:760px;
+}
+.section p.lead {
+  color:var(--text-secondary); font-size:var(--type-prose-md);
+  max-width:680px; margin-bottom:var(--space-5);
+}
+.panel {
+  background:var(--surface-0); border:1px solid var(--border-strong);
+  border-radius:var(--radius-lg); overflow:hidden;
+  box-shadow:var(--shadow-raised);
+}
+.panel-header {
+  padding:10px var(--space-4);
+  background:var(--surface-1); border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:var(--space-2);
+  font-family:var(--font-mono); font-size:var(--type-mono-sm);
+  color:var(--text-muted); letter-spacing:0.06em;
+}
+.panel-header .dot {
+  width:6px; height:6px; border-radius:50%;
+  background:var(--accent);
+}
+.panel-header.is-sql .dot { background:var(--accent-secondary); }
+.panel-body { padding:var(--space-4); }
+pre.code {
+  font-family:var(--font-mono); font-size:var(--type-mono-md);
+  line-height:1.85; color:var(--code-fg);
+  white-space:pre; overflow-x:auto;
+  direction:ltr; unicode-bidi:embed;
+}
+.code .kw  { color:var(--code-keyword); }
+.code .cls { color:var(--code-class); }
+.code .fn  { color:var(--code-fn); }
+.code .str { color:var(--code-string); }
+.code .num { color:var(--code-number); }
+.code .cm  { color:var(--code-comment); font-style:italic; }
+.code .op  { color:var(--code-op); }
+.code .op-emph {
+  color:var(--code-op-emphasized);
+  background:var(--accent-soft);
+  padding:0 4px; border-radius:3px;
+  position:relative; cursor:help;
+  transition:box-shadow 0.2s;
+}
+.code .op-emph:hover {
+  box-shadow:0 0 0 2px var(--accent);
+}
+.code .sql-kw { color:var(--sql-keyword); font-weight:700; }
+.code .sql-tbl { color:var(--sql-table); }
+.code .sql-val { color:var(--sql-value); }
+.code .sql-cm { color:var(--sql-comment); font-style:italic; }
+.code .sql-op-emph {
+  color:var(--accent); background:var(--accent-soft);
+  padding:0 4px; border-radius:3px; font-weight:700;
+}
+.a1-demo {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:1px; background:var(--border);
+  border:1px solid var(--border-strong);
+  border-radius:var(--radius-lg); overflow:hidden;
+}
+@media (max-width:760px) { .a1-demo { grid-template-columns:1fr; } }
+.a1-demo .panel { border:none; border-radius:0; box-shadow:none; }
+.a1-controls {
+  display:flex; gap:var(--space-2); flex-wrap:wrap;
+  margin:var(--space-5) 0 var(--space-4);
+  align-items:center;
+}
+.a1-controls .label {
+  font-family:var(--font-mono); font-size:var(--type-mono-sm);
+  color:var(--text-muted); margin-right:var(--space-2);
+}
+.op-chip {
+  padding:5px 12px; background:var(--surface-2);
+  border:1px solid var(--border);
+  border-radius:var(--radius-pill);
+  font-family:var(--font-mono); font-size:var(--type-mono-sm);
+  cursor:pointer; transition:all 0.15s;
+  color:var(--text-secondary);
+}
+.op-chip:hover { border-color:var(--accent); color:var(--text-primary); }
+.op-chip.active {
+  background:var(--accent-soft); color:var(--accent);
+  border-color:var(--accent);
+  font-weight:700;
+}
+.token-pop {
+  margin-top:var(--space-4); padding:var(--space-4);
+  background:var(--surface-1); border-left:3px solid var(--accent);
+  border-radius:var(--radius-md);
+  font-family:var(--font-mono); font-size:var(--type-mono-md);
+  line-height:1.9;
+}
+.token-pop .tok-cls { color:var(--accent); font-weight:700; }
+.token-pop .tok-key { color:var(--code-keyword); }
+.token-pop .tok-val { color:var(--ok); }
+.legend {
+  margin-top:var(--space-5); padding:var(--space-5);
+  background:var(--surface-1); border-radius:var(--radius-lg);
+  border:1px solid var(--border);
+}
+.legend h3 {
+  font-family:var(--font-display); font-size:var(--type-display-sm);
+  margin-bottom:var(--space-3);
+}
+.legend p { color:var(--text-secondary); font-size:var(--type-prose-md); }
+.legend code {
+  background:var(--surface-2); color:var(--accent);
+  padding:1px 6px; border-radius:3px;
+}
+.cascade {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:1px; background:var(--border);
+  border:1px solid var(--border-strong);
+  border-radius:var(--radius-lg); overflow:hidden;
+}
+@media (max-width:760px) { .cascade { grid-template-columns:1fr; } }
+.cascade-step { display:contents; }
+.cascade-py, .cascade-sql {
+  background:var(--surface-0);
+  padding:var(--space-4);
+  border-top:1px solid var(--border);
+  position:relative;
+  font-family:var(--font-mono); font-size:var(--type-mono-md);
+  line-height:1.85;
+  white-space:pre-wrap; word-break:break-all;
+  direction:ltr; unicode-bidi:embed;
+}
+.cascade-step:first-child .cascade-py,
+.cascade-step:first-child .cascade-sql { border-top:none; }
+.cascade-step.is-active .cascade-py,
+.cascade-step.is-active .cascade-sql { background:var(--surface-1); }
+.cascade-step.is-active .cascade-py::before {
+  content:''; position:absolute; left:0; top:0; bottom:0;
+  width:3px; background:var(--accent);
+}
+.cascade-step-marker {
+  position:absolute; top:6px; right:8px;
+  font-family:var(--font-mono); font-size:9px;
+  color:var(--text-muted); letter-spacing:0.1em;
+}
+.cascade-controls {
+  display:flex; gap:var(--space-2);
+  margin:var(--space-5) 0 var(--space-3);
+  align-items:center; flex-wrap:wrap;
+}
+.cascade-controls .label {
+  font-family:var(--font-mono); font-size:var(--type-mono-sm);
+  color:var(--text-muted); margin-right:var(--space-2);
+}
+.step-btn {
+  padding:5px 14px; background:var(--surface-2);
+  border:1px solid var(--border); border-radius:var(--radius-pill);
+  font-family:var(--font-mono); font-size:var(--type-mono-sm);
+  color:var(--text-secondary); cursor:pointer;
+  transition:all 0.15s;
+}
+.step-btn:hover { border-color:var(--accent); color:var(--text-primary); }
+.step-btn.is-active {
+  background:var(--accent); color:var(--accent-fg);
+  border-color:var(--accent); font-weight:700;
+}
+.diff-stack {
+  display:grid; grid-template-rows:auto auto;
+  gap:1px; background:var(--border);
+  border:1px solid var(--border-strong);
+  border-radius:var(--radius-lg); overflow:hidden;
+}
+.diff-stack .panel { border:none; border-radius:0; box-shadow:none; }
+.diff-tag {
+  display:inline-block; padding:2px 10px;
+  border-radius:var(--radius-pill);
+  font-family:var(--font-mono); font-size:var(--type-mono-sm);
+  font-weight:700; margin-right:var(--space-3);
+}
+.diff-tag.is-sync { background:var(--accent-soft); color:var(--accent); }
+.diff-tag.is-async { background:var(--accent-secondary-soft); color:var(--accent-secondary); }
+.code .diff-token {
+  background:var(--accent-secondary-soft);
+  color:var(--accent-secondary);
+  padding:0 4px; border-radius:3px; font-weight:700;
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { box-shadow:0 0 0 0 var(--accent-secondary-soft); }
+  50%      { box-shadow:0 0 0 4px transparent; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .code .diff-token { animation:none; }
+}
+.venn-wrap {
+  display:grid; grid-template-columns:auto 1fr;
+  gap:var(--space-5);
+  background:var(--surface-0); border:1px solid var(--border-strong);
+  border-radius:var(--radius-lg); padding:var(--space-5);
+}
+@media (max-width:760px) { .venn-wrap { grid-template-columns:1fr; } }
+.venn-svg {
+  width:280px; height:200px;
+  align-self:center;
+}
+.venn-circle {
+  fill:var(--accent-soft); stroke:var(--accent);
+  stroke-width:2; transition:fill 0.4s var(--easing-in);
+}
+.venn-circle.dim { fill:transparent; }
+.venn-overlap {
+  fill:var(--accent); fill-opacity:0;
+  pointer-events:none;
+  transition:fill-opacity 0.4s var(--easing-in);
+}
+.venn-overlap.show { fill-opacity:0.7; }
+.venn-label {
+  fill:var(--text-primary);
+  font-family:var(--font-display); font-size:14px; font-weight:600;
+}
+.venn-info { display:flex; flex-direction:column; }
+.venn-tabs { display:flex; gap:var(--space-1); margin-bottom:var(--space-3); flex-wrap:wrap; }
+.venn-tab {
+  padding:6px 14px; background:var(--surface-2);
+  border:1px solid var(--border); border-radius:var(--radius-pill);
+  font-family:var(--font-mono); font-size:var(--type-mono-sm); font-weight:700;
+  cursor:pointer; transition:all 0.15s;
+  color:var(--text-secondary); letter-spacing:0.06em;
+}
+.venn-tab:hover { border-color:var(--accent); color:var(--text-primary); }
+.venn-tab.active {
+  background:var(--accent); color:var(--accent-fg);
+  border-color:var(--accent);
+}
+.cap-matrix {
+  width:100%; border-collapse:collapse;
+  background:var(--surface-0);
+  border:1px solid var(--border-strong);
+  border-radius:var(--radius-lg); overflow:hidden;
+  font-family:var(--font-mono); font-size:var(--type-mono-md);
+}
+.cap-matrix thead th {
+  background:var(--surface-1); color:var(--text-secondary);
+  padding:10px var(--space-3);
+  text-align:left; border-bottom:1px solid var(--border);
+  font-size:var(--type-mono-sm); letter-spacing:0.06em;
+  font-weight:700; text-transform:uppercase;
+}
+.cap-matrix thead th:not(:first-child) { text-align:center; }
+.cap-matrix tbody td {
+  padding:10px var(--space-3);
+  border-bottom:1px solid var(--border);
+  color:var(--text-primary);
+}
+.cap-matrix tbody td:not(:first-child) { text-align:center; }
+.cap-matrix tbody tr:last-child td { border-bottom:none; }
+.cap-matrix tbody tr:hover td { background:var(--surface-1); }
+.cap-cell-ok    { color:var(--ok); font-size:14px; }
+.cap-cell-half  { color:var(--warn); font-size:14px; }
+.cap-cell-no    { color:var(--text-muted); }
+.cap-cell-note {
+  display:block;
+  font-size:9px; color:var(--text-muted);
+  font-weight:400; margin-top:2px;
+}
+.e2f {
+  display:grid; grid-template-columns:1fr 60px 1fr;
+  gap:0; align-items:stretch;
+  background:var(--surface-0);
+}
+@media (max-width:760px) {
+  .e2f { grid-template-columns:1fr; }
+  .e2f-arrow { transform:rotate(90deg); padding:var(--space-3) 0; }
+}
+.e2f-card {
+  padding:var(--space-4);
+  background:var(--surface-0); border:2px solid;
+  border-radius:var(--radius-lg);
+  position:relative;
+}
+.e2f-card-bad {
+  border-color:var(--err);
+  background:linear-gradient(180deg, var(--err-soft), transparent 30%);
+}
+.e2f-card-good {
+  border-color:var(--ok);
+  background:linear-gradient(180deg, var(--ok-soft), transparent 30%);
+}
+.e2f-mark {
+  position:absolute; top:-12px; left:14px;
+  padding:3px 10px; border-radius:var(--radius-sm);
+  font-family:var(--font-mono); font-size:10px;
+  font-weight:700; letter-spacing:0.08em;
+}
+.e2f-card-bad .e2f-mark {
+  background:var(--err); color:var(--bg);
+}
+.e2f-card-good .e2f-mark {
+  background:var(--ok); color:var(--bg);
+}
+.e2f-title {
+  font-family:var(--font-display); font-size:var(--type-prose-lg);
+  margin:6px 0 var(--space-3); font-weight:600;
+}
+.e2f-card-bad  .e2f-title { color:var(--err); }
+.e2f-card-good .e2f-title { color:var(--ok); }
+.e2f-card .code { font-size:var(--type-mono-md); }
+.e2f-foot {
+  margin-top:var(--space-3); padding-top:var(--space-3);
+  border-top:1px dashed var(--border);
+  font-family:var(--font-mono); font-size:var(--type-mono-sm);
+  color:var(--text-secondary);
+}
+.e2f-card-bad  .e2f-foot { color:var(--err); }
+.e2f-card-good .e2f-foot { color:var(--ok); }
+.e2f-arrow {
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  gap:var(--space-1);
+  font-family:var(--font-mono); font-size:10px;
+  color:var(--text-muted);
+}
+.e2f-arrow-icon {
+  font-size:28px; color:var(--accent); line-height:1;
+}
+.e2f-why {
+  margin-top:var(--space-4); padding:var(--space-4);
+  background:var(--surface-1); border-left:3px solid var(--accent);
+  border-radius:var(--radius-md);
+  font-size:var(--type-prose-md); color:var(--text-secondary);
+}
+.e2f-why h4 {
+  font-family:var(--font-display); font-size:var(--type-prose-md);
+  color:var(--text-primary); margin-bottom:var(--space-2);
+}
+.e2f-why code {
+  background:var(--surface-2); color:var(--accent);
+  padding:1px 5px; border-radius:3px;
+}
+.cross-links {
+  margin-top:var(--space-7);
+  padding-top:var(--space-7); border-top:1px solid var(--border);
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+  gap:var(--space-4);
+}
+.cross-link {
+  padding:var(--space-4);
+  background:var(--surface-0); border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  transition:all 0.2s;
+  display:block;
+}
+.cross-link:hover {
+  border-color:var(--accent); transform:translateY(-2px);
+  box-shadow:var(--shadow-raised);
+}
+.cross-link-eyebrow {
+  font-family:var(--font-mono); font-size:var(--type-mono-sm);
+  color:var(--text-muted); letter-spacing:0.1em;
+  text-transform:uppercase; margin-bottom:var(--space-2);
+}
+.cross-link-title {
+  font-family:var(--font-display); font-size:var(--type-prose-lg);
+  font-weight:600; color:var(--text-primary);
+  margin-bottom:6px;
+}
+.cross-link-desc { color:var(--text-secondary); font-size:var(--type-prose-sm); }
+.cross-link-arrow {
+  display:inline-block; margin-top:var(--space-3);
+  color:var(--accent);
+  font-family:var(--font-mono); font-size:var(--type-mono-sm); font-weight:700;
+}
+a { color:var(--accent-secondary); text-decoration:none; transition:color 0.15s; }
+a:hover { color:var(--accent); }
+em { font-style:italic; color:var(--accent); font-weight:600; }
+:lang(zh) em, :lang(ja) em, :lang(ko) em {
+  font-style:normal; font-weight:700;
+  text-decoration:underline; text-decoration-color:var(--accent);
+  text-decoration-thickness:2px; text-underline-offset:6px;
+  text-decoration-skip-ink:none;
+}
+code { font-family:var(--font-mono); font-size:0.92em; }
+.spacer-sm { height:var(--space-3); }
+.spacer-md { height:var(--space-5); }
+.muted { color:var(--text-muted); }
+</style>
+
 <main class="page">
-  <section class="hero section">
-    <div class="container hero-inner">
-      <div class="hero-eyebrow rise"><a href="./index.html">&larr; <span data-i18n="hero.back">ActiveRecord</span></div>
-      <h1 class="hero-title rise">Query</h1>
-      <p class="hero-sub rise" data-i18n="hero.sub">链式查询构建器，从简单到复杂。</p>
-    </div>
-  </section>
-  <section class="section">
+
+  <section class="section reveal" style="padding:var(--space-8) 0 var(--space-7);border-bottom:1px solid var(--border);margin-bottom:0;position:relative;">
     <div class="container">
-      <div class="section-header">
-        <div class="section-label" data-i18n="entry.label">Entry</div>
-        <h2 class="section-title" data-i18n="entry.title">查询入口。</h2>
-      </div>
-      <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
-        <div class="code-body"><pre><span class="tok-c"># 同步入口</span>
-query = <span class="tok-cls">User</span>.query()  <span class="tok-c"># -> ActiveQuery</span>
-
-<span class="tok-c"># 异步入口</span>
-<span class="tok-c"># query = await User.query()  # -> AsyncActiveQuery</span></pre></div>
+      <div class="hero-eyebrow rise"><a href="./index.html" data-i18n="hero.back" style="color:var(--accent);font-family:var(--font-mono);font-size:var(--type-mono-sm);letter-spacing:0.18em;text-transform:uppercase;">&larr; ActiveRecord</a></div>
+      <h1 style="font-family:var(--font-display);font-weight:600;font-size:clamp(2.4rem,5vw,4rem);line-height:1.1;letter-spacing:-0.02em;margin-bottom:var(--space-4);max-width:900px;">ActiveQuery — <em>Python 表达式</em>即查询。</h1>
+      <p style="font-size:var(--type-prose-lg);color:var(--text-secondary);max-width:640px;margin-bottom:var(--space-5);">
+        <span data-i18n="hero.sub">字段比大小、相加、属于集合，全部走 Python 运算符。SQL 是产物，不是字符串拼接。</span>
+      </p>
+      <div class="hero-pills" style="display:flex;gap:var(--space-2);flex-wrap:wrap;">
+        <span class="pill" style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:var(--radius-pill);background:var(--accent-soft);color:var(--accent);border:1px solid var(--accent-soft);font-family:var(--font-mono);font-size:var(--type-mono-sm);font-weight:700;">Python 3.8+</span>
+        <span class="pill is-secondary" style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:var(--radius-pill);background:var(--accent-secondary-soft);color:var(--accent-secondary);border:1px solid var(--accent-secondary-soft);font-family:var(--font-mono);font-size:var(--type-mono-sm);font-weight:700;">sync · async</span>
+        <span class="pill is-ghost" style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:var(--radius-pill);background:transparent;color:var(--text-secondary);border:1px solid var(--border);font-family:var(--font-mono);font-size:var(--type-mono-sm);font-weight:700;">.to_sql() 透明</span>
+        <span class="pill is-ghost" style="display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:var(--radius-pill);background:transparent;color:var(--text-secondary);border:1px solid var(--border);font-family:var(--font-mono);font-size:var(--type-mono-sm);font-weight:700;">5 backends</span>
       </div>
     </div>
   </section>
-  <section class="section">
+
+  <section class="section reveal reveal-d1" id="where">
     <div class="container">
-      <div class="section-header">
-        <div class="section-label" data-i18n="where.label">WHERE</div>
-        <h2 class="section-title" data-i18n="where.title">条件过滤。</h2>
+      <div class="section-eyebrow"><span class="num">01</span> 类型即字段 · Operator Overload</div>
+      <h2>运算符<em>就是</em>字段表达。</h2>
+      <p class="lead">
+        <code>User.c.age >= 18</code> 不是字符串。<code>.c</code> 是 <code>FieldProxy</code>，
+        <code>>=</code> 触发 <code>__ge__</code> 重载，返回的是表达式节点。
+      </p>
+      <div class="a1-controls">
+        <span class="label">选择运算符：</span>
+        <span class="op-chip active" data-op="ge">&gt;=</span>
+        <span class="op-chip" data-op="eq">==</span>
+        <span class="op-chip" data-op="in">in_(...)</span>
+        <span class="op-chip" data-op="like">.like(...)</span>
+        <span class="op-chip" data-op="isnull">.is_null()</span>
       </div>
-      <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
-        <div class="code-body"><pre><span class="tok-c"># FieldProxy 等值比较</span>
-users = <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.username == <span class="tok-s">'Alice'</span>).all()
-
-<span class="tok-c"># 范围比较</span>
-users = <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.age > <span class="tok-num">18</span>).all()
-
-<span class="tok-c"># 组合条件 (AND)</span>
-users = <span class="tok-cls">User</span>.query().where(
-    (<span class="tok-cls">User</span>.c.age > <span class="tok-num">18</span>) & (<span class="tok-cls">User</span>.c.status == <span class="tok-s">'active'</span>)
-).all()
-
-<span class="tok-c"># IN 谓词</span>
-users = <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.role.in_(['admin', 'moderator'])).all()
-
-<span class="tok-c"># LIKE 模糊匹配</span>
-users = <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.email.like(<span class="tok-s">'%@example.com'</span>)).all()
-
-<span class="tok-c"># IS NULL</span>
-users = <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.phone.is_null()).all()</pre></div>
+      <div class="a1-demo">
+        <div class="panel">
+          <div class="panel-header"><span class="dot"></span> Python · 表达式构造</div>
+          <div class="panel-body">
+            <pre class="code" id="a1-py"></pre>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header is-sql"><span class="dot"></span> Generated SQL</div>
+          <div class="panel-body">
+            <pre class="code" id="a1-sql"></pre>
+          </div>
+        </div>
+      </div>
+      <div class="token-pop" id="a1-token" aria-live="polite"></div>
+      <div class="legend">
+        <h3>关键洞察</h3>
+        <p>
+          <code>User.c.age</code> 不是字符串。<code>.c</code> 是 <code>FieldProxy</code> 实例，
+          <code>User.c.age</code> 返回一个 <code>Field</code> 描述符；它的 <code>__ge__</code> /
+          <code>__eq__</code> 等魔术方法被重载，返回
+          <code>BinaryOp</code> 等表达式节点。
+          这些节点实现了 <code>ToSQLProtocol</code>，由后端 dialect 渲染为最终 SQL（始终参数化）。
+        </p>
       </div>
     </div>
   </section>
-  <section class="section">
+
+  <section class="section reveal reveal-d1" id="composition">
     <div class="container">
-      <div class="section-header">
-        <div class="section-label" data-i18n="order.label">ORDER BY</div>
-        <h2 class="section-title" data-i18n="order.title">排序。</h2>
+      <div class="section-eyebrow"><span class="num">02</span> 链式即累积 · Composition Cascade</div>
+      <h2>每加一片，<em>SQL 同步生长</em>。</h2>
+      <p class="lead">
+        <code>.where()</code>、<code>.order_by()</code>、<code>.limit()</code>—— 每一步都是表达式节点的追加。
+        点选下方 step 标号，看左侧 Python 链与右侧 SQL 同步累积。
+      </p>
+      <div class="cascade-controls">
+        <span class="label">至步骤：</span>
+        <button class="step-btn" data-step="1">1</button>
+        <button class="step-btn" data-step="2">2</button>
+        <button class="step-btn" data-step="3">3</button>
+        <button class="step-btn" data-step="4">4</button>
+        <button class="step-btn is-active" data-step="5">5</button>
       </div>
-      <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
-        <div class="code-body"><pre><span class="tok-c"># 升序</span>
-users = <span class="tok-cls">User</span>.query().order_by(<span class="tok-cls">User</span>.c.username.asc()).all()
-
-<span class="tok-c"># 降序</span>
-users = <span class="tok-cls">User</span>.query().order_by(<span class="tok-cls">User</span>.c.created_at.desc()).all()
-
-<span class="tok-c"># 多列排序</span>
-users = <span class="tok-cls">User</span>.query().order_by(
-    <span class="tok-cls">User</span>.c.status.asc(),
-    <span class="tok-cls">User</span>.c.created_at.desc()
-).all()</pre></div>
+      <div class="cascade" id="cascade">
+        <div class="cascade-step is-active" data-step="1">
+          <div class="cascade-py"><span class="cascade-step-marker">STEP 1</span><span class="cls">User</span>.<span class="fn">query</span>()</div>
+          <div class="cascade-sql"><span class="cascade-step-marker">SQL</span><span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> <span class="sql-tbl">"users"</span></div>
+        </div>
+        <div class="cascade-step is-active" data-step="2">
+          <div class="cascade-py"><span class="cascade-step-marker">STEP 2</span>    .<span class="fn">where</span>(<span class="cls">User</span>.c.age &gt;= <span class="num">18</span>)</div>
+          <div class="cascade-sql"><span class="cascade-step-marker">SQL</span><span class="sql-kw">WHERE</span> <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"age"</span> &gt;= <span class="sql-val">?</span>
+<span class="sql-cm">-- params: (18,)</span></div>
+        </div>
+        <div class="cascade-step is-active" data-step="3">
+          <div class="cascade-py"><span class="cascade-step-marker">STEP 3</span>    .<span class="fn">where</span>(<span class="cls">User</span>.c.is_active == <span class="kw">True</span>)</div>
+          <div class="cascade-sql"><span class="cascade-step-marker">SQL</span>  <span class="sql-kw">AND</span> <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"is_active"</span> = <span class="sql-val">?</span>
+<span class="sql-cm">-- params: (18, True)</span></div>
+        </div>
+        <div class="cascade-step is-active" data-step="4">
+          <div class="cascade-py"><span class="cascade-step-marker">STEP 4</span>    .<span class="fn">order_by</span>(<span class="cls">User</span>.c.created_at.<span class="fn">desc</span>())</div>
+          <div class="cascade-sql"><span class="cascade-step-marker">SQL</span><span class="sql-kw">ORDER BY</span> <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"created_at"</span> <span class="sql-kw">DESC</span></div>
+        </div>
+        <div class="cascade-step is-active" data-step="5">
+          <div class="cascade-py"><span class="cascade-step-marker">STEP 5</span>    .<span class="fn">limit</span>(<span class="num">10</span>)
+    .<span class="fn">all</span>()</div>
+          <div class="cascade-sql"><span class="cascade-step-marker">SQL</span><span class="sql-kw">LIMIT</span> <span class="sql-val">10</span></div>
+        </div>
       </div>
     </div>
   </section>
-  <section class="section">
+
+  <section class="section reveal reveal-d1" id="api-parity">
     <div class="container">
-      <div class="section-header">
-        <div class="section-label" data-i18n="limit.label">LIMIT / OFFSET</div>
-        <h2 class="section-title" data-i18n="limit.title">分页。</h2>
-      </div>
-      <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
-        <div class="code-body"><pre><span class="tok-c"># 限制返回数量</span>
-users = <span class="tok-cls">User</span>.query().limit(<span class="tok-num">10</span>).all()
-
-<span class="tok-c"># 分页 (跳过前 20 条，取 10 条)</span>
-users = <span class="tok-cls">User</span>.query().limit(<span class="tok-num">10</span>).offset(<span class="tok-num">20</span>).all()</pre></div>
+      <div class="section-eyebrow"><span class="num">03</span> 同步即异步 · One API</div>
+      <h2><em>方法名 100% 相同</em>。差异仅 <code>await</code>。</h2>
+      <p class="lead">
+        <code>ActiveQuery</code> 与 <code>AsyncActiveQuery</code> 共用同一套 API。
+        唯一差异：基类前缀 <code>Async</code>、<code>with</code> &rarr; <code>async with</code>、
+        <code>for</code> &rarr; <code>async for</code>、终止调用前 <code>await</code>。
+        <strong>方法名不变。</strong>
+      </p>
+      <div class="diff-stack">
+        <div class="panel">
+          <div class="panel-header"><span class="dot"></span><span class="diff-tag is-sync">SYNC</span> ActiveRecord（同步）</div>
+          <div class="panel-body">
+<pre class="code"><span class="kw">with</span> User.<span class="fn">transaction</span>():
+    user = User(name=<span class="str">"Alice"</span>)
+    user.<span class="fn">save</span>()
+    <span class="kw">for</span> tag <span class="kw">in</span> tags:
+        Tag(user_id=user.id, name=tag).<span class="fn">save</span>()</pre>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header is-sql"><span class="dot"></span><span class="diff-tag is-async">ASYNC</span> AsyncActiveRecord（异步 · 仅加 <code>await</code> 与 <code>async</code>）</div>
+          <div class="panel-body">
+<pre class="code"><span class="diff-token">async</span> <span class="kw">with</span> User.<span class="fn">transaction</span>():
+    user = User(name=<span class="str">"Alice"</span>)
+    <span class="diff-token">await</span> user.<span class="fn">save</span>()
+    <span class="diff-token">async</span> <span class="kw">for</span> tag <span class="kw">in</span> tags:
+        <span class="diff-token">await</span> Tag(user_id=user.id, name=tag).<span class="fn">save</span>()</pre>
+          </div>
+        </div>
       </div>
     </div>
   </section>
-  <section class="section">
+
+  <section class="section reveal reveal-d1" id="set-ops">
     <div class="container">
-      <div class="section-header">
-        <div class="section-label" data-i18n="join.label">JOIN</div>
-        <h2 class="section-title" data-i18n="join.title">连接查询。</h2>
-      </div>
-      <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
-        <div class="code-body"><pre><span class="tok-c"># INNER JOIN</span>
-posts = <span class="tok-cls">Post</span>.query().join(
-    <span class="tok-cls">User</span>, 
-    on=(<span class="tok-cls">Post</span>.c.user_id == <span class="tok-cls">User</span>.c.id)
-).all()
-
-<span class="tok-c"># LEFT JOIN</span>
-posts = <span class="tok-cls">Post</span>.query().left_join(
-    <span class="tok-cls">User</span>, 
-    on=(<span class="tok-cls">Post</span>.c.user_id == <span class="tok-cls">User</span>.c.id)
-).all()</pre></div>
+      <div class="section-eyebrow"><span class="num">04</span> 查询的集合运算 · Set Operations</div>
+      <h2>查询，<em>本身可以做集合运算</em>。</h2>
+      <p class="lead">
+        <code>UNION</code>、<code>INTERSECT</code>、<code>EXCEPT</code> 不是 SQL 才有的"高级特性"——
+        在 ActiveQuery 里，它们就是"两个 query 的运算"。结果仍然是 ActiveQuery，可以继续链式。
+      </p>
+      <div class="venn-wrap">
+        <svg class="venn-svg" viewBox="0 0 280 200" aria-label="集合运算示意图">
+          <defs>
+            <clipPath id="clipA"><circle cx="100" cy="100" r="60"/></clipPath>
+            <clipPath id="clipB"><circle cx="180" cy="100" r="60"/></clipPath>
+          </defs>
+          <circle id="circle-a" class="venn-circle" cx="100" cy="100" r="60"/>
+          <circle id="circle-b" class="venn-circle" cx="180" cy="100" r="60"/>
+          <circle id="overlap" class="venn-overlap" cx="180" cy="100" r="60" clip-path="url(#clipA)"/>
+          <text class="venn-label" x="60" y="105" text-anchor="middle">A</text>
+          <text class="venn-label" x="220" y="105" text-anchor="middle">B</text>
+        </svg>
+        <div class="venn-info">
+          <div class="venn-tabs" role="tablist" aria-label="集合运算 Tab">
+            <button class="venn-tab active" data-set="union" role="tab" aria-selected="true">UNION</button>
+            <button class="venn-tab" data-set="union-all" role="tab" aria-selected="false">UNION ALL</button>
+            <button class="venn-tab" data-set="intersect" role="tab" aria-selected="false">INTERSECT</button>
+            <button class="venn-tab" data-set="except" role="tab" aria-selected="false">EXCEPT</button>
+          </div>
+          <pre class="code" id="venn-code"></pre>
+        </div>
       </div>
     </div>
   </section>
-  <section class="section">
+
+  <section class="section reveal reveal-d1" id="backend-diff">
     <div class="container">
-      <div class="section-header">
-        <div class="section-label" data-i18n="eager.label">Eager Loading</div>
-        <h2 class="section-title" data-i18n="eager.title">预加载。</h2>
-      </div>
-      <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
-        <div class="code-body"><pre><span class="tok-c"># 简单预加载</span>
-users = <span class="tok-cls">User</span>.query().with_(<span class="tok-s">'posts'</span>).all()
-
-<span class="tok-c"># 嵌套预加载</span>
-users = <span class="tok-cls">User</span>.query().with_(<span class="tok-s">'posts.comments'</span>).all()
-
-<span class="tok-c"># 条件预加载</span>
-users = <span class="tok-cls">User</span>.query().with_(
-    (<span class="tok-s">'posts'</span>, <span class="tok-kw">lambda</span> q: q.where(<span class="tok-cls">Post</span>.c.published == <span class="tok-kw">True</span>))
-).all()</pre></div>
-      </div>
+      <div class="section-eyebrow"><span class="num">05</span> 后端能力差异 · Capability Matrix</div>
+      <h2>每个 backend 的支持，<em>透明可见</em>。</h2>
+      <p class="lead">
+        Set 运算与其他高级特性在各后端的支持情况一览。<code>—</code> 表示后端不支持，
+        AR 会用子查询模拟（如 MySQL 的 <code>INTERSECT</code>）或抛出 <code>UnsupportedFeatureError</code>。
+      </p>
+      <table class="cap-matrix">
+        <thead>
+          <tr>
+            <th>特性</th>
+            <th>SQLite</th>
+            <th>PostgreSQL</th>
+            <th>MySQL</th>
+            <th>MariaDB</th>
+            <th>SQL Server</th>
+            <th>Oracle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>UNION / UNION ALL</td>
+            <td><span class="cap-cell-ok">●</span></td>
+            <td><span class="cap-cell-ok">●</span></td>
+            <td><span class="cap-cell-ok">●</span></td>
+            <td><span class="cap-cell-ok">●</span></td>
+            <td><span class="cap-cell-ok">●</span></td>
+            <td><span class="cap-cell-ok">●</span></td>
+          </tr>
+          <tr>
+            <td>INTERSECT</td>
+            <td><span class="cap-cell-ok">●</span></td>
+            <td><span class="cap-cell-ok">●</span></td>
+            <td><span class="cap-cell-no">—</span></td>
+            <td><span class="cap-cell-ok">●</span><span class="cap-cell-note">&ge; 10.3</span></td>
+            <td><span class="cap-cell-ok">●</span></td>
+            <td><span class="cap-cell-ok">●</span></td>
+          </tr>
+          <tr>
+            <td>EXCEPT</td>
+            <td><span class="cap-cell-ok">●</span></td>
+            <td><span class="cap-cell-ok">●</span></td>
+            <td><span class="cap-cell-no">—</span></td>
+            <td><span class="cap-cell-ok">●</span><span class="cap-cell-note">&ge; 10.3</span></td>
+            <td><span class="cap-cell-ok">●</span></td>
+            <td><span class="cap-cell-ok">●</span><span class="cap-cell-note">MINUS</span></td>
+          </tr>
+          <tr>
+            <td>RECURSIVE CTE</td>
+            <td><span class="cap-cell-ok">●</span></td>
+            <td><span class="cap-cell-ok">●</span></td>
+            <td><span class="cap-cell-ok">●</span><span class="cap-cell-note">&ge; 8.0</span></td>
+            <td><span class="cap-cell-ok">●</span></td>
+            <td><span class="cap-cell-ok">●</span></td>
+            <td><span class="cap-cell-ok">●</span></td>
+          </tr>
+          <tr>
+            <td>RETURNING</td>
+            <td><span class="cap-cell-half">◐</span><span class="cap-cell-note">&ge; 3.35</span></td>
+            <td><span class="cap-cell-ok">●</span></td>
+            <td><span class="cap-cell-half">◐</span><span class="cap-cell-note">&ge; 8.0</span></td>
+            <td><span class="cap-cell-half">◐</span></td>
+            <td><span class="cap-cell-ok">●</span><span class="cap-cell-note">OUTPUT</span></td>
+            <td><span class="cap-cell-ok">●</span><span class="cap-cell-note">INTO</span></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
-  <section class="section">
+
+  <section class="section reveal reveal-d1" id="scope">
     <div class="container">
-      <div class="section-header">
-        <div class="section-label" data-i18n="aggregate.label">Aggregate</div>
-        <h2 class="section-title" data-i18n="aggregate.title">聚合函数。</h2>
+      <div class="section-eyebrow"><span class="num">06</span> 查询封装 · 分层使用</div>
+      <h2>业务复用 vs <em>外部管理</em>。</h2>
+      <p class="lead">
+        在 AR 层，复用查询用 Python 的 <code>@classmethod</code>（Rails scope 模式）。
+        在<strong>后端层</strong>，命名查询用于 CLI 管理与外部发现。
+        不是错对，是分层。
+      </p>
+      <div class="e2f">
+        <div class="e2f-card e2f-card-bad">
+          <div class="e2f-mark">业务里这样写 · 啰嗦</div>
+          <div class="e2f-title">把命名查询当 scope 用</div>
+<pre class="code"><span class="cm"># queries/active.py（后端层）</span>
+<span class="kw">def</span> <span class="fn">active_users</span>(dialect):
+    <span class="kw">return</span> User.<span class="fn">query</span>().<span class="fn">where</span>(
+        User.c.is_active == <span class="kw">True</span>
+    )
+
+<span class="cm"># 业务代码里：</span>
+<span class="kw">from</span> queries.active <span class="kw">import</span> active_users
+users = <span class="fn">active_users</span>(
+    backend.dialect
+).<span class="fn">all</span>()</pre>
+          <div class="e2f-foot">每次手动传 dialect / 不是模型方法 / IDE 不补全</div>
+        </div>
+        <div class="e2f-arrow">
+          <div class="e2f-arrow-icon">&rarr;</div>
+          <div>分层使用</div>
+        </div>
+        <div class="e2f-card e2f-card-good">
+          <div class="e2f-mark">业务复用 · classmethod</div>
+          <div class="e2f-title">AR 层 Scope（推荐）</div>
+<pre class="code"><span class="kw">class</span> <span class="cls">User</span>(<span class="cls">ActiveRecord</span>):
+    <span class="kw">@classmethod</span>
+    <span class="kw">def</span> <span class="fn">active</span>(cls):
+        <span class="kw">return</span> cls.<span class="fn">query</span>().<span class="fn">where</span>(
+            cls.c.is_active == <span class="kw">True</span>
+        )
+
+<span class="cm"># 业务代码里：</span>
+users = User.<span class="fn">active</span>().<span class="fn">all</span>()</pre>
+          <div class="e2f-foot">类型推导友好 / 链式继续 / 直接 <code>.all()</code></div>
+        </div>
       </div>
-      <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
-        <div class="code-body"><pre><span class="tok-c"># COUNT</span>
-total = <span class="tok-cls">User</span>.query().count()
-
-<span class="tok-c"># SUM</span>
-total_age = <span class="tok-cls">User</span>.query().sum_(<span class="tok-cls">User</span>.c.age)
-
-<span class="tok-c"># AVG</span>
-avg_age = <span class="tok-cls">User</span>.query().avg(<span class="tok-cls">User</span>.c.age)
-
-<span class="tok-c"># MIN / MAX</span>
-min_age = <span class="tok-cls">User</span>.query().min_(<span class="tok-cls">User</span>.c.age)
-max_age = <span class="tok-cls">User</span>.query().max_(<span class="tok-cls">User</span>.c.age)</pre></div>
+      <div class="e2f-why">
+        <h4>为什么分层</h4>
+        <p>
+          Named Query 是<strong>面向 CLI 与外部管理的可发现资源</strong>，
+          不是业务代码内部复用查询的工具。业务里复用查询用 <code>@classmethod</code>（Rails scope 模式）；
+          命名查询用于 <code>python -m rhosocial.activerecord.backend.impl.sqlite named-query execute &lt;name&gt;</code>
+          这类外部入口。两者并不冲突——同一份查询逻辑可以被 Scope 调用，也可以暴露为 Named Query。
+        </p>
       </div>
     </div>
   </section>
-  <section class="section">
-    <div class="container">
-      <div class="section-header">
-        <div class="section-label" data-i18n="terminal.label">Terminal</div>
-        <h2 class="section-title" data-i18n="terminal.title">终端方法。</h2>
-      </div>
-      <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
-        <div class="code-body"><pre><span class="tok-c"># .all() - 返回所有匹配记录列表</span>
-users = <span class="tok-cls">User</span>.query().all()
 
-<span class="tok-c"># .one() - 返回单条记录或 None (等价于 LIMIT 1)</span>
-user = <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.id == <span class="tok-num">1</span>).one()
-
-<span class="tok-c"># .to_sql() - 获取 SQL 语句和参数</span>
-sql, params = <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.status == <span class="tok-s">'active'</span>).to_sql()</pre></div>
-      </div>
-    </div>
+  <section class="cross-links" style="padding:var(--space-5);max-width:1180px;margin:0 auto;">
+    <a class="cross-link" href="set-operation-query.html">
+      <div class="cross-link-eyebrow">深入</div>
+      <div class="cross-link-title">SetOperationQuery</div>
+      <div class="cross-link-desc">UNION / INTERSECT / EXCEPT 的完整设计</div>
+      <span class="cross-link-arrow">&rarr;</span>
+    </a>
+    <a class="cross-link" href="cte-query.html">
+      <div class="cross-link-eyebrow">深入</div>
+      <div class="cross-link-title">CTEQuery</div>
+      <div class="cross-link-desc">WITH 子句与递归 CTE 一句 SQL 走层级数据</div>
+      <span class="cross-link-arrow">&rarr;</span>
+    </a>
+    <a class="cross-link" href="relations.html">
+      <div class="cross-link-eyebrow">关联</div>
+      <div class="cross-link-title">Relations</div>
+      <div class="cross-link-desc">关系字段、N+1 与 eager loading</div>
+      <span class="cross-link-arrow">&rarr;</span>
+    </a>
+    <a class="cross-link" href="../backends/compare.html">
+      <div class="cross-link-eyebrow">选型</div>
+      <div class="cross-link-title">Backend Compare</div>
+      <div class="cross-link-desc">六个后端的能力矩阵与选型决策</div>
+      <span class="cross-link-arrow">&rarr;</span>
+    </a>
   </section>
-  <footer class="footer">
-    <div>&copy; rhosocial &middot; rhosocial-activerecord &middot; Apache 2.0</div>
-    <div data-i18n="footer.hotkeys">25 themes · <span class="kbd">Ctrl</span>+<span class="kbd">key</span> theme / <span class="kbd">Alt</span>+<span class="kbd">key</span> lang</div>
-  </footer>
+
+  <script src="../assets/shared-footer.js"></script>
 </main>
+
 <script>
-const html = document.documentElement;
-
-const THEMES = [
-  'terminal','editorial','brutalist','aurora','synthwave','sumi','blueprint','noir','riso','nordic',
-  'solarpunk','mocha','wireframe','anderson','tokyo','memphis','chalkboard','matrix','steel',
-  'frutiger','newsprint','candy','botanical','cyberpunk','parchment','glassmorphism'
-];
-const FONTS = [
-  'auto','tight','serif','geometric','heavy','allmono','reader','display-serif','neo-future','plex',
-  'playful','classic-serif','pixel','monumental','slab','condensed','expressive','deco','stencil',
-  'rubik','bricolage','gloock','crimson','dm','outfit','literata'
-];
-const LANGS = ['zh-cn','en-us'];
-const QWERTY = 'qwertyuiopasdfghjklzxcvbnm';
-const NUMERIC = '1234567890-';
-const BASE_IDX = QWERTY.length;
-
-const LANG_COLLAPSE = {
-  zh: 'zh-cn', en: 'en-us', fr: 'fr-fr', ru: 'ru-ru', es: 'es-es', ar: 'ar',
-  ja: 'ja-jp', de: 'de-de', ko: 'ko-kr', pt: 'pt-pt', nl: 'nl-nl', it: 'it-it',
-  tr: 'tr-tr', el: 'el-gr', hi: 'hi-in',
-  id: 'id-id', in: 'id-id',
-  vi: 'vi-vn', pl: 'pl-pl',
-  th: 'th-th', uk: 'uk-ua', fa: 'fa-ir', bn: 'bn-bd', ro: 'ro-ro', cs: 'cs-cz'
+/* ── A1 · Operator Overload Demo ─ */
+const operators = {
+  ge: {
+    py:  `<span class="cls">User</span>.<span class="fn">query</span>().<span class="fn">where</span>(
+    <span class="cls">User</span>.c.age <span class="op-emph">&gt;=</span> <span class="num">18</span>
+)`,
+    sql: `<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> <span class="sql-tbl">"users"</span>
+<span class="sql-kw">WHERE</span> <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"age"</span> <span class="sql-op-emph">&gt;=</span> <span class="sql-val">?</span>
+<span class="sql-cm">-- params: (18,)</span>`,
+    token: `→ <span class="tok-cls">BinaryOp</span>(<span class="tok-key">GE</span>,
+    <span class="tok-cls">Field</span>(<span class="tok-val">'users'</span>, <span class="tok-val">'age'</span>),
+    <span class="tok-cls">Param</span>(<span class="tok-val">18</span>)
+)`
+  },
+  eq: {
+    py:  `<span class="cls">User</span>.<span class="fn">query</span>().<span class="fn">where</span>(
+    <span class="cls">User</span>.c.email <span class="op-emph">==</span> <span class="str">"a@x.io"</span>
+)`,
+    sql: `<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> <span class="sql-tbl">"users"</span>
+<span class="sql-kw">WHERE</span> <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"email"</span> <span class="sql-op-emph">=</span> <span class="sql-val">?</span>
+<span class="sql-cm">-- params: ('a@x.io',)</span>`,
+    token: `→ <span class="tok-cls">BinaryOp</span>(<span class="tok-key">EQ</span>,
+    <span class="tok-cls">Field</span>(<span class="tok-val">'users'</span>, <span class="tok-val">'email'</span>),
+    <span class="tok-cls">Param</span>(<span class="tok-val">'a@x.io'</span>)
+)`
+  },
+  in: {
+    py:  `<span class="cls">User</span>.<span class="fn">query</span>().<span class="fn">where</span>(
+    <span class="cls">User</span>.c.role.<span class="op-emph"><span class="fn">in_</span></span>([<span class="str">"admin"</span>, <span class="str">"editor"</span>])
+)`,
+    sql: `<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> <span class="sql-tbl">"users"</span>
+<span class="sql-kw">WHERE</span> <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"role"</span> <span class="sql-op-emph">IN</span> (<span class="sql-val">?</span>, <span class="sql-val">?</span>)
+<span class="sql-cm">-- params: ('admin', 'editor')</span>`,
+    token: `→ <span class="tok-cls">InOp</span>(
+    <span class="tok-cls">Field</span>(<span class="tok-val">'users'</span>, <span class="tok-val">'role'</span>),
+    [<span class="tok-cls">Param</span>(<span class="tok-val">'admin'</span>), <span class="tok-cls">Param</span>(<span class="tok-val">'editor'</span>)]
+)`
+  },
+  like: {
+    py:  `<span class="cls">User</span>.<span class="fn">query</span>().<span class="fn">where</span>(
+    <span class="cls">User</span>.c.name.<span class="op-emph"><span class="fn">like</span></span>(<span class="str">"%alice%"</span>)
+)`,
+    sql: `<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> <span class="sql-tbl">"users"</span>
+<span class="sql-kw">WHERE</span> <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"name"</span> <span class="sql-op-emph">LIKE</span> <span class="sql-val">?</span>
+<span class="sql-cm">-- params: ('%alice%',)</span>`,
+    token: `→ <span class="tok-cls">LikeOp</span>(
+    <span class="tok-cls">Field</span>(<span class="tok-val">'users'</span>, <span class="tok-val">'name'</span>),
+    <span class="tok-cls">Param</span>(<span class="tok-val">'%alice%'</span>)
+)`
+  },
+  isnull: {
+    py:  `<span class="cls">User</span>.<span class="fn">query</span>().<span class="fn">where</span>(
+    <span class="cls">User</span>.c.deleted_at.<span class="op-emph"><span class="fn">is_null</span></span>()
+)`,
+    sql: `<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> <span class="sql-tbl">"users"</span>
+<span class="sql-kw">WHERE</span> <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"deleted_at"</span> <span class="sql-op-emph">IS NULL</span>
+<span class="sql-cm">-- 无参数</span>`,
+    token: `→ <span class="tok-cls">IsNullOp</span>(
+    <span class="tok-cls">Field</span>(<span class="tok-val">'users'</span>, <span class="tok-val">'deleted_at'</span>)
+)`
+  },
 };
-
-function matchLang(tag) {
-  if (!tag) return null;
-  const lower = String(tag).toLowerCase();
-  if (LANGS.indexOf(lower) !== -1) return lower;
-  const primary = lower.split('-')[0];
-  return LANG_COLLAPSE[primary] || null;
-}
-
-function detectInitialLang() {
-  try {
-    const url = new URLSearchParams(location.search).get('lang');
-    const m = matchLang(url);
-    if (m) return m;
-  } catch (_) {}
-  try {
-    const stored = localStorage.getItem('rhosocial-lang');
-    const m = matchLang(stored);
-    if (m) return m;
-  } catch (_) {}
-  const navLangs = (navigator.languages && navigator.languages.length)
-    ? navigator.languages
-    : [navigator.language || navigator.userLanguage || ''];
-  for (const tag of navLangs) {
-    const m = matchLang(tag);
-    if (m) return m;
+(function(){
+  const a1Py = document.getElementById('a1-py');
+  const a1Sql = document.getElementById('a1-sql');
+  const a1Token = document.getElementById('a1-token');
+  function pickOperator(key) {
+    const data = operators[key];
+    a1Py.innerHTML = data.py;
+    a1Sql.innerHTML = data.sql;
+    a1Token.innerHTML = '<strong style="color:var(--accent);font-family:var(--font-display);font-weight:600;">\u8868\u8fbe\u5f0f\u6811 \u00b7 Token Tree</strong>\n\n' + data.token;
   }
-  return 'en-us';
-}
-
-let currentLang = detectInitialLang();
-
-function get(path, dict) {
-  return path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), dict);
-}
-
-function applyI18n() {
-  const dict = window.I18N && window.I18N[currentLang];
-  if (!dict) return;
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const val = get(el.getAttribute('data-i18n'), dict);
-    if (val !== undefined) el.innerHTML = val;
-  });
-  refreshDropdownValueLabel('theme', html.getAttribute('data-theme'));
-  refreshDropdownValueLabel('font', html.getAttribute('data-font'));
-  refreshDropdownValueLabel('lang', currentLang);
-}
-
-function refreshDropdownValueLabel(kind, value) {
-  const dd = document.querySelector('[data-dropdown="' + kind + '"]');
-  if (!dd) return;
-  const item = dd.querySelector('.dropdown-item[data-value="' + value + '"]');
-  if (!item) return;
-  const valueEl = dd.querySelector('.dropdown-value');
-  if (valueEl) valueEl.textContent = item.querySelector('.dropdown-item-label')?.textContent || value;
-}
-
-function setValue(kind, value) {
-  if (kind === 'lang') {
-    currentLang = value;
-    html.setAttribute('lang', value);
-    html.setAttribute('dir', value === 'ar' || value === 'fa-ir' ? 'rtl' : 'ltr');
-    try { localStorage.setItem('rhosocial-lang', value); } catch (_) {}
-    applyI18n();
-  } else {
-    html.setAttribute('data-' + kind, value);
-  }
-  const dd = document.querySelector('[data-dropdown="' + kind + '"]');
-  if (!dd) return;
-  let activatedLabel = null;
-  dd.querySelectorAll('.dropdown-item').forEach(it => {
-    const match = it.getAttribute('data-value') === value;
-    it.classList.toggle('is-active', match);
-    if (match) activatedLabel = it.querySelector('.dropdown-item-label')?.textContent || value;
-  });
-  const valueEl = dd.querySelector('.dropdown-value');
-  if (valueEl && activatedLabel) valueEl.textContent = activatedLabel;
-}
-
-function closeAllDropdowns(except) {
-  document.querySelectorAll('.dropdown.is-open').forEach(d => {
-    if (d !== except) {
-      d.classList.remove('is-open');
-      d.querySelector('.dropdown-trigger')?.setAttribute('aria-expanded', 'false');
-    }
-  });
-}
-
-document.querySelectorAll('[data-dropdown]').forEach(dd => {
-  const trigger = dd.querySelector('.dropdown-trigger');
-  const kind = dd.getAttribute('data-dropdown');
-  trigger.addEventListener('click', e => {
-    e.stopPropagation();
-    const willOpen = !dd.classList.contains('is-open');
-    closeAllDropdowns(dd);
-    dd.classList.toggle('is-open', willOpen);
-    trigger.setAttribute('aria-expanded', String(willOpen));
-  });
-  dd.querySelectorAll('.dropdown-item').forEach(item => {
-    item.addEventListener('click', e => {
-      e.stopPropagation();
-      const value = item.getAttribute('data-value');
-      const label = item.querySelector('.dropdown-item-label')?.textContent;
-      if (kind === 'theme' || kind === 'font' || kind === 'lang') {
-        setValue(kind, value);
-      } else {
-        dd.querySelectorAll('.dropdown-item').forEach(it => it.classList.toggle('is-active', it === item));
-        const valueEl = dd.querySelector('.dropdown-value');
-        if (valueEl) valueEl.textContent = label || value;
-      }
-      dd.classList.remove('is-open');
-      trigger.setAttribute('aria-expanded', 'false');
+  document.querySelectorAll('.op-chip').forEach(function(chip) {
+    chip.addEventListener('click', function() {
+      document.querySelectorAll('.op-chip').forEach(function(c) { c.classList.remove('active'); });
+      chip.classList.add('active');
+      pickOperator(chip.dataset.op);
     });
   });
-});
+  pickOperator('ge');
+})();
 
-document.addEventListener('click', e => {
-  if (!e.target.closest('.dropdown')) closeAllDropdowns();
-});
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeAllDropdowns();
-});
-
-document.addEventListener('keydown', e => {
-  const isMod = e.ctrlKey || e.metaKey;
-  const key = e.key.toLowerCase();
-  const idx = QWERTY.indexOf(key);
-  if (idx === -1) return;
-  if (isMod && !e.shiftKey) {
-    e.preventDefault();
-    setValue('theme', THEMES[idx % THEMES.length]);
-  } else if (isMod && e.shiftKey) {
-    e.preventDefault();
-    setValue('font', FONTS[idx % FONTS.length]);
-  } else if (e.altKey && !isMod && !e.shiftKey) {
-    e.preventDefault();
-    setValue('lang', LANGS[idx % LANGS.length]);
+/* ── A2 · Composition Cascade ─ */
+(function(){
+  var cascadeContainer = document.getElementById('cascade');
+  var cascadeSteps = [].slice.call(cascadeContainer.querySelectorAll('.cascade-step'));
+  var stepBtns = [].slice.call(document.querySelectorAll('.step-btn'));
+  function setCascadeStep(n) {
+    cascadeSteps.forEach(function(s, i) {
+      s.classList.toggle('is-active', i < n);
+      s.style.display = i < n ? 'contents' : 'none';
+    });
+    stepBtns.forEach(function(b) { b.classList.toggle('is-active', +b.dataset.step === n); });
   }
-});
+  stepBtns.forEach(function(b) { b.addEventListener('click', function() { setCascadeStep(+b.dataset.step); }); });
+  setCascadeStep(5);
+})();
 
-applyI18n();
+/* ── A4 · Venn (Set Operations) ─ */
+(function(){
+  var setVariants = {
+    'union': {
+      code: 'q1 = User.<span class="fn">query</span>().<span class="fn">where</span>(<span class="cls">User</span>.c.is_active == <span class="kw">True</span>)\nq2 = User.<span class="fn">query</span>().<span class="fn">where</span>(<span class="cls">User</span>.c.is_premium == <span class="kw">True</span>)\n\nusers = q1.<span class="fn">union</span>(q2).<span class="fn">all</span>()  <span class="cm"># \u53bb\u91cd</span>\n\n<span class="sql-cm">-- Generated SQL</span>\n<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> <span class="sql-tbl">"users"</span> <span class="sql-kw">WHERE</span> <span class="sql-tbl">"is_active"</span> = <span class="sql-val">?</span>\n<span class="sql-kw">UNION</span>\n<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> <span class="sql-tbl">"users"</span> <span class="sql-kw">WHERE</span> <span class="sql-tbl">"is_premium"</span> = <span class="sql-val">?</span>',
+      aDim:false, bDim:false, overlap:true
+    },
+    'union-all': {
+      code: 'users = q1.<span class="fn">union_all</span>(q2).<span class="fn">all</span>()  <span class="cm"># \u4fdd\u7559\u91cd\u590d</span>\n\n<span class="sql-cm">-- \u540c\u65f6\u6ee1\u8db3\u4e24\u4e2a\u6761\u4ef6\u7684\u7528\u6237\u4f1a\u51fa\u73b0\u4e24\u6b21</span>\n<span class="sql-kw">UNION ALL</span>\n<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> ...',
+      aDim:false, bDim:false, overlap:true
+    },
+    'intersect': {
+      code: '<span class="cm"># \u65e2\u6d3b\u8dc3\u53c8\u4ed8\u8d39\u7684\u6838\u5fc3\u7528\u6237</span>\ncore = q1.<span class="fn">intersect</span>(q2).<span class="fn">all</span>()\n\n<span class="sql-cm">-- Generated SQL</span>\n<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> <span class="sql-tbl">"users"</span> <span class="sql-kw">WHERE</span> <span class="sql-tbl">"is_active"</span> = <span class="sql-val">?</span>\n<span class="sql-kw">INTERSECT</span>\n<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> <span class="sql-tbl">"users"</span> <span class="sql-kw">WHERE</span> <span class="sql-tbl">"is_premium"</span> = <span class="sql-val">?</span>',
+      aDim:true, bDim:true, overlap:true
+    },
+    'except': {
+      code: '<span class="cm"># \u6ce8\u518c\u4f46\u672a\u4e0b\u5355 = \u6d41\u5931\u5019\u9009</span>\nchurn_candidates = (\n    User.<span class="fn">query</span>()\n    .<span class="fn">except_</span>(\n        Order.<span class="fn">query</span>().<span class="fn">select</span>(Order.c.user_id)\n    )\n    .<span class="fn">all</span>()\n)\n\n<span class="sql-cm">-- Generated SQL</span>\n<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> <span class="sql-tbl">"users"</span>\n<span class="sql-kw">EXCEPT</span>\n<span class="sql-kw">SELECT</span> user_id <span class="sql-kw">FROM</span> <span class="sql-tbl">"orders"</span>',
+      aDim:false, bDim:true, overlap:false
+    }
+  };
+  var vennCode = document.getElementById('venn-code');
+  var circleA = document.getElementById('circle-a');
+  var circleB = document.getElementById('circle-b');
+  var overlap = document.getElementById('overlap');
+  function setVenn(key) {
+    var v = setVariants[key];
+    vennCode.innerHTML = v.code;
+    circleA.classList.toggle('dim', v.aDim);
+    circleB.classList.toggle('dim', v.bDim);
+    overlap.classList.toggle('show', v.overlap);
+  }
+  document.querySelectorAll('.venn-tab').forEach(function(t) {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.venn-tab').forEach(function(x) {
+        x.classList.remove('active');
+        x.setAttribute('aria-selected', 'false');
+      });
+      t.classList.add('active');
+      t.setAttribute('aria-selected', 'true');
+      setVenn(t.dataset.set);
+    });
+  });
+  setVenn('union');
+})();
+</script>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// Scroll Reveal
+// ═══════════════════════════════════════════════════════════════
+(function(){
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+})();
 </script>
 </body>
 </html>

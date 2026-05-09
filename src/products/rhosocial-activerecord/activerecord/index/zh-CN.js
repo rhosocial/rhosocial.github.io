@@ -6,5 +6,7 @@ window.I18N['zh-cn'] = {
   hero: { eyebrow: 'Type-safe by Construction', title: '用 Python 类型注解<em>定义模型</em>。', sub: '类型即字段，同步/异步一套 API。', back: '返回 ActiveRecord' },
   topics: { label: 'Topics', title: '选择你的<em>主题</em>。', model: { desc: '字段、Mixin、事件钩子。' }, crud: { desc: 'Create, Read, Update, Delete。' }, relations: { desc: 'has_one, has_many, belongs_to。' }, tx: { desc: '事务、savepoint、嵌套。' }, queries: { desc: 'where, order_by, join, prefetch。' }, cte: { desc: '公共表表达式、递归查询。' }, set: { desc: 'UNION / INTERSECT / EXCEPT。' }, migrations: { desc: '版本化数据库模式变更。' }, validations: { desc: 'Pydantic 校验、回调钩子。' }, advanced: { desc: '性能优化、调试技巧。' } },
   pythonic: { label: 'Pythonic', title: '像读<em>英语</em>一样写代码。', intro: '无需 DSL，方法即语义。' },
+  field_proxy: { label: 'Field Proxy', title: '字段不只是容器。', desc: 'FieldProxy 描述符让字段带有自定义行为，而不改变字段的类型签名。', full_doc: '完整字段代理与类型适配器文档 →' },
+  class_map: { label: 'Class Map', title: '同步 · 异步 <em>对照</em>。', desc: '每个同步类有一个对应的 Async 版本，方法签名完全一致。' },
   footer: { hotkeys: '25 themes · Ctrl+key theme / Alt+key lang' }
 };

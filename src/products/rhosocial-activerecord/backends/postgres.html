@@ -62,91 +62,58 @@
 <link rel="stylesheet" href="../assets/fonts/literata.css">
 <script src="postgres/zh-CN.js"></script>
 <script src="postgres/en-US.js"></script>
+<link rel="stylesheet" href="../assets/shared.css">
+<script src="../assets/shared-header.js" data-header-variant="back"></script>
 </head>
 <body>
-<header class="control-bar">
-<div class="control-brand">
-<span class="brand-mark size-md">&rho;<sub>AR</sub></span>
-<span>rhosocial ActiveRecord</span>
-<span class="dim"><a href="../index.html" data-i18n="nav.index">Index</a> / <a href="./index.html" data-i18n="nav.backends">Backends</a> / <a href="../activerecord/index.html" data-i18n="nav.activerecord">ActiveRecord</a></span>
-</div>
-<div class="dropdown" data-dropdown="theme">
-<button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
-<span class="dropdown-label" data-i18n="control.theme_label">Theme</span>
-<span class="dropdown-value">Terminal</span>
-<svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-</button>
-<div class="dropdown-menu" role="listbox">
-<button class="dropdown-item is-active" data-value="terminal"><span class="dropdown-item-label">Terminal</span><span class="dropdown-item-kbd">&#8963;Q</span></button>
-<button class="dropdown-item" data-value="editorial"><span class="dropdown-item-label">Editorial</span><span class="dropdown-item-kbd">&#8963;W</span></button>
-<button class="dropdown-item" data-value="brutalist"><span class="dropdown-item-label">Brutalist</span><span class="dropdown-item-kbd">&#8963;E</span></button>
-<button class="dropdown-item" data-value="aurora"><span class="dropdown-item-label">Aurora</span><span class="dropdown-item-kbd">&#8963;R</span></button>
-<button class="dropdown-item" data-value="synthwave"><span class="dropdown-item-label">Synthwave</span><span class="dropdown-item-kbd">&#8963;T</span></button>
-<button class="dropdown-item" data-value="sumi"><span class="dropdown-item-label">Sumi 墨</span><span class="dropdown-item-kbd">&#8963;Y</span></button>
-<button class="dropdown-item" data-value="blueprint"><span class="dropdown-item-label">Blueprint</span><span class="dropdown-item-kbd">&#8963;U</span></button>
-<button class="dropdown-item" data-value="noir"><span class="dropdown-item-label">Noir</span><span class="dropdown-item-kbd">&#8963;I</span></button>
-<button class="dropdown-item" data-value="riso"><span class="dropdown-item-label">Riso</span><span class="dropdown-item-kbd">&#8963;O</span></button>
-<button class="dropdown-item" data-value="nordic"><span class="dropdown-item-label">Nordic</span><span class="dropdown-item-kbd">&#8963;P</span></button>
-<button class="dropdown-item" data-value="solarpunk"><span class="dropdown-item-label">Solarpunk</span><span class="dropdown-item-kbd">&#8963;A</span></button>
-<button class="dropdown-item" data-value="mocha"><span class="dropdown-item-label">Mocha</span><span class="dropdown-item-kbd">&#8963;S</span></button>
-<button class="dropdown-item" data-value="wireframe"><span class="dropdown-item-label">Wireframe</span><span class="dropdown-item-kbd">&#8963;D</span></button>
-<button class="dropdown-item" data-value="anderson"><span class="dropdown-item-label">Anderson</span><span class="dropdown-item-kbd">&#8963;F</span></button>
-<button class="dropdown-item" data-value="tokyo"><span class="dropdown-item-label">Tokyo Night</span><span class="dropdown-item-kbd">&#8963;G</span></button>
-<button class="dropdown-item" data-value="memphis"><span class="dropdown-item-label">Memphis</span><span class="dropdown-item-kbd">&#8963;H</span></button>
-<button class="dropdown-item" data-value="chalkboard"><span class="dropdown-item-label">Chalkboard</span><span class="dropdown-item-kbd">&#8963;J</span></button>
-<button class="dropdown-item" data-value="matrix"><span class="dropdown-item-label">Matrix</span><span class="dropdown-item-kbd">&#8963;K</span></button>
-<button class="dropdown-item" data-value="steel"><span class="dropdown-item-label">Steel</span><span class="dropdown-item-kbd">&#8963;L</span></button>
-<button class="dropdown-item" data-value="frutiger"><span class="dropdown-item-label">Frutiger</span><span class="dropdown-item-kbd">&#8963;Z</span></button>
-<button class="dropdown-item" data-value="newsprint"><span class="dropdown-item-label">Newsprint</span><span class="dropdown-item-kbd">&#8963;X</span></button>
-<button class="dropdown-item" data-value="candy"><span class="dropdown-item-label">Candy</span><span class="dropdown-item-kbd">&#8963;C</span></button>
-<button class="dropdown-item" data-value="botanical"><span class="dropdown-item-label">Botanical</span><span class="dropdown-item-kbd">&#8963;V</span></button>
-<button class="dropdown-item" data-value="cyberpunk"><span class="dropdown-item-label">Cyberpunk</span><span class="dropdown-item-kbd">&#8963;1</span></button>
-<button class="dropdown-item" data-value="parchment"><span class="dropdown-item-label">Parchment</span><span class="dropdown-item-kbd">&#8963;2</span></button>
-<button class="dropdown-item" data-value="glassmorphism"><span class="dropdown-item-label">Glassmorphism</span><span class="dropdown-item-kbd">&#8963;3</span></button>
-</div>
-</div>
-<div class="dropdown" data-dropdown="font">
-<button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
-<span class="dropdown-label" data-i18n="control.font_label">Font</span>
-<span class="dropdown-value" data-i18n-value="auto">Auto</span>
-<svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-</button>
-<div class="dropdown-menu" role="listbox">
-<button class="dropdown-item is-active" data-value="auto"><span class="dropdown-item-label" data-i18n="control.font_auto">Auto (theme default)</span><span class="dropdown-item-kbd">&#8679;Q</span></button>
-<button class="dropdown-item" data-value="tight"><span class="dropdown-item-label">Tight Sans</span><span class="dropdown-item-kbd">&#8679;W</span></button>
-<button class="dropdown-item" data-value="serif"><span class="dropdown-item-label">Editorial Serif</span><span class="dropdown-item-kbd">&#8679;E</span></button>
-<button class="dropdown-item" data-value="geometric"><span class="dropdown-item-label">Geometric</span><span class="dropdown-item-kbd">&#8679;R</span></button>
-<button class="dropdown-item" data-value="heavy"><span class="dropdown-item-label">Heavy Display</span><span class="dropdown-item-kbd">&#8679;T</span></button>
-<button class="dropdown-item" data-value="allmono"><span class="dropdown-item-label">All Mono</span><span class="dropdown-item-kbd">&#8679;Y</span></button>
-<button class="dropdown-item" data-value="reader"><span class="dropdown-item-label">Reader</span><span class="dropdown-item-kbd">&#8679;U</span></button>
-<button class="dropdown-item" data-value="display-serif"><span class="dropdown-item-label">Display Serif</span><span class="dropdown-item-kbd">&#8679;I</span></button>
-<button class="dropdown-item" data-value="neo-future"><span class="dropdown-item-label">Neo Future</span><span class="dropdown-item-kbd">&#8679;O</span></button>
-<button class="dropdown-item" data-value="plex"><span class="dropdown-item-label">IBM Plex</span><span class="dropdown-item-kbd">&#8679;P</span></button>
-<button class="dropdown-item" data-value="playful"><span class="dropdown-item-label">Playful (Caveat)</span><span class="dropdown-item-kbd">&#8679;A</span></button>
-<button class="dropdown-item" data-value="classic-serif"><span class="dropdown-item-label">Classic Serif (Garamond)</span><span class="dropdown-item-kbd">&#8679;S</span></button>
-</div>
-</div>
-<div class="dropdown" data-dropdown="lang">
-<button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
-<span class="dropdown-label" data-i18n="control.lang_label">Language</span>
-<span class="dropdown-value"></span>
-<svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-</button>
-<div class="dropdown-menu" role="listbox">
-<button class="dropdown-item is-active" data-value="zh-cn"><span class="dropdown-item-label">简体中文</span><span class="dropdown-item-kbd">&#8997;Q</span></button>
-<button class="dropdown-item" data-value="en-us"><span class="dropdown-item-label">English</span><span class="dropdown-item-kbd">&#8997;W</span></button>
-</div>
-</div>
-</header>
+
+<style>
+:root, body {
+  --code-keyword:   var(--tok-keyword);
+  --code-class:     var(--tok-class);
+  --code-fn:        var(--tok-func);
+  --code-string:    var(--tok-string);
+  --code-number:    var(--tok-num);
+  --code-comment:   var(--tok-comment);
+  --code-op:        var(--tok-op);
+  --surface-0:      var(--bg-2);
+  --surface-1:      var(--bg-elevated);
+  --surface-2:      var(--bg-2);
+  --surface-3:      color-mix(in srgb, var(--fg) 8%, var(--bg));
+  --text-primary:   var(--fg);
+  --text-secondary: var(--fg-muted);
+  --text-muted:     var(--fg-faint);
+  --accent-soft:    color-mix(in srgb, var(--accent) 15%, transparent);
+  --accent-secondary:      var(--accent-2);
+  --accent-secondary-soft: color-mix(in srgb, var(--accent-2) 12%, transparent);
+  --accent-fg:      var(--bg);
+  --ok:             var(--success);
+  --ok-soft:        color-mix(in srgb, var(--success) 12%, transparent);
+  --err:            var(--danger);
+  --err-soft:       color-mix(in srgb, var(--danger) 12%, transparent);
+  --info:           var(--info);
+  --warn:           var(--warning, #f59e0b);
+  --warn-soft:      color-mix(in srgb, var(--warning, #f59e0b) 12%, transparent);
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 9999px;
+  --border:           var(--border, rgba(255,255,255,0.08));
+  --border-strong:    var(--border-strong, rgba(255,255,255,0.16));
+}
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-d1 { transition-delay:0.1s; }
+.reveal-d2 { transition-delay:0.2s; }
+</style>
 <main class="page">
-<section class="hero section">
+<section class="hero section reveal">
 <div class="container hero-inner">
 <div class="hero-eyebrow rise"><a href="./index.html">&larr; <span data-i18n="hero.back">Backends</span></div>
 <h1 class="hero-title rise">PostgreSQL</h1>
 <p class="hero-sub rise" data-i18n="hero.sub">功能最丰富的开源数据库。ENUM / ARRAY / JSONB / Range / 分区 / 物化视图全覆盖。</p>
 </div>
 </section>
-<section class="section">
+<section class="section reveal reveal-d1">
 <div class="container">
 <div class="section-header">
 <div class="section-label" data-i18n="features.label">Features</div>
@@ -684,30 +651,19 @@ config = <span class="tok-cls">PostgresConnectionConfig</span>.from_env(prefix=<
 </div>
 </div>
 </section>
-<footer class="footer">
-<div>&copy; rhosocial &middot; rhosocial-activerecord &middot; Apache 2.0</div>
-<div data-i18n="footer.hotkeys">25 themes · <span class="kbd">Ctrl</span>+<span class="kbd">key</span> theme / <span class="kbd">Alt</span>+<span class="kbd">key</span> lang</div>
-</footer>
+<script src="../assets/shared-footer.js"></script>
 </main>
 <script>
-const html = document.documentElement;
 
-const THEMES = [
 'terminal','editorial','brutalist','aurora','synthwave','sumi','blueprint','noir','riso','nordic',
 'solarpunk','mocha','wireframe','anderson','tokyo','memphis','chalkboard','matrix','steel',
 'frutiger','newsprint','candy','botanical','cyberpunk','parchment','glassmorphism'
 ];
-const FONTS = [
 'auto','tight','serif','geometric','heavy','allmono','reader','display-serif','neo-future','plex',
 'playful','classic-serif','pixel','monumental','slab','condensed','expressive','deco','stencil',
 'rubik','bricolage','gloock','crimson','dm','outfit','literata'
 ];
-const LANGS = ['zh-cn','en-us'];
-const QWERTY = 'qwertyuiopasdfghjklzxcvbnm';
-const NUMERIC = '1234567890-';
-const BASE_IDX = QWERTY.length;
 
-const LANG_COLLAPSE = {
 zh: 'zh-cn', en: 'en-us', fr: 'fr-fr', ru: 'ru-ru', es: 'es-es', ar: 'ar',
 ja: 'ja-jp', de: 'de-de', ko: 'ko-kr', pt: 'pt-pt', nl: 'nl-nl', it: 'it-it',
 tr: 'tr-tr', el: 'el-gr', hi: 'hi-in',
@@ -716,7 +672,6 @@ vi: 'vi-vn', pl: 'pl-pl',
 th: 'th-th', uk: 'uk-ua', fa: 'fa-ir', bn: 'bn-bd', ro: 'ro-ro', cs: 'cs-cz'
 };
 
-function matchLang(tag) {
 if (!tag) return null;
 const lower = String(tag).toLowerCase();
 if (LANGS.indexOf(lower) !== -1) return lower;
@@ -724,7 +679,6 @@ const primary = lower.split('-')[0];
 return LANG_COLLAPSE[primary] || null;
 }
 
-function detectInitialLang() {
 try {
 const url = new URLSearchParams(location.search).get('lang');
 const m = matchLang(url);
@@ -745,13 +699,10 @@ if (m) return m;
 return 'en-us';
 }
 
-let currentLang = detectInitialLang();
 
-function get(path, dict) {
 return path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), dict);
 }
 
-function applyI18n() {
 const dict = window.I18N && window.I18N[currentLang];
 if (!dict) return;
 document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -763,7 +714,6 @@ refreshDropdownValueLabel('font', html.getAttribute('data-font'));
 refreshDropdownValueLabel('lang', currentLang);
 }
 
-function refreshDropdownValueLabel(kind, value) {
 const dd = document.querySelector('[data-dropdown="' + kind + '"]');
 if (!dd) return;
 const item = dd.querySelector('.dropdown-item[data-value="' + value + '"]');
@@ -772,13 +722,13 @@ const valueEl = dd.querySelector('.dropdown-value');
 if (valueEl) valueEl.textContent = item.querySelector('.dropdown-item-label')?.textContent || value;
 }
 
-function setValue(kind, value) {
 if (kind === 'lang') {
 currentLang = value;
 html.setAttribute('lang', value);
 html.setAttribute('dir', value === 'ar' || value === 'fa-ir' ? 'rtl' : 'ltr');
 try { localStorage.setItem('rhosocial-lang', value); } catch (_) {}
-applyI18n();
+(function(){var o=new IntersectionObserver(function(e){e.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visible");o.unobserve(e.target)}})},{threshold:.12});document.querySelectorAll(".reveal").forEach(function(e){o.observe(e)})})();
+
 } else {
 html.setAttribute('data-' + kind, value);
 }
@@ -794,7 +744,6 @@ const valueEl = dd.querySelector('.dropdown-value');
 if (valueEl && activatedLabel) valueEl.textContent = activatedLabel;
 }
 
-function closeAllDropdowns(except) {
 document.querySelectorAll('.dropdown.is-open').forEach(d => {
 if (d !== except) {
 d.classList.remove('is-open');
@@ -803,7 +752,6 @@ d.querySelector('.dropdown-trigger')?.setAttribute('aria-expanded', 'false');
 });
 }
 
-document.querySelectorAll('[data-dropdown]').forEach(dd => {
 const trigger = dd.querySelector('.dropdown-trigger');
 const kind = dd.getAttribute('data-dropdown');
 trigger.addEventListener('click', e => {
@@ -855,7 +803,8 @@ setValue('lang', LANGS[idx % LANGS.length]);
 }
 });
 
-applyI18n();
+(function(){var o=new IntersectionObserver(function(e){e.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visible");o.unobserve(e.target)}})},{threshold:.12});document.querySelectorAll(".reveal").forEach(function(e){o.observe(e)})})();
+
 </script>
 </body>
 </html>

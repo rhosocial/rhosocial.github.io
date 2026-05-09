@@ -62,408 +62,785 @@
 <link rel="stylesheet" href="../assets/fonts/literata.css">
 <script src="index/zh-CN.js"></script>
 <script src="index/en-US.js"></script>
+<link rel="stylesheet" href="../assets/shared.css">
+<script src="../assets/shared-header.js" data-header-variant="back"></script>
 </head>
 <body>
-<header class="control-bar">
-  <div class="control-brand">
-    <span class="brand-mark size-md">&rho;<sub>AR</sub></span>
-    <span>rhosocial ActiveRecord</span>
-    <span class="dim"><a href="../index.html" data-i18n="nav.index">Index</a> / <a href="./index.html" data-i18n="nav.backends">Backends</a> / <a href="../activerecord/index.html" data-i18n="nav.activerecord">ActiveRecord</a></span>
-  </div>
-  <div class="dropdown" data-dropdown="theme">
-    <button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
-      <span class="dropdown-label" data-i18n="control.theme_label">Theme</span>
-      <span class="dropdown-value">Terminal</span>
-      <svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="dropdown-menu" role="listbox">
-      <button class="dropdown-item is-active" data-value="terminal"><span class="dropdown-item-label">Terminal</span><span class="dropdown-item-kbd">&#8963;Q</span></button>
-      <button class="dropdown-item" data-value="editorial"><span class="dropdown-item-label">Editorial</span><span class="dropdown-item-kbd">&#8963;W</span></button>
-      <button class="dropdown-item" data-value="brutalist"><span class="dropdown-item-label">Brutalist</span><span class="dropdown-item-kbd">&#8963;E</span></button>
-      <button class="dropdown-item" data-value="aurora"><span class="dropdown-item-label">Aurora</span><span class="dropdown-item-kbd">&#8963;R</span></button>
-      <button class="dropdown-item" data-value="synthwave"><span class="dropdown-item-label">Synthwave</span><span class="dropdown-item-kbd">&#8963;T</span></button>
-      <button class="dropdown-item" data-value="sumi"><span class="dropdown-item-label">Sumi 墨</span><span class="dropdown-item-kbd">&#8963;Y</span></button>
-      <button class="dropdown-item" data-value="blueprint"><span class="dropdown-item-label">Blueprint</span><span class="dropdown-item-kbd">&#8963;U</span></button>
-      <button class="dropdown-item" data-value="noir"><span class="dropdown-item-label">Noir</span><span class="dropdown-item-kbd">&#8963;I</span></button>
-      <button class="dropdown-item" data-value="riso"><span class="dropdown-item-label">Riso</span><span class="dropdown-item-kbd">&#8963;O</span></button>
-      <button class="dropdown-item" data-value="nordic"><span class="dropdown-item-label">Nordic</span><span class="dropdown-item-kbd">&#8963;P</span></button>
-      <button class="dropdown-item" data-value="solarpunk"><span class="dropdown-item-label">Solarpunk</span><span class="dropdown-item-kbd">&#8963;A</span></button>
-      <button class="dropdown-item" data-value="mocha"><span class="dropdown-item-label">Mocha</span><span class="dropdown-item-kbd">&#8963;S</span></button>
-      <button class="dropdown-item" data-value="wireframe"><span class="dropdown-item-label">Wireframe</span><span class="dropdown-item-kbd">&#8963;D</span></button>
-      <button class="dropdown-item" data-value="anderson"><span class="dropdown-item-label">Anderson</span><span class="dropdown-item-kbd">&#8963;F</span></button>
-      <button class="dropdown-item" data-value="tokyo"><span class="dropdown-item-label">Tokyo Night</span><span class="dropdown-item-kbd">&#8963;G</span></button>
-      <button class="dropdown-item" data-value="memphis"><span class="dropdown-item-label">Memphis</span><span class="dropdown-item-kbd">&#8963;H</span></button>
-      <button class="dropdown-item" data-value="chalkboard"><span class="dropdown-item-label">Chalkboard</span><span class="dropdown-item-kbd">&#8963;J</span></button>
-      <button class="dropdown-item" data-value="matrix"><span class="dropdown-item-label">Matrix</span><span class="dropdown-item-kbd">&#8963;K</span></button>
-      <button class="dropdown-item" data-value="steel"><span class="dropdown-item-label">Steel</span><span class="dropdown-item-kbd">&#8963;L</span></button>
-      <button class="dropdown-item" data-value="frutiger"><span class="dropdown-item-label">Frutiger</span><span class="dropdown-item-kbd">&#8963;Z</span></button>
-      <button class="dropdown-item" data-value="newsprint"><span class="dropdown-item-label">Newsprint</span><span class="dropdown-item-kbd">&#8963;X</span></button>
-      <button class="dropdown-item" data-value="candy"><span class="dropdown-item-label">Candy</span><span class="dropdown-item-kbd">&#8963;C</span></button>
-      <button class="dropdown-item" data-value="botanical"><span class="dropdown-item-label">Botanical</span><span class="dropdown-item-kbd">&#8963;V</span></button>
-      <button class="dropdown-item" data-value="cyberpunk"><span class="dropdown-item-label">Cyberpunk</span><span class="dropdown-item-kbd">&#8963;1</span></button>
-      <button class="dropdown-item" data-value="parchment"><span class="dropdown-item-label">Parchment</span><span class="dropdown-item-kbd">&#8963;2</span></button>
-      <button class="dropdown-item" data-value="glassmorphism"><span class="dropdown-item-label">Glassmorphism</span><span class="dropdown-item-kbd">&#8963;3</span></button>
+
+<style>
+/* ════════════════════════════════════════════════
+   Theme variable mapping
+   ════════════════════════════════════════════════ */
+:root, body {
+  --code-keyword:   var(--tok-keyword);
+  --code-class:     var(--tok-class);
+  --code-fn:        var(--tok-func);
+  --code-string:    var(--tok-string);
+  --code-number:    var(--tok-num);
+  --code-comment:   var(--tok-comment);
+  --code-op:        var(--tok-op);
+  --sql-keyword:    var(--tok-func);
+  --sql-table:      var(--tok-class);
+  --sql-value:      var(--tok-string);
+  --sql-comment:    var(--tok-comment);
+
+  --surface-0:      var(--bg-2);
+  --surface-1:      var(--bg-elevated);
+  --surface-2:      var(--bg-2);
+  --surface-3:      color-mix(in srgb, var(--fg) 8%, var(--bg));
+  --text-primary:   var(--fg);
+  --text-secondary: var(--fg-muted);
+  --text-muted:     var(--fg-faint);
+  --accent-soft:    color-mix(in srgb, var(--accent) 15%, transparent);
+  --accent-secondary:      var(--accent-2);
+  --accent-secondary-soft: color-mix(in srgb, var(--accent-2) 12%, transparent);
+  --accent-fg:      var(--bg);
+  --ok:             var(--success);
+  --ok-soft:        color-mix(in srgb, var(--success) 12%, transparent);
+  --err:            var(--danger);
+  --err-soft:       color-mix(in srgb, var(--danger) 12%, transparent);
+  --info:           var(--info);
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 9999px;
+}
+/* ════════════════════════════════════════════════
+   Scroll Reveal
+   ════════════════════════════════════════════════ */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-d1 { transition-delay:0.1s; }
+.reveal-d2 { transition-delay:0.2s; }
+
+:root{
+  --sect-bg:var(--surface-0, #0d1117);
+  --sect-surface-1:var(--surface-1, #161d2a);
+  --sect-surface-2:var(--surface-2, #1c2535);
+  --sect-surface-3:var(--surface-3, #27324a);
+  --sect-border:var(--border, rgba(255,255,255,0.08));
+  --sect-border-strong:var(--border-strong, rgba(255,255,255,0.16));
+  --sect-text-primary:var(--text-primary, #e2e8f0);
+  --sect-text-secondary:var(--text-secondary, #8892a4);
+  --sect-text-muted:var(--text-muted, #4a5568);
+  --sect-accent:var(--accent, #f5a623);
+  --sect-accent-soft:var(--accent-soft, rgba(245,166,35,0.12));
+  --sect-ok:var(--ok, #34d399);
+  --sect-warn:var(--warn, #f59e0b);
+  --sect-err:var(--err, #f87171);
+  --sect-info:var(--info, #60a5fa);
+  --sect-code-keyword:var(--code-keyword, #a78bfa);
+  --sect-code-class:var(--code-class, #f5a623);
+  --sect-code-fn:var(--code-fn, #22d3ee);
+  --sect-code-string:var(--code-string, #34d399);
+  --sect-code-number:var(--code-number, #fb923c);
+  --sect-code-comment:var(--code-comment, #4a5568);
+  --sect-code-op:var(--code-op, #8892a4);
+  --sect-sql-keyword:var(--sql-keyword, #22d3ee);
+  --sect-sql-table:var(--sql-table, #f5a623);
+  --sect-sql-value:var(--sql-value, #34d399);
+  --sect-sql-comment:var(--sql-comment, #4a5568);
+  --bk-pg:#34d399;
+  --bk-mysql:#22d3ee;
+  --bk-maria:#f5a623;
+  --bk-sqlite:#a78bfa;
+  --bk-oracle:#f87171;
+  --bk-mssql:#fb923c;
+}
+.bi-section{ margin:var(--space-8,48px) 0; padding-top:var(--space-7,48px); border-top:1px solid var(--sect-border) }
+.bi-section:first-of-type{ margin-top:0; border-top:none }
+.bi-section-tag{ display:inline-block; font-family:var(--font-mono, 'JetBrains Mono', monospace); font-size:11px;
+  letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--sect-accent); border:1px solid var(--sect-accent);
+  padding:2px var(--space-3,12px); border-radius:var(--radius-sm,4px); margin-bottom:var(--space-3,12px) }
+.bi-section h2{ font-size:clamp(1.6rem,3.5vw,2.4rem); line-height:1.15; margin-bottom:var(--space-4,16px);
+  font-family:var(--font-display, 'Inter Tight', sans-serif); font-weight:700; letter-spacing:-0.01em }
+.bi-section h2 em{ color:var(--sect-accent); font-style:italic; font-weight:600 }
+.bi-section .intro{ color:var(--sect-text-secondary); max-width:780px; font-size:16px; margin-bottom:var(--space-5,24px) }
+.bi-section .intro b{ color:var(--sect-text-primary) }
+.bi-hero{ padding:var(--space-7,48px) 0 var(--space-6,32px) }
+.bi-hero .eyebrow{ font-family:var(--font-mono, 'JetBrains Mono', monospace); font-size:11px;
+  letter-spacing:0.16em; text-transform:uppercase; color:var(--sect-accent); margin-bottom:var(--space-3,12px) }
+.bi-hero h1{ font-size:clamp(2rem,5.5vw,3.6rem); line-height:1.05; margin-bottom:var(--space-4,16px);
+  font-family:var(--font-display, 'Inter Tight', sans-serif); font-weight:700; letter-spacing:-0.01em }
+.bi-hero h1 em{ color:var(--sect-accent); font-style:italic; font-weight:600 }
+.bi-hero .lead{ color:var(--sect-text-secondary); font-size:17px; max-width:720px; line-height:1.65 }
+.bi-hero .lead b{ color:var(--sect-text-primary) }
+.bi-lead code, .bi-intro code, .bi-section p code, .bi-hero .lead code{ background:var(--sect-surface-2); padding:1px 6px;
+  border-radius:3px; font-size:0.9em; color:var(--sect-accent) }
+.arch-block{ background:var(--sect-surface-1); border:1px solid var(--sect-border);
+  border-radius:var(--radius-md,8px); padding:var(--space-6,32px); display:grid;
+  grid-template-columns:1fr; gap:var(--space-5,24px) }
+@media(min-width:880px){ .arch-block{ grid-template-columns: 1.2fr 1fr; align-items:start } }
+.arch-svg-wrap{ background:var(--sect-surface-2); border-radius:var(--radius-sm,4px); padding:var(--space-5,24px) }
+.arch-svg-wrap svg{ width:100%; height:auto; display:block }
+.arch-side-code{ font-family:var(--font-mono, 'JetBrains Mono', monospace); font-size:13px; line-height:1.85;
+  background:var(--sect-surface-2); padding:var(--space-5,24px); border-radius:var(--radius-sm,4px);
+  border-left:3px dashed var(--sect-accent) }
+.arch-side-code .cm{ color:var(--sect-code-comment) }
+.arch-side-code .kw{ color:var(--sect-code-keyword) }
+.arch-side-code .cls{ color:var(--sect-code-class) }
+.arch-side-code .fn{ color:var(--sect-code-fn) }
+.arch-side-code .str{ color:var(--sect-code-string) }
+.arch-side-code .num{ color:var(--sect-code-number) }
+/* Feature cards horizontal scroll */
+.features-scroll-container { overflow-x:auto; padding:1rem 0 2rem; scrollbar-width:none; }
+.features-scroll-container::-webkit-scrollbar { display:none; }
+.features-track { display:flex; gap:20px; width:max-content; }
+
+.bk-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap:var(--space-4,16px) }
+.bk-card{ background:var(--sect-surface-1); border:1px solid var(--sect-border);
+  border-radius:var(--radius-md,8px); padding:var(--space-5,24px);
+  position:relative; overflow:hidden; transition:.25s; cursor:pointer;
+  display:block; color:inherit }
+.bk-card:hover{ transform:translateY(-3px); border-color:currentColor; text-decoration:none }
+.bk-card::before{ content:''; position:absolute; top:0; left:0; right:0; height:3px; background:currentColor }
+.bk-card.pg{ color:var(--bk-pg) }
+.bk-card.mysql{ color:var(--bk-mysql) }
+.bk-card.maria{ color:var(--bk-maria) }
+.bk-card.sqlite{ color:var(--bk-sqlite) }
+.bk-card.oracle{ color:var(--bk-oracle) }
+.bk-card.mssql{ color:var(--bk-mssql) }
+.bk-card .nm{ font-family:var(--font-display, 'Inter Tight', sans-serif); font-size:18px; font-weight:700;
+  margin:var(--space-3,12px) 0 var(--space-2,8px) }
+.bk-card .ver{ font-family:var(--font-mono, 'JetBrains Mono', monospace); font-size:11px;
+  color:var(--sect-text-muted); margin-bottom:var(--space-3,12px) }
+.bk-card .desc{ color:var(--sect-text-secondary); font-size:13px; line-height:1.6 }
+.bk-card .tags{ font-family:var(--font-mono, 'JetBrains Mono', monospace); font-size:10px; color:var(--sect-text-muted);
+  margin-top:var(--space-3,12px); padding-top:var(--space-3,12px);
+  border-top:1px solid var(--sect-border) }
+.bk-card .tags b{ color:currentColor }
+.matrix-wrap{ overflow-x:auto; background:var(--sect-surface-1);
+  border:1px solid var(--sect-border); border-radius:var(--radius-md,8px); padding:var(--space-4,16px) }
+.matrix{ width:100%; border-collapse:collapse; font-family:var(--font-mono, 'JetBrains Mono', monospace); font-size:13px; min-width:780px }
+.matrix th, .matrix td{ padding:var(--space-3,12px); border:1px solid var(--sect-border); text-align:center }
+.matrix th{ background:var(--sect-surface-2); color:var(--sect-text-muted); font-size:11px;
+  letter-spacing:0.08em; text-transform:uppercase; font-weight:600 }
+.matrix th.feat{ text-align:left; min-width:200px }
+.matrix td:first-child{ text-align:left; color:var(--sect-text-primary); font-weight:700 }
+.matrix .full{ color:var(--sect-ok) }
+.matrix .partial{ color:var(--sect-warn) }
+.matrix .none{ color:var(--sect-text-muted) }
+.matrix tr:hover td{ background:var(--sect-surface-2) }
+.matrix th.col-pg{ color:var(--bk-pg) }
+.matrix th.col-mysql{ color:var(--bk-mysql) }
+.matrix th.col-maria{ color:var(--bk-maria) }
+.matrix th.col-sqlite{ color:var(--bk-sqlite) }
+.matrix th.col-oracle{ color:var(--bk-oracle) }
+.matrix th.col-mssql{ color:var(--bk-mssql) }
+.probe{ background:var(--sect-surface-1); border:1px solid var(--sect-border);
+  border-radius:var(--radius-md,8px); padding:var(--space-5,24px) }
+.probe-control{ display:flex; gap:var(--space-3,12px); align-items:center; flex-wrap:wrap;
+  padding:var(--space-3,12px) var(--space-4,16px); background:var(--sect-surface-2);
+  border-radius:var(--radius-sm,4px); margin-bottom:var(--space-5,24px);
+  font-family:var(--font-mono, 'JetBrains Mono', monospace); font-size:13px }
+.probe-control label{ font-size:11px; letter-spacing:0.12em;
+  text-transform:uppercase; color:var(--sect-text-muted) }
+.probe-control select{ font-family:var(--font-mono, 'JetBrains Mono', monospace); font-size:14px;
+  background:var(--sect-surface-1); color:var(--sect-text-primary);
+  border:1px solid var(--sect-border-strong); border-radius:var(--radius-sm,4px);
+  padding:var(--space-2,8px) var(--space-3,12px); cursor:pointer; min-width:200px }
+.probe-control select:focus{ outline:none; border-color:var(--sect-accent) }
+.probe-badge{ font-family:var(--font-mono, 'JetBrains Mono', monospace); font-size:11px; padding:2px 10px;
+  border-radius:var(--radius-pill,9999px); color:#000; font-weight:700 }
+.probe-panel{ display:grid; grid-template-columns:1fr; gap:var(--space-4,16px) }
+@media(min-width:780px){ .probe-panel{ grid-template-columns: 1fr 1fr } }
+.probe-panel h4{ font-size:18px; margin:0 0 var(--space-3,12px) }
+.probe-install{ font-family:var(--font-mono, 'JetBrains Mono', monospace); font-size:13px;
+  padding:var(--space-3,12px) var(--space-4,16px); background:var(--sect-surface-2);
+  border-radius:var(--radius-sm,4px); border-left:3px solid currentColor; margin-bottom:var(--space-3,12px) }
+.probe-feats{ list-style:none; padding:0; margin:0 }
+.probe-feats li{ padding:var(--space-2,8px) 0; border-bottom:1px solid var(--sect-border);
+  font-size:14px; color:var(--sect-text-secondary) }
+.probe-feats li:last-child{ border:none }
+.probe-feats li b{ color:var(--sect-text-primary) }
+.probe-feats li .bullet{ display:inline-block; width:14px; color:currentColor; font-weight:700 }
+.sql-diff{ background:var(--sect-surface-1); border:1px solid var(--sect-border);
+  border-radius:var(--radius-md,8px); padding:var(--space-5,24px) }
+.sql-diff-input{ background:var(--sect-surface-2); padding:var(--space-4,16px);
+  border-radius:var(--radius-sm,4px); margin-bottom:var(--space-5,24px);
+  font-family:var(--font-mono, 'JetBrains Mono', monospace); font-size:13px; line-height:1.85;
+  border-left:3px solid var(--sect-accent) }
+.sql-diff-input .lab{ font-size:11px; letter-spacing:0.12em;
+  text-transform:uppercase; color:var(--sect-accent); margin-bottom:var(--space-2,8px);
+  font-weight:700 }
+.sql-diff-input .cm{ color:var(--sect-code-comment) }
+.sql-diff-input .kw{ color:var(--sect-code-keyword) }
+.sql-diff-input .fn{ color:var(--sect-code-fn) }
+.sql-diff-input .str{ color:var(--sect-code-string) }
+.sql-diff-input .op{ color:var(--sect-code-op) }
+.sql-diff-grid{ display:grid; grid-template-columns:1fr; gap:var(--space-3,12px) }
+@media(min-width:780px){ .sql-diff-grid{ grid-template-columns: 1fr 1fr } }
+.sql-out{ background:var(--sect-surface-2); padding:var(--space-4,16px);
+  border-radius:var(--radius-sm,4px); border-left:3px solid currentColor;
+  font-family:var(--font-mono, 'JetBrains Mono', monospace); font-size:12px; line-height:1.75 }
+.sql-out.pg{ color:var(--bk-pg) }
+.sql-out.mysql{ color:var(--bk-mysql) }
+.sql-out.maria{ color:var(--bk-maria) }
+.sql-out.sqlite{ color:var(--bk-sqlite) }
+.sql-out.oracle{ color:var(--bk-oracle) }
+.sql-out.mssql{ color:var(--bk-mssql) }
+.sql-out .head{ font-size:11px; letter-spacing:0.12em;
+  text-transform:uppercase; margin-bottom:var(--space-2,8px); font-weight:700 }
+.sql-out .body{ color:var(--sect-text-primary) }
+.sql-out .body .skw{ color:var(--sect-sql-keyword); font-weight:700 }
+.sql-out .body .stbl{ color:var(--sect-sql-table) }
+.sql-out .body .sval{ color:var(--sect-sql-value) }
+.sql-out .body .cm{ color:var(--sect-sql-comment) }
+.sql-out .body .delta{ background:var(--sect-accent-soft); color:var(--sect-accent);
+  padding:1px 4px; border-radius:2px; font-weight:700 }
+.dec-grid{ display:grid; grid-template-columns: 1fr; gap:var(--space-4,16px) }
+@media(min-width:780px){ .dec-grid{ grid-template-columns: repeat(3, 1fr) } }
+.dec-card{ background:var(--sect-surface-1); border:1px solid var(--sect-border);
+  border-radius:var(--radius-md,8px); padding:var(--space-5,24px); display:flex; flex-direction:column }
+.dec-card .stage{ font-family:var(--font-mono, 'JetBrains Mono', monospace); font-size:11px;
+  letter-spacing:0.12em; text-transform:uppercase; color:var(--sect-accent);
+  margin-bottom:var(--space-3,12px) }
+.dec-card h3{ font-size:18px; margin-bottom:var(--space-3,12px) }
+.dec-card .reco{ font-family:var(--font-mono, 'JetBrains Mono', monospace); font-size:14px; padding:var(--space-3,12px) var(--space-4,16px);
+  background:var(--sect-surface-2); border-radius:var(--radius-sm,4px); margin-bottom:var(--space-3,12px) }
+.dec-card .reco b{ color:var(--sect-accent) }
+.dec-card p{ color:var(--sect-text-secondary); font-size:14px; margin:0; flex-grow:1 }
+.crosslinks{ display:grid; grid-template-columns: 1fr; gap:var(--space-4,16px) }
+@media(min-width:780px){ .crosslinks{ grid-template-columns: repeat(2, 1fr) } }
+@media(min-width:1024px){ .crosslinks{ grid-template-columns: repeat(4, 1fr) } }
+.crosslink{ display:block; padding:var(--space-5,24px); background:var(--sect-surface-1);
+  border:1px solid var(--sect-border); border-radius:var(--radius-md,8px); transition:.2s }
+.crosslink:hover{ border-color:var(--sect-accent); text-decoration:none; transform:translateY(-2px) }
+.crosslink .arrow{ font-family:var(--font-mono, 'JetBrains Mono', monospace); font-size:11px; color:var(--sect-accent);
+  letter-spacing:0.12em; text-transform:uppercase; margin-bottom:var(--space-2,8px) }
+.crosslink h3{ font-size:16px; color:var(--sect-text-primary); margin-bottom:var(--space-2,8px) }
+.crosslink p{ color:var(--sect-text-secondary); font-size:13px; margin:0 }
+rect.layer{ transition: opacity .3s, stroke-width .3s }
+rect.layer.dim{ opacity: 0.25 }
+rect.layer.slot{ stroke-dasharray: 6 4 }
+text.svg-l{ font-family:'JetBrains Mono',monospace; font-size:12px; fill:currentColor }
+text.svg-lab{ font-family:'JetBrains Mono',monospace; font-size:10px; fill:var(--sect-text-secondary);
+  letter-spacing:0.08em }
+</style>
+
+<main class="page">
+
+<section class="bi-hero reveal" style="max-width:1240px;margin:0 auto;padding-left:var(--space-5,24px);padding-right:var(--space-5,24px)">
+  <div class="eyebrow">Backends · 一个抽象层，六个 dialect</div>
+  <h1>6 个后端<br><em>1 个抽象层</em></h1>
+  <p class="lead">PostgreSQL / MySQL / MariaDB / SQLite / Oracle / SQL Server——同一份 ActiveRecord 代码，<b>编译期检测后端能力 + 选择合适的 dialect</b>。能力差异是<b>显式的</b>（CapabilityMatrix），dialect 差异是<b>透明的</b>（PG 的 <code>EXCEPT</code>、Oracle 的 <code>MINUS</code>、MySQL 的 <code>ON DUPLICATE KEY</code>、PG 的 <code>ON CONFLICT</code>——你只写一份 ORM 代码）。<code>StorageBackend</code> ABC 还允许你<b>实现自己的 backend</b>。</p>
+</section>
+
+<section class="bi-section reveal reveal-d1" id="arch" style="max-width:1240px;margin:0 auto;padding-left:var(--space-5,24px);padding-right:var(--space-5,24px)">
+  <span class="bi-section-tag">Section 01 · A7 PluggableSlot · 架构</span>
+  <h2>StorageBackend · <em>抽象在哪里</em></h2>
+  <p class="intro">ActiveRecord 把"<i>怎么连数据库 / 怎么发 SQL / 怎么处理类型</i>"全部下放给 <code>StorageBackend</code> ABC——上层 ActiveQuery / Builder 不知道你用的是哪种数据库，只知道它有一个 <code>execute()</code> 方法和一份 <code>capabilities()</code> 声明。这意味着：(1) 切换后端不改 ORM 代码，(2) <b>你可以写自己的 backend</b>。</p>
+
+  <div class="arch-block">
+    <div class="arch-svg-wrap">
+      <svg viewBox="0 0 460 360">
+        <text class="svg-lab" x="30" y="22">SYSTEM · ActiveRecord 架构</text>
+
+        <rect class="layer" id="L1" x="40" y="35" width="380" height="42" rx="4"
+          fill="var(--sect-surface-2)" stroke="var(--sect-surface-3)" stroke-width="1"/>
+        <text class="svg-l" x="60" y="62">ActiveRecord (Model API)</text>
+        <text class="svg-lab" x="370" y="62" text-anchor="end">CRUD / events</text>
+
+        <line x1="230" y1="80" x2="230" y2="92" stroke="var(--sect-surface-3)" stroke-width="1"/>
+
+        <rect class="layer" id="L2" x="40" y="95" width="380" height="42" rx="4"
+          fill="var(--sect-surface-2)" stroke="var(--sect-surface-3)" stroke-width="1"/>
+        <text class="svg-l" x="60" y="122">ActiveQuery / Builder</text>
+        <text class="svg-lab" x="370" y="122" text-anchor="end">where / join / cte / set ops</text>
+
+        <line x1="230" y1="140" x2="230" y2="152" stroke="var(--sect-surface-3)" stroke-width="1"/>
+
+        <rect class="layer slot" id="L3" x="40" y="155" width="380" height="78" rx="4"
+          fill="var(--sect-accent-soft)" stroke="var(--sect-accent)" stroke-width="1.5"/>
+        <text class="svg-l" x="60" y="180" fill="var(--sect-accent)" font-weight="700">StorageBackend (ABC)</text>
+        <text class="svg-lab" x="60" y="200">↑ 抽象接口：execute / fetch / capabilities</text>
+        <text class="svg-lab" x="60" y="220" fill="var(--sect-code-fn)">↓ 6 个内置 dialect 实现 + 你的 backend</text>
+
+        <line x1="230" y1="236" x2="230" y2="248" stroke="var(--sect-surface-3)" stroke-width="1"/>
+
+        <g>
+          <rect x="40" y="252" width="56" height="38" rx="3" fill="rgba(52,211,153,0.12)" stroke="var(--bk-pg, #34d399)"/>
+          <text class="svg-l" x="68" y="276" text-anchor="middle" font-size="11" fill="var(--bk-pg, #34d399)">PG</text>
+          <rect x="106" y="252" width="56" height="38" rx="3" fill="rgba(34,211,238,0.12)" stroke="var(--bk-mysql, #22d3ee)"/>
+          <text class="svg-l" x="134" y="276" text-anchor="middle" font-size="11" fill="var(--bk-mysql, #22d3ee)">MySQL</text>
+          <rect x="172" y="252" width="56" height="38" rx="3" fill="rgba(245,166,35,0.12)" stroke="var(--bk-maria, #f5a623)"/>
+          <text class="svg-l" x="200" y="276" text-anchor="middle" font-size="11" fill="var(--bk-maria, #f5a623)">Maria</text>
+          <rect x="238" y="252" width="56" height="38" rx="3" fill="rgba(167,139,250,0.12)" stroke="var(--bk-sqlite, #a78bfa)"/>
+          <text class="svg-l" x="266" y="276" text-anchor="middle" font-size="11" fill="var(--bk-sqlite, #a78bfa)">SQLite</text>
+          <rect x="304" y="252" width="56" height="38" rx="3" fill="rgba(248,113,113,0.12)" stroke="var(--bk-oracle, #f87171)"/>
+          <text class="svg-l" x="332" y="276" text-anchor="middle" font-size="11" fill="var(--bk-oracle, #f87171)">Oracle</text>
+          <rect x="370" y="252" width="50" height="38" rx="3" fill="rgba(251,146,60,0.12)" stroke="var(--bk-mssql, #fb923c)"/>
+          <text class="svg-l" x="395" y="276" text-anchor="middle" font-size="11" fill="var(--bk-mssql, #fb923c)">MSSQL</text>
+        </g>
+
+        <line x1="230" y1="294" x2="230" y2="306" stroke="var(--sect-surface-3)" stroke-width="1"/>
+
+        <rect class="layer" x="40" y="310" width="380" height="38" rx="4"
+          fill="var(--sect-surface-2)" stroke="var(--sect-surface-3)" stroke-width="1"/>
+        <text class="svg-l" x="60" y="334">数据库（PG / MySQL / SQLite / ...）</text>
+      </svg>
+    </div>
+
+    <div>
+      <div style="font-family:var(--font-mono, 'JetBrains Mono', monospace); font-size:11px; letter-spacing:0.12em;
+        text-transform:uppercase; color:var(--sect-accent); margin-bottom:var(--space-3,12px); font-weight:700">
+        实现你自己的 backend
+      </div>
+      <div class="arch-side-code">
+        <span class="cm"># your_backend.py</span><br>
+        <span class="kw">from</span> rhosocial.activerecord.backend <span class="kw">import</span> StorageBackend<br>
+        <br>
+        <span class="kw">class</span> <span class="cls">YourBackend</span>(StorageBackend):<br>
+        &nbsp;&nbsp;<span class="kw">def</span> <span class="fn">execute</span>(<span class="kw">self</span>, sql, params):<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> <span class="kw">self</span>._cursor.<span class="fn">execute</span>(sql, params)<br>
+        <br>
+        &nbsp;&nbsp;<span class="kw">def</span> <span class="fn">capabilities</span>(<span class="kw">self</span>):<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"cte"</span>: <span class="kw">True</span>,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"recursive_cte"</span>: <span class="kw">True</span>,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"json"</span>: <span class="kw">True</span>,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"upsert"</span>: <span class="kw">False</span>,<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;}<br>
+        <br>
+        <span class="cm"># 注册</span><br>
+        Model.<span class="fn">use_backend</span>(<span class="cls">YourBackend</span>(<span class="str">"yourdb://..."</span>))
+      </div>
+      <p style="color:var(--sect-text-secondary); font-size:13px; line-height:1.7; margin-top:var(--space-4,16px)">
+        实现 ABC 的两个方法（<code>execute</code> + <code>capabilities</code>），加上 dialect 的几个细节（quoting、placeholder、自增 ID 取回方式），就能接入任何<b>支持 DB-API 2.0 / async DB-API</b> 的数据库。
+      </p>
     </div>
   </div>
-  <div class="dropdown" data-dropdown="font">
-    <button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
-      <span class="dropdown-label" data-i18n="control.font_label">Font</span>
-      <span class="dropdown-value" data-i18n-value="auto">Auto</span>
-      <svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="dropdown-menu" role="listbox">
-      <button class="dropdown-item is-active" data-value="auto"><span class="dropdown-item-label" data-i18n="control.font_auto">Auto (theme default)</span><span class="dropdown-item-kbd">&#8679;Q</span></button>
-      <button class="dropdown-item" data-value="tight"><span class="dropdown-item-label">Tight Sans</span><span class="dropdown-item-kbd">&#8679;W</span></button>
-      <button class="dropdown-item" data-value="serif"><span class="dropdown-item-label">Editorial Serif</span><span class="dropdown-item-kbd">&#8679;E</span></button>
-      <button class="dropdown-item" data-value="geometric"><span class="dropdown-item-label">Geometric</span><span class="dropdown-item-kbd">&#8679;R</span></button>
-      <button class="dropdown-item" data-value="heavy"><span class="dropdown-item-label">Heavy Display</span><span class="dropdown-item-kbd">&#8679;T</span></button>
-      <button class="dropdown-item" data-value="allmono"><span class="dropdown-item-label">All Mono</span><span class="dropdown-item-kbd">&#8679;Y</span></button>
-      <button class="dropdown-item" data-value="reader"><span class="dropdown-item-label">Reader</span><span class="dropdown-item-kbd">&#8679;U</span></button>
-      <button class="dropdown-item" data-value="display-serif"><span class="dropdown-item-label">Display Serif</span><span class="dropdown-item-kbd">&#8679;I</span></button>
-      <button class="dropdown-item" data-value="neo-future"><span class="dropdown-item-label">Neo Future</span><span class="dropdown-item-kbd">&#8679;O</span></button>
-      <button class="dropdown-item" data-value="plex"><span class="dropdown-item-label">IBM Plex</span><span class="dropdown-item-kbd">&#8679;P</span></button>
-      <button class="dropdown-item" data-value="playful"><span class="dropdown-item-label">Playful (Caveat)</span><span class="dropdown-item-kbd">&#8679;A</span></button>
-      <button class="dropdown-item" data-value="classic-serif"><span class="dropdown-item-label">Classic Serif (Garamond)</span><span class="dropdown-item-kbd">&#8679;S</span></button>
+</section>
+
+<section class="bi-section reveal reveal-d1" id="grid" style="max-width:1240px;margin:0 auto;padding-left:var(--space-5,24px);padding-right:var(--space-5,24px)">
+  <span class="bi-section-tag">Section 02 · 6 个内置后端</span>
+  <h2>每一个 · <em>都是一等公民</em></h2>
+  <p class="intro">每个后端有独立的子目录（<code>backends/postgresql/</code>、<code>backends/mysql/</code> 等），里面有 <b>setup</b>（连接配置）、<b>capabilities</b>（详细能力清单）、<b>dialect</b>（特有语法）、<b>ops</b>（运维：连接池、慢查询、迁移）四类页面。点击下面的卡片进入。</p>
+
+  <div class="features-scroll-container">
+    <div class="features-track" id="bk-features-track"></div>
+  </div>
+</section>
+
+<section class="bi-section reveal reveal-d1" id="matrix" style="max-width:1240px;margin:0 auto;padding-left:var(--space-5,24px);padding-right:var(--space-5,24px)">
+  <span class="bi-section-tag">Section 03 · A6 CapabilityMatrix · 完整版</span>
+  <h2>能力矩阵 · <em>哪个后端支持哪个特性</em></h2>
+  <p class="intro">12 项关键特性 × 6 个后端。<b>● full</b> 表示原生支持，<b>◐ partial</b> 表示有版本下限或语法限制（鼠标悬停查看具体版本），<b>—</b> 表示不支持。所有数据来自 <a href="https://github.com/rhosocial/python-activerecord">主仓 README</a> 与各 dialect 实现的 <code>capabilities()</code> 声明。</p>
+
+  <div class="matrix-wrap">
+    <table class="matrix">
+      <thead>
+        <tr>
+          <th class="feat">特性</th>
+          <th class="col-pg">PostgreSQL</th>
+          <th class="col-mysql">MySQL</th>
+          <th class="col-maria">MariaDB</th>
+          <th class="col-sqlite">SQLite</th>
+          <th class="col-oracle">Oracle</th>
+          <th class="col-mssql">SQL Server</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>WITH (CTE)</td>
+          <td class="full" title="all versions">●</td>
+          <td class="partial" title="MySQL 8.0+">◐ 8.0+</td>
+          <td class="partial" title="MariaDB 10.2+">◐ 10.2+</td>
+          <td class="partial" title="SQLite 3.8.3+">◐ 3.8.3+</td>
+          <td class="full">●</td>
+          <td class="full">●</td>
+        </tr>
+        <tr>
+          <td>WITH RECURSIVE</td>
+          <td class="full">●</td>
+          <td class="partial">◐ 8.0+</td>
+          <td class="partial">◐ 10.2+</td>
+          <td class="partial">◐ 3.8.3+</td>
+          <td class="full">●</td>
+          <td class="full">●</td>
+        </tr>
+        <tr>
+          <td>UNION / UNION ALL</td>
+          <td class="full">●</td>
+          <td class="full">●</td>
+          <td class="full">●</td>
+          <td class="full">●</td>
+          <td class="full">●</td>
+          <td class="full">●</td>
+        </tr>
+        <tr>
+          <td>INTERSECT / EXCEPT</td>
+          <td class="full">●</td>
+          <td class="partial" title="MySQL 8.0.31+">◐ 8.0.31+</td>
+          <td class="partial">◐ 10.3+</td>
+          <td class="full">●</td>
+          <td class="partial" title="EXCEPT 用 MINUS 关键字">◐ MINUS</td>
+          <td class="full">●</td>
+        </tr>
+        <tr>
+          <td>JSON 字段类型</td>
+          <td class="full" title="JSONB / JSON 双类型">● JSONB</td>
+          <td class="partial">◐ JSON</td>
+          <td class="partial">◐ JSON</td>
+          <td class="partial" title="需 JSON1 扩展">◐ JSON1</td>
+          <td class="partial">◐ 12c+</td>
+          <td class="partial">◐ 2016+</td>
+        </tr>
+        <tr>
+          <td>ARRAY 字段类型</td>
+          <td class="full">●</td>
+          <td class="none">—</td>
+          <td class="none">—</td>
+          <td class="none">—</td>
+          <td class="partial" title="VARRAY / nested table">◐ VARRAY</td>
+          <td class="none">—</td>
+        </tr>
+        <tr>
+          <td>UPSERT (ON CONFLICT)</td>
+          <td class="full" title="ON CONFLICT DO UPDATE">●</td>
+          <td class="partial" title="ON DUPLICATE KEY UPDATE">◐ ON DUP KEY</td>
+          <td class="partial">◐ ON DUP KEY</td>
+          <td class="partial" title="3.24+ ON CONFLICT">◐ 3.24+</td>
+          <td class="partial" title="MERGE 替代">◐ MERGE</td>
+          <td class="partial">◐ MERGE</td>
+        </tr>
+        <tr>
+          <td>窗口函数</td>
+          <td class="full">●</td>
+          <td class="partial">◐ 8.0+</td>
+          <td class="partial">◐ 10.2+</td>
+          <td class="partial">◐ 3.25+</td>
+          <td class="full" title="历史最早实现">●</td>
+          <td class="full">●</td>
+        </tr>
+        <tr>
+          <td>分区表</td>
+          <td class="full">●</td>
+          <td class="full">●</td>
+          <td class="full">●</td>
+          <td class="none">—</td>
+          <td class="full" title="能力极强">●</td>
+          <td class="full" title="企业版">●</td>
+        </tr>
+        <tr>
+          <td>RETURNING 子句</td>
+          <td class="full">●</td>
+          <td class="none">—</td>
+          <td class="partial" title="MariaDB 10.5+">◐ 10.5+</td>
+          <td class="partial">◐ 3.35+</td>
+          <td class="partial" title="RETURNING INTO">◐ INTO</td>
+          <td class="partial" title="OUTPUT 子句">◐ OUTPUT</td>
+        </tr>
+        <tr>
+          <td>异步驱动</td>
+          <td class="full" title="asyncpg">●</td>
+          <td class="full" title="aiomysql">●</td>
+          <td class="full">●</td>
+          <td class="full" title="aiosqlite">●</td>
+          <td class="partial" title="oracledb async mode">◐</td>
+          <td class="partial" title="aioodbc">◐</td>
+        </tr>
+        <tr>
+          <td>嵌套事务（SAVEPOINT）</td>
+          <td class="full">●</td>
+          <td class="full">●</td>
+          <td class="full">●</td>
+          <td class="full">●</td>
+          <td class="full">●</td>
+          <td class="full">●</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="intro" style="margin-top:var(--space-5,24px); font-size:14px">
+    <b>编译期检测</b>：<code>SetOperationQuery</code>、<code>CTEQuery</code>、UPSERT API 等都会在编译期检查后端 <code>capabilities()</code>。不支持时给出明确错误（<i>"INTERSECT requires MySQL ≥ 8.0.31"</i>），不会生成无法执行的 SQL。
+  </p>
+</section>
+
+<section class="bi-section reveal reveal-d1" id="probe" style="max-width:1240px;margin:0 auto;padding-left:var(--space-5,24px);padding-right:var(--space-5,24px)">
+  <span class="bi-section-tag">Section 04 · A11 CapabilityProbe</span>
+  <h2>选你用的后端 · <em>只看相关内容</em></h2>
+  <p class="intro">能力矩阵适合<b>横向比较</b>。但当你已经决定用某个后端时，你只关心<b>那一列</b>——下面的选择器把视图收窄到单个 backend：安装命令、能力清单、版本限制、子目录链接。</p>
+
+  <div class="probe">
+    <div class="probe-control">
+      <label>当前项目用</label>
+      <select id="probeSel">
+        <option value="pg">PostgreSQL</option>
+        <option value="mysql">MySQL</option>
+        <option value="maria">MariaDB</option>
+        <option value="sqlite" selected>SQLite</option>
+        <option value="oracle">Oracle</option>
+        <option value="mssql">SQL Server</option>
+      </select>
+      <span class="probe-badge" id="probeBadge" style="background:var(--bk-sqlite)">SQLite</span>
+      <span style="color:var(--sect-text-muted); font-size:11px; margin-left:auto">下方内容随选择实时更新</span>
+    </div>
+    <div class="probe-panel" id="probePanel"></div>
+  </div>
+</section>
+
+<section class="bi-section reveal reveal-d1" id="dialect" style="max-width:1240px;margin:0 auto;padding-left:var(--space-5,24px);padding-right:var(--space-5,24px)">
+  <span class="bi-section-tag">Section 05 · 同代码 · 不同 dialect</span>
+  <h2>同一份 ORM 代码 · <em>6 个 dialect 的 SQL</em></h2>
+  <p class="intro">backend 透明的最直接证据：<b>一份 ActiveRecord 代码 → 6 种数据库各自的方言 SQL</b>。下面以 <code>UPSERT</code>（最方言敏感的 DML）为例，看 <code>StorageBackend</code> 怎么把同一意图翻译到 6 种语法。差异部分用<span style="background:var(--sect-accent-soft); color:var(--sect-accent); padding:0 4px; border-radius:2px; font-family:var(--font-mono, 'JetBrains Mono', monospace); font-size:0.9em">高亮</span>标出。</p>
+
+  <div class="sql-diff">
+    <div class="sql-diff-input">
+      <div class="lab">同一份 ORM 代码（不变）</div>
+      User.<span class="fn">upsert</span>(<br>
+      &nbsp;&nbsp;{<span class="str">"email"</span>: <span class="str">"alice@example.com"</span>, <span class="str">"name"</span>: <span class="str">"Alice"</span>, <span class="str">"login_count"</span>: <span class="kw">1</span>},<br>
+      &nbsp;&nbsp;conflict_on<span class="op">=</span>[<span class="str">"email"</span>],<br>
+      &nbsp;&nbsp;update_on_conflict<span class="op">=</span>{<span class="str">"login_count"</span>: User.c.login_count <span class="op">+</span> <span class="kw">1</span>}<br>
+      )
+    </div>
+
+    <div class="sql-diff-grid">
+      <div class="sql-out pg">
+        <div class="head">→ PostgreSQL</div>
+        <div class="body">
+          <span class="skw">INSERT INTO</span> <span class="stbl">users</span>(email, name, login_count)<br>
+          <span class="skw">VALUES</span> (?, ?, <span class="sval">1</span>)<br>
+          <span class="delta">ON CONFLICT (email) DO UPDATE SET</span><br>
+          &nbsp;&nbsp;login_count <span class="delta">= users.login_count + 1</span>;
+        </div>
+      </div>
+      <div class="sql-out mysql">
+        <div class="head">→ MySQL</div>
+        <div class="body">
+          <span class="skw">INSERT INTO</span> <span class="stbl">users</span>(email, name, login_count)<br>
+          <span class="skw">VALUES</span> (?, ?, <span class="sval">1</span>)<br>
+          <span class="delta">ON DUPLICATE KEY UPDATE</span><br>
+          &nbsp;&nbsp;login_count <span class="delta">= login_count + 1</span>;
+        </div>
+      </div>
+      <div class="sql-out maria">
+        <div class="head">→ MariaDB</div>
+        <div class="body">
+          <span class="skw">INSERT INTO</span> <span class="stbl">users</span>(email, name, login_count)<br>
+          <span class="skw">VALUES</span> (?, ?, <span class="sval">1</span>)<br>
+          <span class="delta">ON DUPLICATE KEY UPDATE</span><br>
+          &nbsp;&nbsp;login_count <span class="delta">= login_count + 1</span>;
+        </div>
+      </div>
+      <div class="sql-out sqlite">
+        <div class="head">→ SQLite (3.24+)</div>
+        <div class="body">
+          <span class="skw">INSERT INTO</span> <span class="stbl">users</span>(email, name, login_count)<br>
+          <span class="skw">VALUES</span> (?, ?, <span class="sval">1</span>)<br>
+          <span class="delta">ON CONFLICT(email) DO UPDATE SET</span><br>
+          &nbsp;&nbsp;login_count <span class="delta">= login_count + 1</span>;
+        </div>
+      </div>
+      <div class="sql-out oracle">
+        <div class="head">→ Oracle</div>
+        <div class="body">
+          <span class="delta">MERGE INTO</span> <span class="stbl">users</span> u<br>
+          <span class="delta">USING</span> (<span class="skw">SELECT</span> ? email, ? name <span class="skw">FROM DUAL</span>) src<br>
+          <span class="delta">ON</span> (u.email <span class="op">=</span> src.email)<br>
+          <span class="delta">WHEN MATCHED THEN UPDATE SET</span> login_count <span class="op">=</span> login_count <span class="op">+</span> <span class="sval">1</span><br>
+          <span class="delta">WHEN NOT MATCHED THEN INSERT</span> (...) <span class="skw">VALUES</span> (...);
+        </div>
+      </div>
+      <div class="sql-out mssql">
+        <div class="head">→ SQL Server</div>
+        <div class="body">
+          <span class="delta">MERGE INTO</span> <span class="stbl">users</span> <span class="skw">AS</span> u<br>
+          <span class="delta">USING</span> (<span class="skw">VALUES</span> (?, ?, <span class="sval">1</span>)) <span class="skw">AS</span> src(email, name, lc)<br>
+          <span class="delta">ON</span> u.email <span class="op">=</span> src.email<br>
+          <span class="delta">WHEN MATCHED THEN UPDATE SET</span> login_count <span class="op">=</span> login_count <span class="op">+</span> <span class="sval">1</span><br>
+          <span class="delta">WHEN NOT MATCHED THEN INSERT</span> (...) <span class="skw">VALUES</span> (...);
+        </div>
+      </div>
     </div>
   </div>
-  <div class="dropdown" data-dropdown="lang">
-    <button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
-      <span class="dropdown-label" data-i18n="control.lang_label">Language</span>
-      <span class="dropdown-value"></span>
-      <svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="dropdown-menu" role="listbox">
-      <button class="dropdown-item is-active" data-value="zh-cn"><span class="dropdown-item-label">简体中文</span><span class="dropdown-item-kbd">&#8997;Q</span></button>
-      <button class="dropdown-item" data-value="en-us"><span class="dropdown-item-label">English</span><span class="dropdown-item-kbd">&#8997;W</span></button>
+
+  <p class="intro" style="margin-top:var(--space-5,24px); font-size:14px">
+    <b>这就是 backend 抽象的价值</b>——你不需要记住 6 种 UPSERT 语法、哪个版本支持 RETURNING、Oracle 和 MSSQL 必须用 MERGE 的细节。<code>StorageBackend</code> 对应的 dialect 类负责把<b>同一意图</b>编译到正确的 SQL。同样的差异在 INTERSECT/EXCEPT、JSON 路径、窗口函数 OVER 子句、自增主键 RETURNING 上都存在。
+  </p>
+</section>
+
+<section class="bi-section reveal reveal-d1" id="decision" style="max-width:1240px;margin:0 auto;padding-left:var(--space-5,24px);padding-right:var(--space-5,24px)">
+  <span class="bi-section-tag">Section 06 · 决策</span>
+  <h2>选哪个后端 · <em>三句话决定</em></h2>
+  <p class="intro">没有"<i>最好的后端</i>"——只有"<i>最适合你这个阶段、这个团队、这个部署环境的后端</i>"。下面三个典型场景给出推荐，<b>同一个项目可以分阶段切换</b>（开发用 SQLite、生产用 PG），ActiveRecord 代码不变。</p>
+
+  <div class="dec-grid">
+    <div class="dec-card">
+      <div class="stage">阶段 · 开发 / 测试</div>
+      <h3>SQLite</h3>
+      <div class="reco">推荐 → <b>SQLite</b><br>无服务器，单文件</div>
+      <p>开发期间 zero-setup（<code>pip install</code> 即可），测试用例每次创建新内存数据库（<code>:memory:</code>），CI 跑得飞快。3.8.3+ 已支持 CTE，3.24+ 支持 UPSERT，3.25+ 支持窗口函数——日常 ORM 能力齐全。</p>
+    </div>
+    <div class="dec-card">
+      <div class="stage">阶段 · 中小型生产</div>
+      <h3>PostgreSQL</h3>
+      <div class="reco">推荐 → <b>PostgreSQL ≥ 14</b><br>能力最齐</div>
+      <p>新项目<b>首选 PG</b>。CTE / 递归 / JSONB / ARRAY / UPSERT / 窗口函数<b>全部原生</b>，索引类型最丰富（GIN / GiST / BRIN），<code>EXPLAIN (ANALYZE, BUFFERS)</code> 输出最详细。异步驱动 asyncpg 性能最好。</p>
+    </div>
+    <div class="dec-card">
+      <div class="stage">阶段 · 企业部署</div>
+      <h3>Oracle / SQL Server</h3>
+      <div class="reco">推荐 → <b>看 IT 既有栈</b><br>团队熟悉度优先</div>
+      <p>如果公司已经有 DBA 团队、合规要求、企业许可——继续用 Oracle 或 SQL Server 没问题。<code>StorageBackend</code> 透明处理 MERGE / MINUS / OUTPUT 等方言差异。MariaDB 在<b>需要 temporal 表</b>或<b>避开 Oracle 收购版 MySQL</b>时是 MySQL 的合理替代。</p>
     </div>
   </div>
-</header>
-  <main class="page">
-    <section class="hero section">
-      <div class="container hero-inner">
-        <div class="hero-eyebrow rise" data-i18n="hero.eyebrow">Pluggable Backends</div>
-        <h1 class="hero-title rise" data-i18n="hero.title">用 <em>Backend ABC</em> 写你的数据库。</h1>
-        <p class="hero-sub rise" data-i18n="hero.sub">后端可插拔，一套 API 兼容多方言。</p>
-      </div>
-    </section>
-    <section class="section">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-label" data-i18n="backends.label">Supported</div>
-          <h2 class="section-title" data-i18n="backends.title">选择你的<em>后端</em>。</h2>
-        </div>
-        <div class="features-grid">
-          <a href="./sqlite.html" class="feature rise">
-            <div class="feature-num">01 / SQLite</div>
-            <div class="feature-icon db-icon" data-light="003B57" data-dark="EEE"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/sqlite.svg" alt="SQLite" style="height:32px;max-width:100%;object-fit:contain;"></div>
-            <h3 class="feature-title">SQLite</h3>
-            <p class="feature-desc" data-i18n="backends.sqlite.desc">内置、零依赖、单文件。WAL 并发，PRAGMA 精细控制。</p>
-            <span class="feature-tag">Built-in</span>
-          </a>
-          <a href="./postgres.html" class="feature rise">
-            <div class="feature-num">02 / PostgreSQL</div>
-            <div class="feature-icon db-icon" data-light="336791" data-dark="EEE"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/postgresql.svg" alt="PostgreSQL" style="height:32px;max-width:100%;object-fit:contain;"></div>
-            <h3 class="feature-title">PostgreSQL</h3>
-            <p class="feature-desc" data-i18n="backends.postgres.desc">30+ 扩展生态，Advisory Lock，DEFERRABLE 事务，向量搜索。</p>
-            <span class="feature-tag">Stable</span>
-          </a>
-          <a href="./mysql.html" class="feature rise">
-            <div class="feature-num">03 / MySQL</div>
-            <div class="feature-icon db-icon" data-light="4479A1" data-dark="EEE"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/mysql.svg" alt="MySQL" style="height:32px;max-width:100%;object-fit:contain;"></div>
-            <h3 class="feature-title">MySQL</h3>
-            <p class="feature-desc" data-i18n="backends.mysql.desc">JSON、全文搜索、空间数据、分区表、17 种 SHOW 命令。</p>
-            <span class="feature-tag">Beta</span>
-          </a>
-          <a href="./mariadb.html" class="feature rise">
-            <div class="feature-num">04 / MariaDB</div>
-            <div class="feature-icon db-icon" data-light="003545" data-dark="EEE"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/mariadb.svg" alt="MariaDB" style="height:32px;max-width:100%;object-fit:contain;"></div>
-            <h3 class="feature-title">MariaDB</h3>
-            <p class="feature-desc" data-i18n="backends.mariadb.desc">SEQUENCE、RETURNING、系统版本化表、INTERSECT/EXCEPT。</p>
-            <span class="feature-tag">Beta</span>
-          </a>
-          <a href="./sqlserver.html" class="feature rise">
-            <div class="feature-num">05 / SQL Server</div>
-            <div class="feature-icon db-icon" data-light="CC2927" data-dark="EEE"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/microsoftsqlserver.svg" alt="SQL Server" style="height:32px;max-width:100%;object-fit:contain;"></div>
-            <h3 class="feature-title">SQL Server</h3>
-            <p class="feature-desc" data-i18n="backends.sqlserver.desc">OUTPUT 子句、SNAPSHOT 隔离、CROSS/OUTER APPLY、表提示。</p>
-            <span class="feature-tag">Beta</span>
-          </a>
-          <a href="./oracle.html" class="feature rise">
-            <div class="feature-num">06 / Oracle</div>
-            <div class="feature-icon db-icon" data-light="F80000" data-dark="EEE"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/oracle.svg" alt="Oracle" style="height:32px;max-width:100%;object-fit:contain;"></div>
-            <h3 class="feature-title">Oracle</h3>
-            <p class="feature-desc" data-i18n="backends.oracle.desc">层次查询 CONNECT BY、PIVOT/UNPIVOT、Flashback、MERGE。</p>
-            <span class="feature-tag">Alpha</span>
-          </a>
-          <a href="./develop.html" class="feature rise">
-            <div class="feature-num">07 / Develop</div>
-            <div class="feature-icon db-icon" data-light="6C31B3" data-dark="EEE"><img src="https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/python.svg" alt="Develop" style="height:32px;max-width:100%;object-fit:contain;"></div>
-            <h3 class="feature-title" data-i18n="backends.develop.title">Develop</h3>
-            <p class="feature-desc" data-i18n="backends.develop.desc">实现 Backend ABC，33 协议驱动，命名空间包架构。</p>
-            <span class="feature-tag">Guide</span>
-          </a>
-        </div>
-      </div>
-    </section>
-    <section class="section">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-label" data-i18n="architecture.label">Architecture</div>
-          <h2 class="section-title" data-i18n="architecture.title">表达式-方言-后端。</h2>
-        </div>
-        <div class="features-grid">
-          <div class="feature rise">
-            <div class="feature-num">01 / Expression</div>
-            <h3 class="feature-title">Expression</h3>
-            <p class="feature-desc" data-i18n="architecture.expression">收集语义参数，不含 SQL 细节。BaseExpression.to_sql(dialect) 委托方言生成目标 SQL。</p>
-          </div>
-          <div class="feature rise">
-            <div class="feature-num">02 / Dialect</div>
-            <h3 class="feature-title">Dialect</h3>
-            <p class="feature-desc" data-i18n="architecture.dialect">format_*() 方法生成目标数据库 SQL。33 @runtime_checkable 协议声明能力边界。</p>
-          </div>
-          <div class="feature rise">
-            <div class="feature-num">03 / Backend</div>
-            <h3 class="feature-title">Backend</h3>
-            <p class="feature-desc" data-i18n="architecture.backend">执行 SQL、管理连接、处理结果。12 层 Mixin MRO 组合，Template Method 模式。</p>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="section">
-      <div class="container">
-        <div class="feature-split">
-          <div class="feature-split-text">
-            <div class="section-label" data-i18n="sync_async.label">Sync / Async</div>
-            <h2 class="section-title" data-i18n="sync_async.title">同步/异步<em>对等</em>。</h2>
-            <p class="section-intro" data-i18n="sync_async.desc">StorageBackend / AsyncStorageBackend API 完全一致，切换成本为零。非 I/O 逻辑放 Mixin 共享，I/O 逻辑分别实现。</p>
-          </div>
-          <div class="feature-visual">
-            <div class="code-block"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">sync_async.py</span></div>
-            <div class="code-body"><pre><span class="tok-c"># 同步 — SQLite</span>
-<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlite <span class="tok-k">import</span> <span class="tok-cls">SQLiteBackend</span>
-backend = <span class="tok-cls">SQLiteBackend</span>(database=<span class="tok-s">'app.db'</span>)
-backend.connect()
-result = backend.execute(<span class="tok-s">"SELECT 1"</span>)
 
-<span class="tok-c"># 异步 — 同样的 API</span>
-<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlite <span class="tok-k">import</span> <span class="tok-cls">AsyncSQLiteBackend</span>
-async_backend = <span class="tok-cls">AsyncSQLiteBackend</span>(database=<span class="tok-s">'app.db'</span>)
-<span class="tok-k">await</span> async_backend.connect()
-result = <span class="tok-k">await</span> async_backend.execute(<span class="tok-s">"SELECT 1"</span>)</pre></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="section">
-      <div class="container">
-        <div class="feature-split">
-          <div class="feature-split-text">
-            <div class="section-label" data-i18n="protocol_driven.label">Protocol Driven</div>
-            <h2 class="section-title" data-i18n="protocol_driven.title">协议<em>驱动</em>。</h2>
-            <p class="section-intro" data-i18n="protocol_driven.desc">@runtime_checkable 协议检测后端能力，不支持的特性抛出 UnsupportedFeatureError 而非静默失败。isinstance(dialect, Protocol) 安全使用。</p>
-          </div>
-          <div class="feature-visual">
-            <div class="code-block"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">protocol_check.py</span></div>
-            <div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.dialect.protocols <span class="tok-k">import</span> (
-    <span class="tok-cls">CTESupport</span>, <span class="tok-cls">ReturningSupport</span>, <span class="tok-cls">MergeSupport</span>
-)
+  <p class="intro" style="margin-top:var(--space-5,24px); font-size:14px">
+    <b>不变的是 ActiveRecord 代码</b>——业务逻辑、查询、模型定义不会因为切换后端而修改。这意味着<b>从 SQLite 平滑升级到 PG / 从 MySQL 迁移到 PG</b> 是可行路径，<b>不需要重写应用层</b>。当然 schema migration 仍然需要规划（不同后端的列类型、索引语法不同）——见 <a href="./named-resources/">named-resources</a>。
+  </p>
+</section>
 
-dialect = backend.dialect
+<section class="bi-section reveal reveal-d1" id="next" style="max-width:1240px;margin:0 auto;padding-left:var(--space-5,24px);padding-right:var(--space-5,24px)">
+  <span class="bi-section-tag">延伸阅读</span>
+  <h2>深入 backends</h2>
 
-<span class="tok-k">if</span> <span class="tok-f">isinstance</span>(dialect, <span class="tok-cls">CTESupport</span>):
-    <span class="tok-c"># 安全使用 CTE</span>
-    query.with_(cte)
-<span class="tok-k">elif</span> <span class="tok-f">isinstance</span>(dialect, <span class="tok-cls">ReturningSupport</span>):
-    query.returning(User.c.id)
-<span class="tok-k">else</span>:
-    <span class="tok-k">raise</span> <span class="tok-cls">UnsupportedFeatureError</span>(<span class="tok-s">'...'</span>)</pre></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <section class="section">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-label" data-i18n="comparison.label">Comparison</div>
-          <h2 class="section-title" data-i18n="comparison.title">后端<em>对比</em>。</h2>
-        </div>
-        <div style="overflow-x: auto;">
-          <table class="data-table striped">
-            <thead>
-              <tr>
-                <th data-i18n="comparison.headers.feature">Feature</th>
-                <th data-i18n="comparison.headers.sqlite">SQLite</th>
-                <th data-i18n="comparison.headers.mysql">MySQL</th>
-                <th data-i18n="comparison.headers.postgres">PostgreSQL</th>
-                <th data-i18n="comparison.headers.mariadb">MariaDB</th>
-                <th data-i18n="comparison.headers.oracle">Oracle</th>
-                <th data-i18n="comparison.headers.sqlserver">SQL Server</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td data-i18n="comparison.rows.cte">CTE</td>
-                <td><span class="badge badge-success">3.8.3+</span></td>
-                <td><span class="badge badge-success">8.0+</span></td>
-                <td><span class="badge badge-success">8.0+</span></td>
-                <td><span class="badge badge-success">10.2+</span></td>
-                <td><span class="badge badge-success">11g+</span></td>
-                <td><span class="badge badge-success">2012+</span></td>
-              </tr>
-              <tr>
-                <td data-i18n="comparison.rows.window">Window Functions</td>
-                <td><span class="badge badge-success">3.25+</span></td>
-                <td><span class="badge badge-success">8.0+</span></td>
-                <td><span class="badge badge-success">8.4+</span></td>
-                <td><span class="badge badge-success">10.2+</span></td>
-                <td><span class="badge badge-success">12c+</span></td>
-                <td><span class="badge badge-success">2012+</span></td>
-              </tr>
-              <tr>
-                <td data-i18n="comparison.rows.returning">RETURNING</td>
-                <td><span class="badge badge-success">3.35+</span></td>
-                <td><span class="badge badge-neutral">No</span></td>
-                <td><span class="badge badge-success">8.2+</span></td>
-                <td><span class="badge badge-success">10.5+</span></td>
-                <td><span class="badge badge-success">All</span></td>
-                <td><span class="badge badge-info">OUTPUT</span></td>
-              </tr>
-              <tr>
-                <td data-i18n="comparison.rows.merge">MERGE</td>
-                <td><span class="badge badge-neutral">No</span></td>
-                <td><span class="badge badge-neutral">No</span></td>
-                <td><span class="badge badge-success">15+</span></td>
-                <td><span class="badge badge-neutral">No</span></td>
-                <td><span class="badge badge-success">All</span></td>
-                <td><span class="badge badge-success">2008+</span></td>
-              </tr>
-              <tr>
-                <td data-i18n="comparison.rows.lateral">LATERAL</td>
-                <td><span class="badge badge-neutral">No</span></td>
-                <td><span class="badge badge-success">8.0+</span></td>
-                <td><span class="badge badge-success">9.3+</span></td>
-                <td><span class="badge badge-success">10.2+</span></td>
-                <td><span class="badge badge-info">APPLY</span></td>
-                <td><span class="badge badge-info">APPLY</span></td>
-              </tr>
-              <tr>
-                <td data-i18n="comparison.rows.json">JSON</td>
-                <td><span class="badge badge-success">3.9+</span></td>
-                <td><span class="badge badge-success">5.7+</span></td>
-                <td><span class="badge badge-success">9.2+</span></td>
-                <td><span class="badge badge-success">10.2+</span></td>
-                <td><span class="badge badge-success">12.2+</span></td>
-                <td><span class="badge badge-success">2016+</span></td>
-              </tr>
-              <tr>
-                <td data-i18n="comparison.rows.array">Array</td>
-                <td><span class="badge badge-neutral">No</span></td>
-                <td><span class="badge badge-neutral">No</span></td>
-                <td><span class="badge badge-success">All</span></td>
-                <td><span class="badge badge-neutral">No</span></td>
-                <td><span class="badge badge-neutral">No</span></td>
-                <td><span class="badge badge-neutral">No</span></td>
-              </tr>
-              <tr>
-                <td data-i18n="comparison.rows.ilike">ILIKE</td>
-                <td><span class="badge badge-info">GLOB</span></td>
-                <td><span class="badge badge-neutral">No</span></td>
-                <td><span class="badge badge-success">All</span></td>
-                <td><span class="badge badge-neutral">No</span></td>
-                <td><span class="badge badge-neutral">No</span></td>
-                <td><span class="badge badge-neutral">No</span></td>
-              </tr>
-              <tr>
-                <td data-i18n="comparison.rows.upsert">Upsert</td>
-                <td><span class="badge badge-success">ON CONFLICT</span></td>
-                <td><span class="badge badge-success">ON DUPLICATE KEY</span></td>
-                <td><span class="badge badge-success">ON CONFLICT</span></td>
-                <td><span class="badge badge-success">ON DUPLICATE KEY</span></td>
-                <td><span class="badge badge-info">MERGE</span></td>
-                <td><span class="badge badge-info">MERGE</span></td>
-              </tr>
-              <tr>
-                <td data-i18n="comparison.rows.partition">Partition</td>
-                <td><span class="badge badge-neutral">No</span></td>
-                <td><span class="badge badge-success">5.1+</span></td>
-                <td><span class="badge badge-success">10+</span></td>
-                <td><span class="badge badge-success">10.2+</span></td>
-                <td><span class="badge badge-success">All</span></td>
-                <td><span class="badge badge-success">2012+</span></td>
-              </tr>
-              <tr>
-                <td data-i18n="comparison.rows.savepoint">Savepoint</td>
-                <td><span class="badge badge-success">3.6+</span></td>
-                <td><span class="badge badge-success">All</span></td>
-                <td><span class="badge badge-success">All</span></td>
-                <td><span class="badge badge-success">All</span></td>
-                <td><span class="badge badge-success">All</span></td>
-                <td><span class="badge badge-success">All</span></td>
-              </tr>
-              <tr>
-                <td data-i18n="comparison.rows.async_driver">Async Driver</td>
-                <td>sqlite3 / aiosqlite</td>
-                <td>mysql-connector / aiomysql</td>
-                <td>psycopg / psycopg</td>
-                <td>mariadb / aiomysql</td>
-                <td>oracledb / oracledb</td>
-                <td>pyodbc / aioodbc</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-    <section class="section">
-      <div class="container">
-        <div class="feature-split">
-          <div class="feature-split-text">
-            <div class="section-label" data-i18n="abc.label">Backend ABC</div>
-            <h2 class="section-title" data-i18n="abc.title">写你自己的<em>后端</em>，也就几十行。</h2>
-            <p class="section-intro" data-i18n="abc.intro">实现 Backend 接口，即可接入新数据库。12 层 Mixin MRO 组合，33 协议驱动，命名空间包架构自动发现。</p>
-          </div>
-          <div class="feature-visual">
-            <div class="code-block"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">my_backend.py</span></div>
-            <div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend <span class="tok-k">import</span> <span class="tok-cls">Backend</span>
+  <div class="crosslinks">
+    <a class="crosslink" href="./architecture.html">
+      <div class="arrow">→ 架构详解</div>
+      <h3>StorageBackend 内部</h3>
+      <p>execute / fetch / capabilities 三个核心方法，dialect 类的职责，连接池如何与 backend 解耦。</p>
+    </a>
+    <a class="crosslink" href="./compare.html">
+      <div class="arrow">→ 横向对比</div>
+      <h3>6 后端深度对比</h3>
+      <p>各家在<b>性能、生态、运维难度、许可</b>上的差异。每项对比都来自 testsuite，无营销数字。</p>
+    </a>
+    <a class="crosslink" href="./capabilities-matrix.html">
+      <div class="arrow">→ 完整矩阵</div>
+      <h3>30+ 特性矩阵</h3>
+      <p>本页是 12 项核心特性。完整矩阵展开 30+ 项（partial index、generated column、check constraint 等）。</p>
+    </a>
+    <a class="crosslink" href="./named-resources/">
+      <div class="arrow">→ named-resources</div>
+      <h3>命名查询 / 命名过程</h3>
+      <p>每个 backend 都可以挂自己的 named query 库（如 PG-only 的 JSON 查询）——见 named-resources。</p>
+    </a>
+  </div>
+</section>
 
-<span class="tok-k">class</span> <span class="tok-cls">MyBackend</span>(<span class="tok-cls">Backend</span>):
-  <span class="tok-k">async def</span> <span class="tok-f">execute</span>(<span class="tok-self">self</span>, sql, params):
-    <span class="tok-c"># ... your implementation</span>
-    <span class="tok-k">pass</span></pre></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <footer class="footer">
+<script>
+(function(){
+  const slot = document.getElementById('L3');
+  const others = ['L1','L2'].map(id => document.getElementById(id));
+  if (!slot) return;
+  slot.addEventListener('mouseenter', () => others.forEach(l => l.classList.add('dim')));
+  slot.addEventListener('mouseleave', () => others.forEach(l => l.classList.remove('dim')));
+})();
 
-    <div>&copy; rhosocial &middot; rhosocial-activerecord &middot; Apache 2.0</div>
-    <div data-i18n="footer.hotkeys">25 themes · <span class="kbd">Ctrl</span>+<span class="kbd">key</span> theme / <span class="kbd">Alt</span>+<span class="kbd">key</span> lang</div>
-  </footer>
+(function(){
+  const data = {
+    pg: { name:'PostgreSQL', color:'var(--bk-pg)',
+      install:'pip install rhosocial-activerecord-postgres',
+      sub:'./postgres.html',
+      feats:[
+        ['● ', '<b>CTE / 递归 CTE</b>', '完整支持，无版本限制'],
+        ['● ', '<b>JSON / JSONB</b>', '路径查询、索引、操作符全套'],
+        ['● ', '<b>ARRAY 类型</b>', '原生数组，可索引可查询'],
+        ['● ', '<b>UPSERT</b>', 'ON CONFLICT DO UPDATE'],
+        ['● ', '<b>RETURNING 子句</b>', 'INSERT/UPDATE/DELETE 都可用'],
+        ['● ', '<b>异步驱动</b>', 'asyncpg（性能最好）']
+      ]},
+    mysql: { name:'MySQL', color:'var(--bk-mysql)',
+      install:'pip install rhosocial-activerecord-mysql',
+      sub:'./mysql.html',
+      feats:[
+        ['◐ ', '<b>CTE</b>', '需要 8.0+；旧版本编译期报错'],
+        ['◐ ', '<b>JSON</b>', '路径查询，但是字符串型存储'],
+        ['— ', '<b>ARRAY 类型</b>', '不支持，可用 JSON 数组替代'],
+        ['◐ ', '<b>UPSERT</b>', 'ON DUPLICATE KEY UPDATE'],
+        ['◐ ', '<b>窗口函数</b>', '需要 8.0+'],
+        ['● ', '<b>异步驱动</b>', 'aiomysql']
+      ]},
+    maria: { name:'MariaDB', color:'var(--bk-maria)',
+      install:'pip install rhosocial-activerecord-mariadb',
+      sub:'./mariadb.html',
+      feats:[
+        ['◐ ', '<b>CTE</b>', '需要 10.2+'],
+        ['◐ ', '<b>系统版本表</b>', '独有特性 · TEMPORAL'],
+        ['◐ ', '<b>序列</b>', '10.3+ · CREATE SEQUENCE'],
+        ['◐ ', '<b>RETURNING</b>', '10.5+ 起支持'],
+        ['◐ ', '<b>不可见列</b>', '10.3+ · INVISIBLE'],
+        ['● ', '<b>异步驱动</b>', '复用 aiomysql']
+      ]},
+    sqlite: { name:'SQLite', color:'var(--bk-sqlite)',
+      install:'pip install rhosocial-activerecord  # 内置，无需额外安装',
+      sub:'./sqlite.html',
+      feats:[
+        ['◐ ', '<b>CTE</b>', '3.8.3+'],
+        ['◐ ', '<b>UPSERT</b>', '3.24+ · ON CONFLICT'],
+        ['◐ ', '<b>窗口函数</b>', '3.25+'],
+        ['◐ ', '<b>JSON</b>', '需要 JSON1 扩展'],
+        ['● ', '<b>无服务器</b>', '单文件 · :memory: 数据库'],
+        ['● ', '<b>异步驱动</b>', 'aiosqlite']
+      ]},
+    oracle: { name:'Oracle', color:'var(--bk-oracle)',
+      install:'pip install rhosocial-activerecord-oracle',
+      sub:'./oracle.html',
+      feats:[
+        ['● ', '<b>CTE / 递归</b>', '完整支持'],
+        ['◐ ', '<b>EXCEPT 用 MINUS</b>', '编译期透明转换'],
+        ['◐ ', '<b>UPSERT 用 MERGE</b>', '编译期生成 MERGE INTO'],
+        ['● ', '<b>分区表</b>', '能力极强 · 多种分区策略'],
+        ['● ', '<b>窗口函数</b>', '历史最早的实现'],
+        ['◐ ', '<b>异步驱动</b>', 'oracledb async mode']
+      ]},
+    mssql: { name:'SQL Server', color:'var(--bk-mssql)',
+      install:'pip install rhosocial-activerecord-sqlserver',
+      sub:'./sqlserver.html',
+      feats:[
+        ['● ', '<b>CTE / 递归</b>', '完整支持'],
+        ['◐ ', '<b>UPSERT 用 MERGE</b>', 'MERGE INTO ... WHEN MATCHED'],
+        ['◐ ', '<b>RETURNING 用 OUTPUT</b>', 'OUTPUT INSERTED.*'],
+        ['● ', '<b>窗口函数</b>', '完整支持'],
+        ['● ', '<b>分区表</b>', '企业版'],
+        ['◐ ', '<b>异步驱动</b>', 'aioodbc']
+      ]}
+  };
+  const sel = document.getElementById('probeSel');
+  const badge = document.getElementById('probeBadge');
+  const panel = document.getElementById('probePanel');
+  const render = (key) => {
+    const d = data[key];
+    badge.textContent = d.name;
+    badge.style.background = d.color;
+    panel.innerHTML = `
+      <div style="color:${d.color}">
+        <h4 style="color:var(--sect-text-primary)">${d.name} · 你只看这一列</h4>
+        <p style="color:var(--sect-text-secondary); margin:0 0 var(--space-3,12px); font-size:14px">下面所有内容都是 ${d.name} 适用——其他后端的内容已隐藏。</p>
+        <div class="probe-install">$ ${d.install}</div>
+        <p style="font-size:13px; margin:var(--space-3,12px) 0 var(--space-2,8px); color:var(--sect-text-muted); font-family:var(--font-mono, 'JetBrains Mono', monospace); letter-spacing:0.08em; text-transform:uppercase">更多 →</p>
+        <a href="${d.sub}" style="color:${d.color}; font-family:var(--font-mono, 'JetBrains Mono', monospace); font-size:13px; font-weight:700">${d.sub} · setup / capabilities / dialect / ops →</a>
+      </div>
+      <div style="color:${d.color}">
+        <p style="font-family:var(--font-mono, 'JetBrains Mono', monospace); font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--sect-text-muted); margin:0 0 var(--space-3,12px); font-weight:700">能力清单</p>
+        <ul class="probe-feats">
+          ${d.feats.map(([b,t,n]) => `<li><span class="bullet">${b}</span> ${t} <span style="color:var(--sect-text-muted); font-size:13px">— ${n}</span></li>`).join('')}
+        </ul>
+      </div>
+    `;
+  };
+  render('sqlite');
+  sel.addEventListener('change', e => render(e.target.value));
+})();
+</script>
+
+<script src="../assets/shared-footer.js"></script>
 </main>
 <script>
-const html = document.documentElement;
 
-const THEMES = [
   'terminal','editorial','brutalist','aurora','synthwave','sumi','blueprint','noir','riso','nordic',
   'solarpunk','mocha','wireframe','anderson','tokyo','memphis','chalkboard','matrix','steel',
   'frutiger','newsprint','candy','botanical','cyberpunk','parchment','glassmorphism'
 ];
-const FONTS = [
   'auto','tight','serif','geometric','heavy','allmono','reader','display-serif','neo-future','plex',
   'playful','classic-serif','pixel','monumental','slab','condensed','expressive','deco','stencil',
   'rubik','bricolage','gloock','crimson','dm','outfit','literata'
 ];
-const LANGS = ['zh-cn','en-us'];
-const QWERTY = 'qwertyuiopasdfghjklzxcvbnm';
-const NUMERIC = '1234567890-';
-const BASE_IDX = QWERTY.length;
 
 /* i18n */
-const LANG_COLLAPSE = {
   zh: 'zh-cn', en: 'en-us', fr: 'fr-fr', ru: 'ru-ru', es: 'es-es', ar: 'ar',
   ja: 'ja-jp', de: 'de-de', ko: 'ko-kr', pt: 'pt-pt', nl: 'nl-nl', it: 'it-it',
   tr: 'tr-tr', el: 'el-gr', hi: 'hi-in',
@@ -472,7 +849,6 @@ const LANG_COLLAPSE = {
   th: 'th-th', uk: 'uk-ua', fa: 'fa-ir', bn: 'bn-bd', ro: 'ro-ro', cs: 'cs-cz'
 };
 
-function matchLang(tag) {
   if (!tag) return null;
   const lower = String(tag).toLowerCase();
   if (LANGS.indexOf(lower) !== -1) return lower;
@@ -480,7 +856,6 @@ function matchLang(tag) {
   return LANG_COLLAPSE[primary] || null;
 }
 
-function detectInitialLang() {
   try {
     const url = new URLSearchParams(location.search).get('lang');
     const m = matchLang(url);
@@ -501,13 +876,10 @@ function detectInitialLang() {
   return 'en-us';
 }
 
-let currentLang = detectInitialLang();
 
-function get(path, dict) {
   return path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), dict);
 }
 
-function applyI18n() {
   const dict = window.I18N && window.I18N[currentLang];
   if (!dict) return;
   document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -523,7 +895,6 @@ function applyI18n() {
   refreshDropdownValueLabel('lang', currentLang);
 }
 
-function refreshDropdownValueLabel(kind, value) {
   const dd = document.querySelector('[data-dropdown="' + kind + '"]');
   if (!dd) return;
   const item = dd.querySelector('.dropdown-item[data-value="' + value + '"]');
@@ -532,7 +903,6 @@ function refreshDropdownValueLabel(kind, value) {
   if (valueEl) valueEl.textContent = item.querySelector('.dropdown-item-label')?.textContent || value;
 }
 
-function setValue(kind, value) {
   if (kind === 'lang') {
     currentLang = value;
     html.setAttribute('lang', value);
@@ -555,7 +925,6 @@ function setValue(kind, value) {
   if (valueEl && activatedLabel) valueEl.textContent = activatedLabel;
 }
 
-function closeAllDropdowns(except) {
   document.querySelectorAll('.dropdown.is-open').forEach(d => {
     if (d !== except) {
       d.classList.remove('is-open');
@@ -564,7 +933,6 @@ function closeAllDropdowns(except) {
   });
 }
 
-document.querySelectorAll('[data-dropdown]').forEach(dd => {
   const trigger = dd.querySelector('.dropdown-trigger');
   const kind = dd.getAttribute('data-dropdown');
   trigger.addEventListener('click', e => {
@@ -641,6 +1009,49 @@ function updateDbIconColors() {
   });
 }
 updateDbIconColors();
+
+// ═══════════════════════════════════════════════════════════════
+// Backend Cards — JS rendered horizontal scroll
+// ═══════════════════════════════════════════════════════════════
+(function(){
+  var backends = [
+    { cls:'pg',    href:'./postgres.html', ver:'v9.4 +',     name:'PostgreSQL', desc:'推荐生产首选。CTE / JSON / 数组 / UPSERT / 窗口函数<b>样样齐全</b>，索引类型最丰富。', tags:'· CTE · JSONB · ARRAY · UPSERT · WINDOW' },
+    { cls:'mysql',  href:'./mysql.html',    ver:'v8.0 +',     name:'MySQL',      desc:'最广为部署的开源数据库。8.0 起 CTE / 窗口函数齐全，是 PG 之外的稳健选择。',      tags:'· CTE 8.0+ · JSON · ON DUP KEY · WINDOW' },
+    { cls:'maria',  href:'./mariadb.html',   ver:'v10.2 +',    name:'MariaDB',    desc:'MySQL 的兼容分支，<b>系统版本表（temporal）</b>等独有特性。10.3+ 有序列。',    tags:'· CTE 10.2+ · TEMPORAL · SEQUENCE · INVISIBLE COL' },
+    { cls:'sqlite', href:'./sqlite.html',    ver:'v3.8.3 +',   name:'SQLite',     desc:'无服务器、单文件、<b>开发与测试首选</b>。3.24+ 有 UPSERT，3.25+ 有窗口函数。',   tags:'· CTE 3.8.3+ · UPSERT 3.24+ · WINDOW 3.25+' },
+    { cls:'oracle', href:'./oracle.html',    ver:'v11g +',     name:'Oracle',     desc:'企业部署常见。<b>分区表能力极强</b>，窗口函数最早出现。EXCEPT 用 MINUS。',      tags:'· CTE · MINUS · MERGE · PARTITION' },
+    { cls:'mssql',  href:'./sqlserver.html', ver:'v2012 +',    name:'SQL Server', desc:'微软生态首选。CTE / 窗口函数完整，MERGE 替代 UPSERT。',                            tags:'· CTE · MERGE · WINDOW · TEMPORAL' },
+  ];
+  var track = document.getElementById('bk-features-track');
+  if (track) {
+    for (var i = 0; i < backends.length; i++) {
+      var b = backends[i];
+      var card = document.createElement('a');
+      card.className = 'bk-card ' + b.cls;
+      card.href = b.href;
+      card.style.transitionDelay = (i * 0.05) + 's';
+      card.style.minWidth = '260px';
+      card.style.display = 'inline-block';
+      card.innerHTML = '<div class="ver">' + b.ver + '</div><div class="nm">' + b.name + '</div><p class="desc">' + b.desc + '</p><div class="tags"><b>标签</b> ' + b.tags + '</div>';
+      track.appendChild(card);
+    }
+  }
+})();
+
+// ═══════════════════════════════════════════════════════════════
+// Scroll Reveal
+// ═══════════════════════════════════════════════════════════════
+(function(){
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+})();
 </script>
 </body>
 </html>
