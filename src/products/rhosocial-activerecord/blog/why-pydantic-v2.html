@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="terminal" data-font="auto">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>rhosocial ActiveRecord — 为什么选择 Pydantic v2</title>
+<title>rhosocial ActiveRecord — 为什么我们选择 Pydantic v2 作为基类</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<script src="../assets/init-head.js"></script>
 <link rel="stylesheet" href="../assets/core.css">
 <link rel="stylesheet" href="../assets/themes/terminal.css">
 <link rel="stylesheet" href="../assets/themes/editorial.css">
@@ -60,10 +61,14 @@
 <link rel="stylesheet" href="../assets/fonts/dm.css">
 <link rel="stylesheet" href="../assets/fonts/outfit.css">
 <link rel="stylesheet" href="../assets/fonts/literata.css">
-<script src="first-post/zh-CN.js"></script>
-<script src="first-post/en-US.js"></script>
+<script src="why-pydantic-v2/zh-CN.js"></script>
+<script src="why-pydantic-v2/en-US.js"></script>
+<script src="../assets/state-manager.js"></script>
+<script src="../assets/theme-applier.js"></script>
+<script src="../assets/i18n.js"></script>
 <link rel="stylesheet" href="../assets/shared.css">
-<script src="../assets/shared-header.js" data-header-variant="blog"></script>
+<script src="../assets/control-bar.js" data-variant="blog"></script>
+<script src="../assets/shared-header.js"></script>
 </head>
 <body>
 <style>
@@ -96,8 +101,6 @@
   --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
   --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
   --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 9999px;
-  --border:           var(--border, rgba(255,255,255,0.08));
-  --border-strong:    var(--border-strong, rgba(255,255,255,0.16));
 }
 
 .reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
@@ -168,98 +171,94 @@ h3{font-size:1.2rem; margin-top:var(--space-6); margin-bottom:var(--space-3); co
     <div class="container">
       <a href="./index.html" class="back-link">&larr; <span data-i18n="hero.back">Back to Blog</span></a>
       <div class="eyebrow" data-i18n="hero.eyebrow">2026-05-12 · Design</div>
-      <h1 data-i18n="hero.title">为什么 ActiveRecord 选择 Pydantic v2 作为模型基类</h1>
+      <h1 data-i18n="hero.title">为什么我们选择 Pydantic v2 作为 ActiveRecord 的基类</h1>
       <p class="lead" data-i18n="hero.sub">类型安全、验证管道与 IDE 体验的取舍。</p>
     </div>
   </section>
 
-  <div class="container article-body">
-    <p><strong>2026-05-12</strong> · by rhosocial team</p>
+  <div id="post-body" class="container article-body" data-slug="why-pydantic-v2"></div>
 
-    <p class="lead">在设计和实现 rhosocial ActiveRecord 时，我们面临了一个关键决策：模型类的基类应该是什么？传统的 ORM 方案倾向于使用元类（metaclass）或装饰器来声明字段，但 ActiveRecord 选择了直接继承 Pydantic 的 <code>BaseModel</code>。这篇文章将解释这一决策背后的考量。</p>
+  <style>
+.series-nav {
+  margin: var(--space-8) 0 var(--space-4);
+  padding: var(--space-6);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  max-width: 780px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.series-nav-inner {
+  display: flex;
+  flex-direction: column;
+}
+.series-nav-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border);
+}
+.series-nav-label {
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent);
+}
+.series-nav-name {
+  font-family: var(--font-display); font-size: 1rem;
+  font-weight: 700; color: var(--text-primary);
+}
+.series-nav-list {
+  list-style: none; padding: 0; margin: 0;
+  display: flex; flex-direction: column; gap: var(--space-2);
+}
+.series-nav-item {
+  display: flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  transition: background 0.2s;
+}
+.series-nav-item.active {
+  background: var(--accent-soft);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+.series-nav-item.active::before {
+  content: '▸';
+  color: var(--accent);
+  font-family: var(--font-mono);
+}
+.series-nav-item.inactive {
+  color: var(--text-muted);
+}
+.series-nav-item.inactive::before {
+  content: '·';
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+.series-nav-item.inactive:hover {
+  background: var(--surface-2);
+}
+.series-nav-item.coming-soon {
+  color: var(--text-muted);
+  font-style: italic;
+  opacity: 0.6;
+}
+.series-nav-item.coming-soon::before {
+  content: '○';
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+</style>
 
-    <h2>选项对比</h2>
-    <p>在 Python ORM 生态中，模型定义大致有三种方案：</p>
-    <ul>
-      <li><strong>元类方案</strong>（如 SQLAlchemy 的 <code>declarative_base</code>）：通过元类拦截类创建过程，将类属性转换为特殊描述符。</li>
-      <li><strong>装饰器方案</strong>：用 <code>@model</code> 等装饰器标记类，在运行时改写类定义。</li>
-      <li><strong>继承方案</strong>：直接继承一个带字段系统的基类。</li>
-    </ul>
-    <p>继承方案最符合 Python 程序员的直觉。问题是：这个基类应该是 ORM 自研的，还是复用已有的成熟方案？</p>
+<div id="series-article-nav" class="container series-nav reveal reveal-d1" data-slug="why-pydantic-v2"></div>
 
-    <h2>为什么不是自研元类</h2>
-    <p>自研元类系统意味着我们需要自己实现：</p>
-    <ul>
-      <li>字段类型推导</li>
-      <li>数据验证管道（类型校验、自定义校验器）</li>
-      <li>序列化 / 反序列化（<code>model_dump</code> / <code>model_validate</code>）</li>
-      <li>JSON Schema 生成</li>
-      <li>IDE 类型补全支持</li>
-    </ul>
-    <p>这是一项巨大的工程。更重要的是，社区已经有 Pydantic 这样成熟、经过大规模验证的库。Pydantic v2 用 Rust 重写了核心校验引擎，性能相比 v1 提升了 5-50 倍。</p>
-
-    <div class="callout">
-      <strong>核心原则：</strong>不重复造轮子，除非现有轮子无法满足需求。Pydantic v2 不仅能满足需求，而且做得更好。
-    </div>
-
-    <h2>Pydantic v2 带来的好处</h2>
-
-    <h3>1. 类型安全</h3>
-    <p>Pydantic v2 完全基于 Python 类型注解。字段的类型就是 Python 类型，IDE 可以完美补全和类型检查：</p>
-
-<pre><span class="tok-kw">from</span> rhosocial.activerecord <span class="tok-kw">import</span> <span class="tok-cls">ActiveRecord</span>
-
-<span class="tok-kw">class</span> <span class="tok-cls">User</span>(<span class="tok-cls">ActiveRecord</span>):
-    id:    <span class="tok-builtin">int</span> | <span class="tok-builtin">None</span> = <span class="tok-kw">None</span>
-    name:  <span class="tok-builtin">str</span>
-    email: <span class="tok-builtin">str</span>
-    age:   <span class="tok-builtin">int</span> = <span class="tok-num">0</span></pre>
-
-    <p>由于 <code>ActiveRecord</code> 直接继承 <code>BaseModel</code>，所有字段都是标准的 Pydantic 字段。这意味着：</p>
-    <ul>
-      <li>Pyright / mypy / PyCharm 都能正确推导每个字段的类型</li>
-      <li>实例化时传错类型会得到 IDE 即时反馈</li>
-      <li><code>model_dump()</code> / <code>model_validate()</code> 等序列化方法开箱即用</li>
-    </ul>
-
-    <h3>2. 验证管道</h3>
-    <p>Pydantic v2 的验证器系统允许在字段级别和模型级别添加校验逻辑：</p>
-
-<pre><span class="tok-kw">from</span> pydantic <span class="tok-kw">import</span> <span class="tok-cls">field_validator</span>
-
-<span class="tok-kw">class</span> <span class="tok-cls">User</span>(<span class="tok-cls">ActiveRecord</span>):
-    email: <span class="tok-builtin">str</span>
-
-    @<span class="tok-fn">field_validator</span>(<span class="tok-s">"email"</span>)
-    @<span class="tok-kw">classmethod</span>
-    <span class="tok-kw">def</span> <span class="tok-fn">_normalize_email</span>(cls, v: <span class="tok-builtin">str</span>) -> <span class="tok-builtin">str</span>:
-        <span class="tok-kw">if</span> <span class="tok-s">"@"</span> <span class="tok-kw">not in</span> v:
-            <span class="tok-kw">raise</span> <span class="tok-cls">ValueError</span>(<span class="tok-s">"invalid email"</span>)
-        <span class="tok-kw">return</span> v.<span class="tok-fn">lower</span>().<span class="tok-fn">strip</span>()</pre>
-
-    <p>AR 在每次 <code>save()</code> 前自动触发一次完整的 Pydantic 校验，确保入库数据合法。这一层在已有的 Python 类型检查之上提供额外的运行时保障。</p>
-
-    <h3>3. 零额外学习成本</h3>
-    <p>如果开发者已经熟悉 Pydantic，使用 AR 不需要学习新的字段声明语法。如果开发者不熟悉 Pydantic，他们学到的 Pydantic 知识同样适用于 AR——这是对开发者时间投资的双向保护。</p>
-
-    <h2>与自研方案的关键差异</h2>
-    <p>选择 Pydantic 也意味着放弃了某些自由度。例如，AR 不能控制字段的内部表示方式——字段的读取和写入完全遵循 Pydantic 的描述符协议。但这其实不是限制：字段代理（Field Proxy）机制让开发者可以在不修改 Pydantic 字段行为的前提下挂载自定义方法。</p>
-
-    <p>另一方面，Pydantic v2 的 Rust 核心意味着 AR 的模型实例化性能远超基于纯 Python 元类的方案。对于批量数据处理场景，这一点尤为重要。</p>
-
-    <h2>总结</h2>
-    <p>选择 Pydantic v2 作为模型基类，本质上是一个"站在巨人的肩膀上"的决策：</p>
-    <ul>
-      <li>验证和序列化交给 Pydantic——它做得比任何 ORM 自研方案都好</li>
-      <li>SQL 生成和数据库操作交给 AR——这是我们专注的领域</li>
-      <li>开发者只写业务代码——不用关心字段系统内部如何工作</li>
-    </ul>
-
-    <hr>
-
-    <p><em>下一篇预告：AR 的字段代理系统是如何在 Pydantic 字段之上叠加自定义行为的。</em></p>
-  </div>
-
+  <script src="../assets/blog-post.js"></script>
+  <script src="../assets/series-nav.js"></script>
   <script src="../assets/shared-footer.js"></script>
 </main>
 <script>

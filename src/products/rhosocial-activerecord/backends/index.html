@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="terminal" data-font="auto">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<script src="../assets/init-head.js"></script>
 <link rel="stylesheet" href="../assets/core.css">
 <link rel="stylesheet" href="../assets/themes/terminal.css">
 <link rel="stylesheet" href="../assets/themes/editorial.css">
@@ -60,10 +61,12 @@
 <link rel="stylesheet" href="../assets/fonts/dm.css">
 <link rel="stylesheet" href="../assets/fonts/outfit.css">
 <link rel="stylesheet" href="../assets/fonts/literata.css">
-<script src="index/zh-CN.js"></script>
-<script src="index/en-US.js"></script>
+<script src="../assets/state-manager.js"></script>
+<script src="../assets/theme-applier.js"></script>
+<script src="../assets/i18n.js"></script>
 <link rel="stylesheet" href="../assets/shared.css">
-<script src="../assets/shared-header.js" data-header-variant="back"></script>
+<script src="../assets/control-bar.js" data-variant="back"></script>
+<script src="../assets/shared-header.js"></script>
 </head>
 <body>
 
@@ -830,186 +833,6 @@ text.svg-lab{ font-family:'JetBrains Mono',monospace; font-size:10px; fill:var(-
 <script src="../assets/shared-footer.js"></script>
 </main>
 <script>
-
-  'terminal','editorial','brutalist','aurora','synthwave','sumi','blueprint','noir','riso','nordic',
-  'solarpunk','mocha','wireframe','anderson','tokyo','memphis','chalkboard','matrix','steel',
-  'frutiger','newsprint','candy','botanical','cyberpunk','parchment','glassmorphism'
-];
-  'auto','tight','serif','geometric','heavy','allmono','reader','display-serif','neo-future','plex',
-  'playful','classic-serif','pixel','monumental','slab','condensed','expressive','deco','stencil',
-  'rubik','bricolage','gloock','crimson','dm','outfit','literata'
-];
-
-/* i18n */
-  zh: 'zh-cn', en: 'en-us', fr: 'fr-fr', ru: 'ru-ru', es: 'es-es', ar: 'ar',
-  ja: 'ja-jp', de: 'de-de', ko: 'ko-kr', pt: 'pt-pt', nl: 'nl-nl', it: 'it-it',
-  tr: 'tr-tr', el: 'el-gr', hi: 'hi-in',
-  id: 'id-id', in: 'id-id',
-  vi: 'vi-vn', pl: 'pl-pl',
-  th: 'th-th', uk: 'uk-ua', fa: 'fa-ir', bn: 'bn-bd', ro: 'ro-ro', cs: 'cs-cz'
-};
-
-  if (!tag) return null;
-  const lower = String(tag).toLowerCase();
-  if (LANGS.indexOf(lower) !== -1) return lower;
-  const primary = lower.split('-')[0];
-  return LANG_COLLAPSE[primary] || null;
-}
-
-  try {
-    const url = new URLSearchParams(location.search).get('lang');
-    const m = matchLang(url);
-    if (m) return m;
-  } catch (_) {}
-  try {
-    const stored = localStorage.getItem('rhosocial-lang');
-    const m = matchLang(stored);
-    if (m) return m;
-  } catch (_) {}
-  const navLangs = (navigator.languages && navigator.languages.length)
-    ? navigator.languages
-    : [navigator.language || navigator.userLanguage || ''];
-  for (const tag of navLangs) {
-    const m = matchLang(tag);
-    if (m) return m;
-  }
-  return 'en-us';
-}
-
-
-  return path.split('.').reduce((o, k) => (o == null ? undefined : o[k]), dict);
-}
-
-  const dict = window.I18N && window.I18N[currentLang];
-  if (!dict) return;
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const val = get(el.getAttribute('data-i18n'), dict);
-    if (val !== undefined) el.innerHTML = val;
-  });
-  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
-    const val = get(el.getAttribute('data-i18n-ph'), dict);
-    if (val !== undefined) el.setAttribute('placeholder', val);
-  });
-  refreshDropdownValueLabel('theme', html.getAttribute('data-theme'));
-  refreshDropdownValueLabel('font', html.getAttribute('data-font'));
-  refreshDropdownValueLabel('lang', currentLang);
-}
-
-  const dd = document.querySelector('[data-dropdown="' + kind + '"]');
-  if (!dd) return;
-  const item = dd.querySelector('.dropdown-item[data-value="' + value + '"]');
-  if (!item) return;
-  const valueEl = dd.querySelector('.dropdown-value');
-  if (valueEl) valueEl.textContent = item.querySelector('.dropdown-item-label')?.textContent || value;
-}
-
-  if (kind === 'lang') {
-    currentLang = value;
-    html.setAttribute('lang', value);
-    html.setAttribute('dir', value === 'ar' || value === 'fa-ir' ? 'rtl' : 'ltr');
-    try { localStorage.setItem('rhosocial-lang', value); } catch (_) {}
-    applyI18n();
-  } else {
-    html.setAttribute('data-' + kind, value);
-    if (kind === 'theme') updateDbIconColors();
-  }
-  const dd = document.querySelector('[data-dropdown="' + kind + '"]');
-  if (!dd) return;
-  let activatedLabel = null;
-  dd.querySelectorAll('.dropdown-item').forEach(it => {
-    const match = it.getAttribute('data-value') === value;
-    it.classList.toggle('is-active', match);
-    if (match) activatedLabel = it.querySelector('.dropdown-item-label')?.textContent || value;
-  });
-  const valueEl = dd.querySelector('.dropdown-value');
-  if (valueEl && activatedLabel) valueEl.textContent = activatedLabel;
-}
-
-  document.querySelectorAll('.dropdown.is-open').forEach(d => {
-    if (d !== except) {
-      d.classList.remove('is-open');
-      d.querySelector('.dropdown-trigger')?.setAttribute('aria-expanded', 'false');
-    }
-  });
-}
-
-  const trigger = dd.querySelector('.dropdown-trigger');
-  const kind = dd.getAttribute('data-dropdown');
-  trigger.addEventListener('click', e => {
-    e.stopPropagation();
-    const willOpen = !dd.classList.contains('is-open');
-    closeAllDropdowns(dd);
-    dd.classList.toggle('is-open', willOpen);
-    trigger.setAttribute('aria-expanded', String(willOpen));
-  });
-  dd.querySelectorAll('.dropdown-item').forEach(item => {
-    item.addEventListener('click', e => {
-      e.stopPropagation();
-      const value = item.getAttribute('data-value');
-      const label = item.querySelector('.dropdown-item-label')?.textContent;
-      if (kind === 'theme' || kind === 'font' || kind === 'lang') {
-        setValue(kind, value);
-      } else {
-        dd.querySelectorAll('.dropdown-item').forEach(it => it.classList.toggle('is-active', it === item));
-        const valueEl = dd.querySelector('.dropdown-value');
-        if (valueEl) valueEl.textContent = label || value;
-      }
-      dd.classList.remove('is-open');
-      trigger.setAttribute('aria-expanded', 'false');
-    });
-  });
-});
-
-document.addEventListener('click', e => {
-  if (!e.target.closest('.dropdown')) closeAllDropdowns();
-});
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') closeAllDropdowns();
-});
-
-document.addEventListener('keydown', e => {
-  const isMod = e.ctrlKey || e.metaKey;
-  const key = e.key.toLowerCase();
-  const idx = QWERTY.indexOf(key);
-  if (idx === -1) return;
-  if (isMod && !e.shiftKey) {
-    e.preventDefault();
-    setValue('theme', THEMES[idx % THEMES.length]);
-  } else if (isMod && e.shiftKey) {
-    e.preventDefault();
-    setValue('font', FONTS[idx % FONTS.length]);
-  } else if (e.altKey && !isMod && !e.shiftKey) {
-    e.preventDefault();
-    setValue('lang', LANGS[idx % LANGS.length]);
-  }
-});
-
-applyI18n();
-
-const DARK_THEMES = ['terminal','noir','synthwave','tokyo','matrix','cyberpunk','chalkboard','aurora','blueprint','steel'];
-const LIGHT_THEMES = ['editorial','brutalist','riso','nordic','solarpunk','mocha','wireframe','anderson','memphis','frutiger','newsprint','candy','botanical','parchment','glassmorphism','sumi'];
-const ICON_NAME_MAP = {
-  'SQLite': 'sqlite',
-  'PostgreSQL': 'postgresql',
-  'MySQL': 'mysql',
-  'MariaDB': 'mariadb',
-  'SQL Server': 'microsoftsqlserver',
-  'Oracle': 'oracle',
-  'Develop': 'python'
-};
-function updateDbIconColors() {
-  const theme = html.getAttribute('data-theme');
-  const isDark = DARK_THEMES.includes(theme);
-  document.querySelectorAll('.db-icon').forEach(container => {
-    const img = container.querySelector('img');
-    const color = isDark ? container.dataset.dark : container.dataset.light;
-    const iconName = ICON_NAME_MAP[img.alt];
-    img.src = 'https://cdn.jsdelivr.net/npm/simple-icons@v3/icons/' + iconName + '.svg';
-    img.style.filter = isDark ? 'brightness(0) invert(1)' : 'none';
-  });
-}
-updateDbIconColors();
-
 // ═══════════════════════════════════════════════════════════════
 // Backend Cards — JS rendered horizontal scroll
 // ═══════════════════════════════════════════════════════════════

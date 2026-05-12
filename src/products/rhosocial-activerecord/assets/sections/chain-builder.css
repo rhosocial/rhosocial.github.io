@@ -1,0 +1,111 @@
+/**
+ * chain-builder.css — Interactive SQL chain builder
+ * Depends on: rho-vars.css (--r-* tokens)
+ */
+
+.interactive-demo { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.demo-panel {
+  background: var(--r-bg2);
+  border: 1px solid var(--r-border2);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.demo-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--r-border);
+  background: var(--r-surface);
+}
+.demo-panel-title {
+  font-family: var(--r-font-mono);
+  font-size: 11px;
+  color: var(--r-text3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.demo-panel-title .dot-lang { width: 8px; height: 8px; border-radius: 50%; background: var(--r-accent); }
+.dot-lang-cyan { background: var(--r-cyan) !important; }
+.demo-panel-body { padding: 20px; }
+.chain-builder { display: flex; flex-direction: column; gap: 8px; }
+.chain-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--r-surface);
+  border: 1px solid var(--r-border);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+.chain-step:hover { border-color: var(--r-border2); background: var(--r-surface2); }
+.chain-step.active {
+  border-color: color-mix(in srgb, var(--r-accent) 40%, transparent);
+  background: var(--r-accent-glow);
+}
+.chain-step-icon {
+  font-family: var(--r-font-mono);
+  font-size: 10px;
+  color: var(--r-accent);
+  min-width: 20px;
+}
+.chain-step-label { font-family: var(--r-font-mono); font-size: 12px; color: var(--r-text); }
+.chain-step-hint { margin-left: auto; font-size: 11px; color: var(--r-text3); }
+.chain-step.active .chain-step-hint { color: var(--r-accent); opacity: 0.7; }
+.chain-connector {
+  font-family: var(--r-font-mono);
+  font-size: 18px;
+  color: var(--r-border2);
+  text-align: center;
+  line-height: 1;
+  margin: -4px 0;
+}
+.chain-connector.lit { color: var(--r-accent); opacity: 0.5; }
+.sql-output {
+  font-family: var(--r-font-mono);
+  font-size: 12px;
+  line-height: 1.9;
+  min-height: 220px;
+}
+.sql-line { display: flex; gap: 12px; }
+.sql-line-num { color: var(--r-text3); min-width: 16px; text-align: right; user-select: none; }
+.sql-line-content { flex: 1; }
+.sql-line.highlight .sql-line-content {
+  background: color-mix(in srgb, var(--r-cyan) 7%, transparent);
+  border-radius: 2px;
+  padding: 0 4px;
+  margin: 0 -4px;
+}
+.sql-compile-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--r-font-mono);
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: var(--r-green-dim);
+  color: var(--r-green);
+  border: 1px solid color-mix(in srgb, var(--r-green) 20%, transparent);
+}
+.pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--r-green);
+  animation: chain-pulse 2s ease-in-out infinite;
+}
+@keyframes chain-pulse {
+  0%,100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(0.8); }
+}
+
+@media (max-width: 900px) {
+  .interactive-demo { grid-template-columns: 1fr; }
+}

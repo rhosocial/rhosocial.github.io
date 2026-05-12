@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="terminal" data-font="tight">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>rhosocial ActiveRecord — Python ORM</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/core.css">
+<link rel="stylesheet" href="assets/themes/terminal.css">
+<link rel="stylesheet" href="assets/themes/editorial.css">
+<link rel="stylesheet" href="assets/themes/brutalist.css">
+<link rel="stylesheet" href="assets/themes/aurora.css">
+<link rel="stylesheet" href="assets/themes/synthwave.css">
+<link rel="stylesheet" href="assets/themes/sumi.css">
+<link rel="stylesheet" href="assets/themes/blueprint.css">
+<link rel="stylesheet" href="assets/themes/noir.css">
+<link rel="stylesheet" href="assets/themes/riso.css">
+<link rel="stylesheet" href="assets/themes/nordic.css">
+<link rel="stylesheet" href="assets/themes/solarpunk.css">
+<link rel="stylesheet" href="assets/themes/mocha.css">
+<link rel="stylesheet" href="assets/themes/wireframe.css">
+<link rel="stylesheet" href="assets/themes/anderson.css">
+<link rel="stylesheet" href="assets/themes/tokyo.css">
+<link rel="stylesheet" href="assets/themes/memphis.css">
+<link rel="stylesheet" href="assets/themes/chalkboard.css">
+<link rel="stylesheet" href="assets/themes/matrix.css">
+<link rel="stylesheet" href="assets/themes/steel.css">
+<link rel="stylesheet" href="assets/themes/frutiger.css">
+<link rel="stylesheet" href="assets/themes/newsprint.css">
+<link rel="stylesheet" href="assets/themes/candy.css">
+<link rel="stylesheet" href="assets/themes/botanical.css">
+<link rel="stylesheet" href="assets/themes/cyberpunk.css">
+<link rel="stylesheet" href="assets/themes/parchment.css">
+<link rel="stylesheet" href="assets/themes/glassmorphism.css">
+<link rel="stylesheet" href="assets/core-extensions.css">
+<link rel="stylesheet" href="assets/fonts/tight.css">
+<link rel="stylesheet" href="assets/fonts/serif.css">
+<link rel="stylesheet" href="assets/fonts/geometric.css">
+<link rel="stylesheet" href="assets/fonts/heavy.css">
+<link rel="stylesheet" href="assets/fonts/allmono.css">
+<link rel="stylesheet" href="assets/fonts/reader.css">
+<link rel="stylesheet" href="assets/fonts/display-serif.css">
+<link rel="stylesheet" href="assets/fonts/neo-future.css">
+<link rel="stylesheet" href="assets/fonts/plex.css">
+<link rel="stylesheet" href="assets/fonts/playful.css">
+<link rel="stylesheet" href="assets/fonts/classic-serif.css">
+<link rel="stylesheet" href="assets/fonts/pixel.css">
+<link rel="stylesheet" href="assets/fonts/monumental.css">
+<link rel="stylesheet" href="assets/fonts/slab.css">
+<link rel="stylesheet" href="assets/fonts/condensed.css">
+<link rel="stylesheet" href="assets/fonts/expressive.css">
+<link rel="stylesheet" href="assets/fonts/deco.css">
+<link rel="stylesheet" href="assets/fonts/stencil.css">
+<link rel="stylesheet" href="assets/fonts/rubik.css">
+<link rel="stylesheet" href="assets/fonts/bricolage.css">
+<link rel="stylesheet" href="assets/fonts/gloock.css">
+<link rel="stylesheet" href="assets/fonts/crimson.css">
+<link rel="stylesheet" href="assets/fonts/dm.css">
+<link rel="stylesheet" href="assets/fonts/outfit.css">
+<link rel="stylesheet" href="assets/fonts/literata.css">
+
+
+<style>
+html[lang="ar"] { font-family: 'Noto Sans Arabic', var(--font-body); }
+html[lang="ar"] code, html[lang="ar"] pre, html[lang="ar"] .install-cmd { direction: ltr; unicode-bidi: embed; text-align: left; }
+html[lang="hi-in"] { font-family: 'Noto Sans Devanagari', var(--font-body); }
+html[lang="fa-ir"] { font-family: 'Noto Sans Arabic', var(--font-body); }
+html[lang="fa-ir"] code, html[lang="fa-ir"] pre, html[lang="fa-ir"] .install-cmd { direction: ltr; unicode-bidi: embed; text-align: left; }
+html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
+</style>
+
+<!-- i18n dictionaries -->
+<script src="assets/i18n/zh-cn.js"></script>
+<script src="assets/i18n/en-us.js"></script>
+<script src="assets/i18n/ja-jp.js"></script>
+<script src="assets/i18n/de-de.js"></script>
+<script src="assets/i18n/fr-fr.js"></script>
+<script src="assets/i18n/ko-kr.js"></script>
+<script src="assets/i18n/pt-pt.js"></script>
+<script src="assets/i18n/nl-nl.js"></script>
+<script src="assets/i18n/it-it.js"></script>
+<script src="assets/i18n/ru-ru.js"></script>
+<script src="assets/i18n/es-es.js"></script>
+<script src="assets/i18n/tr-tr.js"></script>
+<script src="assets/i18n/el-gr.js"></script>
+<script src="assets/i18n/ar.js"></script>
+<script src="assets/i18n/hi-in.js"></script>
+<script src="assets/i18n/id-id.js"></script>
+<script src="assets/i18n/vi-vn.js"></script>
+<script src="assets/i18n/pl-pl.js"></script>
+<script src="assets/i18n/th-th.js"></script>
+<script src="assets/i18n/uk-ua.js"></script>
+<script src="assets/i18n/fa-ir.js"></script>
+<script src="assets/i18n/bn-bd.js"></script>
+<script src="assets/i18n/ro-ro.js"></script>
+<script src="assets/i18n/cs-cz.js"></script>
+
+<!-- Page-specific i18n -->
+<script src="index/zh-cn.js"></script>
+<script src="index/en-us.js"></script>
+<script src="index/ar.js"></script>
+<script src="index/bn-bd.js"></script>
+<script src="index/cs-cz.js"></script>
+<script src="index/de-de.js"></script>
+<script src="index/el-gr.js"></script>
+<script src="index/es-es.js"></script>
+<script src="index/fa-ir.js"></script>
+<script src="index/fr-fr.js"></script>
+<script src="index/hi-in.js"></script>
+<script src="index/id-id.js"></script>
+<script src="index/it-it.js"></script>
+<script src="index/ja-jp.js"></script>
+<script src="index/ko-kr.js"></script>
+<script src="index/nl-nl.js"></script>
+<script src="index/pl-pl.js"></script>
+<script src="index/pt-pt.js"></script>
+<script src="index/ro-ro.js"></script>
+<script src="index/ru-ru.js"></script>
+<script src="index/th-th.js"></script>
+<script src="index/tr-tr.js"></script>
+<script src="index/uk-ua.js"></script>
+<script src="index/vi-vn.js"></script>
+
+<!-- Feature code data -->
+<script src="assets/feature-code-data.js"></script>
+
+<!-- Core JS -->
+<script src="assets/themes.js"></script>
+<script src="assets/i18n-core.js"></script>
+<script src="assets/utils.js"></script>
+</head>
+<body>
+<header class="control-bar" id="control-bar">
+  <div class="control-brand">
+    <span class="brand-mark size-md">&rho;<sub>AR</sub></span>
+    <span>rhosocial ActiveRecord</span>
+    <a href="theme.html" class="dim" data-i18n="brand.subtitle">· Theme Lab</a>
+  </div>
+  <div class="dropdown" data-dropdown="theme">
+    <button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+      <span class="dropdown-label" data-i18n="control.theme_label">Theme</span>
+      <span class="dropdown-value">Terminal</span>
+      <svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="dropdown-menu" role="listbox"></div>
+  </div>
+  <div class="dropdown" data-dropdown="font">
+    <button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+      <span class="dropdown-label" data-i18n="control.font_label">Font</span>
+      <span class="dropdown-value">Auto</span>
+      <svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="dropdown-menu" role="listbox"></div>
+  </div>
+  <div class="dropdown" data-dropdown="lang">
+    <button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
+      <span class="dropdown-label" data-i18n="control.lang_label">Language</span>
+      <span class="dropdown-value">简体中文</span>
+      <svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+    <div class="dropdown-menu" role="listbox"></div>
+  </div>
+</header>
+<main class="page">
+  <!-- Hero -->
+  <section class="hero section">
+    <div class="container hero-inner">
+      <div class="hero-eyebrow rise" data-i18n="hero.eyebrow">v1.0 · Apache 2.0 · Pure Python</div>
+      <h1 class="hero-title rise" data-i18n="hero.title">rhosocial ActiveRecord,<br>为 Python <em>重新设计</em>。</h1>
+      <p class="hero-sub rise" data-i18n="hero.sub"><strong>rhosocial-activerecord</strong> 用 Python 原生类型注解定义模型。</p>
+      <div class="hero-ctas rise">
+        <a href="#get-started" class="btn btn-primary">pip install rhosocial-activerecord</a>
+        <a href="#why" class="btn btn-ghost" data-i18n="hero.cta_secondary">查看特性 →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY - 6 Core Features -->
+  <section id="why" class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label" data-i18n="features.label">Why · 六个核心承诺</div>
+        <h2 class="section-title" data-i18n="features.title">为什么是 <em>rhosocial ActiveRecord</em>。</h2>
+      </div>
+      <div class="features-grid">
+        <article class="feature rise">
+          <div class="feature-num" data-i18n="features.f1.num">01 / 类型即字段</div>
+          <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="m9 12 2 2 4-4"/><path d="M12 2 4 6v6c0 5.5 3.8 10.7 8 12 4.2-1.3 8-6.5 8-12V6l-8-4Z"/></svg></div>
+          <h3 class="feature-title" data-i18n="features.f1.title"><em>Type-safe</em> by construction</h3>
+          <p class="feature-desc" data-i18n="features.f1.desc">字段就是 <code>name: str</code>，存储、校验、IDE 补全合而为一。</p>
+          <span class="feature-tag">typing</span>
+        </article>
+        <article class="feature rise">
+          <div class="feature-num" data-i18n="features.f2.num">02 / 异步一等</div>
+          <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.22-8.56"/><path d="M21 3v6h-6"/></svg></div>
+          <h3 class="feature-title" data-i18n="features.f2.title">Sync &amp; async, <em>one API</em></h3>
+          <p class="feature-desc" data-i18n="features.f2.desc"><code>ActiveRecord</code> / <code>AsyncActiveRecord</code>，语义一致。</p>
+          <span class="feature-tag">asyncio</span>
+        </article>
+        <article class="feature rise">
+          <div class="feature-num" data-i18n="features.f3.num">03 / 后端可插拔</div>
+          <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="5" rx="1"/><rect x="2" y="10" width="20" height="5" rx="1"/><rect x="2" y="17" width="20" height="4" rx="1"/></svg></div>
+          <h3 class="feature-title" data-i18n="features.f3.title">Pluggable <em>backends</em></h3>
+          <p class="feature-desc" data-i18n="features.f3.desc">SQLite 内置；Postgres/MySQL/SQLServer/Oracle 独立包；可自写后端。</p>
+          <span class="feature-tag">backend abc</span>
+        </article>
+        <article class="feature rise">
+          <div class="feature-num" data-i18n="features.f4.num">04 / 关系显式</div>
+          <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="18" cy="18" r="3"/><path d="M9 6h8a2 2 0 0 1 2 2v7"/><path d="M15 18H7a2 2 0 0 1-2-2V9"/></svg></div>
+          <h3 class="feature-title" data-i18n="features.f4.title"><em>Relations</em> made explicit</h3>
+          <p class="feature-desc" data-i18n="features.f4.desc"><code>ClassVar</code> + 描述符协议，运行时自动替换。</p>
+          <span class="feature-tag">descriptor</span>
+        </article>
+        <article class="feature rise">
+          <div class="feature-num" data-i18n="features.f5.num">05 / 事务原子</div>
+          <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg></div>
+          <h3 class="feature-title" data-i18n="features.f5.title">Transactions, <em>properly nested</em></h3>
+          <p class="feature-desc" data-i18n="features.f5.desc">上下文管理器 + savepoint，异常即回滚。</p>
+          <span class="feature-tag">savepoint</span>
+        </article>
+        <article class="feature rise">
+          <div class="feature-num" data-i18n="features.f6.num">06 / Pythonic</div>
+          <div class="feature-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M4 17V7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10"/><path d="M8 21h8"/><path d="M12 17v4"/><path d="m9 10 3 3 3-3"/></svg></div>
+          <h3 class="feature-title" data-i18n="features.f6.title">Reads like <em>English</em></h3>
+          <p class="feature-desc" data-i18n="features.f6.desc"><code>User.query().where(...).all()</code>——就是 Python。</p>
+          <span class="feature-tag">no DSL</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 1: Type-safe (TabSwitcher) -->
+  <section class="section">
+    <div class="container">
+      <div class="feature-detail">
+        <div class="feature-detail-text">
+          <div class="section-label" data-i18n="f1.label">01 / Type-safe</div>
+          <h2 class="section-title" data-i18n="f1.title"><em>类型即字段</em>，从 3.8 到 3.12。</h2>
+          <p class="section-intro" data-i18n="f1.intro">Python 类型注解即模型定义，无需额外 DSL。Pydantic 运行时验证，IDE 完整类型推导。</p>
+        </div>
+        <div class="feature-detail-code">
+          <div data-component="tabs-switcher" data-data-key="f1" data-renderer="code">
+            <div class="tabs-row" data-dim="pyver" data-label="Python">
+              <button class="tab is-active" data-tab="py38">3.8</button>
+              <button class="tab" data-tab="py39">3.9+</button>
+              <button class="tab" data-tab="py310">3.10+</button>
+              <button class="tab" data-tab="py311">3.11+</button>
+            </div>
+            <div class="tabs-row" data-dim="mode" data-label="Mode">
+              <button class="tab is-active" data-tab="sync">sync</button>
+              <button class="tab" data-tab="async">async</button>
+            </div>
+            <div class="tabs-display"></div>
+          </div>
+          <a href="activerecord/type-safe.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;" data-i18n="common.detail">查看详情 →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 2: Async First (TabSwitcher) -->
+  <section class="section">
+    <div class="container">
+      <div class="feature-detail">
+        <div class="feature-detail-text">
+          <div class="section-label" data-i18n="f2.label">02 / Async First</div>
+          <h2 class="section-title" data-i18n="f2.title"><em>同步 = 异步</em>，语义一致。</h2>
+          <p class="section-intro" data-i18n="f2.intro">同步/异步共享同一套模型定义。for → async for，其他代码不变。</p>
+        </div>
+        <div class="feature-detail-code">
+          <div data-component="tabs-switcher" data-data-key="f2" data-renderer="code">
+            <div class="tabs-row" data-dim="pyver" data-label="Python">
+              <button class="tab is-active" data-tab="py38">3.8</button>
+              <button class="tab" data-tab="py39">3.9+</button>
+              <button class="tab" data-tab="py310">3.10+</button>
+              <button class="tab" data-tab="py311">3.11+</button>
+            </div>
+            <div class="tabs-row" data-dim="mode" data-label="Mode">
+              <button class="tab is-active" data-tab="sync">sync</button>
+              <button class="tab" data-tab="async">async</button>
+            </div>
+            <div class="tabs-display"></div>
+          </div>
+          <a href="activerecord/async-first.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;" data-i18n="common.detail">查看详情 →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 3: Pluggable Backends -->
+  <section class="section">
+    <div class="container">
+      <div class="feature-detail">
+        <div class="feature-detail-text">
+          <div class="section-label" data-i18n="f3.label">03 / Pluggable Backends</div>
+          <h2 class="section-title" data-i18n="f3.title"><em>后端可插拔</em>，按需选用。</h2>
+          <p class="section-intro" data-i18n="f3.intro">核心包仅依赖 Pydantic。SQLite 内置，其他数据库以独立包发布。</p>
+        </div>
+        <div class="feature-detail-code">
+          <div data-component="tabs-switcher" data-data-key="f3" data-renderer="code">
+            <div class="tabs-row" data-dim="pyver" data-label="Python">
+              <button class="tab is-active" data-tab="py38">3.8</button>
+              <button class="tab" data-tab="py39">3.9+</button>
+              <button class="tab" data-tab="py310">3.10+</button>
+              <button class="tab" data-tab="py311">3.11+</button>
+            </div>
+            <div class="tabs-row" data-dim="mode" data-label="Mode">
+              <button class="tab is-active" data-tab="sync">sync</button>
+              <button class="tab" data-tab="async">async</button>
+            </div>
+            <div class="tabs-display"></div>
+          </div>
+          <a href="backends/index.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;" data-i18n="common.detail">查看详情 →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 4: Relations -->
+  <section class="section">
+    <div class="container">
+      <div class="feature-detail">
+        <div class="feature-detail-text">
+          <div class="section-label" data-i18n="f4.label">04 / Relations</div>
+          <h2 class="section-title" data-i18n="f4.title"><em>关系显式</em>，ClassVar + 描述符。</h2>
+          <p class="section-intro" data-i18n="f4.intro">使用 ClassVar 声明关系字段，避免 Pydantic 扫描。运行时自动替换为 relation()。</p>
+        </div>
+        <div class="feature-detail-code">
+          <div data-component="tabs-switcher" data-data-key="f4" data-renderer="code">
+            <div class="tabs-row" data-dim="pyver" data-label="Python">
+              <button class="tab is-active" data-tab="py38">3.8</button>
+              <button class="tab" data-tab="py39">3.9+</button>
+              <button class="tab" data-tab="py310">3.10+</button>
+              <button class="tab" data-tab="py311">3.11+</button>
+            </div>
+            <div class="tabs-row" data-dim="mode" data-label="Mode">
+              <button class="tab is-active" data-tab="sync">sync</button>
+              <button class="tab" data-tab="async">async</button>
+            </div>
+            <div class="tabs-display"></div>
+          </div>
+          <a href="activerecord/explicit-relations.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;" data-i18n="common.detail">查看详情 →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 5: Transactions -->
+  <section class="section">
+    <div class="container">
+      <div class="feature-detail">
+        <div class="feature-detail-text">
+          <div class="section-label" data-i18n="f5.label">05 / Transactions</div>
+          <h2 class="section-title" data-i18n="f5.title"><em>事务原子</em>，嵌套 savepoint。</h2>
+          <p class="section-intro" data-i18n="f5.intro">嵌套事务自动创建 savepoint。上下文管理器自动提交/回滚。</p>
+        </div>
+        <div class="feature-detail-code">
+          <div data-component="tabs-switcher" data-data-key="f5" data-renderer="code">
+            <div class="tabs-row" data-dim="pyver" data-label="Python">
+              <button class="tab is-active" data-tab="py38">3.8</button>
+              <button class="tab" data-tab="py39">3.9+</button>
+              <button class="tab" data-tab="py310">3.10+</button>
+              <button class="tab" data-tab="py311">3.11+</button>
+            </div>
+            <div class="tabs-row" data-dim="mode" data-label="Mode">
+              <button class="tab is-active" data-tab="sync">sync</button>
+              <button class="tab" data-tab="async">async</button>
+            </div>
+            <div class="tabs-display"></div>
+          </div>
+          <a href="activerecord/transactions.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;" data-i18n="common.detail">查看详情 →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Feature 6: Pythonic -->
+  <section class="section">
+    <div class="container">
+      <div class="feature-detail">
+        <div class="feature-detail-text">
+          <div class="section-label" data-i18n="f6.label">06 / Pythonic</div>
+          <h2 class="section-title" data-i18n="f6.title"><em>如英语般阅读</em>，无需 DSL。</h2>
+          <p class="section-intro" data-i18n="f6.intro">链式调用，阅读流畅如英语。.to_sql() 透明查看实际 SQL。</p>
+        </div>
+        <div class="feature-detail-code">
+          <div data-component="tabs-switcher" data-data-key="f6" data-renderer="code">
+            <div class="tabs-row" data-dim="pyver" data-label="Python">
+              <button class="tab is-active" data-tab="py38">3.8</button>
+              <button class="tab" data-tab="py39">3.9+</button>
+              <button class="tab" data-tab="py310">3.10+</button>
+              <button class="tab" data-tab="py311">3.11+</button>
+            </div>
+            <div class="tabs-row" data-dim="mode" data-label="Mode">
+              <button class="tab is-active" data-tab="sync">sync</button>
+              <button class="tab" data-tab="async">async</button>
+            </div>
+            <div class="tabs-display"></div>
+          </div>
+          <a href="activerecord/pythonic.html" class="btn btn-ghost feature-cta" style="margin-top: 24px; display: inline-block;" data-i18n="common.detail">查看详情 →</a>
+        </div>
+      </div>
+    </div>
+</section>
+
+<!-- ARCH COMP -->
+<section id="arch-comp" class="section">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-label" data-i18n="arch_comp.label">Component Architecture</div>
+      <h2 class="section-title" data-i18n="arch_comp.title">
+        ActiveRecord + Backend, <em>two independent layers</em>.
+      </h2>
+      <p class="section-intro"
+         data-i18n="arch_comp.intro">
+        ActiveRecord is the user of Backend; Backend can work standalone.
+        Sync and async variants are paired but not interchangeable.
+      </p>
+    </div>
+
+    <div class="arch-diagram">
+      <div class="arch-col-frame">
+        <div class="arch-col-frame-header">
+          <span class="arch-col-frame-dot"></span>
+          <span class="arch-col-frame-title" data-i18n="arch_comp.ar_title">ActiveRecord</span>
+        </div>
+        <div class="arch-col-frame-body">
+          <div class="arch-subgroup sync">
+            <div class="arch-subgroup-label" data-i18n="arch_comp.node_sync_group">Sync</div>
+            <div class="arch-node is-root" tabindex="0" role="button" data-tip="tip_ar_s" data-tip-name="node_ar_s">ActiveRecord</div>
+            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_aq_s" data-tip-name="node_aq_s">ActiveQuery</div>
+            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_so_s" data-tip-name="node_so_s">SetOperation</div>
+            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_cte_s" data-tip-name="node_cte_s">CTEQuery</div>
+          </div>
+          <div class="arch-subgroup async">
+            <div class="arch-subgroup-label" data-i18n="arch_comp.node_async_group">Async</div>
+            <div class="arch-node is-root" tabindex="0" role="button" data-tip="tip_ar_a" data-tip-name="node_ar_a">AsyncActiveRecord</div>
+            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_aq_a" data-tip-name="node_aq_a">AsyncActiveQuery</div>
+            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_so_a" data-tip-name="node_so_a">AsyncSetOperation</div>
+            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_cte_a" data-tip-name="node_cte_a">AsyncCTEQuery</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="arch-connector" aria-hidden="true">
+        <div class="arch-conn-track">
+          <div class="arch-conn-line sync"></div>
+          <div class="arch-conn-arrow sync">→</div>
+          <div class="arch-conn-label sync" data-i18n="arch_comp.uses_label">uses</div>
+        </div>
+        <div class="arch-conn-track">
+          <div class="arch-conn-line async"></div>
+          <div class="arch-conn-arrow async">→</div>
+          <div class="arch-conn-label async" data-i18n="arch_comp.uses_label">uses</div>
+        </div>
+      </div>
+
+      <div class="arch-col-frame">
+        <div class="arch-col-frame-header">
+          <span class="arch-col-frame-dot async"></span>
+          <span class="arch-col-frame-title" data-i18n="arch_comp.be_title">Backend</span>
+        </div>
+        <div class="arch-col-frame-body">
+          <div class="arch-subgroup sync">
+            <div class="arch-subgroup-label" data-i18n="arch_comp.node_sync_group">Sync</div>
+            <div class="arch-node is-root" tabindex="0" role="button" data-tip="tip_sb_s" data-tip-name="node_sb_s">StorageBackend</div>
+            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_sqlite" data-tip-name="node_sqlite_s">SQLiteBackend</div>
+            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_ext" data-tip-name="node_ext"><span data-i18n="arch_comp.node_ext">MySQL · PostgreSQL · …</span></div>
+          </div>
+          <div class="arch-subgroup async">
+            <div class="arch-subgroup-label" data-i18n="arch_comp.node_async_group">Async</div>
+            <div class="arch-node is-root" tabindex="0" role="button" data-tip="tip_sb_a" data-tip-name="node_sb_a">AsyncStorageBackend</div>
+            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_sqlite" data-tip-name="node_sqlite_a">AsyncSQLiteBackend</div>
+            <div class="arch-node is-child" tabindex="0" role="button" data-tip="tip_ext_a" data-tip-name="node_ext_a"><span data-i18n="arch_comp.node_ext_a">AsyncMySQL · …</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="arch-pairing">
+      <div class="arch-pairing-row">
+        <div class="arch-pairing-side ar-sync">ActiveRecord</div>
+        <div class="arch-pairing-mid sync">↔</div>
+        <div class="arch-pairing-side be-sync">StorageBackend</div>
+        <span class="arch-pairing-note" data-i18n="arch_comp.pair_sync_note">同步配对，不可混用</span>
+      </div>
+      <div class="arch-pairing-row">
+        <div class="arch-pairing-side ar-async">AsyncActiveRecord</div>
+        <div class="arch-pairing-mid async">↔</div>
+        <div class="arch-pairing-side be-async">AsyncStorageBackend</div>
+        <span class="arch-pairing-note" data-i18n="arch_comp.pair_async_note">异步配对，不可混用</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="arch-tip" role="tooltip" aria-live="polite"></div>
+
+<!-- ARCH COMP JS -->
+<script>
+(function () {
+  'use strict';
+  function t(key) {
+    var lang = window.CURRENT_LANG || 'zh-cn';
+    var dict = (window.I18N || {})[lang] || (window.I18N || {})['zh-cn'] || {};
+    var parts = ('arch_comp.' + key).split('.');
+    var v = dict;
+    for (var i = 0; i < parts.length; i++) {
+      if (v == null) return key;
+      v = v[parts[i]];
+    }
+    return (typeof v === 'string') ? v : key;
+  }
+  var tip = document.getElementById('arch-tip');
+  var tipHideTimer = null;
+  function showTip(event, nameKey, descKey) {
+    clearTimeout(tipHideTimer);
+    tip.innerHTML = '<div class="tip-name">' + t(nameKey) + '</div>' + t(descKey);
+    placeTip(event);
+    tip.classList.add('show');
+  }
+  function placeTip(event) {
+    var cx = event.clientX || (event.changedTouches && event.changedTouches[0].clientX) || 0;
+    var cy = event.clientY || (event.changedTouches && event.changedTouches[0].clientY) || 0;
+    var tw = tip.offsetWidth  || 260;
+    var th = tip.offsetHeight || 80;
+    var vw = window.innerWidth;
+    var vh = window.innerHeight;
+    var left = cx + 14;
+    var top  = cy + 14;
+    if (left + tw > vw - 8) left = cx - tw - 14;
+    if (top  + th > vh - 8) top  = cy - th - 14;
+    tip.style.left = Math.max(8, left) + 'px';
+    tip.style.top  = Math.max(8, top)  + 'px';
+  }
+  function hideTip() {
+    tipHideTimer = setTimeout(function () { tip.classList.remove('show'); }, 120);
+  }
+  function bindNodes() {
+    document.querySelectorAll('#arch-comp .arch-node').forEach(function (el) {
+      var descKey = el.dataset.tip;
+      var nameKey = el.dataset.tipName;
+      if (!descKey) return;
+      el.addEventListener('mouseenter', function (e) { showTip(e, nameKey, descKey); });
+      el.addEventListener('mousemove',  function (e) { if (tip.classList.contains('show')) placeTip(e); });
+      el.addEventListener('mouseleave', hideTip);
+      el.addEventListener('focus',      function (e) {
+        var r = el.getBoundingClientRect();
+        showTip({ clientX: r.right, clientY: r.top }, nameKey, descKey);
+      });
+      el.addEventListener('blur', hideTip);
+      el.addEventListener('touchstart', function (e) {
+        e.preventDefault();
+        showTip(e.changedTouches[0], nameKey, descKey);
+      });
+      el.addEventListener('touchend', hideTip);
+      el.addEventListener('touchcancel', hideTip);
+    });
+  }
+  function refreshText() {
+    document.querySelectorAll('#arch-comp .arch-node[data-tip-name]').forEach(function (el) {
+      var span = el.querySelector('[data-i18n]');
+      if (!span) {
+        var nameKey = el.dataset.tipName;
+        var label = t(nameKey);
+        if (label !== nameKey) el.textContent = label;
+      }
+    });
+  }
+  function initEntranceAnim() {
+    var nodes = Array.from(document.querySelectorAll('#arch-comp .arch-node'));
+    if (!nodes.length) return;
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var group = entry.target;
+        var items = group.querySelectorAll('.arch-node');
+        items.forEach(function (n, i) {
+          n.style.animationDelay = (i * 55) + 'ms';
+          n.classList.add('is-visible');
+        });
+        io.unobserve(group);
+      });
+    }, { threshold: 0.15 });
+    document.querySelectorAll('#arch-comp .arch-subgroup').forEach(function (g) {
+      io.observe(g);
+    });
+  }
+  window.RENDER_ADAPTERS = window.RENDER_ADAPTERS || [];
+  window.RENDER_ADAPTERS.push({
+    name:   'arch-comp',
+    onTheme: function () {},
+    onFont:  function () {},
+    onLang:  function () { refreshText(); }
+  });
+  function init() {
+    bindNodes();
+    initEntranceAnim();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+<!-- COMPARE -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label" data-i18n="compare.label">Compare</div>
+        <h2 class="section-title" data-i18n="compare.title">与其它 Python ORM <em>对比</em>。</h2>
+      </div>
+      <div class="feature-compare">
+        <table>
+          <thead><tr><th data-i18n="compare.col_feature">特性</th><th class="col-featured">ρAR</th><th>SQLAlchemy</th><th>Django ORM</th><th>SQLModel</th><th>Peewee</th><th>Tortoise</th></tr></thead>
+          <tbody>
+            <tr><td data-i18n="compare.row1">设计模式</td><td class="col-featured" data-i18n="compare.row1r">ActiveRecord</td><td data-i18n="compare.row1sa">Data Mapper</td><td data-i18n="compare.row1dj">ActiveRecord</td><td data-i18n="compare.row1sm">Hybrid</td><td data-i18n="compare.row1pw">ActiveRecord</td><td data-i18n="compare.row1to">ActiveRecord</td></tr>
+            <tr><td data-i18n="compare.row2">后端可独立使用</td><td class="col-featured"><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td></tr>
+            <tr><td data-i18n="compare.row3">无 Session 概念</td><td class="col-featured"><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-warn">½</span></td><td><span class="check-no">—</span></td><td><span class="check-warn">½</span></td><td><span class="check-warn">½</span></td></tr>
+            <tr><td data-i18n="compare.row4">同步 / 异步 API 一致</td><td class="col-featured"><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td></tr>
+            <tr><td data-i18n="compare.row5">原生 Pydantic 集成</td><td class="col-featured"><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td></tr>
+            <tr><td data-i18n="compare.row6">运行时数据验证</td><td class="col-featured"><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-warn">½</span></td><td><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td></tr>
+            <tr><td data-i18n="compare.row7">完整 SQL 表达力</td><td class="col-featured"><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td></tr>
+            <tr><td data-i18n="compare.row8">能力声明机制</td><td class="col-featured"><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td></tr>
+            <tr><td data-i18n="compare.row9">SQL 透明 <code>.to_sql()</code></td><td class="col-featured"><span class="check-yes">✓</span></td><td><span class="check-warn">½</span></td><td><span class="check-warn">½</span></td><td><span class="check-warn">½</span></td><td><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td></tr>
+            <tr><td data-i18n="compare.row10">零强制迁移依赖</td><td class="col-featured"><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td></tr>
+            <tr><td data-i18n="compare.row11">最小依赖</td><td class="col-featured">Pydantic</td><td>Self-contained</td><td>Django</td><td>SQLAlchemy</td><td>Self-contained</td><td>None</td></tr>
+            <tr><td data-i18n="compare.row12">显式关系定义</td><td class="col-featured"><span class="check-yes">✓</span></td><td><span class="check-yes">✓</span></td><td><span class="check-no">—</span></td><td><span class="check-warn">½</span></td><td><span class="check-no">—</span></td><td><span class="check-no">—</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- VOICES -->
+  <section class="section">
+    <div class="container" style="padding: 0 clamp(20px, 5vw, 80px);">
+      <div class="section-header">
+        <div class="section-label" data-i18n="voices.label">Voices · 用户之声</div>
+        <h2 class="section-title" data-i18n="voices.title">他们<em>这样说</em>。</h2>
+      </div>
+    </div>
+    <div class="carousel">
+      <div class="carousel-track">
+        <article class="carousel-card">
+          <p class="carousel-quote" data-i18n="voices.q1">rhosocial-activerecord 终于让我不再和 ORM 搏斗了。类型注解就是模型定义，太对了。</p>
+          <div class="carousel-author"><span class="carousel-avatar">JL</span><div><div class="carousel-name">Jamie Lee</div><div class="carousel-role" data-i18n="voices.q1_role">Backend Engineer · Kyoto</div></div></div>
+        </article>
+        <article class="carousel-card">
+          <p class="carousel-quote" data-i18n="voices.q2">Async 和 sync 共用一套 API，重构时几乎零成本。我的 FastAPI 项目整个迁移只改了两行。</p>
+          <div class="carousel-author"><span class="carousel-avatar">MN</span><div><div class="carousel-name">Mira Nakamura</div><div class="carousel-role" data-i18n="voices.q2_role">Staff Engineer · Berlin</div></div></div>
+        </article>
+        <article class="carousel-card">
+          <p class="carousel-quote" data-i18n="voices.q3">我自己接了 DuckDB 后端，看了 Backend ABC 不到一个下午就跑通了。这才是可扩展。</p>
+          <div class="carousel-author"><span class="carousel-avatar">DK</span><div><div class="carousel-name">David Koh</div><div class="carousel-role" data-i18n="voices.q3_role">Data Platform · Singapore</div></div></div>
+        </article>
+        <article class="carousel-card">
+          <p class="carousel-quote" data-i18n="voices.q4">IDE 里每一步链式调用都有正确的类型推导。Pydantic 的力量用在了刀刃上。</p>
+          <div class="carousel-author"><span class="carousel-avatar">RP</span><div><div class="carousel-name">Rafael Pereira</div><div class="carousel-role" data-i18n="voices.q4_role">Senior Python · São Paulo</div></div></div>
+        </article>
+        <article class="carousel-card">
+          <p class="carousel-quote" data-i18n="voices.q5">零运行时依赖是关键。嵌入式部署场景里我们再也不用为 SQLAlchemy 的体积头疼了。</p>
+          <div class="carousel-author"><span class="carousel-avatar">YX</span><div><div class="carousel-name">于夏</div><div class="carousel-role" data-i18n="voices.q5_role">IoT 工程师 · 深圳</div></div></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- BY THE NUMBERS -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header"><div class="section-label" data-i18n="stats.label">By the numbers</div><h2 class="section-title" data-i18n="stats.title">一些<em>数字</em>。</h2></div>
+      <div class="stats-grid">
+        <div class="stat"><div class="stat-num">6<span class="unit">backends</span></div><div class="stat-label" data-i18n="stats.s1">可选数据库方言</div></div>
+        <div class="stat"><div class="stat-num">100<span class="unit">%</span></div><div class="stat-label" data-i18n="stats.s2">类型注解覆盖</div></div>
+        <div class="stat"><div class="stat-num">3.8<span class="unit">+</span></div><div class="stat-label" data-i18n="stats.s3">最低 Python 版本</div></div>
+        <div class="stat"><div class="stat-num">0<span class="unit">deps</span></div><div class="stat-label" data-i18n="stats.s4">外部 ORM 依赖</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GET STARTED -->
+  <section id="install" class="section">
+    <div class="container-narrow">
+      <div class="install-wrap">
+        <div class="section-label" style="margin-bottom: 18px;" data-i18n="install.label">Get started</div>
+        <h2 class="install-title" data-i18n="install.title">一行安装，<em>十分钟</em>上手。</h2>
+        <p class="install-sub" data-i18n="install.sub">已在 PyPI 发布。SQLite 后端随核心包一起。其他后端按需安装对应包即可。</p>
+        <div class="install-cmd">
+          <span class="prompt">$</span>
+          <span>pip install rhosocial-activerecord</span>
+          <button class="copy-btn" data-copy-text="pip install rhosocial-activerecord" data-i18n="common.copy">复制</button>
+        </div>
+        <div style="margin-top: 28px; display: flex; gap: 12px; flex-wrap: wrap;">
+          <a href="backends/index.html" class="btn btn-primary" data-i18n="install.docs">阅读文档 →</a>
+          <a href="https://github.com/rhosocial/python-activerecord" class="btn btn-ghost">GitHub →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="footer">
+  <div>&copy; rhosocial &middot; rhosocial-activerecord &middot; Apache 2.0</div>
+  <div style="font-size: 12px; opacity: 0.6;">2025-04</div>
+</footer>
+<script>
+// Convert FEATURE_CODE_DATA to CONTENT_DATA structure for TabSwitcher
+(function() {
+  var data = window.FEATURE_CODE_DATA || {};
+  var result = {};
+
+  var features = ['f1', 'f2', 'f3', 'f4', 'f5', 'f6'];
+  var versions = ['py38', 'py39', 'py310', 'py311'];
+  var modes = ['sync', 'async'];
+
+  for (var fi = 0; fi < features.length; fi++) {
+    var fid = features[fi];
+    var fdata = data[fid];
+    if (!fdata) continue;
+
+    result[fid] = {};
+    for (var vi = 0; vi < versions.length; vi++) {
+      var pyver = versions[vi];
+      var vdata = fdata[pyver];
+      if (!vdata) continue;
+
+      result[fid][pyver] = {};
+      for (var mi = 0; mi < modes.length; mi++) {
+        var mode = modes[mi];
+        var mdata = vdata[mode];
+        if (mdata) result[fid][pyver][mode] = mdata;
+      }
+    }
+  }
+
+  window.CONTENT_DATA = result;
+})();
+
+// Initialize dropdowns and ThemeController
+(function() {
+  var ctrl = new ThemeController({
+    container: document.getElementById('control-bar'),
+    onChange: function(e) {
+      if (e.type === 'lang') {
+        window.applyI18n(e.value);
+      }
+    }
+  });
+
+  // Build dropdown menus
+  function buildDropdownMenus() {
+    var ddTheme = document.querySelector('[data-dropdown="theme"]');
+    var ddFont = document.querySelector('[data-dropdown="font"]');
+    var ddLang = document.querySelector('[data-dropdown="lang"]');
+    var params = new URLSearchParams(location.search);
+    var themeVal = params.get('theme') || localStorage.getItem('theme') || 'terminal';
+    var fontVal = params.get('font') || localStorage.getItem('font');
+    var langVal = params.get('lang') || localStorage.getItem('lang') || 'zh-cn';
+
+    if (ddTheme && window.THEMES) {
+      var menu = ddTheme.querySelector('.dropdown-menu');
+      window.THEMES.forEach(function(t) {
+        var btn = document.createElement('button');
+        btn.className = 'dropdown-item' + (t[0] === themeVal ? ' is-active' : '');
+        btn.dataset.value = t[0];
+        btn.innerHTML = '<span class="dropdown-item-label">' + t[1] + '</span>';
+        menu.appendChild(btn);
+      });
+    }
+
+    if (ddFont && window.FONTS) {
+      var menu = ddFont.querySelector('.dropdown-menu');
+      var fontAutoText = getFontAutoText();
+      window.FONTS.forEach(function(f) {
+        var label = f[0] === 'auto' ? fontAutoText : f[1];
+        var btn = document.createElement('button');
+        btn.className = 'dropdown-item' + (f[0] === fontVal ? ' is-active' : '');
+        btn.dataset.value = f[0];
+        btn.innerHTML = '<span class="dropdown-item-label">' + label + '</span>';
+        menu.appendChild(btn);
+      });
+    }
+
+    if (ddLang && window.LANGS) {
+      var menu = ddLang.querySelector('.dropdown-menu');
+      window.LANGS.forEach(function(l) {
+        var btn = document.createElement('button');
+        btn.className = 'dropdown-item' + (l[0] === langVal ? ' is-active' : '');
+        btn.dataset.value = l[0];
+        btn.innerHTML = '<span class="dropdown-item-label">' + l[1] + '</span>';
+        menu.appendChild(btn);
+      });
+    }
+  }
+
+  function refreshDropdownValueLabel(kind, value) {
+    var dd = document.querySelector('[data-dropdown="' + kind + '"]');
+    if (!dd) return;
+    var item = dd.querySelector('.dropdown-item[data-value="' + value + '"]');
+    if (!item) return;
+    var valueEl = dd.querySelector('.dropdown-value');
+    if (valueEl) valueEl.textContent = item.querySelector('.dropdown-item-label').textContent;
+  }
+
+  function getFontAutoText() {
+    var lang = window.detectLang ? window.detectLang() : ((document.documentElement.getAttribute('lang') || 'zh-CN').toLowerCase().replace('_', '-'));
+    var dict = (window.I18N || {})[lang] || (window.I18N || {})['zh-cn'] || {};
+    return (dict.control && dict.control.font_auto) || 'Follow theme';
+  }
+
+  // Build menus first
+  buildDropdownMenus();
+
+  // Update auto option label after build
+  var fontDd = document.querySelector('[data-dropdown="font"]');
+  if (fontDd) {
+    var autoItem = fontDd.querySelector('.dropdown-item[data-value="auto"] .dropdown-item-label');
+    if (autoItem) autoItem.textContent = getFontAutoText();
+  }
+
+  // Init theme controller
+  ctrl.init();
+
+  // Apply i18n for initial language (only once)
+  window.applyI18n(ctrl.state.lang);
+  window.themeCtrl = ctrl;
+
+  // Sync dropdown values - use localStorage directly to check if user manually selected
+  var storedFont = localStorage.getItem('font');
+  var displayFont = storedFont || 'auto';  // Show "auto" if never manually selected
+  refreshDropdownValueLabel('theme', ctrl.state.theme);
+  refreshDropdownValueLabel('font', displayFont);
+  refreshDropdownValueLabel('lang', ctrl.state.lang);
+
+  // Setup dropdown interactions
+  document.querySelectorAll('.dropdown').forEach(function(dropdown) {
+    var trigger = dropdown.querySelector('.dropdown-trigger');
+    var menu = dropdown.querySelector('.dropdown-menu');
+    trigger.addEventListener('click', function(e) {
+      e.stopPropagation();
+      dropdown.classList.toggle('is-open');
+      document.querySelectorAll('.dropdown').forEach(function(d) {
+        if (d !== dropdown) d.classList.remove('is-open');
+      });
+    });
+    menu.querySelectorAll('.dropdown-item').forEach(function(item) {
+      item.addEventListener('click', function(e) {
+        e.stopPropagation();
+        var type = dropdown.dataset.dropdown;
+        var value = item.dataset.value;
+        ctrl.setValue(type, value);
+        dropdown.classList.remove('is-open');
+        menu.querySelectorAll('.dropdown-item').forEach(function(i) { i.classList.remove('is-active'); });
+        item.classList.add('is-active');
+
+        // If user selects "auto" (follow theme), clear stored preference
+        if (type === 'font' && value === 'auto') {
+          localStorage.removeItem('font');
+        }
+
+        refreshDropdownValueLabel(type, value);
+      });
+    });
+  });
+
+  document.addEventListener('click', function() {
+    document.querySelectorAll('.dropdown').forEach(function(d) { d.classList.remove('is-open'); });
+  });
+
+  // Initialize TabSwitchers
+  window.initAllTabSwitchers({
+    onSwitch: function(e) {}
+  });
+
+  // Update copy buttons on language change
+  window.RENDER_ADAPTERS = window.RENDER_ADAPTERS || [];
+  window.RENDER_ADAPTERS.push({
+    name:   'copy-btn',
+    onTheme: function() {},
+    onFont:  function() {},
+    onLang:  function() {
+      var lang = window.detectLang ? window.detectLang() : ((document.documentElement.getAttribute('lang') || 'zh-CN').toLowerCase().replace('_', '-'));
+      var dict = (window.I18N || {})[lang] || (window.I18N || {})['zh-cn'] || {};
+      var copyText = (dict.common && dict.common.copy) || 'Copy';
+      document.querySelectorAll('.copy-btn').forEach(function(btn) {
+        var icon = btn.textContent.match(/⎘\s*/);
+        if (icon) {
+          btn.textContent = icon[0] + copyText;
+        } else {
+          btn.textContent = copyText;
+        }
+      });
+
+      // Update font dropdown "auto" label
+      var fontAutoText = getFontAutoText();
+      var fontDd = document.querySelector('[data-dropdown="font"]');
+      if (fontDd) {
+        var autoItem = fontDd.querySelector('.dropdown-item[data-value="auto"] .dropdown-item-label');
+        if (autoItem) autoItem.textContent = fontAutoText;
+        var currValue = fontDd.querySelector('.dropdown-value');
+        var storedFont = localStorage.getItem('font');
+        if (!storedFont && currValue) {
+          currValue.textContent = fontAutoText;
+        }
+      }
+    }
+  });
+
+  // Setup copy buttons
+  document.querySelectorAll('.copy-btn[data-copy-text]').forEach(function(btn) {
+    window.attachCopyBtn(btn, { textContent: btn.dataset.copyText });
+  });
+})();
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.tabs-display code.hljs').forEach(function(el) {
+    if (typeof hljs !== 'undefined') hljs.highlightElement(el);
+  });
+});
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VPM29QVEST"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-VPM29QVEST');
+</script>
+
+<!-- Baidu tongji -->
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?94120eca87dedf57cf0c46979991365b";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+<!-- Analytics tracker -->
+<script src="assets/analytics.js"></script>
+</body>
+</html>

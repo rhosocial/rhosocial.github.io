@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="terminal" data-font="auto">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<script src="../assets/init-head.js"></script>
 <link rel="stylesheet" href="../assets/core.css">
 <link rel="stylesheet" href="../assets/themes/terminal.css">
 <link rel="stylesheet" href="../assets/themes/editorial.css">
@@ -62,8 +63,12 @@
 <link rel="stylesheet" href="../assets/fonts/literata.css">
 <script src="migrations/zh-CN.js"></script>
 <script src="migrations/en-US.js"></script>
+<script src="../assets/state-manager.js"></script>
+<script src="../assets/theme-applier.js"></script>
+<script src="../assets/i18n.js"></script>
 <link rel="stylesheet" href="../assets/shared.css">
-<script src="../assets/shared-header.js" data-header-variant="ar"></script>
+<script src="../assets/control-bar.js" data-variant="ar"></script>
+<script src="../assets/shared-header.js"></script>
 </head>
 <body>
 <style>
@@ -96,8 +101,6 @@
   --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
   --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
   --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 9999px;
-  --border:           var(--border, rgba(255,255,255,0.08));
-  --border-strong:    var(--border-strong, rgba(255,255,255,0.16));
 }
 .reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
 .reveal.visible { opacity:1; transform:translateY(0); }

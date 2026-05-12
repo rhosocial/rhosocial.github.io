@@ -76,6 +76,9 @@ Additional considerations.
 See `.claude/rules/` for project-specific guidelines:
 
 - **`theme-icon.md`** - Theme dark/light classification and icon usage guidelines
+- **`component-i18n.md`** - Component i18n design principles
+- **`shared-components.md`** - Shared component manual
+- **`blog-system.md`** - Blog system architecture and design rules
 
 ## Theme System
 

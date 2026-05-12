@@ -4,44 +4,75 @@
 
 ---
 
-## 概览
+## 架构概览
 
-产品展示页由三层组成：
-- **数据层** — `themes.js`（主题/字体/语言配置）
-- **逻辑层** — `i18n-core.js`、`utils.js`、`feature-code-data.js`、`analytics.js`
-- **UI 层** — `shared-header.js`、`shared-footer.js`、`shared.css`、`core.css`
+```
+                      ┌──────────────────────────┐
+                      │     init-head.js          │  ← 阻塞式，CSS 加载前决定 data-* 属性
+                      │   (无闪烁初始化)           │     零闪烁关键
+                      └──────────┬───────────────┘
+                                 │ 提供 __INITIAL_STATE__
+                                 ▼
+┌──────────────────────────────────────────────────┐
+│              state-manager.js                    │  ← 全局 Store (发布-订阅)
+│   window.__STATE__ = new Store(initialState)     │
+│   .get(key) .set(key, value) .subscribe(keys,fn) │
+└────────┬──────────┬──────────┬──────────────────┘
+         │          │          │
+         ▼          ▼          ▼
+┌────────────┐ ┌──────────┐ ┌──────────────────┐
+│theme-applier│ │ i18n.js  │ │   control-bar.js │  ← 组件
+│ data-* 属性 │ │ 文本替换  │ │  dropdown UI 渲染 │
+│ localStorage│ │ 语言回落  │ │  + 事件绑定       │
+└────────────┘ └──────────┘ └──────────────────┘
+                                 │
+                                 ▼
+                         ┌──────────────┐
+                         │shared-header.js│  ← 仅 analytics SDK 注入
+                         │ (GA4 + Baidu) │
+                         └──────────────┘
+```
 
 ---
 
-## 基础设施
+## 核心文件清单
 
-### CSS 变量体系（core.css §2）
+| 文件 | 加载位置 | 职责 |
+|------|----------|------|
+| `init-head.js` | `<head>` 最前（阻塞） | 检测 URL/localStorage → 设置 data-theme / data-font / lang |
+| `state-manager.js` | `<head>` 末尾 | 全局 Store，发布-订阅状态管理 |
+| `theme-applier.js` | `<head>` 末尾 | 订阅 theme/font/lang → 更新 DOM 属性 + localStorage |
+| `i18n.js` | `<head>` 末尾 | 订阅 lang → 替换 data-i18n / data-i18n-value / data-i18n-attr |
+| `control-bar.js` | `<head>` 末尾 | 渲染控制栏 + dropdown 交互（数据透传 data-variant） |
+| `shared-header.js` | `<head>` 末尾 | **仅**注入 GA4 / Baidu / analytics.js SDK |
+| `shared-footer.js` | `</body>` 前 | 注入页脚 HTML |
+| `analytics.js` | 由 shared-header.js 注入 | 事件追踪（自动 hook state-manager） |
 
-`:root` 上定义 30+ CSS 变量，所有组件样式基于这些变量。主题文件（`themes/*.css`）通过 `[data-theme="x"]` 覆盖变量值，字体包（`fonts/*.css`）覆盖 `--font-*` 变量。
+---
 
-核心变量（各主题都会覆盖）：
+## 状态管理（state-manager.js）
 
-| 变量 | 用途 |
-|------|------|
-| `--bg` / `--bg-2` / `--bg-elevated` | 表面色 |
-| `--fg` / `--fg-muted` / `--fg-faint` | 文字色 |
-| `--accent` / `--accent-2` / `--accent-3` | 强调色 |
-| `--border` / `--border-strong` | 边界色 |
-| `--font-display` / `--font-body` / `--font-mono` | 字体族 |
-| `--radius` / `--radius-sm` | 圆角 |
-| `--code-bg` / `--code-fg` | 代码块配色 |
-| `--tok-*` | 语法高亮令牌色 |
+全局单例 `window.__STATE__`，初始化时读取 `window.__INITIAL_STATE__`（由 init-head.js 写入）。
 
-注意：所有样式都**必须**使用这些 CSS 变量，不可硬编码颜色值。
+```js
+// 读取
+var theme = window.__STATE__.get('theme');
 
-### 动画系统（core.css §3）
+// 写入（触发所有订阅者）
+window.__STATE__.set('lang', 'en-us');
 
-- `.rise` — 上浮淡入动画（700ms），支持 `:nth-child` 延迟
-- `.pulse` — 脉冲动画
+// 批量写入（一次通知）
+window.__STATE__.setMultiple({ theme: 'noir', font: 'tight' });
 
-### 响应式断点
+// 订阅（key 列表 + 回调）
+var id = window.__STATE__.subscribe(['theme', 'font'], function(state, changed) {
+  // state: { theme, font, lang }
+  // changed: { theme: 'noir' }
+});
 
-- `640px` — 移动端（core.css 和 shared.css 均处理）
+// 退订
+window.__STATE__.unsubscribe(id);
+```
 
 ---
 
@@ -51,84 +82,109 @@
 
 ```html
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="terminal" data-font="tight">
+<html lang="zh-CN">
 <head>
-  <!-- Google Fonts preconnect -->
-  <!-- 26 个主题 CSS -->
-  <!-- 25 个字体 CSS -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- 1. init-head: 阻塞执行，决定 theme/font/lang，零闪烁 -->
+  <script src="assets/init-head.js"></script>
+
+  <!-- Google Fonts preconnect（可在 init-head 之前或之后） -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  ...
+
+  <!-- 2. 所有 CSS（26 主题 + 25 字体 + 核心 样式） -->
   <link rel="stylesheet" href="assets/core.css">
-  <link rel="stylesheet" href="assets/core-extensions.css">
+  <link rel="stylesheet" href="assets/themes/terminal.css">
+  <!-- ... 所有主题、字体、core-extensions、shared.css -->
+
+  <!-- 3. 页面级样式 <style> 块 -->
+  <!-- 4. 页面 i18n 数据 JS（如 index/zh-cn.js） -->
+
+  <!-- 5. 新架构核心 JS（按此顺序） -->
+  <script src="assets/state-manager.js"></script>
+  <script src="assets/theme-applier.js"></script>
+  <script src="assets/i18n.js"></script>
   <link rel="stylesheet" href="assets/shared.css">
-  <!-- 语言覆盖样式（ar/fa-ir/hi-in/bn-bd 等） -->
-  <!-- 页面级样式（<style> 块） -->
-  <!-- i18n JS（全部语言） -->
-  <script src="assets/themes.js"></script>
-  <script src="assets/i18n-core.js"></script>
-  <script src="assets/utils.js"></script>
+  <script src="assets/control-bar.js" data-variant="ar"></script>
+  <script src="assets/shared-header.js"></script>
 </head>
 <body>
-  <script src="assets/shared-header.js" data-header-variant="ar"></script>
+  <!-- control bar 由 control-bar.js 注入 -->
   <main>
     <!-- 页面内容 -->
   </main>
   <script src="assets/shared-footer.js"></script>
-  <!-- 页面初始化脚本 -->
-  <script src="assets/analytics.js"></script>
 </body>
 </html>
 ```
 
-### JS 加载顺序（重要）
+### control-bar.js data-variant
 
-1. `themes.js` — 先加载数据（定义 `window.THEMES` 等）
-2. `i18n-core.js` — 再加载逻辑（依赖 `window.THEMES` 等）
-3. `utils.js` — 工具函数
-4. `shared-header.js` — 注入 UI（依赖 `window.I18N`）
-5. `shared-footer.js` — 注入 footer
-6. `analytics.js` — 最后加载（放在 GA/百度统计脚本之后）
+| 值 | 面包屑路径 |
+|----|-----------|
+| `ar` | Theme Lab / Backends / ActiveRecord |
+| `back` | Index / Backends / ActiveRecord |
+| `blog` | Theme Lab / Backends / ActiveRecord / Blog |
 
-### 站点页面（非文档类）
+### 检测优先级（由 init-head.js 处理）
 
-`privacy-policy.html`、`about-us.html`、`contact-us.html` 等政策/介绍页面：
+| 属性 | 优先级链 |
+|------|----------|
+| theme | URL query → localStorage → `terminal` |
+| font | URL query → localStorage → FONT_THEME_MAP → `tight` |
+| lang | URL query → `rhosocial-lang` localStorage → navigator.languages → `zh-cn` |
 
-- 布局使用 `.policy-page` 容器（最大宽度 780px，居中排版），而非 `.page` + `.section`
-- 内容区颜色直接使用主题系统变量：`var(--bg)`、`var(--fg)`、`var(--fg-muted)`、`var(--fg-faint)`、`var(--accent)`、`var(--bg-2)`、`var(--border)`
-- 需要加载 `shared.css` 以获得正确的 `.rho-footer` 样式
-- body 需要 `padding-top`（`5rem` 或 `80px`）为 fixed 控制栏留出空间
-- 需要初始化脚本从 localStorage 恢复主题/字体/语言（见下方「初始化脚本」）
-- 不能移除 body 上由 core.css 定义的 `background: var(--bg)` 和 `color: var(--fg)`
+### CSS 变量污染警告
+
+**页面级内联 `<style>` 块中禁止重新定义 `--border` / `--border-strong` 变量**，包括 `var(--border, ...)` 形式的 fallback 写法：
+
+```css
+/* ❌ 错误 — 会覆盖 theme CSS 的 --border 值 */
+:root, body {
+  --border: var(--border, rgba(255,255,255,0.08));
+}
+
+/* ✅ 正确 — 完全省略，由 theme CSS 统一管理 */
+:root, body {
+  /* 不出现 --border 或 --border-strong */
+}
+```
+
+原因：内联样式 `:root` 选择器与 theme CSS 的 `:root` 优先级相同，但出现在 DOM 中更晚，会覆盖 theme 定义的值，导致所有 border/分隔线/下拉框边框颜色在各 theme 下被固定为同一值。
+
+### 控制栏 navLinks href 规则
+
+`control-bar.js` 中的 `navLinks` 必须根据页面层级动态计算 href，**不能硬编码为 `./` 或 `../` 前缀**：
+
+```js
+var isRootLevel = pathname.indexOf('/backends/') === -1 &&
+                  pathname.indexOf('/activerecord/') === -1 &&
+                  pathname.indexOf('/blog/') === -1;
+var prefix = isRootLevel ? '' : '../';
+navLinks[0].href = prefix + 'index.html';
+navLinks[1].href = prefix + 'backends/index.html';
+navLinks[2].href = prefix + 'activerecord/index.html';
+navLinks[4].href = prefix + 'blog/index.html';
+```
+
+`isRootLevel` 变量必须与 `navLinks` 定义在同一作用域，确保在 href 计算前已被赋值。
 
 ---
 
-## 组件清单
+## 组件说明
 
 ### 控制栏（Control Bar）
 
 | 属性 | 值 |
 |------|-----|
-| 文件 | `assets/shared-header.js` |
-| 样式 | `core.css §4`（`.control-bar`、`.control-brand`、`.chip`、`.dropdown-*`） |
-| 注入方式 | `<script src="assets/shared-header.js" data-header-variant="ar">` |
-| 变体 | `ar` → 面包屑：Theme Lab / Backends / ActiveRecord<br>`back` → 面包屑：Index / Backends / ActiveRecord<br>`blog` → 面包屑（blog 子目录） |
-| 功能 | 品牌标记、面包屑、Theme/Font/Lang 三个 dropdown、键盘快捷键 |
+| 文件 | `assets/control-bar.js` |
+| 样式 | `core.css §4` + `assets/core-extensions.css` |
+| 注入方式 | `<script src="assets/control-bar.js" data-variant="ar">` |
+| 功能 | 并列导航链接 + Theme/Font/Lang 三个 dropdown |
 
-**键盘快捷键**（定义在 shared-header.js）：
-
-| 修饰键 | 功能 |
-|--------|------|
-| `Ctrl` + QWERTY 键 | 切换主题 |
-| `Shift` + QWERTY 键 | 切换字体 |
-| `Alt` + QWERTY 键 | 切换语言 |
-
-**localStorage key**：
-
-| key | 写入方 | 说明 |
-|-----|--------|------|
-| `theme` | `shared-header.js` (setValue) / `i18n-core.js` (ThemeController) | 主题 |
-| `font` | `shared-header.js` (setValue) / `i18n-core.js` (ThemeController) | 字体 |
-| `rhosocial-lang` | `shared-header.js` (setValue) | 语言 |
-
-注意：语言 key 是 `rhosocial-lang` 而非 `lang`；`lang` 是 index.html 中 ThemeController 使用的遗留 key。
+导航链接根据路径自动高亮当前页面（`.is-current`），触屏友好（最小触摸区域 36px、圆角背景、无下划线）。
 
 ### 页脚（Footer）
 
@@ -136,24 +192,22 @@
 |------|-----|
 | 文件 | `assets/shared-footer.js` |
 | 样式 | `assets/shared.css`（`.rho-footer`） + `core.css §15` |
-| 注入方式 | `<script src="assets/shared-footer.js"></script>` |
-| 位置 | 在 `<main>` 之后插入 |
-| 链接 | Privacy / About / Contact / GitHub / PyPI（硬编码） |
+| 注入方式 | `<script src="assets/shared-footer.js"></script>`（放在 `</body>` 前） |
 
-### ThemeController（i18n-core.js）
+### i18n（i18n.js）
 
-```js
-var ctrl = new ThemeController({ container: containerEl, onChange: callback });
-ctrl.init();  // 从 localStorage 恢复值并写入 DOM
-```
+- 订阅 `lang` 状态变更
+- 替换 `[data-i18n]`（innerHTML）、`[data-i18n-value]`（textContent）、`[data-i18n-attr]`（attribute）
+- 回落机制：当前语言不可用 → `zh-cn` → `en-us` → 不替换
 
-- `detectTheme()` — 检测链：URL query > localStorage > 默认值
-- `detectFont(theme)` — 检测链：URL query > localStorage > FONT_THEME_MAP > 默认值
-- `detectLang()` — 检测链：URL query > localStorage > navigator.languages > 默认值
-- `setValue(type, value)` — 设值并持久化到 localStorage（theme/font/lang 三个 type）
-- `onChange(e)` — 回调，e 包含 `{ type, value, prev }`
+### 分析埋点（analytics.js）
 
-### TabSwitcher（utils.js）
+- 自动追踪：Theme/Font/Lang 切换（hook state-manager）、Tab 切换、复制、外链/内链点击
+- 声明式埋点：`data-track-event` / `data-track-label` / `data-track-value` / `data-track-once`
+- 双上报：`window.gtag()` + `window._hmt.push()`
+- 防抖：setting 800ms / tab 400ms
+
+### TabSwitcher（utils.js — 仅 legacy）
 
 ```html
 <div data-component="tabs-switcher" data-data-key="xxx">
@@ -165,10 +219,7 @@ ctrl.init();  // 从 localStorage 恢复值并写入 DOM
 </div>
 ```
 
-- 支持 N 维 Tab 组合
-- 数据源：`window.CONTENT_DATA[dataKey]`
-- 渲染器：`code`（带复制按钮/Highlight.js）/ `html`（原始渲染）
-- 初始化：`initAllTabSwitchers()`
+`utils.js` 仅被 `legacy-index.html` 引用，新页面不需要加载。
 
 ### 代码块（core.css §9）
 
@@ -186,76 +237,24 @@ ctrl.init();  // 从 localStorage 恢复值并写入 DOM
 </div>
 ```
 
-**语法高亮 Token 类名**：`tok-k`（关键字）、`tok-cls`（类名）、`tok-s`（字符串）、`tok-c`（注释）、`tok-attr`（属性）、`tok-n`（数字）、`tok-f`（函数）、`tok-d`（装饰器）、`tok-o`（操作符）。
-
-### 特征代码双层 Tab（feature-code-data.js）
-
-```html
-<div class="feature-codes">
-  <div class="feature-code" data-feature="f1">
-    <div class="tab-row" data-tabs="py">
-      <button data-tab="py38" class="is-active">3.8</button>
-      ...
-    </div>
-    <div class="tab-row" data-tabs="mode">
-      <button data-tab="sync" class="is-active">Sync</button>
-      <button data-tab="async">Async</button>
-    </div>
-    <div class="feature-code-display"></div>
-  </div>
-</div>
-```
-
-调用 `initFeatureCodeTabs()` 初始化，切换时调用 `updateFeatureCode(featureId, pyVersion, syncAsync)` 更新显示。
-
-### 分析埋点（analytics.js）
-
-- 自动追踪：Theme/Font/Lang 切换、Tab 切换、复制、外链/内链点击、初始状态
-- 声明式埋点：`data-track-event="eventName"` + `data-track-label` + `data-track-value` + `data-track-once`
-- 双上报：`window.gtag()` + `window._hmt.push()`
-- 防抖：setting 800ms / tab 400ms
+**语法高亮 Token 类名**：`tok-k`、`tok-cls`、`tok-s`、`tok-c`、`tok-attr`、`tok-n`、`tok-f`、`tok-d`、`tok-o`。
 
 ---
 
-## 初始化脚本（站点页面专用）
+## 无闪烁加载原理
 
-非文档类页面（privacy-policy / about-us / contact-us）的初始化：
+1. `init-head.js` 在 `<head>` 最前**阻塞**执行，同步检测 theme/font/lang
+2. 写入 `data-theme` / `data-font` / `lang` / `dir` 到 `<html>`
+3. 后续 CSS 加载时，选择器 `[data-theme="..."]` 立即匹配，**无需等待 JS 重渲染**
+4. 切换时：`control-bar.js` → `state.set('theme', 'noir')` → `theme-applier.js` 更新 `data-theme` → CSS 自动生效
 
-```js
-<script>
-(function(){
-  function isValidTheme(val) { return window.THEMES && window.THEMES.some(function(t) { return t[0] === val; }); }
-  function isValidFont(val) { return window.FONTS && window.FONTS.some(function(f) { return f[0] === val; }); }
-  function isValidLang(val) { return window.LANGS && window.LANGS.some(function(l) { return l[0] === val; }); }
+---
 
-  var theme = localStorage.getItem('theme');
-  if (theme && isValidTheme(theme)) document.documentElement.setAttribute('data-theme', theme);
-  var font = localStorage.getItem('font');
-  if (font && isValidFont(font)) document.documentElement.setAttribute('data-font', font);
-  var lang = localStorage.getItem('rhosocial-lang');
-  if (lang && isValidLang(lang)) document.documentElement.setAttribute('lang', lang);
+## 遗留文件（仅供 legacy-index.html / tests / theme.html 使用）
 
-  function refreshValueLabel(kind, value) {
-    var dd = document.querySelector('[data-dropdown="'+kind+'"]');
-    if (!dd) return;
-    var item = dd.querySelector('.dropdown-item[data-value="'+value+'"]');
-    if (!item) return;
-    var ve = dd.querySelector('.dropdown-value');
-    if (ve) ve.textContent = (item.querySelector('.dropdown-item-label')||{}).textContent || value;
-  }
+- `themes.js` — 旧版主题/字体/语言数据定义
+- `i18n-core.js` — 旧版 ThemeController / applyI18n
+- `utils.js` — 旧版 TabSwitcher / 复制按钮辅助函数
+- `feature-code-data.js` — 旧版特征代码展示数据
 
-  var ddTheme = document.querySelector('[data-dropdown="theme"]');
-  var ddFont = document.querySelector('[data-dropdown="font"]');
-  var ddLang = document.querySelector('[data-dropdown="lang"]');
-  if (ddTheme && theme) refreshValueLabel('theme', theme);
-  if (ddFont && font) refreshValueLabel('font', font);
-  if (ddLang && lang) refreshValueLabel('lang', lang);
-})();
-</script>
-```
-
-关键注意：
-- 语言用 `rhosocial-lang`（与 `shared-header.js` 一致），**不要**用 `lang`
-- 主题/字体用 `theme` / `font`（与 `i18n-core.js` 的 ThemeController 一致）
-- 必须在 `shared-header.js` 和 `shared-footer.js` 之后执行
-- 必须在 `analytics.js` 之前执行
+新页面不应引用以上文件。

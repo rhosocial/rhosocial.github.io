@@ -121,6 +121,7 @@
 }
 .dropdown-item.is-active .dropdown-item-kbd { color: rgba(255, 255, 255, 0.7); }
 
+
 /* Section divider inside dropdown menu */
 .dropdown-section {
   padding: 10px 12px 4px;

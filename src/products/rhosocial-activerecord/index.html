@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN" data-theme="terminal" data-font="tight">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>rhosocial ActiveRecord — Python ORM</title>
+<script src="assets/init-head.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -60,45 +61,17 @@
 <link rel="stylesheet" href="assets/fonts/dm.css">
 <link rel="stylesheet" href="assets/fonts/outfit.css">
 <link rel="stylesheet" href="assets/fonts/literata.css">
+<link rel="stylesheet" href="assets/sections/rho-vars.css">
+<link rel="stylesheet" href="assets/sections/section-common.css">
+<link rel="stylesheet" href="assets/sections/hero.css">
+<link rel="stylesheet" href="assets/sections/ticker.css">
+<link rel="stylesheet" href="assets/sections/chain-builder.css">
+<link rel="stylesheet" href="assets/sections/feature-cards.css">
+<link rel="stylesheet" href="assets/sections/arch.css">
+<link rel="stylesheet" href="assets/sections/compare.css">
+<link rel="stylesheet" href="assets/sections/install.css">
+<link rel="stylesheet" href="assets/sections/footer.css">
 <style>
-html[lang="ar"] { font-family: 'Noto Sans Arabic', var(--font-body); }
-html[lang="ar"] code, html[lang="ar"] pre, html[lang="ar"] .install-cmd { direction: ltr; unicode-bidi: embed; text-align: left; }
-html[lang="fa-ir"] { font-family: 'Noto Sans Arabic', var(--font-body); }
-html[lang="fa-ir"] code, html[lang="fa-ir"] pre, html[lang="fa-ir"] .install-cmd { direction: ltr; unicode-bidi: embed; text-align: left; }
-html[lang="hi-in"] { font-family: 'Noto Sans Devanagari', var(--font-body); }
-html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
-</style>
-<style>
-/* ═══════════════════════════════════════════════════════════════
-   rhoar-concept 设计语言 — 通过 CSS 变量适配所有主题
-═══════════════════════════════════════════════════════════════ */
-:root {
-  --r-bg: var(--bg, #080a0f);
-  --r-bg2: var(--surface-0, #0d1117);
-  --r-bg3: var(--surface-1, #111822);
-  --r-surface: var(--surface-1, #161d2a);
-  --r-surface2: var(--surface-2, #1c2535);
-  --r-border: var(--border, rgba(255,255,255,0.06));
-  --r-border2: var(--border-strong, rgba(255,255,255,0.12));
-  --r-accent: var(--accent, #f5a623);
-  --r-accent-dim: var(--accent-soft, rgba(245,166,35,0.15));
-  --r-accent-glow: var(--accent-soft, rgba(245,166,35,0.08));
-  --r-cyan: var(--accent-secondary, #22d3ee);
-  --r-cyan-dim: var(--accent-secondary-soft, rgba(34,211,238,0.12));
-  --r-green: var(--ok, #34d399);
-  --r-green-dim: var(--ok-soft, rgba(52,211,153,0.12));
-  --r-red: var(--err, #f87171);
-  --r-purple: #a78bfa;
-  --r-text: var(--text-primary, #e2e8f0);
-  --r-text2: var(--text-secondary, #8892a4);
-  --r-text3: var(--text-muted, #4a5568);
-  --r-font-display: 'Syne', var(--font-display, sans-serif);
-  --r-font-mono: var(--font-mono, 'JetBrains Mono', monospace);
-  --r-font-body: var(--font-body, 'Inter', sans-serif);
-}
-
-*, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
 body {
   background: var(--r-bg);
   color: var(--r-text);
@@ -116,422 +89,8 @@ body::before {
 section { position: relative; z-index: 1; }
 a { color: var(--r-cyan); text-decoration: none; }
 a:hover { text-decoration: underline; }
-
-/* ── LABEL TAG ── */
-.label {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-family: var(--r-font-mono); font-size: 11px; letter-spacing: 0.12em;
-  color: var(--r-accent); text-transform: uppercase;
-  padding: 4px 10px; border-radius: 3px;
-  border: 1px solid rgba(245,166,35,0.25);
-  background: var(--r-accent-glow);
-}
-.label::before { content: '//'; opacity: 0.5; }
-
-/* ── HERO ── */
-.rho-hero { min-height: 100vh; display: grid; grid-template-rows: auto 1fr auto; padding: 0 0 4rem; }
-.rho-hero-body {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem;
-  align-items: center; padding: 2rem 3rem 0;
-  max-width: 1280px; margin: 0 auto; width: 100%;
-}
-.rho-hero-left { max-width: 540px; }
-.hero-eyebrow {
-  font-family: var(--r-font-mono); font-size: 12px;
-  color: var(--r-accent); letter-spacing: 0.1em; margin-bottom: 1.5rem;
-}
-.hero-eyebrow span { color: var(--r-text3); }
-h1 {
-  font-family: var(--r-font-display);
-  font-size: clamp(2.4rem, 4vw, 3.6rem);
-  font-weight: 800; line-height: 1.1;
-  letter-spacing: -0.03em; margin-bottom: 1.5rem;
-  color: var(--r-text);
-}
-h1 .hl { color: var(--r-accent); }
-h1 .dim { color: var(--r-text2); }
-h2 {
-  font-family: var(--r-font-display); font-size: clamp(1.8rem, 3vw, 2.8rem);
-  font-weight: 700; line-height: 1.15;
-  letter-spacing: -0.03em; color: var(--r-text); margin: 0;
-}
-h2 .hl { color: var(--r-accent); }
-.hero-sub {
-  font-size: 16px; color: var(--r-text2); line-height: 1.7;
-  margin-bottom: 2.5rem; max-width: 420px;
-}
-.hero-sub strong { color: var(--r-text); font-weight: 500; }
-.hero-actions { display: flex; gap: 12px; align-items: center; }
-.btn-primary, .btn-ghost {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 11px 22px; border-radius: 4px;
-  font-weight: 600; font-size: 14px; text-decoration: none; cursor: pointer;
-  transition: opacity 0.15s, transform 0.15s;
-}
-.btn-primary { background: var(--r-accent); color: #000; }
-.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); text-decoration: none; }
-.btn-ghost {
-  color: var(--r-text2); border: 1px solid var(--r-border2);
-  background: transparent;
-}
-.btn-ghost:hover { color: var(--r-text); border-color: var(--r-border2); text-decoration: none; }
-.hero-stats {
-  display: flex; gap: 2rem; margin-top: 3rem;
-  padding-top: 2rem; border-top: 1px solid var(--r-border);
-}
-.stat-item { display: flex; flex-direction: column; gap: 4px; }
-.stat-num {
-  font-family: var(--r-font-display); font-size: 1.8rem;
-  font-weight: 700; color: var(--r-text);
-}
-.stat-num span { color: var(--r-accent); }
-.stat-label { font-size: 12px; color: var(--r-text3); letter-spacing: 0.04em; }
-
-/* ── DEMO TERMINAL ── */
-.demo-terminal {
-  background: var(--r-bg2); border: 1px solid var(--r-border2);
-  border-radius: 10px; overflow: hidden;
-  box-shadow: 0 40px 80px rgba(0,0,0,0.5);
-}
-.term-bar {
-  display: flex; align-items: center; gap: 8px;
-  padding: 12px 16px;
-  background: var(--r-surface);
-  border-bottom: 1px solid var(--r-border);
-}
-.dot { width: 10px; height: 10px; border-radius: 50%; }
-.dot-r { background: #ff5f57; }
-.dot-y { background: #febc2e; }
-.dot-g { background: #28c840; }
-.term-title {
-  margin-left: auto; font-family: var(--r-font-mono); font-size: 11px;
-  color: var(--r-text3); margin-right: auto;
-}
-.badge-run {
-  display: inline-flex; align-items: center; gap: 5px;
-  background: var(--r-cyan-dim); color: var(--r-cyan);
-  font-family: var(--r-font-mono); font-size: 10px;
-  padding: 2px 8px; border-radius: 3px;
-  border: 1px solid rgba(34,211,238,0.2);
-  margin-left: auto;
-}
-.term-split { display: grid; grid-template-columns: 1fr 1fr; }
-.term-pane { padding: 20px; }
-.term-pane-header {
-  font-family: var(--r-font-mono); font-size: 10px;
-  color: var(--r-text3); letter-spacing: 0.1em; text-transform: uppercase;
-  margin-bottom: 14px; display: flex; align-items: center; gap: 6px;
-}
-.term-pane-header::before {
-  content: ''; width: 6px; height: 6px; border-radius: 50%;
-}
-.pane-python .term-pane-header::before { background: var(--r-accent); }
-.pane-sql .term-pane-header::before { background: var(--r-cyan); }
-.pane-divider { width: 1px; background: var(--r-border); margin: 16px 0; }
-.code-block {
-  font-family: var(--r-font-mono); font-size: 12px;
-  line-height: 1.8; display: block; margin: 0;
-}
-.code-block .kw { color: var(--r-purple); }
-.code-block .cls { color: var(--r-accent); }
-.code-block .fn { color: var(--r-cyan); }
-.code-block .str { color: var(--r-green); }
-.code-block .cm { color: var(--r-text3); font-style: italic; }
-.code-block .op { color: var(--r-text2); }
-.code-block .num { color: #fb923c; }
-.code-block .sql-kw { color: var(--r-cyan); font-weight: 700; }
-.code-block .sql-val { color: var(--r-green); }
-.code-block .sql-tbl { color: var(--r-accent); }
-.code-block .sql-cm { color: var(--r-text3); font-style: italic; }
-.cursor-blink {
-  display: inline-block; width: 7px; height: 13px;
-  background: var(--r-accent); vertical-align: middle;
-  animation: blink 1s step-end infinite;
-}
-@keyframes blink { 50% { opacity: 0; } }
-.sql-result {
-  margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--r-border);
-}
-.result-row {
-  display: flex; gap: 12px; font-family: var(--r-font-mono); font-size: 11px;
-  color: var(--r-text2); padding: 3px 0;
-}
-.result-row .col { color: var(--r-text3); min-width: 60px; }
-.result-row .val { color: var(--r-green); }
-
-/* ── TICKER ── */
-.ticker {
-  overflow: hidden; padding: 14px 0;
-  border-top: 1px solid var(--r-border);
-  border-bottom: 1px solid var(--r-border);
-  background: var(--r-surface);
-}
-.ticker-inner {
-  display: flex; gap: 0;
-  animation: rho-scroll-left 25s linear infinite;
-  white-space: nowrap;
-}
-.ticker-item {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 0 2.5rem;
-  font-family: var(--r-font-mono); font-size: 12px;
-  color: var(--r-text3); border-right: 1px solid var(--r-border);
-}
-.ticker-item .tag {
-  background: var(--r-accent-dim); color: var(--r-accent);
-  padding: 1px 6px; border-radius: 2px; font-size: 10px;
-}
-.ticker-item .tag-cyan {
-  background: var(--r-cyan-dim); color: var(--r-cyan);
-  padding: 1px 6px; border-radius: 2px; font-size: 10px;
-}
-@keyframes rho-scroll-left {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-50%); }
-}
-
-/* ── SECTION COMMON ── */
-.rho-section { padding: 6rem 3rem; max-width: 1280px; margin: 0 auto; }
-.rho-section-header { margin-bottom: 3rem; }
-.rho-section-sub { color: var(--r-text2); font-size: 15px; margin-top: 0.75rem; max-width: 480px; }
-.gradient-sep {
-  height: 1px;
-  background: linear-gradient(90deg, transparent 0%, var(--r-border2) 20%, var(--r-border2) 80%, transparent 100%);
-  margin: 0 3rem;
-}
-
-/* ── INTERACTIVE CHAIN BUILDER ── */
-.interactive-demo { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-.demo-panel {
-  background: var(--r-bg2); border: 1px solid var(--r-border2);
-  border-radius: 8px; overflow: hidden;
-}
-.demo-panel-header {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 12px 16px; border-bottom: 1px solid var(--r-border);
-  background: var(--r-surface);
-}
-.demo-panel-title {
-  font-family: var(--r-font-mono); font-size: 11px;
-  color: var(--r-text3); letter-spacing: 0.08em; text-transform: uppercase;
-  display: flex; align-items: center; gap: 8px;
-}
-.demo-panel-title .dot-lang { width: 8px; height: 8px; border-radius: 50%; background: var(--r-accent); }
-.dot-lang-cyan { background: var(--r-cyan) !important; }
-.demo-panel-body { padding: 20px; }
-.chain-builder { display: flex; flex-direction: column; gap: 8px; }
-.chain-step {
-  display: flex; align-items: center; gap: 12px;
-  padding: 10px 14px; background: var(--r-surface);
-  border: 1px solid var(--r-border); border-radius: 6px;
-  cursor: pointer; transition: all 0.2s; user-select: none;
-}
-.chain-step:hover { border-color: var(--r-border2); background: var(--r-surface2); }
-.chain-step.active {
-  border-color: rgba(245,166,35,0.4); background: var(--r-accent-glow);
-}
-.chain-step-icon { font-family: var(--r-font-mono); font-size: 10px; color: var(--r-accent); min-width: 20px; }
-.chain-step-label { font-family: var(--r-font-mono); font-size: 12px; color: var(--r-text); }
-.chain-step-hint { margin-left: auto; font-size: 11px; color: var(--r-text3); }
-.chain-step.active .chain-step-hint { color: var(--r-accent); opacity: 0.7; }
-.chain-connector { font-family: var(--r-font-mono); font-size: 18px; color: var(--r-border2); text-align: center; line-height: 1; margin: -4px 0; }
-.chain-connector.lit { color: var(--r-accent); opacity: 0.5; }
-.sql-output { font-family: var(--r-font-mono); font-size: 12px; line-height: 1.9; min-height: 220px; }
-.sql-line { display: flex; gap: 12px; }
-.sql-line-num { color: var(--r-text3); min-width: 16px; text-align: right; user-select: none; }
-.sql-line-content { flex: 1; }
-.sql-line.highlight .sql-line-content { background: rgba(34,211,238,0.07); border-radius: 2px; padding: 0 4px; margin: 0 -4px; }
-.sql-compile-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  font-family: var(--r-font-mono); font-size: 10px;
-  padding: 4px 10px; border-radius: 20px;
-  background: var(--r-green-dim); color: var(--r-green);
-  border: 1px solid rgba(52,211,153,0.2);
-}
-.pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--r-green); animation: rho-pulse 2s ease-in-out infinite; }
-@keyframes rho-pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.8); } }
-
-/* ── FEATURE CARDS (HORIZONTAL SCROLL) ── */
-.features-scroll-container { overflow-x: auto; padding: 1rem 0 2rem; scrollbar-width: none; }
-.features-scroll-container::-webkit-scrollbar { display: none; }
-.features-track { display: flex; gap: 20px; width: max-content; }
-.feat-card {
-  width: 300px; flex-shrink: 0;
-  background: var(--r-bg2); border: 1px solid var(--r-border);
-  border-radius: 10px; padding: 28px;
-  transition: border-color 0.3s, transform 0.3s;
-  position: relative; overflow: hidden;
-}
-.feat-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--r-accent), transparent);
-  opacity: 0; transition: opacity 0.3s;
-}
-.feat-card:hover { border-color: var(--r-border2); transform: translateY(-4px); }
-.feat-card:hover::before { opacity: 1; }
-.feat-num {
-  font-family: var(--r-font-mono); font-size: 11px;
-  color: var(--r-text3); margin-bottom: 20px; letter-spacing: 0.06em;
-}
-.feat-icon {
-  width: 40px; height: 40px; border-radius: 8px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 18px; margin-bottom: 18px;
-  background: var(--r-surface);
-}
-.feat-title {
-  font-family: var(--r-font-display); font-size: 1.1rem;
-  font-weight: 600; color: var(--r-text);
-  margin-bottom: 10px; line-height: 1.3;
-}
-.feat-desc { font-size: 13px; color: var(--r-text2); line-height: 1.65; }
-.feat-code-snip {
-  margin-top: 18px; padding: 12px;
-  background: var(--r-surface); border-radius: 5px;
-  font-family: var(--r-font-mono); font-size: 11px; line-height: 1.7;
-  border-left: 2px solid rgba(245,166,35,0.3);
-}
-.feat-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 16px; }
-.feat-tag {
-  font-family: var(--r-font-mono); font-size: 10px;
-  padding: 2px 7px; border-radius: 3px;
-  background: var(--r-surface2); color: var(--r-text3);
-  border: 1px solid var(--r-border);
-}
-.feat-link { font-family: var(--r-font-mono); font-size: 11px; color: var(--r-cyan); font-weight: 700; text-decoration: none; display: inline-block; margin-top: 12px; }
-.feat-link:hover { text-decoration: underline; }
-
-/* ── ARCHITECTURE ── */
-.arch-diagram {
-  margin-top: 3rem;
-  display: grid; grid-template-columns: 1fr 80px 1fr;
-  align-items: center;
-}
-.arch-col { display: flex; flex-direction: column; gap: 12px; }
-.arch-label {
-  font-family: var(--r-font-mono); font-size: 11px;
-  color: var(--r-text3); text-transform: uppercase; letter-spacing: 0.1em;
-  margin-bottom: 4px;
-}
-.arch-box {
-  background: var(--r-bg2); border: 1px solid var(--r-border2);
-  border-radius: 8px; padding: 16px 20px; transition: all 0.2s;
-}
-.arch-box:hover { border-color: var(--r-accent); }
-.arch-box.is-ar { border-left: 3px solid var(--r-accent); }
-.arch-box.is-be { border-left: 3px solid var(--r-cyan); }
-.arch-box-name { font-family: var(--r-font-mono); font-size: 13px; font-weight: 700; color: var(--r-accent); margin-bottom: 4px; }
-.arch-box-name.cyan { color: var(--r-cyan); }
-.arch-box-sub { font-size: 12px; color: var(--r-text3); line-height: 1.5; }
-.arch-arrow-col {
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center; gap: 8px;
-}
-.arch-arrow-line {
-  width: 2px; height: 40px;
-  background: linear-gradient(180deg, var(--r-accent), var(--r-cyan));
-}
-.arch-arrow-label {
-  font-family: var(--r-font-mono); font-size: 9px;
-  color: var(--r-text3); text-transform: uppercase; letter-spacing: 0.1em;
-}
-.arch-sync-badge {
-  display: inline-flex; align-items: center; gap: 5px;
-  font-family: var(--r-font-mono); font-size: 10px;
-  padding: 3px 8px; border-radius: 20px;
-  border: 1px solid var(--r-border);
-  color: var(--r-text3); white-space: nowrap; margin-top: 8px;
-}
-
-/* ── COMPARE GRID ── */
-.compare-grid {
-  display: grid;
-  grid-template-columns: 200px repeat(6, 1fr);
-  margin-top: 2rem;
-  border: 1px solid var(--r-border);
-  border-radius: 10px; overflow: hidden;
-}
-.cg-header {
-  background: var(--r-surface);
-  padding: 14px 16px;
-  font-family: var(--r-font-mono); font-size: 11px; font-weight: 500;
-  border-bottom: 1px solid var(--r-border2);
-  border-right: 1px solid var(--r-border);
-}
-.cg-header:first-child { color: var(--r-text3); font-family: var(--r-font-body); font-size: 12px; }
-.cg-header.is-ar {
-  background: var(--r-accent-glow);
-  border-top: 2px solid var(--r-accent);
-  color: var(--r-accent);
-}
-.cg-header.other { color: var(--r-text2); }
-.cg-cell {
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--r-border);
-  border-right: 1px solid var(--r-border);
-  font-size: 13px;
-  display: flex; align-items: center;
-}
-.cg-cell.feat-name { color: var(--r-text2); font-size: 12px; background: var(--r-bg2); }
-.cg-cell.is-ar { background: rgba(245,166,35,0.03); }
-.cg-cell .chk { color: var(--r-green); font-size: 14px; font-weight: 700; }
-.cg-cell .cross { color: var(--r-text3); font-size: 14px; }
-.cg-cell .half { color: var(--r-accent); font-size: 12px; }
-
-/* ── INSTALL ── */
-.install-inner { max-width: 600px; margin: 0 auto; text-align: center; }
-.install-title {
-  font-family: var(--r-font-display); font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 800; line-height: 1.1; letter-spacing: -0.03em;
-  color: var(--r-text); margin-bottom: 1rem;
-}
-.install-sub { color: var(--r-text2); font-size: 15px; margin-bottom: 2.5rem; }
-.install-cmd {
-  display: flex; align-items: center;
-  background: var(--r-bg2); border: 1px solid var(--r-border2);
-  border-radius: 8px; padding: 16px 20px;
-  font-family: var(--r-font-mono); font-size: 14px;
-  color: var(--r-text); margin-bottom: 2rem; cursor: pointer; transition: border-color 0.2s;
-}
-.install-cmd:hover { border-color: var(--r-accent); }
-.install-cmd .prompt { color: var(--r-accent); margin-right: 10px; }
-.install-cmd .cmd-text { flex: 1; }
-.install-cmd .copy-hint { font-size: 11px; color: var(--r-text3); cursor: pointer; }
-.install-cmd .copy-hint:hover { color: var(--r-accent); }
-
-/* ── FOOTER ── */
-.rho-footer {
-  border-top: 1px solid var(--r-border);
-  padding: 2rem 3rem;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.rho-footer .logo { font-family: var(--r-font-mono); font-size: 13px; color: var(--r-text3); }
-.rho-footer .links { display: flex; gap: 1.5rem; }
-.rho-footer .links a { color: var(--r-text3); text-decoration: none; font-size: 13px; }
-.rho-footer .links a:hover { color: var(--r-text); }
-
-/* ── SCROLL REVEAL ── */
-.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
-.reveal.visible { opacity: 1; transform: translateY(0); }
-.reveal-d1 { transition-delay: 0.1s; }
-.reveal-d2 { transition-delay: 0.2s; }
-
-/* ── RESPONSIVE ── */
-@media (max-width:900px) {
-  .rho-hero-body { grid-template-columns: 1fr; gap: 2rem; padding: 1.5rem; }
-  .interactive-demo { grid-template-columns: 1fr; }
-  .arch-diagram { grid-template-columns: 1fr; gap: 1rem; }
-  .compare-grid { grid-template-columns: 140px repeat(6, 1fr); }
-  .cg-cell, .cg-header { font-size: 11px; padding: 8px 6px; }
-  .hero-stats { gap: 1rem; flex-wrap: wrap; }
-  .rho-section { padding: 3rem 1.5rem; }
-  .gradient-sep { margin: 0 1.5rem; }
-}
-@media (max-width:640px) {
-  .term-split { grid-template-columns: 1fr; }
-  .pane-divider { display: none; }
-}
+html { scroll-behavior: smooth; }
+*, *::before, *::after { box-sizing: border-box; }
 </style>
 
 <script src="assets/i18n/zh-cn.js"></script>
@@ -560,48 +119,16 @@ h2 .hl { color: var(--r-accent); }
 <script src="assets/i18n/cs-cz.js"></script>
 <script src="index/zh-cn.js"></script>
 <script src="index/en-us.js"></script>
-<script src="assets/themes.js"></script>
-<script src="assets/i18n-core.js"></script>
-<script src="assets/utils.js"></script>
+<script src="assets/state-manager.js"></script>
+<script src="assets/theme-applier.js"></script>
+<script src="assets/i18n.js"></script>
+<script src="assets/control-bar.js" data-variant="ar"></script>
+<script src="assets/shared-header.js"></script>
 </head>
 <body>
 <div class="grid-bg" style="position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:60px 60px"></div>
 
-<!-- ════════════════════════════════════════════
-     TopBar — theme/font/lang control
-════════════════════════════════════════════ -->
-<header class="control-bar" id="control-bar" style="position:sticky;top:0;z-index:100">
-  <div class="control-brand">
-    <span class="brand-mark size-md">&rho;<sub>AR</sub></span>
-    <span>rhosocial ActiveRecord</span>
-    <a href="theme.html" class="dim" data-i18n="brand.subtitle">· Theme Lab</a>
-    <a href="blog/index.html" class="dim" style="margin-left:4px;">· Blog</a>
-  </div>
-  <div class="dropdown" data-dropdown="theme">
-    <button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
-      <span class="dropdown-label" data-i18n="control.theme_label">Theme</span>
-      <span class="dropdown-value">Terminal</span>
-      <svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="dropdown-menu" role="listbox"></div>
-  </div>
-  <div class="dropdown" data-dropdown="font">
-    <button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
-      <span class="dropdown-label" data-i18n="control.font_label">Font</span>
-      <span class="dropdown-value">Auto</span>
-      <svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="dropdown-menu" role="listbox"></div>
-  </div>
-  <div class="dropdown" data-dropdown="lang">
-    <button class="dropdown-trigger" aria-haspopup="listbox" aria-expanded="false">
-      <span class="dropdown-label" data-i18n="control.lang_label">Language</span>
-      <span class="dropdown-value">简体中文</span>
-      <svg class="dropdown-caret" viewBox="0 0 12 12" fill="none"><path d="m3 5 3 3 3-3" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <div class="dropdown-menu" role="listbox"></div>
-  </div>
-</header>
+
 
 <!-- ════════════════════════════════════════════
      HERO — split pane with demo terminal
@@ -641,16 +168,17 @@ h2 .hl { color: var(--r-accent); }
       <div class="term-split">
         <div class="term-pane pane-python">
           <div class="term-pane-header">Python model</div>
-          <div class="code-block">
+          <div class="hero-code-block">
 <span class="kw">class</span> <span class="cls">User</span>(<span class="cls">ActiveRecord</span>):
     __table_name__ = <span class="str">"users"</span>
+
     id: Optional[<span class="cls">int</span>] = <span class="kw">None</span>
     name: <span class="cls">str</span>
     email: <span class="cls">str</span>
     age: <span class="cls">int</span> = <span class="num">0</span>
 
 
-<span class="cm"># Query builder</span>
+<span class="co"># fluent query builder</span>
 results = (
     <span class="cls">User</span>.<span class="fn">query</span>()
         .<span class="fn">where</span>(<span class="cls">User</span>.c.age &gt;= <span class="num">18</span>)
@@ -661,24 +189,24 @@ results = (
 )<span class="cursor-blink"></span>
           </div>
         </div>
-        <div class="pane-divider"></div>
         <div class="term-pane pane-sql">
           <div class="term-pane-header">Generated SQL <span style="margin-left:auto;font-size:10px;color:var(--r-cyan);opacity:0.7;">.to_sql()</span></div>
-          <div class="code-block">
-<span class="sql-kw">SELECT</span> *
-<span class="sql-kw">FROM</span> <span class="sql-tbl">"users"</span>
-<span class="sql-kw">WHERE</span>
-    <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"age"</span> &gt;= <span class="sql-val">?</span>
-    <span class="sql-kw">AND</span> <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"name"</span>
-    <span class="sql-kw">LIKE</span> <span class="sql-val">?</span>
-<span class="sql-kw">ORDER BY</span> <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"name"</span> <span class="sql-kw">ASC</span>
+          <div class="hero-code-block">
+<span class="sql-kw">SELECT</span> <span class="sql-tbl">u</span>.<span class="sql-tbl">id</span>,
+       <span class="sql-tbl">u</span>.<span class="sql-tbl">name</span>,
+       <span class="sql-tbl">u</span>.<span class="sql-tbl">email</span>,
+       <span class="sql-tbl">u</span>.<span class="sql-tbl">age</span>
+<span class="sql-kw">FROM</span> <span class="sql-tbl">users</span> <span class="sql-tbl">u</span>
+<span class="sql-kw">WHERE</span> <span class="sql-tbl">u</span>.<span class="sql-tbl">age</span> &gt;= <span class="sql-val">?</span>
+  <span class="sql-kw">AND</span> <span class="sql-tbl">u</span>.<span class="sql-tbl">name</span> <span class="sql-kw">LIKE</span> <span class="sql-val">?</span>
+<span class="sql-kw">ORDER BY</span> <span class="sql-tbl">u</span>.<span class="sql-tbl">name</span> <span class="sql-kw">ASC</span>
 <span class="sql-kw">LIMIT</span> <span class="sql-val">10</span>
           </div>
           <div class="sql-result">
             <div style="font-family:var(--r-font-mono);font-size:10px;color:var(--r-text3);margin-bottom:8px;letter-spacing:0.06em;">PARAMS: (18, "%alice%")</div>
-            <div class="result-row"><span class="col">id</span><span class="col">name</span><span class="val">age</span></div>
-            <div class="result-row"><span class="col">→ 3</span><span class="col">Alice</span><span class="val">24</span></div>
-            <div class="result-row"><span class="col">→ 7</span><span class="col">alice_dev</span><span class="val">31</span></div>
+            <div class="result-row"><span class="col">id</span><span class="col">name</span><span class="col">email</span><span class="val">age</span></div>
+            <div class="result-row"><span class="col">→ 3</span><span class="col">Alice</span><span class="col">alice@example.org</span><span class="val">24</span></div>
+            <div class="result-row"><span class="col">→ 7</span><span class="col">alice_dev</span><span class="col">adev@example.org</span><span class="val">31</span></div>
             <div class="result-row" style="color:var(--r-text3)"><span>2 rows in 0.8ms</span></div>
           </div>
         </div>
@@ -938,268 +466,10 @@ results = (
   </div>
 </footer>
 
-<script>
-// ═══════════════════════════════════════════════
-// Ticker
-// ═══════════════════════════════════════════════
-(function(){
-  var items = [
-    { tag:'Python', text:'Type annotations = model fields' },
-    { tag:'SQL', text:'.to_sql() on every query', cyan:true },
-    { tag:'Async', text:'Same API, just add await', cyan:true },
-    { tag:'Pydantic', text:'Runtime validation built-in' },
-    { tag:'SQLite', text:'Built-in backend, zero setup', cyan:true },
-    { tag:'v1.0', text:'Apache 2.0 · Pure Python' },
-    { tag:'ORM', text:'No Session concept' },
-    { tag:'CTE', text:'WITH clauses, recursive queries', cyan:true },
-  ];
-  var ti = document.getElementById('ticker-inner');
-  if (ti) {
-    var html = '';
-    for (var r = 0; r < 2; r++) {
-      for (var i = 0; i < items.length; i++) {
-        var cls = items[i].cyan ? ' tag-cyan' : '';
-        html += '<div class="ticker-item"><span class="tag' + cls + '">' + items[i].tag + '</span>' + items[i].text + '</div>';
-      }
-    }
-    ti.innerHTML = html;
-  }
-})();
-
-// ═══════════════════════════════════════════════
-// Chain Builder — interactive SQL
-// ═══════════════════════════════════════════════
-(function(){
-  var sqlParts = {
-    base:   { line: '<span class="sql-kw">SELECT</span> * <span class="sql-kw">FROM</span> <span class="sql-tbl">"users"</span>', h: false },
-    where1: { line: '<span class="sql-kw">WHERE</span> <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"age"</span> >= <span class="sql-val">?</span>', h: true },
-    where2: { line: '<span class="sql-kw">  AND</span> <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"name"</span> <span class="sql-kw">LIKE</span> <span class="sql-val">?</span>', h: true },
-    join:   { line: '<span class="sql-kw">JOIN</span> <span class="sql-tbl">"posts"</span> <span class="sql-kw">ON</span> <span class="sql-tbl">"posts"</span>.<span class="sql-tbl">"author_id"</span> = <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"id"</span>', h: true },
-    order:  { line: '<span class="sql-kw">ORDER BY</span> <span class="sql-tbl">"users"</span>.<span class="sql-tbl">"name"</span> <span class="sql-kw">ASC</span>', h: false },
-    limit:  { line: '<span class="sql-kw">LIMIT</span> <span class="sql-val">10</span>', h: false },
-    all:    { line: '<span class="sql-cm">-- execute & return List[User]</span>', h: false },
-  };
-
-  function renderSQL() {
-    var active = [];
-    document.querySelectorAll('.chain-step.active').forEach(function(el) { active.push(el.dataset.id); });
-    var out = document.getElementById('sql-output');
-    if (!out) return;
-    var html = '';
-    var lineNum = 1;
-    for (var i = 0; i < active.length; i++) {
-      var id = active[i];
-      if (!sqlParts[id] || id === 'all') continue;
-      var p = sqlParts[id];
-      html += '<div class="sql-line' + (p.h ? ' highlight' : '') + '"><span class="sql-line-num">' + lineNum + '</span><span class="sql-line-content">' + p.line + '</span></div>';
-      lineNum++;
-    }
-    if (active.indexOf('all') !== -1) {
-      html += '<div class="sql-line" style="margin-top:4px;"><span class="sql-line-num">' + lineNum + '</span><span class="sql-line-content"><span class="sql-cm">-- execute & return List[User]</span></span></div>';
-    }
-    out.innerHTML = html || '<div style="color:var(--r-text3);font-size:12px">No clauses selected</div>';
-  }
-
-  document.querySelectorAll('.chain-step').forEach(function(step) {
-    if (step.dataset.id === 'base') return;
-    step.addEventListener('click', function() {
-      step.classList.toggle('active');
-      document.querySelectorAll('.chain-connector[data-conn]').forEach(function(conn) {
-        var sid = conn.dataset.conn;
-        var s = document.querySelector('.chain-step[data-id="' + sid + '"]');
-        if (s && s.classList.contains('active')) conn.classList.add('lit');
-        else conn.classList.remove('lit');
-      });
-      renderSQL();
-    });
-  });
-
-  document.querySelectorAll('.chain-connector[data-conn]').forEach(function(conn) {
-    var sid = conn.dataset.conn;
-    var s = document.querySelector('.chain-step[data-id="' + sid + '"]');
-    if (s && s.classList.contains('active')) conn.classList.add('lit');
-  });
-  renderSQL();
-})();
-
-// ═══════════════════════════════════════════════
-// Feature Cards — 6 promises, JS generated
-// ═══════════════════════════════════════════════
-(function(){
-  var features = [
-    { num:'01 / type-safe', icon:'⬡', title:'<span class="hl">类型</span>即字段', desc:'Python 类型注解直接成为模型定义。IDE 完整推导，Pydantic 运行时验证，无额外 DSL。', code:'<span class="kw">class</span> <span class="cls">User</span>(<span class="cls">ActiveRecord</span>):\n    name: <span class="cls">str</span>\n    age:  <span class="cls">int</span> = <span class="num">0</span>', tags:['typing','pydantic','3.8+'], link:'activerecord/model.html' },
-    { num:'02 / async-first', icon:'⟳', title:'Sync & async<span class="hl">，一套 API</span>', desc:'同步 ActiveRecord 与异步 AsyncActiveRecord 语义完全一致。for → async for，其他不变。', code:'<span class="cm"># sync</span>\n<span class="cls">User</span>.<span class="fn">query</span>().<span class="fn">all</span>()\n<span class="cm"># async — same API</span>\n<span class="kw">await</span> <span class="cls">User</span>.<span class="fn">query</span>().<span class="fn">all</span>()', tags:['asyncio','parity','awaitable'] },
-    { num:'03 / backends', icon:'◈', title:'后端<span class="hl">可插拔</span>', desc:'核心包仅依赖 Pydantic。SQLite 内置；MySQL/Postgres 独立包；可自写 Backend ABC。', code:'<span class="cm"># configure backend</span>\n<span class="fn">configure</span>(backend=<span class="str">"postgresql"</span>)', tags:['SQLite','MySQL','Postgres','custom'], link:'backends/index.html' },
-    { num:'04 / relations', icon:'⟶', title:'关系<span class="hl">显式</span>声明', desc:'用 ClassVar 声明关系字段，避免 Pydantic 扫描。运行时自动替换为 relation 描述符。', code:'posts: <span class="cls">ClassVar</span>[<span class="cls">HasMany</span>[<span class="str">"Post"</span>]]\n    = <span class="cls">HasMany</span>(foreign_key=<span class="str">"author_id"</span>)', tags:['HasMany','BelongsTo','HasOne','eager-load'], link:'activerecord/relations.html' },
-    { num:'05 / transactions', icon:'⊞', title:'事务<span class="hl">原子嵌套</span>', desc:'上下文管理器 + savepoint，异常即回滚。嵌套事务自动创建 savepoint，语义清晰。', code:'<span class="kw">with</span> <span class="cls">User</span>.<span class="fn">transaction</span>():\n    user.<span class="fn">save</span>()\n    <span class="kw">with</span> <span class="cls">User</span>.<span class="fn">transaction</span>():\n        post.<span class="fn">save</span>()  <span class="cm"># savepoint</span>', tags:['SAVEPOINT','rollback','ACID'], link:'activerecord/transactions.html' },
-    { num:'06 / pythonic', icon:'∿', title:'读如<span class="hl">英语</span>', desc:'链式调用语义直观。.to_sql() 随时透明查看实际生成的 SQL，无黑盒。', code:'<span class="cls">User</span>.<span class="fn">query</span>()\n    .<span class="fn">where</span>(<span class="cls">User</span>.c.age &gt;= <span class="num">18</span>)\n    .<span class="fn">order_by</span>(<span class="cls">User</span>.c.name)\n    .<span class="fn">all</span>()', tags:['chaining','.to_sql()','no DSL'], link:'activerecord/query.html' },
-  ];
-  var track = document.getElementById('features-track');
-  if (track) {
-    for (var i = 0; i < features.length; i++) {
-      var f = features[i];
-      var card = document.createElement('div');
-      card.className = 'feat-card';
-      card.style.transitionDelay = (i * 0.05) + 's';
-      var codeHtml = '<div class="feat-code-snip"><div class="code-block">' + f.code + '</div></div>';
-      var tagsHtml = '<div class="feat-tags">' + f.tags.map(function(t) { return '<span class="feat-tag">' + t + '</span>'; }).join('') + '</div>';
-      var linkHtml = f.link ? '<a href="' + f.link + '" class="feat-link">查看详情 →</a>' : '';
-      card.innerHTML = '<div class="feat-num">' + f.num + '</div><div class="feat-icon">' + f.icon + '</div><div class="feat-title">' + f.title + '</div><div class="feat-desc">' + f.desc + '</div>' + codeHtml + tagsHtml + linkHtml;
-      track.appendChild(card);
-    }
-  }
-})();
-
-// ═══════════════════════════════════════════════
-// Scroll Reveal
-// ═══════════════════════════════════════════════
-(function(){
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e) {
-      if (e.isIntersecting) {
-        e.target.classList.add('visible');
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
-})();
-
-// ═══════════════════════════════════════════════
-// Copy install command
-// ═══════════════════════════════════════════════
-(function(){
-  var cmd = document.getElementById('install-cmd');
-  var hint = document.getElementById('copy-hint');
-  if (cmd && hint) {
-    cmd.addEventListener('click', function() {
-      navigator.clipboard.writeText('pip install rhosocial-activerecord').then(function() {
-        hint.textContent = '已复制 ✓';
-        hint.style.color = 'var(--r-green)';
-        setTimeout(function() {
-          hint.textContent = '点击复制';
-          hint.style.color = '';
-        }, 2000);
-      });
-    });
-  }
-})();
-
-// ═══════════════════════════════════════════════
-// ThemeController + dropdowns (from legacy)
-// ═══════════════════════════════════════════════
-(function(){
-  var ctrl = new ThemeController({
-    container: document.getElementById('control-bar'),
-    onChange: function(e) {
-      if (e.type === 'lang') window.applyI18n(e.value);
-    }
-  });
-
-  function buildDropdownMenus() {
-    var ddTheme = document.querySelector('[data-dropdown="theme"]');
-    var ddFont = document.querySelector('[data-dropdown="font"]');
-    var ddLang = document.querySelector('[data-dropdown="lang"]');
-    var params = new URLSearchParams(location.search);
-    var themeVal = params.get('theme') || localStorage.getItem('theme') || 'terminal';
-    var fontVal = params.get('font') || localStorage.getItem('font');
-    var langVal = params.get('lang') || localStorage.getItem('lang') || 'zh-cn';
-
-    if (ddTheme && window.THEMES) {
-      var menu = ddTheme.querySelector('.dropdown-menu');
-      window.THEMES.forEach(function(t) {
-        var btn = document.createElement('button');
-        btn.className = 'dropdown-item' + (t[0] === themeVal ? ' is-active' : '');
-        btn.dataset.value = t[0];
-        btn.innerHTML = '<span class="dropdown-item-label">' + t[1] + '</span>';
-        menu.appendChild(btn);
-      });
-    }
-
-    if (ddFont && window.FONTS) {
-      var menu = ddFont.querySelector('.dropdown-menu');
-      var fontAutoText = (window.I18N && (window.I18N['zh-cn'] || {}).control && (window.I18N['zh-cn']).control.font_auto) || 'Follow theme';
-      window.FONTS.forEach(function(f) {
-        var label = f[0] === 'auto' ? fontAutoText : f[1];
-        var btn = document.createElement('button');
-        btn.className = 'dropdown-item' + (f[0] === fontVal ? ' is-active' : '');
-        btn.dataset.value = f[0];
-        btn.innerHTML = '<span class="dropdown-item-label">' + label + '</span>';
-        menu.appendChild(btn);
-      });
-    }
-
-    if (ddLang && window.LANGS) {
-      var menu = ddLang.querySelector('.dropdown-menu');
-      window.LANGS.forEach(function(l) {
-        var btn = document.createElement('button');
-        btn.className = 'dropdown-item' + (l[0] === langVal ? ' is-active' : '');
-        btn.dataset.value = l[0];
-        btn.innerHTML = '<span class="dropdown-item-label">' + l[1] + '</span>';
-        menu.appendChild(btn);
-      });
-    }
-  }
-
-  function refreshDropdownValueLabel(kind, value) {
-    var dd = document.querySelector('[data-dropdown="' + kind + '"]');
-    if (!dd) return;
-    var item = dd.querySelector('.dropdown-item[data-value="' + value + '"]');
-    if (!item) return;
-    var valueEl = dd.querySelector('.dropdown-value');
-    if (valueEl) valueEl.textContent = item.querySelector('.dropdown-item-label').textContent;
-  }
-
-  buildDropdownMenus();
-  ctrl.init();
-  window.applyI18n(ctrl.state.lang);
-  window.themeCtrl = ctrl;
-
-  var storedFont = localStorage.getItem('font');
-  refreshDropdownValueLabel('theme', ctrl.state.theme);
-  refreshDropdownValueLabel('font', storedFont || 'auto');
-  refreshDropdownValueLabel('lang', ctrl.state.lang);
-
-  document.querySelectorAll('.dropdown').forEach(function(dropdown) {
-    var trigger = dropdown.querySelector('.dropdown-trigger');
-    var menu = dropdown.querySelector('.dropdown-menu');
-    trigger.addEventListener('click', function(e) {
-      e.stopPropagation();
-      dropdown.classList.toggle('is-open');
-      document.querySelectorAll('.dropdown').forEach(function(d) { if (d !== dropdown) d.classList.remove('is-open'); });
-    });
-    menu.querySelectorAll('.dropdown-item').forEach(function(item) {
-      item.addEventListener('click', function(e) {
-        e.stopPropagation();
-        var type = dropdown.dataset.dropdown;
-        var value = item.dataset.value;
-        ctrl.setValue(type, value);
-        dropdown.classList.remove('is-open');
-        menu.querySelectorAll('.dropdown-item').forEach(function(i) { i.classList.remove('is-active'); });
-        item.classList.add('is-active');
-        if (type === 'font' && value === 'auto') localStorage.removeItem('font');
-        refreshDropdownValueLabel(type, value);
-      });
-    });
-  });
-
-  document.addEventListener('click', function() {
-    document.querySelectorAll('.dropdown').forEach(function(d) { d.classList.remove('is-open'); });
-  });
-})();
-</script>
-
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-VPM29QVEST"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-VPM29QVEST');
-</script>
-<script>
-var _hmt = _hmt || [];
-(function() { var hm = document.createElement("script"); hm.src = "https://hm.baidu.com/hm.js?94120eca87dedf57cf0c46979991365b"; var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(hm, s); })();
-</script>
-<script src="assets/analytics.js"></script>
+<script src="assets/sections/ticker.js"></script>
+<script src="assets/sections/chain-builder.js"></script>
+<script src="assets/sections/feature-cards.js"></script>
+<script src="assets/sections/scroll-reveal.js"></script>
+<script src="assets/sections/install-copy.js"></script>
 </body>
 </html>

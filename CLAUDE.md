@@ -12,6 +12,9 @@ Static documentation website - GitHub Pages.
 - `.claude/rules/` - Project-specific rules
   - `theme-icon.md` - Theme and icon guidelines
   - `language.md` - Language guidelines
+  - `component-i18n.md` - Component i18n design principles
+  - `shared-components.md` - Shared component manual
+  - `blog-system.md` - Blog system architecture and design rules
 - `.claude/plan/` - Project plans (not tracked in git)
 
 ## Quick Start

@@ -1,0 +1,44 @@
+/**
+ * rho-vars.css — rhoar-concept design token bridge
+ *
+ * Maps the rhoar-concept --r-* namespace to theme-aware CSS variables.
+ * All --r-* vars reference core.css theme variables (--bg, --fg, --accent, etc.)
+ * so they respond correctly to all 26 themes and font packs.
+ */
+
+:root {
+  /* Surfaces — map to theme variables */
+  --r-bg: var(--bg);
+  --r-bg2: var(--bg-2);
+  --r-surface: var(--bg-elevated);
+  --r-surface2: var(--bg-2);
+  --r-border: var(--border);
+  --r-border2: var(--border-strong);
+
+  /* Accents */
+  --r-accent: var(--accent);
+  --r-accent-dim: color-mix(in srgb, var(--accent) 15%, transparent);
+  --r-accent-glow: color-mix(in srgb, var(--accent) 8%, transparent);
+
+  /* Secondary accents */
+  --r-cyan: var(--accent-2);
+  --r-cyan-dim: color-mix(in srgb, var(--accent-2) 12%, transparent);
+
+  --r-green: var(--success);
+  --r-green-dim: color-mix(in srgb, var(--success) 12%, transparent);
+
+  --r-red: var(--danger);
+
+  /* Text */
+  --r-text: var(--fg);
+  --r-text2: var(--fg-muted);
+  --r-text3: var(--fg-faint);
+
+  /* Typography */
+  --r-font-display: var(--font-display);
+  --r-font-mono: var(--font-mono);
+  --r-font-body: var(--font-body);
+
+  /* Syntax tokens for code blocks */
+  --r-purple: var(--tok-keyword);
+}

@@ -22,7 +22,7 @@ window.I18N['zh-cn'] = {
     backends:     '后端',
     activerecord: 'ActiveRecord',
     practices:    '实践',
-    blog:         'Blog'
+    blog:         '文章'
   },
 
   /** Control bar (theme / font / language dropdowns) */

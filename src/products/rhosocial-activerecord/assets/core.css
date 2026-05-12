@@ -173,10 +173,39 @@ kbd {
   font-size: 13px;
   font-weight: 500;
   color: var(--fg);
-  margin-right: auto;
   letter-spacing: -0.01em;
 }
 .control-brand .dim { color: var(--fg-faint); font-weight: 400; }
+
+/* Nav links (parallel, touch-friendly) */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-right: auto;
+}
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--fg-faint);
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background 150ms ease, color 150ms ease;
+  min-height: 36px;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-link:hover {
+  background: var(--bg-2);
+  color: var(--fg);
+}
+.nav-link.is-current {
+  color: var(--fg);
+  background: var(--bg-2);
+  font-weight: 600;
+}
 
 /* Brand mark: ρ with subscript AR (matches README) */
 .brand-mark {
@@ -908,8 +937,10 @@ textarea.input { resize: vertical; min-height: 70px; font-family: var(--font-bod
 @media (max-width: 640px) {
   .hero-title { font-size: 44px; }
   .section-title { font-size: 30px; }
-  .control-bar { gap: 8px; padding: 8px 12px; }
+  .control-bar { gap: 6px; padding: 8px 12px; flex-wrap: wrap; }
   .control-label { display: none; }
   .chip { padding: 4px 9px; font-size: 11px; }
   .control-brand { width: 100%; order: -1; font-size: 12px; }
+  .nav-links { order: 0; width: 100%; overflow-x: auto; gap: 2px; }
+  .nav-link { padding: 6px 10px; font-size: 12px; min-height: 32px; white-space: nowrap; }
 }

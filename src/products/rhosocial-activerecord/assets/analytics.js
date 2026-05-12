@@ -129,35 +129,32 @@
     }
   }
 
-  /* ─── 1. ThemeController / Theme/Font/Language 切换 ────────────────── */
+  /* ─── 1. Theme/Font/Language 切换 (via state-manager) ──────────── */
 
-  function hookThemeController() {
-    var ctrl = window.themeCtrl;
-    if (!ctrl || typeof ctrl.onChange !== 'function') {
-      if (CONFIG.debug) console.warn('[rhosocial-activerecord analytics] themeCtrl not found, will retry on load.');
+  function hookStateManager() {
+    var store = window.__STATE__;
+    if (!store || typeof store.subscribe !== 'function') {
+      if (CONFIG.debug) console.warn('[rhosocial-activerecord analytics] __STATE__ not found, will retry on load.');
       return false;
     }
 
-    var originalHandler = ctrl.onChange;
-    ctrl.onChange = function(e) {
-      originalHandler.apply(this, arguments);
-
-      // e.type, e.value, e.prev
-      var type = e.type;
-      if (type === 'theme' || type === 'font' || type === 'lang') {
+    store.subscribe(['theme', 'font', 'lang'], function(state, changed) {
+      for (var key in changed) {
+        if (!changed.hasOwnProperty(key)) continue;
+        var value = changed[key];
         var page = getPageName();
-        debounce('setting_' + type, function() {
+        debounce('setting_' + key, function() {
           var gaParams = {};
-          gaParams[type] = e.value;
+          gaParams[key] = value;
           report(
             'page_setting_change', gaParams,
-            'page_setting', type + '_change', page + ':' + e.value
+            'page_setting', key + '_change', page + ':' + value
           );
         }, CONFIG.settingDebounce);
       }
-    };
+    });
 
-    if (CONFIG.debug) console.log('[rhosocial-activerecord analytics] themeCtrl hooked.');
+    if (CONFIG.debug) console.log('[rhosocial-activerecord analytics] state-manager hooked.');
     return true;
   }
 
@@ -312,15 +309,13 @@
   /* ─── 启动 ──────────────────────────────────────────────────────── */
 
   function init() {
-    // hook ThemeController（如果还没定义，等 load 后重试）
-    var hooked = hookThemeController();
+    var hooked = hookStateManager();
 
     window.addEventListener('load', function() {
-      if (!hooked) hookThemeController();
+      if (!hooked) hookStateManager();
       reportInitialState();
     });
 
-    // 其余追踪不依赖 ThemeController，DOMContentLoaded 后即可绑定
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function () {
         setupTabTracking();
