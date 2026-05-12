@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="terminal" data-font="tight">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>联系我们 — rhosocial ActiveRecord</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/core.css">
+<link rel="stylesheet" href="assets/themes/terminal.css">
+<link rel="stylesheet" href="assets/themes/editorial.css">
+<link rel="stylesheet" href="assets/themes/brutalist.css">
+<link rel="stylesheet" href="assets/themes/aurora.css">
+<link rel="stylesheet" href="assets/themes/synthwave.css">
+<link rel="stylesheet" href="assets/themes/sumi.css">
+<link rel="stylesheet" href="assets/themes/blueprint.css">
+<link rel="stylesheet" href="assets/themes/noir.css">
+<link rel="stylesheet" href="assets/themes/riso.css">
+<link rel="stylesheet" href="assets/themes/nordic.css">
+<link rel="stylesheet" href="assets/themes/solarpunk.css">
+<link rel="stylesheet" href="assets/themes/mocha.css">
+<link rel="stylesheet" href="assets/themes/wireframe.css">
+<link rel="stylesheet" href="assets/themes/anderson.css">
+<link rel="stylesheet" href="assets/themes/tokyo.css">
+<link rel="stylesheet" href="assets/themes/memphis.css">
+<link rel="stylesheet" href="assets/themes/chalkboard.css">
+<link rel="stylesheet" href="assets/themes/matrix.css">
+<link rel="stylesheet" href="assets/themes/steel.css">
+<link rel="stylesheet" href="assets/themes/frutiger.css">
+<link rel="stylesheet" href="assets/themes/newsprint.css">
+<link rel="stylesheet" href="assets/themes/candy.css">
+<link rel="stylesheet" href="assets/themes/botanical.css">
+<link rel="stylesheet" href="assets/themes/cyberpunk.css">
+<link rel="stylesheet" href="assets/themes/parchment.css">
+<link rel="stylesheet" href="assets/themes/glassmorphism.css">
+<link rel="stylesheet" href="assets/core-extensions.css">
+<link rel="stylesheet" href="assets/shared.css">
+<link rel="stylesheet" href="assets/fonts/tight.css">
+<link rel="stylesheet" href="assets/fonts/serif.css">
+<link rel="stylesheet" href="assets/fonts/geometric.css">
+<link rel="stylesheet" href="assets/fonts/heavy.css">
+<link rel="stylesheet" href="assets/fonts/allmono.css">
+<link rel="stylesheet" href="assets/fonts/reader.css">
+<link rel="stylesheet" href="assets/fonts/display-serif.css">
+<link rel="stylesheet" href="assets/fonts/neo-future.css">
+<link rel="stylesheet" href="assets/fonts/plex.css">
+<link rel="stylesheet" href="assets/fonts/playful.css">
+<link rel="stylesheet" href="assets/fonts/classic-serif.css">
+<link rel="stylesheet" href="assets/fonts/pixel.css">
+<link rel="stylesheet" href="assets/fonts/monumental.css">
+<link rel="stylesheet" href="assets/fonts/slab.css">
+<link rel="stylesheet" href="assets/fonts/condensed.css">
+<link rel="stylesheet" href="assets/fonts/expressive.css">
+<link rel="stylesheet" href="assets/fonts/deco.css">
+<link rel="stylesheet" href="assets/fonts/stencil.css">
+<link rel="stylesheet" href="assets/fonts/rubik.css">
+<link rel="stylesheet" href="assets/fonts/bricolage.css">
+<link rel="stylesheet" href="assets/fonts/gloock.css">
+<link rel="stylesheet" href="assets/fonts/crimson.css">
+<link rel="stylesheet" href="assets/fonts/dm.css">
+<link rel="stylesheet" href="assets/fonts/outfit.css">
+<link rel="stylesheet" href="assets/fonts/literata.css">
+<style>
+html[lang="ar"] { font-family: 'Noto Sans Arabic', var(--font-body); }
+html[lang="ar"] code, html[lang="ar"] pre, html[lang="ar"] .install-cmd { direction: ltr; unicode-bidi: embed; text-align: left; }
+html[lang="fa-ir"] { font-family: 'Noto Sans Arabic', var(--font-body); }
+html[lang="fa-ir"] code, html[lang="fa-ir"] pre, html[lang="fa-ir"] .install-cmd { direction: ltr; unicode-bidi: embed; text-align: left; }
+html[lang="hi-in"] { font-family: 'Noto Sans Devanagari', var(--font-body); }
+html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }
+</style>
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  overflow-x: hidden;
+  line-height: 1.6;
+  margin: 0;
+  font-family: var(--font-body);
+}
+a { color: var(--accent-2, #22d3ee); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.policy-page { max-width: 780px; margin: 0 auto; padding: 5rem 2rem 4rem; }
+.policy-page h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--fg);
+  margin-bottom: 0.5rem;
+}
+.policy-page .meta {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--fg-faint);
+  margin-bottom: 2.5rem;
+}
+.policy-page h2 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--fg);
+  margin: 2rem 0 0.75rem;
+}
+.policy-page p {
+  color: var(--fg-muted);
+  font-size: 15px;
+  line-height: 1.75;
+  margin-bottom: 0.75rem;
+}
+.policy-page ul {
+  color: var(--fg-muted);
+  font-size: 15px;
+  line-height: 1.75;
+  padding-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+.policy-page ul li { margin-bottom: 0.4rem; }
+.contact-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.5rem 2rem;
+  margin: 1.5rem 0;
+}
+.contact-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--fg);
+  margin-bottom: 0.5rem;
+}
+.contact-card h3 .icon { color: var(--accent); margin-right: 0.5rem; }
+.contact-card p { margin-bottom: 0; font-size: 14px; }
+.contact-card a { color: var(--accent-2, #22d3ee); }
+</style>
+
+<script src="assets/i18n/zh-cn.js"></script>
+<script src="assets/i18n/en-us.js"></script>
+<script src="assets/i18n/ja-jp.js"></script>
+<script src="assets/i18n/de-de.js"></script>
+<script src="assets/i18n/fr-fr.js"></script>
+<script src="assets/i18n/ko-kr.js"></script>
+<script src="assets/i18n/pt-pt.js"></script>
+<script src="assets/i18n/nl-nl.js"></script>
+<script src="assets/i18n/it-it.js"></script>
+<script src="assets/i18n/ru-ru.js"></script>
+<script src="assets/i18n/es-es.js"></script>
+<script src="assets/i18n/tr-tr.js"></script>
+<script src="assets/i18n/el-gr.js"></script>
+<script src="assets/i18n/ar.js"></script>
+<script src="assets/i18n/hi-in.js"></script>
+<script src="assets/i18n/id-id.js"></script>
+<script src="assets/i18n/vi-vn.js"></script>
+<script src="assets/i18n/pl-pl.js"></script>
+<script src="assets/i18n/th-th.js"></script>
+<script src="assets/i18n/uk-ua.js"></script>
+<script src="assets/i18n/fa-ir.js"></script>
+<script src="assets/i18n/bn-bd.js"></script>
+<script src="assets/i18n/ro-ro.js"></script>
+<script src="assets/i18n/cs-cz.js"></script>
+<script src="assets/themes.js"></script>
+<script src="assets/i18n-core.js"></script>
+<script src="assets/utils.js"></script>
+</head>
+<body>
+<div class="grid-bg" style="position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:60px 60px"></div>
+
+<script src="assets/shared-header.js" data-header-variant="ar"></script>
+
+<main>
+<div class="policy-page">
+  <h1>联系我们</h1>
+  <p class="meta">我们期待听到您的声音</p>
+
+  <p>无论您是遇到问题、有功能建议，还是希望参与贡献，我们都很乐意与您交流。以下是最便捷的联系方式：</p>
+
+  <div class="contact-card">
+    <h3><span class="icon">▶</span> GitHub Issues（推荐）</h3>
+    <p>页面问题最推荐直接提交到网站仓库的 Issues：</p>
+    <p><a href="https://github.com/rhosocial/rhosocial.github.io/issues" target="_blank">https://github.com/rhosocial/rhosocial.github.io/issues</a></p>
+  </div>
+
+  <div class="contact-card">
+    <h3><span class="icon">▶</span> GitHub Discussions</h3>
+    <p>如果您想进行更广泛的讨论、提问使用方法或分享您的使用案例，请访问 Discussions 板块。</p>
+    <p><a href="https://github.com/rhosocial/python-activerecord/discussions" target="_blank">https://github.com/rhosocial/python-activerecord/discussions</a></p>
+  </div>
+
+  <div class="contact-card">
+    <h3><span class="icon">▶</span> 电子邮件</h3>
+    <p>对于敏感问题或直接沟通，您也可以通过电子邮件联系：</p>
+    <p><a href="mailto:vistart@rho.social">vistart@rho.social</a></p>
+  </div>
+
+  <div class="contact-card">
+    <h3><span class="icon">▶</span> 贡献代码</h3>
+    <p>想提交代码？欢迎 Fork 我们的仓库并提交 Pull Request。请先阅读贡献指南（CONTRIBUTING.md）。</p>
+    <p><a href="https://github.com/rhosocial/python-activerecord" target="_blank">https://github.com/rhosocial/python-activerecord</a></p>
+  </div>
+
+  <h2>响应时间</h2>
+  <p>我们会尽最大努力在 48 小时内回复您的问题。对于 GitHub Issues 和 Discussions，其他社区成员也可能提供帮助，通常响应更快。</p>
+</div>
+</main>
+
+<script src="assets/shared-footer.js"></script>
+<script>
+(function(){
+  function isValidTheme(val) { return window.THEMES && window.THEMES.some(function(t) { return t[0] === val; }); }
+  function isValidFont(val) { return window.FONTS && window.FONTS.some(function(f) { return f[0] === val; }); }
+  function isValidLang(val) { return window.LANGS && window.LANGS.some(function(l) { return l[0] === val; }); }
+
+  var theme = localStorage.getItem('theme');
+  if (theme && isValidTheme(theme)) document.documentElement.setAttribute('data-theme', theme);
+  var font = localStorage.getItem('font');
+  if (font && isValidFont(font)) document.documentElement.setAttribute('data-font', font);
+  var lang = localStorage.getItem('rhosocial-lang');
+  if (lang && isValidLang(lang)) document.documentElement.setAttribute('lang', lang);
+
+  function refreshValueLabel(kind, value) {
+    var dd = document.querySelector('[data-dropdown="'+kind+'"]');
+    if (!dd) return;
+    var item = dd.querySelector('.dropdown-item[data-value="'+value+'"]');
+    if (!item) return;
+    var ve = dd.querySelector('.dropdown-value');
+    if (ve) ve.textContent = (item.querySelector('.dropdown-item-label')||{}).textContent || value;
+  }
+
+  var ddTheme = document.querySelector('[data-dropdown="theme"]');
+  var ddFont = document.querySelector('[data-dropdown="font"]');
+  var ddLang = document.querySelector('[data-dropdown="lang"]');
+  if (ddTheme && theme) refreshValueLabel('theme', theme);
+  if (ddFont && font) refreshValueLabel('font', font);
+  if (ddLang && lang) refreshValueLabel('lang', lang);
+})();
+</script>
+<script src="assets/analytics.js"></script>
+</body>
+</html>
