@@ -21,7 +21,8 @@ window.I18N['zh-cn'] = {
     index:        '首页',
     backends:     '后端',
     activerecord: 'ActiveRecord',
-    practices:    '实践'
+    practices:    '实践',
+    blog:         'Blog'
   },
 
   /** Control bar (theme / font / language dropdowns) */
@@ -34,9 +35,13 @@ window.I18N['zh-cn'] = {
 
   /** Footer */
   footer: {
-    license: 'Apache 2.0 许可',
-    github:  'GitHub',
-    hotkeys: '26 主题 · Ctrl+键主题 · Shift+键字体 · Alt+键语言'
+    license:   'Apache 2.0 许可',
+    github:    'GitHub',
+    pypi:      'PyPI',
+    privacy:   '隐私政策',
+    about:     '关于我们',
+    contact:   '联系我们',
+    hotkeys:   '26 主题 · Ctrl+键主题 · Shift+键字体 · Alt+键语言'
   },
 
   /** Cross-page common buttons / labels */

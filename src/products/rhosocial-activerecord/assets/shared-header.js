@@ -64,6 +64,7 @@
       applyI18n();
     } else {
       html.setAttribute('data-'+kind, value);
+      try { localStorage.setItem(kind, value); } catch(e) {}
     }
     var dd = document.querySelector('[data-dropdown="'+kind+'"]');
     if (!dd) return;
@@ -85,9 +86,14 @@
 
   /* ---------- breadcrumb ---------- */
   var variant = document.currentScript && document.currentScript.getAttribute('data-header-variant') || 'ar';
-  var breadcrumb = variant === 'back'
-    ? '<a href="../index.html" data-i18n="nav.index">Index</a> / <a href="./index.html" data-i18n="nav.backends">Backends</a> / <a href="../activerecord/index.html" data-i18n="nav.activerecord">ActiveRecord</a>'
-    : '<a href="../index.html" data-i18n="nav.themes">Theme Lab</a> / <a href="../backends/index.html" data-i18n="nav.backends">Backends</a> / <a href="./index.html" data-i18n="nav.activerecord">ActiveRecord</a>';
+  var breadcrumb;
+  if (variant === 'back') {
+    breadcrumb = '<a href="../index.html" data-i18n="nav.index">Index</a> / <a href="./index.html" data-i18n="nav.backends">Backends</a> / <a href="../activerecord/index.html" data-i18n="nav.activerecord">ActiveRecord</a>';
+  } else if (variant === 'blog') {
+    breadcrumb = '<a href="../index.html" data-i18n="nav.themes">Theme Lab</a> / <a href="../backends/index.html" data-i18n="nav.backends">Backends</a> / <a href="../activerecord/index.html" data-i18n="nav.activerecord">ActiveRecord</a> / <a href="./index.html" data-i18n="nav.blog">Blog</a>';
+  } else {
+    breadcrumb = '<a href="../index.html" data-i18n="nav.themes">Theme Lab</a> / <a href="../backends/index.html" data-i18n="nav.backends">Backends</a> / <a href="./index.html" data-i18n="nav.activerecord">ActiveRecord</a>';
+  }
 
   /* ---------- build header ---------- */
   var header = document.createElement('header');

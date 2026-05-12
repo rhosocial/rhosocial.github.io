@@ -21,7 +21,8 @@ window.I18N['en-us'] = {
     index:        'Index',
     backends:     'Backends',
     activerecord: 'ActiveRecord',
-    practices:    'Practices'
+    practices:    'Practices',
+    blog:         'Blog'
   },
 
   /** Control bar (theme / font / language dropdowns) */
@@ -34,9 +35,13 @@ window.I18N['en-us'] = {
 
   /** Footer */
   footer: {
-    license: 'Apache 2.0 License',
-    github:  'GitHub',
-    hotkeys: '26 themes · Ctrl+key theme · Shift+key font · Alt+key lang'
+    license:   'Apache 2.0 License',
+    github:    'GitHub',
+    pypi:      'PyPI',
+    privacy:   'Privacy Policy',
+    about:     'About Us',
+    contact:   'Contact Us',
+    hotkeys:   '26 themes · Ctrl+key theme · Shift+key font · Alt+key lang'
   },
 
   /** Cross-page common buttons / labels */
