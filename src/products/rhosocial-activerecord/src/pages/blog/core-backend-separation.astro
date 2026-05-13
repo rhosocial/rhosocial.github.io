@@ -122,6 +122,194 @@ h3{font-size:1.2rem; margin-top:var(--space-6); margin-bottom:var(--space-3); co
   </style>
 
   <style is:global>
+/* Diagram: Vertical Flow (查询执行链路 - 分组架构) */
+.diagram-vflow {
+  display: flex; flex-direction: column; align-items: center;
+  gap: var(--space-2); margin: 0 0 var(--space-5);
+  padding: var(--space-5) var(--space-3);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+.vf-node {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 8px 16px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono); font-size: 13px;
+  color: var(--text-primary); font-weight: 600;
+}
+.vf-node.db {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  border-color: var(--accent); color: var(--accent);
+}
+.vf-arrow {
+  color: var(--text-muted); font-family: var(--font-mono); font-size: 14px;
+  line-height: 1;
+}
+.vf-group {
+  width: 100%; max-width: 480px;
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-1);
+  border: 2px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  display: flex; flex-direction: column; align-items: center;
+  gap: var(--space-2);
+}
+.vf-group-title {
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--text-muted); font-weight: 700;
+  padding: 2px 8px;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+}
+.vf-tags {
+  display: flex; flex-wrap: wrap; gap: var(--space-2);
+  justify-content: center;
+}
+.vf-tag {
+  display: inline-flex; align-items: center;
+  padding: 4px 10px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--text-primary);
+}
+.vf-tag.highlight {
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  border-color: var(--accent); color: var(--accent); font-weight: 700;
+}
+.vf-tag.protocol {
+  background: color-mix(in srgb, var(--accent-secondary) 12%, transparent);
+  border-color: var(--accent-secondary); color: var(--accent-secondary);
+}
+.vf-tag.method {
+  background: var(--surface-0);
+  border-color: var(--border); color: var(--text-secondary);
+  font-size: 10px;
+}
+.vf-note {
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--text-muted); text-align: center;
+  line-height: 1.4;
+  padding: var(--space-1) 0 0;
+  border-top: 1px solid var(--border);
+  width: 100%;
+}
+.vf-return {
+  margin-top: var(--space-1);
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--text-muted); text-align: center;
+}
+.vf-sub-label {
+  font-family: var(--font-mono); font-size: 9px;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-muted); text-align: center;
+  padding: var(--space-1) 0 0;
+  width: 100%;
+}
+.vf-arrow-mini {
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--text-muted); text-align: center;
+  line-height: 1;
+  padding: var(--space-1) 0;
+}
+.vf-sub-box {
+  width: 100%;
+  padding: var(--space-2);
+  background: var(--surface-0);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  display: flex; flex-direction: column; align-items: center;
+  gap: var(--space-1);
+}
+  </style>
+
+  <style is:global>
+/* Diagram: Tree (查询类型层次) */
+.diagram-tree {
+  margin: 0 0 var(--space-5);
+  padding: var(--space-5);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+.tree-node {
+  display: block;
+  padding: 8px 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-mono); font-size: 13px;
+  color: var(--text-primary); margin-bottom: var(--space-2);
+}
+.tree-node.root {
+  font-weight: 700; border-color: var(--accent); color: var(--accent);
+  text-align: center; margin-bottom: var(--space-3);
+}
+.tree-children {
+  padding-left: var(--space-5);
+  border-left: 2px solid var(--border);
+  margin-left: var(--space-3);
+}
+.tree-ann {
+  color: var(--text-muted); font-size: 11px; font-weight: 400;
+}
+  </style>
+
+  <style is:global>
+/* Diagram: Compare (同步/异步对比) */
+.diagram-compare {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: var(--space-4); margin: 0 0 var(--space-5);
+}
+@media (max-width: 640px) {
+  .diagram-compare { grid-template-columns: 1fr; }
+}
+.compare-col {
+  display: flex; flex-direction: column; gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+}
+.compare-header {
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.12em; text-transform: uppercase; font-weight: 700;
+  padding: 6px 12px; border-radius: var(--radius-md); text-align: center;
+}
+.compare-header.sync {
+  background: color-mix(in srgb, var(--accent) 15%, transparent);
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 25%, transparent);
+}
+.compare-header.async {
+  background: color-mix(in srgb, var(--accent-secondary) 12%, transparent);
+  color: var(--accent-secondary);
+  border: 1px solid color-mix(in srgb, var(--accent-secondary) 20%, transparent);
+}
+.compare-item {
+  font-family: var(--font-mono); font-size: 12px; line-height: 1.6;
+  color: var(--text-primary);
+  padding: var(--space-3);
+  background: var(--surface-0);
+  border-radius: var(--radius-md);
+}
+.compare-item .dim { color: var(--text-muted); }
+.compare-item .hl { color: var(--accent); font-weight: 600; }
+.compare-item .hl2 { color: var(--accent-secondary); font-weight: 600; }
+.compare-item .kw { color: var(--code-keyword); }
+.compare-caption {
+  font-family: var(--font-mono); font-size: 10px;
+  color: var(--text-muted); text-align: center;
+  padding: var(--space-1) 0;
+}
+  </style>
+
+  <style is:global>
 .series-nav {
   margin: var(--space-8) 0 var(--space-4);
   padding: var(--space-6);
