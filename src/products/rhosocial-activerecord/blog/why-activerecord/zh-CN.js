@@ -5,59 +5,99 @@ window.I18N['zh-cn'] = {
   control: { theme_label: '主题', font_label: '字体', lang_label: '语言', font_auto: '跟随主题' },
   hero: {
     back: "返回 Blog",
-    eyebrow: "2026-05-13 · Design · Architecture",
+    eyebrow: "2026-05-13 · History · Architecture",
     title: "为什么选择 ActiveRecord 设计模式",
-    sub: "在众多 ORM 和数据库访问模式中，为什么 ActiveRecord 模式仍然是最优解？"
+    sub: "从 Martin Fowler 的构想，到 Rails/Yii2/Laravel 的实践，再到 Python ORM 生态的今日格局。"
   },
   body: [
     { tag: "p", html: "<strong>2026-05-13</strong> · by rhosocial team" },
-    { tag: "lead", html: "在 Python ORM 生态中，<strong>ActiveRecord</strong>（活动记录）不是一个新概念。Rails 让它广为人知，Laravel 的 Eloquent 证明了它在 PHP 世界同样成功。但在 Python 世界，SQLAlchemy 的 Data Mapper 模式长期占据主导地位。rhosocial ActiveRecord 为什么选择 ActiveRecord 模式而非 Data Mapper？这篇文章将解释这一决策。" },
+    { tag: "lead", html: "ActiveRecord 模式的历史比很多人想象的更久远。它从 Martin Fowler 的《企业应用架构模式》中的一个概念条目，到 Rails、Yii2、Laravel 中事实上的标准，这段历程是关于开发者体验如何战胜架构纯粹性的故事。这篇文章将追溯这段历史，并审视 Python ORM 生态的对比格局。" },
 
-    { tag: "h2", html: "ActiveRecord vs Data Mapper" },
-    { tag: "p", html: "这两种模式的核心区别在于<strong>模型对象对数据库感知的程度</strong>：" },
+    { tag: "h2", html: "起源：Martin Fowler 的构想" },
+    { tag: "p", html: "在 2003 年的里程碑式著作 <em>《企业应用架构模式》</em>（PoEAA）中，Martin Fowler 正式文档化了 ActiveRecord 模式。他将其描述为：<em>\"一个封装了数据库表或视图中一行的对象，封装了数据库访问，并在该数据之上添加了领域逻辑。\"</em>" },
+    { tag: "p", html: "Fowler 的核心见解是务实的：当你的业务逻辑主要是对数据库记录的 CRUD 操作时，最简单的方案就是让记录对象自己处理持久化。另一种选择——Data Mapper——保持了领域对象的纯净，但引入了显著的间接性。Fowler 将 ActiveRecord 定位为适合较简单领域的轻量级模式。" },
+    { tag: "p", html: "重要的是，Fowler 并没有发明 ActiveRecord——他将在实践中观察到的模式进行了归纳。同样的原则早已出现在早期的对象关系映射工具中，但正是 PoEAA 为它赋予了名称和严谨的定义。" },
+
+    { tag: "h2", html: "Rails：ActiveRecord 走向主流" },
+    { tag: "p", html: "如果说 Fowler 给了 ActiveRecord 定义，那么 Ruby on Rails 则给了它名声。2005 年 Rails 1.0 发布时，其 ActiveRecord 组件成为定义一代 Web 开发的杀手级特性。" },
+    { tag: "p", html: "Rails 的 ActiveRecord 展示了几个革命性的理念：" },
     { tag: "ul", items: [
-      "<strong>ActiveRecord</strong>：模型对象本身知道如何持久化自己。<code>user.save()</code> 直接写入数据库。<code>User.find(1)</code> 直接从数据库加载。模型 = 业务逻辑 + 持久化逻辑。",
-      "<strong>Data Mapper</strong>：模型对象是纯数据容器（POJO/POPO），完全不知道数据库的存在。持久化由独立的 Mapper/Repository 负责。<code>session.add(user)</code> / <code>session.commit()</code>。模型 ≠ 持久化。"
+      "<strong>约定优于配置</strong>：表名、主键、外键都遵循可预测的约定，消除了困扰 Java ORM（如 Hibernate）的无穷 XML 映射文件",
+      "<strong>迁移即代码</strong>：Schema 变更是版本控制的 Ruby 脚本，而非 SQL 导出，让团队能随应用代码一起演进数据库",
+      "<strong>关联简化</strong>：<code>belongs_to</code>、<code>has_many</code> 读起来像英语，让复杂的连接操作感觉像属性访问",
+      "<strong>快速原型</strong>：脚手架可以在几分钟内从模型定义生成一个可工作的 CRUD 界面"
     ]},
-    { tag: "p", html: "SQLAlchemy 的 <code>declarative_base</code> 和 Session 是 Data Mapper 的经典实现。Django ORM 则是 ActiveRecord 的代表。" },
+    { tag: "p", html: "Rails 证明了 ActiveRecord 不仅仅是一个模式——它是一个生产力倍增器。DHH（David Heinemeier Hansson）明确选择了 ActiveRecord 而非 Data Mapper，因为他优先考虑开发者幸福感和快速迭代，而不是架构纯粹性。" },
 
-    { tag: "h2", html: "为什么 Data Mapper 在 Python 世界流行" },
-    { tag: "p", html: "SQLAlchemy 的流行让 Python 开发者习惯了 Data Mapper 模式。它的优势包括：" },
+    { tag: "h2", html: "PHP 的采纳：Yii2 和 Laravel" },
+    { tag: "p", html: "PHP 框架迅速拥抱了 ActiveRecord，尽管每个框架都根据 PHP 的语言特性和社区期望进行了适配。" },
+
+    { tag: "h3", html: "Yii2 的 Active Record" },
+    { tag: "p", html: "Yii2（2014）实现了 ActiveRecord，并特别强调查询灵活性。其方法引入了：" },
     { tag: "ul", items: [
-      "模型和数据库之间的关注点分离更彻底",
-      "Session 提供工作单元（Unit of Work）模式，支持事务边界精细控制",
-      "延迟加载（Lazy Loading）和 Identity Map 等高级特性",
-      "复杂的关联查询和继承映射更灵活"
+      "一个 <code>ActiveQuery</code> 类，将查询构建与模型定义分离",
+      "可在查询级别配置的惰性和即时加载策略",
+      "与模型的 <code>rules()</code> 方法集成的健壮验证管道",
+      "关联 ActiveRecord，通过 <code>with()</code> 获取关联记录，类似 Rails"
     ]},
-    { tag: "p", html: "这些优势对于大型企业级应用确实有价值。但对于 <strong>绝大多数 Web 应用和微服务</strong>，ActiveRecord 模式提供了更好的开发体验和更低的认知负荷。" },
+    { tag: "p", html: "Yii2 的关键创新是将查询逻辑显式分离到 <code>ActiveQuery</code> 类中。这影响了我们自己的设计——rhosocial ActiveRecord 的 <code>ActiveQuery</code> 概念从 Yii2 的方法中汲取了灵感，同时将其适配到 Python 的动态特性。" },
 
-    { tag: "h2", html: "为什么我们选择 ActiveRecord" },
-    { tag: "p", html: "rhosocial ActiveRecord 选择 ActiveRecord 模式的核心原因：" },
-    { tag: "h3", html: "1. 直观性" },
-    { tag: "p", html: "ActiveRecord 的 API 比 Data Mapper 更贴近业务直觉。新开发者看到 <code>user.save()</code> 就明白它在做什么，不需要理解 Session、flush、refresh 等概念。AR 让 CRUD 操作变成模型对象上的方法调用，而不是间接的 Repository 调用。" },
-    { tag: "h3", html: "2. 更少的样板代码" },
-    { tag: "p", html: "在 Data Mapper 模式下，即使是最简单的操作也需要完整的 Session 管理：" },
-    { tag: "code", text: "# Data Mapper 模式\nuser = User(name=\"Alice\", email=\"alice@example.com\")\nsession.add(user)\nsession.commit()\n\n# ActiveRecord 模式\nuser = User(name=\"Alice\", email=\"alice@example.com\")\nuser.save()" },
-    { tag: "p", html: "ActiveRecord 将这三步浓缩为一步。在微服务架构中，每个服务的数据库交互相对简单，ActiveRecord 的这个优势更加突出。" },
-    { tag: "h3", html: "3. 适合 Python 的动态特性" },
-    { tag: "p", html: "Python 的动态特性让 ActiveRecord 的实现比静态类型语言（如 Java）更自然。元类、描述符协议、属性拦截等机制让模型可以优雅地实现持久化感知。AR 利用这些特性，让开发者写出的代码看起来就像普通的 Python 类。" },
-    { tag: "h3", html: "4. 与 Pydantic 的组合优势" },
-    { tag: "p", html: "AR 继承 Pydantic 的 <code>BaseModel</code>，使得模型的字段声明、数据验证、序列化开箱即用。ActiveRecord 模式的模型即数据源的设计，与 Pydantic 的模型即 Schema 的理念天然契合。" },
-    { tag: "h3", html: "5. 适合 Python Web 生态" },
-    { tag: "p", html: "FastAPI、Flask、Starlette 等框架的视图函数通常是\"请求进来→处理→响应出去\"的无状态模式。ActiveRecord 的\"模型即数据源\"风格与这种模式自然匹配，不需要在视图和 Repository 之间做额外映射。" },
-
-    { tag: "h2", html: "AR 并非纯 ActiveRecord" },
-    { tag: "p", html: "rhosocial ActiveRecord 并没有盲目照搬 Rails 的 ActiveRecord。我们做了几个关键改进：" },
+    { tag: "h3", html: "Laravel 的 Eloquent" },
+    { tag: "p", html: "Laravel 的 Eloquent ORM（2011）将 ActiveRecord 的开发者体验推向了新的高度。Eloquent 强调：" },
     { tag: "ul", items: [
-      "<strong>可选的 Query Builder</strong>：AR 提供 ActiveQuery 流式 API（如 <code>User.query().where(...).order_by(...).all()</code>），同时支持原生的 SQL 执行——不强制使用者进入\"纯 ORM 思维\"",
-      "<strong>Pydantic 集成</strong>：模型类本身就是 Pydantic 模型，充分利用 Pydantic 的类型系统、验证管道和序列化能力",
-      "<strong>显式优于隐式</strong>：AR 避免 Rails 那种\"约定优于配置\"的过度自动化，每个行为都是可预期和可控制的",
-      "<strong>同步异步对称</strong>：同步和异步 API 设计一致，开发者可以选择适合自己的模式"
+      "流畅可链式调用的查询构建器：<code>User::where('active', true)->orderBy('name')->get()</code>",
+      "感觉像原生属性的 Eloquent 关联：<code>$user->posts</code>",
+      "用于属性转换的 Mutators 和 Accessors，不污染业务逻辑",
+      "基于 Trait 的可复用行为"
     ]},
+    { tag: "p", html: "Eloquent 的成功证明了，当与设计良好的服务层配合时，ActiveRecord 可以扩展到大型应用。Laravel 的流行——现在是使用最广泛的 PHP 框架——证明了开发者始终偏爱 ActiveRecord 的开发者体验。" },
+
+    { tag: "h2", html: "Java 的路径：为什么 ActiveRecord 没有主导" },
+    { tag: "p", html: "Java 走了一条不同的轨迹。Hibernate（2001）早期就选择了 Data Mapper，Java 生态——强调企业架构、事务管理和复杂继承——强化了这一选择。" },
+    { tag: "p", html: "Java 社区将 DAO/Repository 模式发展为标准实践。即使在今天，JPA（Jakarta Persistence）核心仍然是 Data Mapper。Java 中的 ActiveRecord 实现确实存在，但从未获得主流采纳，很大程度上是因为 Java 的冗长性和静态类型使得该模式感觉笨重而非解放。" },
+
+    { tag: "h2", html: "Python ORM 生态格局" },
+    { tag: "p", html: "Python 的 ORM 生态处在一个有趣的十字路口。不像 PHP（ActiveRecord 占主导）或 Java（Data Mapper 占主导），Python 拥有一个真正多元化的 ORM 格局。以下是主要参与者和它们的架构选择：" },
+
+    { tag: "h3", html: "SQLAlchemy — Data Mapper（带 ActiveRecord 模拟）" },
+    { tag: "p", html: "SQLAlchemy（2005）是 Python ORM 领域的 800 磅大猩猩。其核心严格遵循 Data Mapper——Session 跟踪对象状态、Identity Map 和 Unit of Work。然而，SQLAlchemy 的 <code>declarative_base</code> 扩展给了模型 ActiveRecord 的外观。开发者写 <code>class User(Base)</code>，内联定义字段，然后使用 <code>session.add(user)</code> 进行持久化。" },
+    { tag: "p", html: "结果是混合体：模型<em>看起来像</em> ActiveRecord，但<em>行为像</em> Data Mapper。这造成了微妙的认知摩擦——新手期望 <code>user.save()</code>，但必须学习 Session 语义。" },
+    { tag: "p", html: "SQLAlchemy 的优势在复杂场景下无可争议：精细的事务控制、高级查询组合、全面的方言支持。但对大多数 Web 应用来说，其 Session 管理是过度设计。" },
+
+    { tag: "h3", html: "Django ORM — 原生 ActiveRecord" },
+    { tag: "p", html: "Django 的 ORM（2005）是 Python 中最接近 Rails ActiveRecord 的方案。模型自我持久化，<code>model.save()</code> 写入数据库，<code>Model.objects.filter()</code> 提供流畅的查询 API。" },
+    { tag: "p", html: "<strong>问题在于</strong>：Django ORM 与 Django <strong>不可分割地耦合</strong>。你不能在 Django 之外使用 Django ORM 而不做大量 hack。这意味着：" },
+    { tag: "ul", items: [
+      "FastAPI、Flask、Starlette 用户不能在不引入整个 Django 框架的情况下使用 Django ORM",
+      "异步支持是最近才添加的，仍在成熟中",
+      "Pydantic 集成需要手动在 Django 模型和 Pydantic schema 之间做映射"
+    ]},
+    { tag: "p", html: "Django ORM 证明了 ActiveRecord 在 Python 中可用，但它的框架耦合在生态中留下了一个空白。" },
+
+    { tag: "h3", html: "Peewee — 轻量级 ActiveRecord" },
+    { tag: "p", html: "Peewee（2010）是一个小巧、表达力强的 ORM，遵循 ActiveRecord 原则。它提供 <code>model.save()</code>、<code>model.delete_instance()</code> 和流畅的查询 API。" },
+    { tag: "p", html: "Peewee 非常适合中小型项目，但在生产使用中有局限：没有内置异步支持、迁移系统有限、没有原生 Pydantic 集成。" },
+    { tag: "h3", html: "Tortoise ORM — 异步 ActiveRecord" },
+    { tag: "p", html: "Tortoise ORM（2018）将 ActiveRecord 带入了 Python 的异步世界。受 Django ORM 启发，它支持 <code>await model.save()</code>、<code>await Model.filter(...)</code>，并与异步框架原生协作。" },
+    { tag: "p", html: "Tortoise 验证了 ActiveRecord + 异步是一个引人注目的组合。但它仍然相对年轻，生态较小，没有标准的 Pydantic 集成路径。" },
+
+    { tag: "h3", html: "GINO、PonyORM 及其他" },
+    { tag: "p", html: "GINO（2017，已归档）试图将 SQLAlchemy 级别的能力带到异步世界，但从未获得关键规模。PonyORM（2011）使用 Python 生成器表达式进行查询——一种独特的方法——但它的商业许可和小社区限制了采纳。" },
+
+    { tag: "h2", html: "rhosocial ActiveRecord 填补的空白" },
+    { tag: "p", html: "审视 Python ORM 生态，一个清晰的空白浮现出来：" },
+    { tag: "ul", items: [
+      "<strong>ActiveRecord 模式</strong>：Django ORM 和 Peewee 证明了它在 Python 中可行",
+      "<strong>框架无关</strong>：Django ORM 与 Django 耦合；Peewee 和 Tortoise 缺乏 Pydantic 集成",
+      "<strong>Pydantic 原生</strong>：没有现有的 Python ORM 将 Pydantic 作为一等公民",
+      "<strong>异步/同步对称</strong>：大多数 ORM 支持两者之一，而非两者以相同的语义",
+      "<strong>多后端与契约测试</strong>：没有现有的 Python ActiveRecord ORM 提供供应商无关的后端并保证行为一致性"
+    ]},
+    { tag: "p", html: "rhosocial ActiveRecord 正是为填补这一空白而设计的：一个框架无关、Pydantic 原生、异步/同步对称、多后端设计的 ActiveRecord 模式 ORM。" },
 
     { tag: "h2", html: "总结" },
-    { tag: "p", html: "选择 ActiveRecord 模式不是技术上的倒退，而是对开发者体验和开发效率的务实考量。对于绝大多数 CRUD 密集型的 Web 应用，ActiveRecord 模式提供了足够的能力，同时大幅降低了认知负荷。" },
-    { tag: "p", html: "当然，没有任何模式是万能的。如果你的应用需要复杂的继承映射、精细的 Session 管理、或者需要在多个数据库之间协调事务，Data Mapper 模式可能更适合。但对于其他场景，AR 是一个高效、直观且强大的选择。" },
+    { tag: "p", html: "ActiveRecord 的旅程——从 Fowler 的 PoEAA 条目，经过 Rails 的爆炸性成功、Yii2 的 ActiveQuery 创新、Laravel 的 Eloquent 精炼——是一个关于开发者体验战胜架构教条的故事。" },
+    { tag: "p", html: "在 Python 中，ActiveRecord 通过 Django ORM 和 Peewee 证明了其价值，但现有实现没有一个能同时提供框架独立性、Pydantic 集成、异步/同步对称和多后端契约测试。这正是 rhosocial ActiveRecord 力图填补的空白。" },
     { tag: "hr" },
     { tag: "next", html: "下一篇：为什么我们选择 Pydantic v2 作为 ActiveRecord 的基类——类型安全、验证管道与 IDE 体验的取舍。" }
   ]

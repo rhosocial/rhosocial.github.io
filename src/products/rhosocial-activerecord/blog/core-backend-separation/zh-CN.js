@@ -5,79 +5,100 @@ window.I18N['zh-cn'] = {
   control: { theme_label: '主题', font_label: '字体', lang_label: '语言', font_auto: '跟随主题' },
   hero: {
     back: "返回 Blog",
-    eyebrow: "2026-05-13 · Architecture",
-    title: "ActiveRecord-后端分离架构：设计理念与实践",
-    sub: "核心库与后端的解耦设计，让第三方可以自由实现自己的数据库后端。"
+    eyebrow: "2026-05-17 · Architecture · Backend",
+    title: "为什么 ActiveRecord 需要后端抽象",
+    sub: "跨数据库行为一致性需要的不仅仅是交换 SQL 方言。"
   },
   body: [
-    { tag: "p", html: "<strong>2026-05-13</strong> · by rhosocial team" },
-    { tag: "lead", html: "rhosocial ActiveRecord 的一个核心设计决策是：核心库（<code>python-activerecord</code>）与各个数据库后端（<code>python-activerecord-mysql</code>、<code>python-activerecord-postgres</code> 等）独立发布。这意味着核心库仅依赖 Pydantic 2.x，不绑定任何数据库驱动。这篇文章将解释这种分离架构的设计理念和实现方式。" },
+    { tag: "p", html: "<strong>2026-05-17</strong> · by rhosocial team" },
+    { tag: "lead", html: "乍看起来，将核心 ActiveRecord 与数据库后端分离的想法似乎理所当然：ActiveRecord 需要访问数据库，所以它自然需要数据库驱动。但真正的动机比这更深刻。这不仅仅是为了让数据库访问成为可能，而是为了在确保跨数据库行为一致性的同时，尊重每个后端独特的语义。这篇文章将解释为什么后端抽象层是必不可少的，而不是可选的。" },
 
-    { tag: "h2", html: "为什么要分离" },
-    { tag: "p", html: "传统的 Python ORM 通常将核心 ORM 逻辑和数据库驱动捆绑在一起。例如，SQLAlchemy 虽然支持多种数据库，但它的核心包仍然需要安装相应的驱动。AR 选择了不同的路径：" },
+    { tag: "h2", html: "核心挑战：同一模式，不同数据库" },
+    { tag: "p", html: "所有关系型数据库都大致遵循关系模型，但每个数据库都有自己的个性。考虑这些日常场景：" },
     { tag: "ul", items: [
-      "核心库轻量纯净——只依赖 Pydantic 2.x，无任何数据库驱动依赖",
-      "每个后端独立版本化——MySQL 后端的更新不会影响 PostgreSQL 用户",
-      "第三方可以实现自己的后端——通过实现约定的接口即可接入"
+      "<strong>自增字段</strong>：MySQL 使用 <code>AUTO_INCREMENT</code>，PostgreSQL 用 <code>SERIAL</code>/<code>IDENTITY</code>，SQLite 用 <code>AUTOINCREMENT</code>，Oracle 用序列",
+      "<strong>分页</strong>：MySQL/MariaDB/SQLite 用 <code>LIMIT ... OFFSET</code>，SQL Server 用 <code>OFFSET ... FETCH NEXT</code> 或 <code>TOP</code>，Oracle 11g 用 <code>ROWNUM</code> 而 12c+ 用 <code>OFFSET ... FETCH</code>",
+      "<strong>JSON 支持</strong>：PostgreSQL 有原生 JSON 操作符（<code>-></code>、<code>->></code>），MySQL 有 <code>JSON_EXTRACT()</code>，SQLite 在 3.38 后增加了 JSON 函数",
+      "<strong>事务隔离</strong>：PostgreSQL 默认是 <code>READ COMMITTED</code>，MySQL InnoDB 是 <code>REPEATABLE READ</code>，<code>SERIALIZABLE</code> 的语义在不同数据库之间有微妙差异",
+      "<strong>RETURNING 子句</strong>：PostgreSQL 原生支持 <code>INSERT ... RETURNING</code>；MySQL 8.0.21+ 需要变通方案；SQL Server 使用 <code>OUTPUT</code>"
     ]},
+    { tag: "p", html: "如果一个 ORM 只是简单地做 SQL 字符串拼接和参数替换，那么每个这样的差异都会变成散落在代码库中的特例分支。结果是脆弱的、难以测试的、数据库特定的逻辑泄漏到每一个查询操作中。" },
 
-    { tag: "h2", html: "扩展点机制" },
-    { tag: "p", html: "核心库定义了清晰的后端接口。每个后端需要实现的核心组件包括：" },
+    { tag: "h2", html: "为什么不让 ActiveRecord 直接用 SQL？" },
+    { tag: "p", html: "有人可能会说：既然每个数据库都不一样，为什么不让 ActiveRecord 保持简单，把所有复杂性推给 SQL？这个做法有两个问题：" },
     { tag: "ul", items: [
-      "<strong>连接管理器（Connection Manager）</strong>：管理与数据库的连接建立、连接池和生命周期",
-      "<strong>方言（Dialect）</strong>：处理 SQL 语法差异，包括数据类型映射、分页语法、函数实现等",
-      "<strong>表达式实现（Expression Implementation）</strong>：将通用表达式树翻译为具体数据库的 SQL",
-      "<strong>迁移（Migration）</strong>：管理 schema 版本变更、前向/回滚迁移"
+      "应用代码中会充斥着数据库特定的 SQL，让 ORM 的可移植性承诺化为泡影",
+      "ActiveRecord 模式——模型对象自己处理持久化——当每个 CRUD 操作都需要生成数据库特定的 SQL 时，实际上无法通用地实现"
     ]},
-    { tag: "p", html: "任何实现了这些接口的包都可以成为 AR 的一个后端。核心库不关心后端使用的数据库驱动是什么——<code>mysql-connector-python</code>、<code>psycopg</code>、<code>mariadb</code>、<code>pyodbc</code>、<code>oracledb</code> 都是后端的内部实现细节。" },
+    { tag: "p", html: "解决方案不是消除差异——那是不可能的——而是<strong>在一致的接口背后抽象这些差异</strong>，让 ActiveRecord 本身永远不需要知道它在和哪个数据库对话。" },
 
-    { tag: "h2", html: "仓库组织" },
-    { tag: "p", html: "所有后端仓库遵循统一的命名和结构约定：" },
-    { tag: "code", text: "rhosocial-activerecord (核心库)\n├── python-activerecord              # 核心实现，SQLite 内置\n├── python-activerecord-mysql        # MySQL 后端实现\n├── python-activerecord-postgres     # PostgreSQL 后端实现\n├── python-activerecord-mariadb      # MariaDB 后端实现\n├── python-activerecord-sqlserver    # SQL Server 后端实现\n├── python-activerecord-oracle       # Oracle 后端实现\n├── python-activerecord-devtools     # 开发工具集\n├── python-activerecord-testsuite    # 测试套件\n└── python-activerecord-intellij-plugin # Intellij 插件（独立仓库）" },
-    { tag: "p", html: "每个后端仓库通过 <code>pip install rhosocial-activerecord[backend]</code> 这样的 extras 方式安装。核心库本身通过 <code>pip install rhosocial-activerecord</code> 即可获得 SQLite 支持。" },
-
-    { tag: "h2", html: "SQLite 内置的意义" },
-    { tag: "p", html: "SQLite 后端直接内置于核心库中，而不是作为一个独立的后端包。这个决策基于几个考量：" },
+    { tag: "h2", html: "后端是解耦的独立模块，而非 ActiveRecord 的一部分" },
+    { tag: "p", html: "rhosocial ActiveRecord 的一个关键设计决策是：后端<strong>不是 ActiveRecord 的一部分</strong>。相反，后端是一个可以独立工作的模块。ActiveRecord 只是后端的一个消费者——而不是反过来。" },
+    { tag: "p", html: "这意味着：" },
     { tag: "ul", items: [
-      "SQLite 是 Python 标准库的一部分，无需额外安装驱动",
-      "开发者可以开箱即用，无需配置任何后端即可开始使用 AR",
-      "SQLite 非常适合开发、测试和小型部署场景",
-      "SQLite 后端同时也是其他后端的参考实现，新开发后端时可以对照学习"
+      "后端管理连接、执行 SQL、处理事务，完全不需要知道 ActiveRecord 模型的存在",
+      "ActiveRecord 通过一个干净的接口调用后端，将其视为一个持久化引擎",
+      "第三方工具或脚本可以直接使用后端，而根本不需要加载 ActiveRecord 模型"
     ]},
+    { tag: "p", html: "这种解耦确保了后端的演进不需要 ActiveRecord 的变更，反之亦然。后端可以增加连接池优化、实现新的事务隔离级别、修复特定驱动的 bug——所有这些都不需要修改核心 ActiveRecord 库中的一行代码。" },
 
-    { tag: "callout", html: "<strong>设计原则：</strong>\"零配置起步\"是 AR 的核心体验目标。开发者 <code>pip install rhosocial-activerecord</code> 后立即可以定义模型、创建表、执行 CRUD，无需任何额外步骤。" },
-
-    { tag: "h2", html: "版本兼容策略" },
-    { tag: "p", html: "核心库和各个后端之间的版本关系遵循明确的策略：" },
+    { tag: "h2", html: "超越 SQL 字符串：通用表达式系统" },
+    { tag: "p", html: "抽象 SQL 生成是显而易见的部分。不那么明显——但更强大——的是通过<strong>通用表达式系统</strong>来抽象查询语义。" },
+    { tag: "p", html: "rhosocial ActiveRecord 定义了一组通用的表达式节点，表示独立于任何数据库方言的查询操作：" },
     { tag: "ul", items: [
-      "核心库的主版本号变更（如 1.x → 2.x）意味着后端接口可能发生不兼容变化",
-      "后端版本独立于核心库——后端可以针对核心库的特定版本范围声明兼容性",
-      "devtools 和 testsuite 等工具仓库同样独立版本化，与后端相同的兼容性声明模式"
+      "<strong>比较表达式</strong>：等于、不等于、大于、小于、IN、BETWEEN、LIKE、IS NULL",
+      "<strong>逻辑表达式</strong>：AND、OR、NOT 组合任意子表达式",
+      "<strong>聚合表达式</strong>：COUNT、SUM、AVG、MIN、MAX，支持可选的 DISTINCT 和 GROUP BY",
+      "<strong>函数表达式</strong>：日期处理、字符串操作、数学函数",
+      "<strong>子查询表达式</strong>：在 SELECT、FROM、WHERE、HAVING 子句中的相关和非相关子查询"
     ]},
-    { tag: "p", html: "这种策略意味着：数据库后端可以独立于核心库演进。MySQL 后端可以修复一个连接池 bug 并发布补丁版本，而不需要等待核心库的发布周期。" },
+    { tag: "p", html: "每个后端负责将这个表达式树翻译为数据库特定的 SQL。表达式系统本身对 MySQL、PostgreSQL 或 Oracle 一无所知——它只是一个纯数据结构。每个后端的方言实现包含了所有的翻译逻辑。" },
 
-    { tag: "h2", html: "测试契约体系" },
-    { tag: "p", html: "为了确保所有后端行为一致，AR 采用契约测试（Contract Testing）策略。核心库定义了一组标准化测试契约，每个后端必须通过这些测试。" },
-    { tag: "p", html: "测试契约涵盖以下维度：" },
+    { tag: "h2", html: "尊重后端特有的语义" },
+    { tag: "p", html: "一刀切的表达式系统会过于僵化。不同的数据库拥有真正不同的能力和语义，开发者应该能够加以利用：" },
     { tag: "ul", items: [
-      "基本的 CRUD 操作行为",
-      "查询构建器的正确性",
-      "事务行为（提交、回滚、嵌套事务）",
-      "迁移的版本管理和回滚",
-      "数据类型映射的完整性",
-      "特定后端的高级功能（如 PostGIS、JSON 字段等）"
+      "<strong>PostgreSQL 特有的操作符</strong>：<code>->></code> 用于 JSON 字段、<code>@></code> 用于数组包含、<code>SIMILAR TO</code> 用于正则匹配",
+      "<strong>MySQL 特有的子句</strong>：<code>ON DUPLICATE KEY UPDATE</code>、使用 <code>MATCH ... AGAINST</code> 的全文搜索、<code>GROUP_CONCAT</code>",
+      "<strong>SQLite 扩展</strong>：<code>UPSERT</code>（3.24 起）、<code>JSON</code> 函数（3.38 起）、<code>STRICT</code> 表",
+      "<strong>SQL Server 特性</strong>：带 ties 的 <code>TOP</code>、<code>OUTPUT</code> 子句、<code>PIVOT</code>/<code>UNPIVOT</code>、<code>APPLY</code> 操作符",
+      "<strong>Oracle 能力</strong>：用于层次化查询的 <code>CONNECT BY</code>、用于 upsert 的 <code>MERGE</code>、<code>FLASHBACK</code> 查询"
     ]},
-    { tag: "p", html: "这套测试契约体系由 <code>python-activerecord-testsuite</code> 项目维护，开发中。" },
+    { tag: "p", html: "表达式系统不是隐藏这些差异，而是提供了<strong>扩展点</strong>，让后端可以注册自定义的表达式节点。通用表达式树充当安全网——确保可移植查询在任何地方都能工作——同时扩展机制允许每个后端暴露其独特的能力。" },
+
+    { tag: "h2", html: "后端接口架构" },
+    { tag: "p", html: "后端接口围绕四个核心组件设计，每个组件都可以独立替换：" },
+    { tag: "ul", items: [
+      "<strong>连接管理器（Connection Manager）</strong>：处理连接生命周期、连接池策略和驱动特定配置。不依赖于 ActiveRecord 模型。",
+      "<strong>方言（Dialect）</strong>：将表达式树翻译为 SQL 字符串，处理数据类型映射。数据库特定的语法就放在这里。",
+      "<strong>表达式实现（Expression Implementation）</strong>：用数据库特定的节点和优化来扩展通用表达式系统。",
+      "<strong>迁移引擎（Migration Engine）</strong>：管理 schema 版本控制、DDL 生成和前向/回滚操作。"
+    ]},
+    { tag: "p", html: "每个组件都是一个实现了文档化协议的普通 Python 类。ActiveRecord 通过后端接口调用这些组件，从不直接访问。" },
+
+    { tag: "h2", html: "内置 SQLite：参考后端" },
+    { tag: "p", html: "SQLite 内置于核心库中——不是因为它特殊，而是因为它作为后端接口的<strong>参考实现</strong>。新的后端开发者可以研究 SQLite 方言来理解他们需要满足的契约。" },
+    { tag: "p", html: "SQLite 同时也实现了零配置启动体验：<code>pip install rhosocial-activerecord</code> 后立即可以定义模型、创建表、执行 CRUD，无需任何数据库服务器设置。" },
+
+    { tag: "h2", html: "契约测试：跨后端的一致性" },
+    { tag: "p", html: "仅有抽象接口是不够的。行为一致性需要<strong>契约测试</strong>。<code>python-activerecord-testsuite</code> 项目定义了一套每个后端必须通过的测试契约：" },
+    { tag: "ul", items: [
+      "CRUD 操作在所有后端上行为一致",
+      "查询构建器产生语义等价的结果",
+      "事务语义（提交、回滚、保存点）一致",
+      "迁移操作产生等价的 schema 状态",
+      "数据类型映射覆盖完整的类型谱系"
+    ]},
+    { tag: "p", html: "一个通过了所有契约测试的后端，保证了针对它编写的应用代码在任何其他合规后端上都能产生相同的行为——而不会让 SQL 层面的差异泄漏到应用层。" },
 
     { tag: "h2", html: "总结" },
-    { tag: "p", html: "ActiveRecord-后端分离架构的核心收益：" },
+    { tag: "p", html: "rhosocial ActiveRecord 的核心-后端分离架构源于一个单一的、务实的动机：<strong>关系型数据库共享关系模型，但在细节上各不相同</strong>。后端抽象层是管理这种张力的经过验证的方式。" },
     { tag: "ul", items: [
-      "核心库极简——只关注 ORM 核心抽象和 SQL 构建",
-      "后端自由——每个后端独立演进，不受核心或其他后端的影响",
-      "生态开放——第三方可以实现自己的后端，遵循约定即可",
-      "测试可验证——契约测试确保多后端行为一致"
+      "后端是解耦的独立模块——ActiveRecord 是用户，而非拥有者",
+      "通用表达式系统提供可移植的查询语义",
+      "扩展点让后端可以暴露数据库特有的能力",
+      "契约测试保证了所有后端的行为一致性",
+      "内置 SQLite 后端既是零配置默认项，也是参考实现"
     ]},
-
     { tag: "hr" },
     { tag: "next", html: "下一篇预告：字段代理系统——如何在 Pydantic 字段之上叠加 ORM 特有的自定义行为。" }
   ]
