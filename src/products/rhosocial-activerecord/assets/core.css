@@ -200,6 +200,7 @@ kbd {
 .nav-link:hover {
   background: var(--bg-2);
   color: var(--fg);
+  text-decoration: none;
 }
 .nav-link.is-current {
   color: var(--fg);
