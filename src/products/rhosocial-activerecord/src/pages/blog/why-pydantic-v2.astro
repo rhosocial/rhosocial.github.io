@@ -1,6 +1,29 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-const __html = `<style>
+import ArticleDate from '../../components/blog/ArticleDate.astro';
+import ReportIssue from '../../components/blog/ReportIssue.astro';
+import ShareButtons from '../../components/blog/ShareButtons.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const slug = 'why-pydantic-v2';
+const pageTitle = '为什么我们选择 Pydantic v2 作为 ActiveRecord 的基类';
+const heroSub = '类型安全、验证管道与 IDE 体验的取舍。';
+const categoryEn = 'Design · Architecture';
+const categoryZh = '设计 · 架构';
+
+const blogDataDir = path.join(process.cwd(), 'blog-data');
+const zhCnJs = fs.readFileSync(path.join(blogDataDir, slug, 'zh-cn.js'), 'utf-8');
+const enUsJs = fs.readFileSync(path.join(blogDataDir, slug, 'en-us.js'), 'utf-8');
+const postsDataZh = fs.readFileSync(path.join(blogDataDir, 'posts-data', 'zh-cn.js'), 'utf-8');
+const postsDataEn = fs.readFileSync(path.join(blogDataDir, 'posts-data', 'en-us.js'), 'utf-8');
+const blogPostJs = fs.readFileSync(path.join(process.cwd(), 'public', 'assets', 'blog-post.js'), 'utf-8');
+const seriesNavJs = fs.readFileSync(path.join(process.cwd(), 'public', 'assets', 'series-nav.js'), 'utf-8');
+const blogArticleDateJs = fs.readFileSync(path.join(process.cwd(), 'public', 'assets', 'blog-article-date.js'), 'utf-8');
+---
+
+<BaseLayout title={`rhosocial ActiveRecord — ${pageTitle}`} variant="blog">
+  <style is:global>
 :root, body {
   --code-keyword:   var(--tok-keyword);
   --code-class:     var(--tok-class);
@@ -30,6 +53,8 @@ const __html = `<style>
   --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
   --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
   --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 9999px;
+  --border:           var(--border, rgba(255,255,255,0.08));
+  --border-strong:    var(--border-strong, rgba(255,255,255,0.16));
 }
 
 .reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
@@ -52,6 +77,7 @@ h3{font-size:1.2rem; margin-top:var(--space-6); margin-bottom:var(--space-3); co
 .hero{ padding:var(--space-8) 0 var(--space-6) }
 .hero .eyebrow{ font-family:var(--font-mono); font-size:11px;
   letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:var(--space-4) }
+.hero .eyebrow time { color:var(--accent); }
 .hero h1{ font-size:clamp(1.8rem,4.5vw,2.8rem); line-height:1.1; margin-bottom:var(--space-4) }
 :lang(zh) .hero h1 em{
   font-style:normal; font-weight:700; color:var(--text-primary);
@@ -94,20 +120,9 @@ h3{font-size:1.2rem; margin-top:var(--space-6); margin-bottom:var(--space-3); co
   font-family:var(--font-mono); font-size:12px; color:var(--text-muted);
   margin-bottom:var(--space-6); transition:color .2s }
 .back-link:hover{ color:var(--accent-secondary); text-decoration:none }
-</style>
-<main class="page">
-  <section class="hero reveal">
-    <div class="container">
-      <a href="./index.html" class="back-link">&larr; <span data-i18n="hero.back">Back to Blog</span></a>
-      <div class="eyebrow" data-i18n="hero.eyebrow">2026-05-13 · Design · Architecture</div>
-      <h1 data-i18n="hero.title">为什么我们选择 Pydantic v2 作为 ActiveRecord 的基类</h1>
-      <p class="lead" data-i18n="hero.sub">类型安全、验证管道与 IDE 体验的取舍。</p>
-    </div>
-  </section>
+  </style>
 
-  <div id="post-body" class="container article-body" data-slug="why-pydantic-v2"></div>
-
-  <style>
+  <style is:global>
 .series-nav {
   margin: var(--space-8) 0 var(--space-4);
   padding: var(--space-6);
@@ -182,21 +197,53 @@ h3{font-size:1.2rem; margin-top:var(--space-6); margin-bottom:var(--space-3); co
   font-family: var(--font-mono);
   font-size: 10px;
 }
-</style>
+  </style>
 
-<div id="series-article-nav" class="container series-nav reveal reveal-d1" data-slug="why-pydantic-v2"></div>
+  <style is:global>
+.article-tools-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) 0;
+  margin-top: var(--space-6);
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+  </style>
 
-  <script src="./why-pydantic-v2/zh-cn.js"></script>
-  <script src="./why-pydantic-v2/en-us.js"></script>
-  <script src="../assets/blog-post.js"></script>
-  <script src="./posts-data/zh-cn.js"></script>
-  <script src="./posts-data/en-us.js"></script>
-  <script src="../assets/series-nav.js"></script></main>
-<script>
+  <main class="page">
+    <section class="hero reveal">
+      <div class="container">
+        <a href="./index.html" class="back-link">&larr; <span data-i18n="hero.back">Back to Blog</span></a>
+        <div class="eyebrow">
+          <ArticleDate />
+          <span data-i18n="hero.category"> · Design · Architecture</span>
+        </div>
+        <h1 data-i18n="hero.title">为什么我们选择 Pydantic v2 作为 ActiveRecord 的基类</h1>
+        <p class="lead" data-i18n="hero.sub">类型安全、验证管道与 IDE 体验的取舍。</p>
+      </div>
+    </section>
+
+    <div id="post-body" class="container article-body" data-slug="why-pydantic-v2"></div>
+
+    <div id="series-article-nav" class="container series-nav reveal reveal-d1" data-slug="why-pydantic-v2"></div>
+
+    <div class="container article-tools-bar">
+      <ReportIssue slug="why-pydantic-v2" />
+      <ShareButtons slug="why-pydantic-v2" title={pageTitle} />
+    </div>
+
+    <script set:html={zhCnJs}></script>
+    <script set:html={enUsJs}></script>
+    <script set:html={postsDataZh}></script>
+    <script set:html={postsDataEn}></script>
+    <script set:html={blogPostJs}></script>
+    <script set:html={seriesNavJs}></script>
+    <script set:html={blogArticleDateJs}></script>
+  </main>
+
+  <script>
 (function(){var o=new IntersectionObserver(function(e){e.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visible");o.unobserve(e.target)}})},{threshold:.12});document.querySelectorAll(".reveal").forEach(function(e){o.observe(e)})})();void 0
-</script>`;
----
-
-<BaseLayout title="rhosocial ActiveRecord — 为什么选择 Pydantic v2" variant="blog">
-  <Fragment set:html={__html} />
+  </script>
 </BaseLayout>

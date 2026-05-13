@@ -1,0 +1,90 @@
+---
+// ShareButtons.astro
+// Social share buttons + copy link with analytics tracking
+const { slug, title } = Astro.props;
+const BASE_URL = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '');
+const pageUrl = `https://rhosocial.github.io${BASE_URL}/blog/${slug}.html`;
+const enc = (s: string) => encodeURIComponent(s);
+const encUrl = enc(pageUrl);
+const encTitle = enc(title);
+
+const shareLinks = [
+  { label: 'Twitter / X', url: `https://twitter.com/intent/tweet?url=${encUrl}&text=${encTitle}`, icon: 'X' },
+  { label: 'LinkedIn', url: `https://www.linkedin.com/sharing/share-offsite/?url=${encUrl}`, icon: 'in' },
+  { label: 'Facebook', url: `https://www.facebook.com/sharer/sharer.php?u=${encUrl}`, icon: 'f' },
+];
+---
+
+<div class="share-buttons">
+  {shareLinks.map(link => (
+    <a href={link.url}
+       target="_blank"
+       rel="noopener noreferrer"
+       class="share-btn"
+       data-track-event="share"
+       data-track-label={link.label.toLowerCase().replace(/[^a-z]/g, '-')}
+       data-track-value={slug}
+       title={link.label}>
+      <span class="share-icon">{link.icon}</span>
+    </a>
+  ))}
+  <button class="share-btn copy-link"
+          data-copy-link={pageUrl}
+          data-track-event="share"
+          data-track-label="copy-link"
+          data-track-value={slug}
+          data-i18n-value="tools.copyLink">
+    <span class="share-icon">⎘</span>
+  </button>
+</div>
+
+<script>
+(function() {
+  // Copy link functionality
+  document.querySelectorAll('[data-copy-link]').forEach(function(btn) {
+    btn.addEventListener('click', function(e) {
+      var url = btn.getAttribute('data-copy-link');
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(function() {
+          var orig = btn.innerHTML;
+          btn.innerHTML = '<span class="share-icon">✓</span>';
+          setTimeout(function() { btn.innerHTML = orig; }, 2000);
+        });
+      }
+    });
+  });
+})();
+</script>
+
+<style>
+  .share-buttons {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .share-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 12px;
+    font-family: var(--font-mono);
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
+  }
+  .share-btn:hover {
+    color: var(--accent-secondary);
+    border-color: var(--accent-secondary);
+    background: var(--accent-secondary-soft);
+    text-decoration: none;
+  }
+  .share-icon {
+    line-height: 1;
+    pointer-events: none;
+  }
+</style>

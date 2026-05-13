@@ -1,6 +1,29 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-const __html = `<style>
+import ArticleDate from '../../components/blog/ArticleDate.astro';
+import ReportIssue from '../../components/blog/ReportIssue.astro';
+import ShareButtons from '../../components/blog/ShareButtons.astro';
+import fs from 'node:fs';
+import path from 'node:path';
+
+const slug = 'core-backend-separation';
+const pageTitle = '为什么 ActiveRecord 需要后端抽象';
+const heroSub = '跨数据库行为一致性需要的不仅仅是交换 SQL 方言。';
+const categoryEn = 'Architecture · Backend';
+const categoryZh = '架构 · 后端';
+
+const blogDataDir = path.join(process.cwd(), 'blog-data');
+const zhCnJs = fs.readFileSync(path.join(blogDataDir, slug, 'zh-cn.js'), 'utf-8');
+const enUsJs = fs.readFileSync(path.join(blogDataDir, slug, 'en-us.js'), 'utf-8');
+const postsDataZh = fs.readFileSync(path.join(blogDataDir, 'posts-data', 'zh-cn.js'), 'utf-8');
+const postsDataEn = fs.readFileSync(path.join(blogDataDir, 'posts-data', 'en-us.js'), 'utf-8');
+const blogPostJs = fs.readFileSync(path.join(process.cwd(), 'public', 'assets', 'blog-post.js'), 'utf-8');
+const seriesNavJs = fs.readFileSync(path.join(process.cwd(), 'public', 'assets', 'series-nav.js'), 'utf-8');
+const blogArticleDateJs = fs.readFileSync(path.join(process.cwd(), 'public', 'assets', 'blog-article-date.js'), 'utf-8');
+---
+
+<BaseLayout title={`rhosocial ActiveRecord — ${pageTitle}`} variant="blog">
+  <style is:global>
 :root, body {
   --code-keyword:   var(--tok-keyword);
   --code-class:     var(--tok-class);
@@ -54,6 +77,7 @@ h3{font-size:1.2rem; margin-top:var(--space-6); margin-bottom:var(--space-3); co
 .hero{ padding:var(--space-8) 0 var(--space-6) }
 .hero .eyebrow{ font-family:var(--font-mono); font-size:11px;
   letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:var(--space-4) }
+.hero .eyebrow time { color:var(--accent); }
 .hero h1{ font-size:clamp(1.8rem,4.5vw,2.8rem); line-height:1.1; margin-bottom:var(--space-4) }
 :lang(zh) .hero h1 em{
   font-style:normal; font-weight:700; color:var(--text-primary);
@@ -96,20 +120,9 @@ h3{font-size:1.2rem; margin-top:var(--space-6); margin-bottom:var(--space-3); co
   font-family:var(--font-mono); font-size:12px; color:var(--text-muted);
   margin-bottom:var(--space-6); transition:color .2s }
 .back-link:hover{ color:var(--accent-secondary); text-decoration:none }
-</style>
-<main class="page">
-  <section class="hero reveal">
-    <div class="container">
-      <a href="./index.html" class="back-link">&larr; <span data-i18n="hero.back">Back to Blog</span></a>
-      <div class="eyebrow" data-i18n="hero.eyebrow">2026-05-17 · Architecture · Backend</div>
-      <h1 data-i18n="hero.title">ActiveRecord-后端分离架构：设计理念与实践</h1>
-      <p class="lead" data-i18n="hero.sub">核心库与后端的解耦设计，让第三方可以自由实现自己的数据库后端。</p>
-    </div>
-  </section>
+  </style>
 
-  <div id="post-body" class="container article-body" data-slug="core-backend-separation"></div>
-
-  <style>
+  <style is:global>
 .series-nav {
   margin: var(--space-8) 0 var(--space-4);
   padding: var(--space-6);
@@ -184,21 +197,53 @@ h3{font-size:1.2rem; margin-top:var(--space-6); margin-bottom:var(--space-3); co
   font-family: var(--font-mono);
   font-size: 10px;
 }
-</style>
+  </style>
 
-<div id="series-article-nav" class="container series-nav reveal reveal-d1" data-slug="core-backend-separation"></div>
+  <style is:global>
+.article-tools-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) 0;
+  margin-top: var(--space-6);
+  border-top: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+  </style>
 
-  <script src="./core-backend-separation/zh-cn.js"></script>
-  <script src="./core-backend-separation/en-us.js"></script>
-  <script src="../assets/blog-post.js"></script>
-  <script src="./posts-data/zh-cn.js"></script>
-  <script src="./posts-data/en-us.js"></script>
-  <script src="../assets/series-nav.js"></script></main>
-<script>
+  <main class="page">
+    <section class="hero reveal">
+      <div class="container">
+        <a href="./index.html" class="back-link">&larr; <span data-i18n="hero.back">Back to Blog</span></a>
+        <div class="eyebrow">
+          <ArticleDate />
+          <span data-i18n="hero.category"> · Architecture · Backend</span>
+        </div>
+        <h1 data-i18n="hero.title">为什么 ActiveRecord 需要后端抽象</h1>
+        <p class="lead" data-i18n="hero.sub">跨数据库行为一致性需要的不仅仅是交换 SQL 方言。</p>
+      </div>
+    </section>
+
+    <div id="post-body" class="container article-body" data-slug="core-backend-separation"></div>
+
+    <div id="series-article-nav" class="container series-nav reveal reveal-d1" data-slug="core-backend-separation"></div>
+
+    <div class="container article-tools-bar">
+      <ReportIssue slug="core-backend-separation" />
+      <ShareButtons slug="core-backend-separation" title={pageTitle} />
+    </div>
+
+    <script set:html={zhCnJs}></script>
+    <script set:html={enUsJs}></script>
+    <script set:html={postsDataZh}></script>
+    <script set:html={postsDataEn}></script>
+    <script set:html={blogPostJs}></script>
+    <script set:html={seriesNavJs}></script>
+    <script set:html={blogArticleDateJs}></script>
+  </main>
+
+  <script>
 (function(){var o=new IntersectionObserver(function(e){e.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visible");o.unobserve(e.target)}})},{threshold:.12});document.querySelectorAll(".reveal").forEach(function(e){o.observe(e)})})();void 0
-</script>`;
----
-
-<BaseLayout title="rhosocial ActiveRecord — ActiveRecord-后端分离架构" variant="blog">
-  <Fragment set:html={__html} />
+  </script>
 </BaseLayout>

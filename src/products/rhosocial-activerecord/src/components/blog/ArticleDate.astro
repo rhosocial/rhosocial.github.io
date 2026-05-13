@@ -1,0 +1,22 @@
+---
+// ArticleDate.astro
+// Build-time date with full ISO timestamp.
+// Client-side: Intl.DateTimeFormat for locale-aware display
+// (formatted by blog-article-date.js, loaded in article template)
+
+const pad = (n: number) => String(n).padStart(2, '0');
+const now = new Date();
+const y = now.getFullYear();
+const mo = pad(now.getMonth() + 1);
+const d = pad(now.getDate());
+const h = pad(now.getHours());
+const mi = pad(now.getMinutes());
+const s = pad(now.getSeconds());
+const off = now.getTimezoneOffset();
+const tzSign = off <= 0 ? '+' : '-';
+const tz = `${tzSign}${pad(Math.floor(Math.abs(off) / 60))}:${pad(Math.abs(off) % 60)}`;
+const localISO = `${y}-${mo}-${d}T${h}:${mi}:${s}${tz}`;
+const utcISO = now.toISOString();
+---
+
+<time class="article-date" datetime={utcISO} data-pubtime={localISO} data-utc-pubtime={utcISO}>{y}-{mo}-{d}</time>
