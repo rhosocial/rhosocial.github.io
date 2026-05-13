@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleDate from '../../components/blog/ArticleDate.astro';
+import ArticleAuthor from '../../components/blog/ArticleAuthor.astro';
 import ReportIssue from '../../components/blog/ReportIssue.astro';
 import ShareButtons from '../../components/blog/ShareButtons.astro';
 import fs from 'node:fs';
@@ -217,6 +218,8 @@ h3{font-size:1.2rem; margin-top:var(--space-6); margin-bottom:var(--space-3); co
         <div class="eyebrow">
           <ArticleDate />
           <span data-i18n="hero.category"> · Dialect · Extension</span>
+          <span> · </span>
+          <ArticleAuthor />
         </div>
         <h1 data-i18n="hero.title">Dialect 系统：通用表达式与方言扩展</h1>
         <p class="lead" data-i18n="hero.sub">通用表达式层的设计；dummy 演示后端如何验证方言系统的正确性；各后端如何根据自身特性扩展方言。</p>

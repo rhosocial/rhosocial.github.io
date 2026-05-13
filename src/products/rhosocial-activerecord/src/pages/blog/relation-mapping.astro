@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleDate from '../../components/blog/ArticleDate.astro';
+import ArticleAuthor from '../../components/blog/ArticleAuthor.astro';
 import ReportIssue from '../../components/blog/ReportIssue.astro';
 import ShareButtons from '../../components/blog/ShareButtons.astro';
 import fs from 'node:fs';
@@ -217,6 +218,8 @@ h3{font-size:1.2rem; margin-top:var(--space-6); margin-bottom:var(--space-3); co
         <div class="eyebrow">
           <ArticleDate />
           <span data-i18n="hero.category"> · Relation · Design</span>
+          <span> · </span>
+          <ArticleAuthor />
         </div>
         <h1 data-i18n="hero.title">关系映射：声明方式与加载策略</h1>
         <p class="lead" data-i18n="hero.sub">belongs_to / has_many 的关系定义，eager/lazy loading 的策略权衡。</p>

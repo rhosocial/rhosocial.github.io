@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleDate from '../../components/blog/ArticleDate.astro';
+import ArticleAuthor from '../../components/blog/ArticleAuthor.astro';
 import ReportIssue from '../../components/blog/ReportIssue.astro';
 import ShareButtons from '../../components/blog/ShareButtons.astro';
 import fs from 'node:fs';
@@ -217,6 +218,8 @@ h3{font-size:1.2rem; margin-top:var(--space-6); margin-bottom:var(--space-3); co
         <div class="eyebrow">
           <ArticleDate />
           <span data-i18n="hero.category"> · Design · API</span>
+          <span> · </span>
+          <ArticleAuthor />
         </div>
         <h1 data-i18n="hero.title">Sync/Async API 对称设计：命名的艺术</h1>
         <p class="lead" data-i18n="hero.sub">为何同步异步方法名完全一致、类名加 Async 前缀。</p>

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleDate from '../../components/blog/ArticleDate.astro';
+import ArticleAuthor from '../../components/blog/ArticleAuthor.astro';
 import ReportIssue from '../../components/blog/ReportIssue.astro';
 import ShareButtons from '../../components/blog/ShareButtons.astro';
 import fs from 'node:fs';
@@ -217,6 +218,8 @@ h3{font-size:1.2rem; margin-top:var(--space-6); margin-bottom:var(--space-3); co
         <div class="eyebrow">
           <ArticleDate />
           <span data-i18n="hero.category"> · Architecture · Field</span>
+          <span> · </span>
+          <ArticleAuthor />
         </div>
         <h1 data-i18n="hero.title">为什么需要字段代理</h1>
         <p class="lead" data-i18n="hero.sub">在 Pydantic 字段之上叠加 ORM 特有的自定义行为。</p>
