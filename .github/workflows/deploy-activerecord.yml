@@ -1,0 +1,33 @@
+name: Build and deploy activerecord product site
+
+on:
+  push:
+    branches: [master]
+    paths:
+      - 'src/products/rhosocial-activerecord/src/**'
+      - 'src/products/rhosocial-activerecord/public/**'
+      - 'src/products/rhosocial-activerecord/astro.config.mjs'
+      - 'src/products/rhosocial-activerecord/package.json'
+      - '.github/workflows/deploy-activerecord.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: src/products/rhosocial-activerecord
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: src/products/rhosocial-activerecord/package-lock.json
+      - run: npm ci
+      - run: npm run build
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: activerecord-dist
+          path: src/products/rhosocial-activerecord/dist/

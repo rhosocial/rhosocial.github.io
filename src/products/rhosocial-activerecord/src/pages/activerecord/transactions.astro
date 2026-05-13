@@ -1,0 +1,877 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const __html = `<style>
+:root, body {
+  --code-keyword:   var(--tok-keyword);
+  --code-class:     var(--tok-class);
+  --code-fn:        var(--tok-func);
+  --code-string:    var(--tok-string);
+  --code-number:    var(--tok-num);
+  --code-comment:   var(--tok-comment);
+  --code-op:        var(--tok-op);
+  --surface-0:      var(--bg-2);
+  --surface-1:      var(--bg-elevated);
+  --surface-2:      var(--bg-2);
+  --surface-3:      color-mix(in srgb, var(--fg) 8%, var(--bg));
+  --text-primary:   var(--fg);
+  --text-secondary: var(--fg-muted);
+  --text-muted:     var(--fg-faint);
+  --accent-soft:    color-mix(in srgb, var(--accent) 15%, transparent);
+  --accent-secondary:      var(--accent-2);
+  --accent-secondary-soft: color-mix(in srgb, var(--accent-2) 12%, transparent);
+  --accent-fg:      var(--bg);
+  --ok:             var(--success);
+  --ok-soft:        color-mix(in srgb, var(--success) 12%, transparent);
+  --err:            var(--danger);
+  --err-soft:       color-mix(in srgb, var(--danger) 12%, transparent);
+  --info:           var(--info);
+  --warn:           var(--warning, #f59e0b);
+  --warn-soft:      color-mix(in srgb, var(--warning, #f59e0b) 12%, transparent);
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 9999px;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0; padding:0; background:var(--bg); color:var(--text-primary);
+  font-family:var(--font-body); font-size:15px; line-height:1.7; -webkit-font-smoothing:antialiased}
+:lang(zh) body{ line-height:1.75 }
+a{color:var(--accent-secondary); text-decoration:none}
+a:hover{text-decoration:underline}
+code,pre,.mono{font-family:var(--font-mono)}
+h1,h2,h3,h4{font-family:var(--font-display); font-weight:700; letter-spacing:-0.01em; margin:0}
+.container{max-width:1180px; margin:0 auto; padding:0 var(--space-5)}
+
+.hero{ padding:var(--space-8) 0 var(--space-7) }
+.hero .eyebrow{ font-family:var(--font-mono); font-size:11px;
+  letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:var(--space-3) }
+.hero h1{ font-size:clamp(2rem,5.5vw,3.6rem); line-height:1.05; margin-bottom:var(--space-4) }
+:lang(zh) .hero h1 em{
+  font-style:normal; font-weight:700; color:var(--text-primary);
+  text-decoration:underline; text-decoration-color:var(--accent);
+  text-decoration-thickness:3px; text-underline-offset:8px }
+.hero .lead{ color:var(--text-secondary); font-size:17px; max-width:720px; line-height:1.65 }
+.hero .lead b{ color:var(--text-primary); font-weight:600 }
+.hero .lead code{ color:var(--accent); background:var(--accent-soft); padding:1px 6px; border-radius:3px; font-size:13px }
+.hero-pills{ display:flex; gap:var(--space-2); flex-wrap:wrap; margin-top:var(--space-5) }
+.pill{ display:inline-flex; padding:5px 12px; border-radius:9999px;
+  background:var(--accent-soft); color:var(--accent); border:1px solid var(--accent-soft);
+  font-family:var(--font-mono); font-size:11px; font-weight:700; letter-spacing:0.04em }
+.pill.is-secondary{ background:var(--accent-secondary-soft); color:var(--accent-secondary); border-color:var(--accent-secondary-soft) }
+.pill.is-ghost{ background:transparent; color:var(--text-secondary); border-color:var(--border) }
+
+.sect{ margin:var(--space-8) 0; padding-top:var(--space-7); border-top:1px solid var(--border) }
+.sect-tag{ display:inline-block; font-family:var(--font-mono); font-size:11px;
+  letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--accent); border:1px solid var(--accent);
+  padding:var(--space-1) var(--space-3); border-radius:var(--radius-sm); margin-bottom:var(--space-3) }
+.sect h2{ font-size:clamp(1.6rem,3.5vw,2.4rem); line-height:1.15; margin-bottom:var(--space-4) }
+:lang(zh) .sect h2 em{
+  font-style:normal; font-weight:700; color:var(--text-primary);
+  text-decoration:underline; text-decoration-color:var(--accent);
+  text-decoration-thickness:3px; text-underline-offset:6px }
+.sect .intro{ color:var(--text-secondary); max-width:780px; font-size:16px; margin-bottom:var(--space-5) }
+.sect .intro b{ color:var(--text-primary) }
+.sect .intro code{ color:var(--accent); background:var(--accent-soft); padding:1px 6px; border-radius:3px; font-size:13px }
+
+.code-block{ background:var(--surface-2); border:1px solid var(--border);
+  border-radius:var(--radius-md); padding:var(--space-5);
+  font-family:var(--font-mono); font-size:13px; line-height:1.85; overflow-x:auto;
+  direction:ltr; unicode-bidi:embed }
+.code-block .cm{ color:var(--code-comment); font-style:italic }
+.code-block .kw{ color:var(--code-keyword) }
+.code-block .cls{ color:var(--code-class) }
+.code-block .fn{ color:var(--code-fn) }
+.code-block .str{ color:var(--code-string) }
+.code-block .num{ color:var(--code-number) }
+.code-block .op{ color:var(--code-op) }
+.code-block .skw{ color:var(--accent-secondary); font-weight:700 }
+.code-block .stbl{ color:var(--accent) }
+.code-block .sval{ color:var(--ok) }
+.code-block .scm{ color:var(--code-comment); font-style:italic }
+.code-block .hl{ background:var(--accent-soft); border-radius:3px; padding:0 4px; color:var(--accent) }
+.code-block .hl-err{ background:var(--err-soft); border-radius:3px; padding:0 4px; color:var(--err) }
+.code-block .hl-ok{ background:var(--ok-soft); border-radius:3px; padding:0 4px; color:var(--ok) }
+
+.code-panel{ background:var(--surface-0); border:1px solid var(--border-strong);
+  border-radius:var(--radius-lg); overflow:hidden }
+.code-panel-header{ padding:8px var(--space-4);
+  background:var(--surface-1); border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:var(--space-2);
+  font-family:var(--font-mono); font-size:11px;
+  color:var(--text-muted); letter-spacing:0.06em; text-transform:uppercase }
+.code-panel-header .dot{ width:6px; height:6px; border-radius:50%; background:var(--accent) }
+.code-panel-header.is-sql .dot{ background:var(--accent-secondary) }
+.code-panel-header.is-warn .dot{ background:var(--err) }
+.code-panel-header.is-ok .dot{ background:var(--ok) }
+.code-panel pre.code-block{ border:none; border-radius:0 }
+
+.diff-wrap{ display:grid; grid-template-columns:1fr; gap:var(--space-4) }
+@media (min-width:900px){ .diff-wrap{ grid-template-columns:1fr 1fr } }
+.diff-token{ background:var(--accent-soft); color:var(--accent);
+  padding:0 4px; border-radius:3px; font-weight:700 }
+
+.lifecycle-block{ margin-top:var(--space-5) }
+
+.lc-control{ background:var(--surface-0); border:1px solid var(--border);
+  border-radius:var(--radius-md); padding:var(--space-3) var(--space-4);
+  display:flex; align-items:center; gap:var(--space-3); flex-wrap:wrap;
+  font-family:var(--font-mono); font-size:12px; margin-bottom:var(--space-4) }
+.lc-control button{ font-family:var(--font-mono); font-size:12px;
+  padding:6px 14px; background:transparent; color:var(--text-secondary);
+  border:1px solid var(--border); border-radius:var(--radius-sm); cursor:pointer; transition:.15s }
+.lc-control button:hover{ border-color:var(--accent); color:var(--text-primary) }
+.lc-control button.is-primary{ background:var(--accent); color:var(--accent-fg);
+  border-color:var(--accent); font-weight:700 }
+.lc-control button.is-danger{ color:var(--err); border-color:var(--err) }
+.lc-control button.is-danger:hover{ background:var(--err-soft) }
+.lc-control .step-indicator{ color:var(--text-muted); margin-left:auto; }
+.lc-control .step-indicator strong{ color:var(--accent); font-weight:700 }
+
+.lc-stage{ display:grid; grid-template-columns:1fr; gap:var(--space-4) }
+@media (min-width:980px){
+  .lc-stage{ grid-template-columns:1.3fr 1fr }
+}
+
+.lc-timeline{ background:var(--surface-1); border:1px solid var(--border);
+  border-radius:var(--radius-md); padding:var(--space-5);
+  position:relative; min-height:540px;
+  font-family:var(--font-mono); font-size:12px }
+.lc-timeline-header{ display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:var(--space-4) }
+.lc-timeline-header h4{ font-family:var(--font-mono); font-size:13px;
+  color:var(--text-secondary); font-weight:600; letter-spacing:0.04em }
+
+.lc-tx{ position:relative; padding:var(--space-3) var(--space-4);
+  border-radius:var(--radius-md); margin-bottom:var(--space-3);
+  border:1.5px solid var(--accent); background:var(--surface-2);
+  transition:opacity .3s ease, transform .3s ease, border-color .3s; }
+.lc-tx.depth-1{ border-color:var(--accent-secondary); }
+.lc-tx.depth-2{ border-color:var(--info); }
+.lc-tx.committed{ border-color:var(--ok); }
+.lc-tx.rolled-back{ border-color:var(--err); opacity:0.55; }
+.lc-tx.partial-rollback{ border-color:var(--warn); }
+.lc-tx-head{ display:flex; align-items:center; justify-content:space-between;
+  margin-bottom:var(--space-2); }
+.lc-tx-name{ font-weight:700; color:var(--text-primary); font-size:12px;
+  letter-spacing:0.04em }
+.lc-tx-tag{ font-size:10px; padding:2px 7px; border-radius:3px; font-weight:700;
+  letter-spacing:0.04em }
+.lc-tx-tag.is-running{ background:var(--accent-soft); color:var(--accent) }
+.lc-tx-tag.is-committed{ background:var(--ok-soft); color:var(--ok) }
+.lc-tx-tag.is-rolled-back{ background:var(--err-soft); color:var(--err) }
+.lc-tx-tag.is-partial{ background:var(--warn-soft); color:var(--warn) }
+.lc-tx-stmts{ list-style:none; padding:0; margin:0 }
+.lc-stmt{ position:relative; padding:3px 0 3px var(--space-4);
+  color:var(--text-secondary); font-size:11px; line-height:1.5;
+  opacity:0; transform:translateX(-4px);
+  transition:opacity .25s ease, transform .25s ease }
+.lc-stmt.shown{ opacity:1; transform:none }
+.lc-stmt::before{ content:''; position:absolute; left:6px; top:8px;
+  width:6px; height:6px; border-radius:50%; background:var(--text-muted) }
+.lc-stmt.is-begin::before{ background:var(--accent) }
+.lc-stmt.is-savepoint::before{ background:var(--accent-secondary) }
+.lc-stmt.is-data::before{ background:var(--text-secondary) }
+.lc-stmt.is-error::before{ background:var(--err); box-shadow:0 0 0 2px var(--err-soft) }
+.lc-stmt.is-rollback-to::before{ background:var(--warn) }
+.lc-stmt.is-commit::before{ background:var(--ok) }
+.lc-stmt.is-rollback::before{ background:var(--err) }
+.lc-stmt .skw{ color:var(--accent-secondary); font-weight:700 }
+.lc-stmt .stbl{ color:var(--accent) }
+.lc-stmt .sval{ color:var(--ok) }
+.lc-stmt .stag{ font-size:10px; color:var(--text-muted); margin-left:6px }
+
+.lc-tx[data-depth="0"]{ margin-left:0 }
+.lc-tx[data-depth="1"]{ margin-left:var(--space-5) }
+.lc-tx[data-depth="2"]{ margin-left:calc(var(--space-5) * 2) }
+.lc-tx[data-depth="3"]{ margin-left:calc(var(--space-5) * 3) }
+
+.lc-python .code-panel{ height:100% }
+.lc-python .code-panel pre.code-block{ height:calc(100% - 28px) }
+.code-line{ display:block; padding:0 var(--space-2); margin:0 calc(-1 * var(--space-2));
+  border-radius:3px; transition:background .3s }
+.code-line.is-current{ background:var(--accent-soft); position:relative }
+.code-line.is-current::before{ content:'\\25B6'; position:absolute; left:-12px;
+  color:var(--accent); font-size:9px; }
+
+.lc-legend{ display:flex; gap:var(--space-4); flex-wrap:wrap;
+  font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+  margin-top:var(--space-3); padding-top:var(--space-3);
+  border-top:1px dashed var(--border) }
+.lc-legend-item{ display:flex; align-items:center; gap:6px }
+.lc-legend-dot{ width:10px; height:10px; border-radius:50%; }
+
+.scenario-row{ display:flex; gap:var(--space-2); flex-wrap:wrap; margin-bottom:var(--space-4) }
+.scen-btn{ font-family:var(--font-mono); font-size:12px;
+  padding:var(--space-3) var(--space-4);
+  border:1px solid var(--border); background:transparent; color:var(--text-secondary);
+  border-radius:var(--radius-sm); cursor:pointer; transition:.2s;
+  display:flex; align-items:center; gap:var(--space-2); text-align:left; flex:1; min-width:240px }
+.scen-btn:hover{ color:var(--text-primary); border-color:var(--accent) }
+.scen-btn.on{ background:var(--accent-soft); border-color:var(--accent); color:var(--text-primary) }
+.scen-btn.on .scen-num{ color:var(--accent); font-weight:700 }
+.scen-btn .scen-num{ font-weight:700; color:var(--text-muted); font-size:14px; min-width:18px }
+.scen-btn .scen-detail{ display:flex; flex-direction:column; gap:2px; }
+.scen-btn .scen-title{ font-weight:600; color:var(--text-primary) }
+.scen-btn .scen-sub{ font-size:11px; color:var(--text-muted) }
+
+.tabs-row{ display:flex; gap:var(--space-1); flex-wrap:wrap; margin-bottom:var(--space-3) }
+.tab-btn{ font-family:var(--font-mono); font-size:12px;
+  padding:var(--space-2) var(--space-4);
+  border:1px solid var(--border); background:transparent; color:var(--text-secondary);
+  border-radius:var(--radius-sm); cursor:pointer; transition:.15s }
+.tab-btn:hover{ color:var(--text-primary); border-color:var(--accent) }
+.tab-btn.on{ background:var(--accent); color:var(--accent-fg); border-color:var(--accent); font-weight:700 }
+.tab-pane{ display:none }
+.tab-pane.on{ display:block }
+
+.cap-matrix{ width:100%; border-collapse:collapse; font-family:var(--font-mono); font-size:12px;
+  background:var(--surface-1); border:1px solid var(--border);
+  border-radius:var(--radius-md); overflow:hidden; margin-top:var(--space-4) }
+.cap-matrix th,.cap-matrix td{ padding:10px 14px; text-align:center;
+  border-bottom:1px solid var(--border); border-right:1px solid var(--border) }
+.cap-matrix th{ background:var(--surface-2); color:var(--text-muted);
+  font-weight:600; font-size:11px; letter-spacing:0.06em; text-transform:uppercase }
+.cap-matrix tr:last-child td{ border-bottom:none }
+.cap-matrix td:last-child,.cap-matrix th:last-child{ border-right:none }
+.cap-matrix th:first-child,.cap-matrix td:first-child{ text-align:left;
+  color:var(--text-primary); font-weight:600; font-size:13px }
+.cap-cell-ok{ color:var(--ok); font-size:14px }
+.cap-cell-half{ color:var(--warn); font-size:14px }
+.cap-cell-no{ color:var(--text-muted); font-size:14px }
+.cap-cell-note{ display:block; font-size:10px; color:var(--text-muted); margin-top:2px }
+
+.e2f{ display:grid; grid-template-columns:1fr; gap:var(--space-4); margin-top:var(--space-4) }
+@media (min-width:980px){ .e2f{ grid-template-columns:1fr auto 1fr } }
+.e2f-card{ background:var(--surface-1); border:1px solid var(--border);
+  border-radius:var(--radius-md); padding:var(--space-5); position:relative; overflow:hidden }
+.e2f-card.is-bad{ border-color:var(--err-soft) }
+.e2f-card.is-good{ border-color:var(--ok-soft) }
+.e2f-card.is-bad::before, .e2f-card.is-good::before{
+  content:''; position:absolute; top:0; left:0; right:0; height:3px;
+}
+.e2f-card.is-bad::before{ background:var(--err) }
+.e2f-card.is-good::before{ background:var(--ok) }
+.e2f-mark{ font-family:var(--font-mono); font-size:10px;
+  font-weight:700; letter-spacing:0.12em; text-transform:uppercase;
+  margin-bottom:var(--space-2) }
+.e2f-card.is-bad .e2f-mark{ color:var(--err) }
+.e2f-card.is-good .e2f-mark{ color:var(--ok) }
+.e2f-title{ font-family:var(--font-display); font-size:18px;
+  font-weight:700; margin-bottom:var(--space-3); color:var(--text-primary) }
+.e2f-foot{ font-family:var(--font-mono); font-size:11px; color:var(--text-muted);
+  margin-top:var(--space-3); padding-top:var(--space-3); border-top:1px dashed var(--border) }
+.e2f-arrow{ display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-mono); color:var(--accent); font-size:24px }
+
+.cross-links{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:var(--space-3); margin-top:var(--space-5) }
+.x-link{ background:var(--surface-1); border:1px solid var(--border);
+  border-radius:var(--radius-md); padding:var(--space-4) var(--space-5);
+  text-decoration:none; transition:.2s; display:block }
+.x-link:hover{ border-color:var(--accent); transform:translateY(-1px); text-decoration:none }
+.x-link .x-eyebrow{ font-family:var(--font-mono); font-size:10px;
+  color:var(--accent); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:var(--space-2) }
+.x-link .x-title{ color:var(--text-primary); font-weight:600; margin-bottom:6px; font-size:15px }
+.x-link .x-desc{ color:var(--text-secondary); font-size:12px; line-height:1.5 }
+
+@media (max-width:680px){
+  .hero{ padding:var(--space-7) 0 var(--space-5) }
+  .lc-stage{ grid-template-columns:1fr }
+  .scen-btn{ min-width:0 }
+}
+</style>
+
+<main class="page">
+
+<div class="container">
+
+<section class="hero reveal">
+  <div class="eyebrow">05 / 06 · activerecord/transactions.html · f5 CTA</div>
+  <h1>事务,<em>不是状态机</em>,<br>是 <em>Python 上下文</em>。</h1>
+  <p class="lead">
+    用 <code>with</code> 管事务: 异常自动 rollback,正常自动 commit。
+    嵌套 <code>with</code> <b>自动转换为 SAVEPOINT</b>——内层失败,只回退内层,外层继续。
+    本页用<b>立体时间轴</b>把 BEGIN / SAVEPOINT / ROLLBACK TO / COMMIT 的真实顺序画给你看。
+  </p>
+  <div class="hero-pills">
+    <span class="pill">f5 / Transactions CTA</span>
+    <span class="pill is-secondary">A8 LifecycleTimeline · 嵌套版</span>
+    <span class="pill is-secondary">A2 ChainBuilder</span>
+    <span class="pill is-ghost">A10 Error-to-Fix</span>
+    <span class="pill is-ghost">A6 mini · 后端差异</span>
+  </div>
+</section>
+
+<!-- ============ 01 with ============ -->
+<section class="sect reveal" id="basic">
+  <span class="sect-tag">01 · BASIC · with 上下文</span>
+  <h2>事务用 <em>with</em>。<br>不需要记得 commit。</h2>
+  <p class="intro">
+    <code>with backend.transaction():</code> 是事务的唯一入口。
+    <b>正常退出 → COMMIT</b>,<b>抛异常 → ROLLBACK</b>。
+    没有忘记 commit 的可能,也没有忘记 rollback 的可能。
+  </p>
+
+  <div class="diff-wrap">
+    <div class="code-panel">
+      <div class="code-panel-header"><span class="dot"></span><span>sync</span></div>
+<pre class="code-block"><span class="kw">from</span> rhosocial.activerecord <span class="kw">import</span> get_backend
+
+backend = <span class="fn">get_backend</span>()
+
+<span class="kw">with</span> backend.<span class="fn">transaction</span>():
+    user = <span class="cls">User</span>(name=<span class="str">"alice"</span>)
+    user.<span class="fn">save</span>()                         <span class="cm"># INSERT users</span>
+    order = <span class="cls">Order</span>(user_id=user.id, amount=<span class="num">99</span>)
+    order.<span class="fn">save</span>()                        <span class="cm"># INSERT orders</span>
+                                <span class="hl-ok">✓ 退出 with → COMMIT</span>
+
+<span class="cm"># 任何位置抛异常 → 自动 ROLLBACK</span>
+<span class="kw">with</span> backend.<span class="fn">transaction</span>():
+    user = <span class="cls">User</span>(name=<span class="str">"bob"</span>)
+    user.<span class="fn">save</span>()
+    <span class="kw">raise</span> <span class="cls">ValueError</span>(<span class="str">"业务校验失败"</span>)
+                                <span class="hl-err">✗ 抛错 → ROLLBACK</span></pre>
+    </div>
+    <div class="code-panel">
+      <div class="code-panel-header is-sql"><span class="dot"></span><span>async</span></div>
+<pre class="code-block"><span class="kw">from</span> rhosocial.activerecord <span class="kw">import</span> get_async_backend
+
+backend = <span class="fn">get_async_backend</span>()
+
+<span class="diff-token">async</span> <span class="kw">with</span> backend.<span class="fn">transaction</span>():
+    user = <span class="cls">User</span>(name=<span class="str">"alice"</span>)
+    <span class="diff-token">await</span> user.<span class="fn">save</span>()
+    order = <span class="cls">Order</span>(user_id=user.id, amount=<span class="num">99</span>)
+    <span class="diff-token">await</span> order.<span class="fn">save</span>()
+                                <span class="hl-ok">✓ 退出 async with → COMMIT</span>
+
+<span class="diff-token">async</span> <span class="kw">with</span> backend.<span class="fn">transaction</span>():
+    user = <span class="cls">User</span>(name=<span class="str">"bob"</span>)
+    <span class="diff-token">await</span> user.<span class="fn">save</span>()
+    <span class="kw">raise</span> <span class="cls">ValueError</span>(<span class="str">"业务校验失败"</span>)
+                                <span class="hl-err">✗ 抛错 → ROLLBACK</span></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 SAVEPOINT A8 ============ -->
+<section class="sect reveal reveal-d1" id="nested">
+  <span class="sect-tag">02 · NESTED · A8 LifecycleTimeline</span>
+  <h2>嵌套 with,<em>自动 SAVEPOINT</em>。</h2>
+  <p class="intro">
+    AR 检测到当前已经在事务中的嵌套 <code>with</code> 时,<b>自动签发 SAVEPOINT</b> 而不是真的开新事务。
+    内层抛错,只回退到该 SAVEPOINT,<b>外层继续</b>。点击下方场景按钮,看每条 SQL 真实的发生顺序。
+  </p>
+
+  <div class="scenario-row">
+    <button class="scen-btn on" data-scenario="success">
+      <span class="scen-num">①</span>
+      <span class="scen-detail">
+        <span class="scen-title">两层全部成功</span>
+        <span class="scen-sub">外层 with + 内层 with · 都正常退出</span>
+      </span>
+    </button>
+    <button class="scen-btn" data-scenario="inner-fail">
+      <span class="scen-num">②</span>
+      <span class="scen-detail">
+        <span class="scen-title">内层失败,外层继续</span>
+        <span class="scen-sub">捕获内层异常 · ROLLBACK TO SAVEPOINT</span>
+      </span>
+    </button>
+    <button class="scen-btn" data-scenario="three-level">
+      <span class="scen-num">③</span>
+      <span class="scen-detail">
+        <span class="scen-title">三层 SAVEPOINT</span>
+        <span class="scen-sub">最深层失败 · 仅最深层回退</span>
+      </span>
+    </button>
+  </div>
+
+  <div class="lifecycle-block">
+
+    <div class="lc-control">
+      <button id="lc-play" class="is-primary">▶ 播放</button>
+      <button id="lc-step" >→ 单步</button>
+      <button id="lc-reset">⟲ 重置</button>
+      <span class="step-indicator">步 <strong id="lc-step-now">0</strong> / <span id="lc-step-total">0</span></span>
+    </div>
+
+    <div class="lc-stage">
+
+      <div class="lc-timeline">
+        <div class="lc-timeline-header">
+          <h4 id="lc-title">两层全部成功</h4>
+        </div>
+        <div id="lc-tx-container"></div>
+
+        <div class="lc-legend">
+          <span class="lc-legend-item">
+            <span class="lc-legend-dot" style="background:var(--accent)"></span> BEGIN
+          </span>
+          <span class="lc-legend-item">
+            <span class="lc-legend-dot" style="background:var(--accent-secondary)"></span> SAVEPOINT
+          </span>
+          <span class="lc-legend-item">
+            <span class="lc-legend-dot" style="background:var(--text-secondary)"></span> 数据语句
+          </span>
+          <span class="lc-legend-item">
+            <span class="lc-legend-dot" style="background:var(--err)"></span> 异常
+          </span>
+          <span class="lc-legend-item">
+            <span class="lc-legend-dot" style="background:var(--warn)"></span> ROLLBACK TO
+          </span>
+          <span class="lc-legend-item">
+            <span class="lc-legend-dot" style="background:var(--ok)"></span> COMMIT
+          </span>
+        </div>
+      </div>
+
+      <div class="lc-python">
+        <div class="code-panel" style="height:100%">
+          <div class="code-panel-header"><span class="dot"></span><span id="lc-py-title">业务代码</span></div>
+<pre class="code-block" id="lc-py"><!-- populated --></pre>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 ROLLBACK TO ============ -->
+<section class="sect reveal reveal-d1" id="error-handling">
+  <span class="sect-tag">03 · ROLLBACK TO · A10</span>
+  <h2>回滚到<em>指定 SAVEPOINT</em>。</h2>
+  <p class="intro">
+    嵌套场景之外,你也可以 <b>显式</b> 标记 SAVEPOINT 然后选择性回退。
+    典型用法: <b>幂等重试</b>——每次循环新建一个 savepoint,失败回退到该点重试,而不放弃整个外层事务。
+  </p>
+
+  <div class="e2f">
+    <div class="e2f-card is-bad">
+      <div class="e2f-mark">✗ 反模式</div>
+      <div class="e2f-title">每次重试都重开事务</div>
+<pre class="code-block"><span class="kw">for</span> attempt <span class="kw">in</span> <span class="fn">range</span>(<span class="num">3</span>):
+    <span class="kw">try</span>:
+        <span class="kw">with</span> backend.<span class="fn">transaction</span>():
+            <span class="fn">do_part_a</span>()        <span class="cm"># 每次都重做</span>
+            <span class="fn">do_part_b</span>()
+            <span class="fn">do_part_c</span>()        <span class="cm"># ← 容易失败的</span>
+            <span class="kw">break</span>
+    <span class="kw">except</span> <span class="cls">TransientError</span>:
+        <span class="kw">continue</span></pre>
+      <div class="e2f-foot">
+        每次 part_a/part_b 都重新跑一遍 · 浪费 I/O · 大事务过期风险增加
+      </div>
+    </div>
+
+    <div class="e2f-arrow">→</div>
+
+    <div class="e2f-card is-good">
+      <div class="e2f-mark">✓ 正确做法</div>
+      <div class="e2f-title">外层一个事务 + 内层重试 SAVEPOINT</div>
+<pre class="code-block"><span class="kw">with</span> backend.<span class="fn">transaction</span>():
+    <span class="fn">do_part_a</span>()                <span class="cm"># 只跑一次</span>
+    <span class="fn">do_part_b</span>()                <span class="cm"># 只跑一次</span>
+
+    <span class="kw">for</span> attempt <span class="kw">in</span> <span class="fn">range</span>(<span class="num">3</span>):
+        <span class="kw">try</span>:
+            <span class="kw">with</span> backend.<span class="fn">transaction</span>():   <span class="hl">SAVEPOINT</span>
+                <span class="fn">do_part_c</span>()        <span class="cm"># 只重试这部分</span>
+                <span class="kw">break</span>
+        <span class="kw">except</span> <span class="cls">TransientError</span>:
+            <span class="kw">continue</span>             <span class="cm"># ROLLBACK TO + 重试</span>
+    <span class="kw">else</span>:
+        <span class="kw">raise</span> <span class="cls">RuntimeError</span>(<span class="str">"重试 3 次仍失败"</span>)</pre>
+      <div class="e2f-foot">
+        只回退 part_c · part_a/b 已落到外层事务 · 最终 COMMIT 一次
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 Backend Diff ============ -->
+<section class="sect reveal reveal-d1" id="backend-diff">
+  <span class="sect-tag">04 · BACKEND DIFF · A6 mini</span>
+  <h2>各后端的 <em>事务差异</em>,透明可见。</h2>
+  <p class="intro">
+    AR 把 SAVEPOINT、隔离级别、DDL 是否事务等差异统一到 <b>同一组上下文管理器</b> 里。
+    哪些后端原生支持、哪些需要降级、哪些有限制——下表一览。
+  </p>
+
+  <table class="cap-matrix">
+    <thead>
+      <tr>
+        <th>事务特性</th>
+        <th>SQLite</th>
+        <th>PostgreSQL</th>
+        <th>MySQL</th>
+        <th>MariaDB</th>
+        <th>SQL Server</th>
+        <th>Oracle</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>SAVEPOINT (嵌套事务)</td>
+        <td><span class="cap-cell-ok">●</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+        <td><span class="cap-cell-ok">●</span><span class="cap-cell-note">InnoDB</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+      </tr>
+      <tr>
+        <td>READ UNCOMMITTED</td>
+        <td><span class="cap-cell-no">—</span></td>
+        <td><span class="cap-cell-half">◐</span><span class="cap-cell-note">映射到 RC</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+        <td><span class="cap-cell-no">—</span></td>
+      </tr>
+      <tr>
+        <td>READ COMMITTED</td>
+        <td><span class="cap-cell-no">—</span><span class="cap-cell-note">仅 SERIAL</span></td>
+        <td><span class="cap-cell-ok">●</span><span class="cap-cell-note">默认</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+        <td><span class="cap-cell-ok">●</span><span class="cap-cell-note">默认</span></td>
+        <td><span class="cap-cell-ok">●</span><span class="cap-cell-note">默认</span></td>
+      </tr>
+      <tr>
+        <td>REPEATABLE READ</td>
+        <td><span class="cap-cell-no">—</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+        <td><span class="cap-cell-ok">●</span><span class="cap-cell-note">默认</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+        <td><span class="cap-cell-no">—</span></td>
+      </tr>
+      <tr>
+        <td>SERIALIZABLE</td>
+        <td><span class="cap-cell-ok">●</span><span class="cap-cell-note">默认</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+      </tr>
+      <tr>
+        <td>事务内 DDL</td>
+        <td><span class="cap-cell-half">◐</span><span class="cap-cell-note">部分</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+        <td><span class="cap-cell-no">—</span><span class="cap-cell-note">隐式提交</span></td>
+        <td><span class="cap-cell-no">—</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+        <td><span class="cap-cell-no">—</span><span class="cap-cell-note">隐式提交</span></td>
+      </tr>
+      <tr>
+        <td>两阶段提交 (XA)</td>
+        <td><span class="cap-cell-no">—</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+        <td><span class="cap-cell-ok">●</span><span class="cap-cell-note">XA</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+        <td><span class="cap-cell-ok">●</span><span class="cap-cell-note">DTC</span></td>
+        <td><span class="cap-cell-ok">●</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p style="color:var(--text-muted); font-family:var(--font-mono); font-size:11px; margin-top:var(--space-3)">
+    <span style="color:var(--ok)">●</span> 完全支持 &nbsp;
+    <span style="color:var(--warn)">◐</span> 部分支持 (hover 看版本/限制) &nbsp;
+    <span style="color:var(--text-muted)">—</span> 不支持
+  </p>
+</section>
+
+<!-- ============ 05 cross-links ============ -->
+<section class="sect reveal reveal-d1" id="next">
+  <span class="sect-tag">06 · NEXT</span>
+  <h2>继续阅读</h2>
+  <p class="intro">事务系统跨越查询、关系、连接池与各后端 dialect。继续探索:</p>
+
+  <div class="cross-links">
+    <a href="./relations.html" class="x-link">
+      <div class="x-eyebrow">← BACK</div>
+      <div class="x-title">Relations · 关系系统</div>
+      <div class="x-desc">has_many · belongs_to · 通过显式连接表的多对多 · N+1 问题。</div>
+    </a>
+    <a href="../backends/compare.html" class="x-link">
+      <div class="x-eyebrow">→ NEXT</div>
+      <div class="x-title">Backends · 后端选型</div>
+      <div class="x-desc">能力矩阵 · 6 后端的事务特性 / 隔离级别 / DDL 行为差异。</div>
+    </a>
+    <a href="../practices/connection-pool/async-pool.html" class="x-link">
+      <div class="x-eyebrow">PRACTICE</div>
+      <div class="x-title">异步连接池 · 实战</div>
+      <div class="x-desc">事务与连接池的交互 · 高并发下的连接生命周期 · 泄漏检测。</div>
+    </a>
+    <a href="../practices/web/fastapi.html" class="x-link">
+      <div class="x-eyebrow">PRACTICE</div>
+      <div class="x-title">FastAPI · 请求级事务</div>
+      <div class="x-desc">用 Depends 注入事务 · 请求成功 commit / 失败 rollback · 中间件位置。</div>
+    </a>
+  </div>
+</section></div>
+</main>
+
+<script>
+document.querySelectorAll('[data-tabset]').forEach(row => {
+  const allBtns = row.querySelectorAll('.tab-btn');
+  const allPanes = row.parentElement.querySelectorAll('.tab-pane');
+  allBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      allBtns.forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      const target = btn.dataset.tab;
+      allPanes.forEach(p => p.classList.toggle('on', p.dataset.tab === target));
+    });
+  });
+});
+</script>
+
+<script>
+const scenarios = {
+  'success': {
+    title: '两层全部成功',
+    pyTitle: '业务代码 · 成功提交',
+    pyLines: [
+      '<span class="kw">with</span> backend.<span class="fn">transaction</span>():           <span class="cm"># 外层 → BEGIN</span>',
+      '    user = <span class="cls">User</span>(name=<span class="str">"alice"</span>)',
+      '    user.<span class="fn">save</span>()',
+      '',
+      '    <span class="kw">with</span> backend.<span class="fn">transaction</span>():       <span class="cm"># 内层 → SAVEPOINT</span>',
+      '        order = <span class="cls">Order</span>(user_id=user.id, amount=<span class="num">99</span>)',
+      '        order.<span class="fn">save</span>()',
+      '                                       <span class="cm"># ← 内层正常退出 → RELEASE SAVEPOINT</span>',
+      '                                   <span class="cm"># ← 外层正常退出 → COMMIT</span>'
+    ],
+    transactions: [
+      { name: 'OUTER · TX_A', depth: 0, finalState: 'committed' },
+      { name: 'INNER · TX_B (savepoint)', depth: 1, finalState: 'committed' }
+    ],
+    steps: [
+      { sql: '<span class="skw">BEGIN</span>',                                    txIdx:0, type:'is-begin',     txStateAfter:[ {idx:0, state:'is-running'} ], codeLine:0 },
+      { sql: '<span class="skw">INSERT INTO</span> <span class="stbl">users</span> ...',                txIdx:0, type:'is-data',      codeLine:2 },
+      { sql: '<span class="skw">SAVEPOINT</span> sp_1',                          txIdx:1, type:'is-savepoint', txStateAfter:[ {idx:1, state:'is-running'} ], codeLine:4 },
+      { sql: '<span class="skw">INSERT INTO</span> <span class="stbl">orders</span> ...',               txIdx:1, type:'is-data',      codeLine:6 },
+      { sql: '<span class="skw">RELEASE SAVEPOINT</span> sp_1',                  txIdx:1, type:'is-commit',    txStateAfter:[ {idx:1, state:'committed'} ], codeLine:7 },
+      { sql: '<span class="skw">COMMIT</span>',                                   txIdx:0, type:'is-commit',    txStateAfter:[ {idx:0, state:'committed'} ], codeLine:8 }
+    ]
+  },
+
+  'inner-fail': {
+    title: '内层失败,外层捕获并继续',
+    pyTitle: '业务代码 · 部分回滚',
+    pyLines: [
+      '<span class="kw">with</span> backend.<span class="fn">transaction</span>():           <span class="cm"># 外层 → BEGIN</span>',
+      '    user = <span class="cls">User</span>(name=<span class="str">"alice"</span>)',
+      '    user.<span class="fn">save</span>()',
+      '',
+      '    <span class="kw">try</span>:',
+      '        <span class="kw">with</span> backend.<span class="fn">transaction</span>():   <span class="cm"># 内层 → SAVEPOINT</span>',
+      '            <span class="fn">risky_op</span>()              <span class="hl-err">↑ 抛异常</span>',
+      '    <span class="kw">except</span> <span class="cls">DataError</span>:',
+      '        <span class="fn">log</span>.<span class="fn">warn</span>(<span class="str">"内层失败,继续外层"</span>)',
+      '                                       <span class="cm"># ← 内层异常 → ROLLBACK TO SAVEPOINT</span>',
+      '    <span class="cm"># 外层依然推进</span>',
+      '    user.email_verified = <span class="kw">True</span>',
+      '    user.<span class="fn">save</span>()',
+      '                                   <span class="cm"># ← 外层正常退出 → COMMIT</span>'
+    ],
+    transactions: [
+      { name: 'OUTER · TX_A', depth: 0, finalState: 'committed' },
+      { name: 'INNER · TX_B (savepoint)', depth: 1, finalState: 'rolled-back' }
+    ],
+    steps: [
+      { sql: '<span class="skw">BEGIN</span>',                                    txIdx:0, type:'is-begin',         txStateAfter:[ {idx:0, state:'is-running'} ], codeLine:0 },
+      { sql: '<span class="skw">INSERT INTO</span> <span class="stbl">users</span> ...',                txIdx:0, type:'is-data',          codeLine:2 },
+      { sql: '<span class="skw">SAVEPOINT</span> sp_1',                          txIdx:1, type:'is-savepoint',     txStateAfter:[ {idx:1, state:'is-running'} ], codeLine:5 },
+      { sql: '<span class="skw">INSERT INTO</span> ... <span class="scm">→ DataError</span>',          txIdx:1, type:'is-error',          codeLine:6 },
+      { sql: '<span class="skw">ROLLBACK TO SAVEPOINT</span> sp_1',              txIdx:1, type:'is-rollback-to',   txStateAfter:[ {idx:1, state:'rolled-back'} ], codeLine:9 },
+      { sql: '<span class="skw">UPDATE</span> <span class="stbl">users</span> <span class="skw">SET</span> email_verified=<span class="sval">true</span>',  txIdx:0, type:'is-data', codeLine:12 },
+      { sql: '<span class="skw">COMMIT</span>',                                   txIdx:0, type:'is-commit',         txStateAfter:[ {idx:0, state:'committed'} ], codeLine:13 }
+    ]
+  },
+
+  'three-level': {
+    title: '三层嵌套 · 仅最深层回退',
+    pyTitle: '业务代码 · 三层 SAVEPOINT',
+    pyLines: [
+      '<span class="kw">with</span> backend.<span class="fn">transaction</span>():               <span class="cm"># L0 → BEGIN</span>',
+      '    <span class="fn">step_1</span>()',
+      '',
+      '    <span class="kw">with</span> backend.<span class="fn">transaction</span>():           <span class="cm"># L1 → SAVEPOINT sp_1</span>',
+      '        <span class="fn">step_2</span>()',
+      '',
+      '        <span class="kw">try</span>:',
+      '            <span class="kw">with</span> backend.<span class="fn">transaction</span>():   <span class="cm"># L2 → SAVEPOINT sp_2</span>',
+      '                <span class="fn">step_3_risky</span>()              <span class="hl-err">↑ 抛异常</span>',
+      '        <span class="kw">except</span> <span class="cls">TransientError</span>:',
+      '            <span class="fn">log</span>.<span class="fn">warn</span>(<span class="str">"L2 失败"</span>)',
+      '                                           <span class="cm"># ← ROLLBACK TO sp_2 · 仅最深层</span>',
+      '        <span class="fn">step_4</span>()                            <span class="cm"># L1 继续</span>',
+      '                                       <span class="cm"># ← L1 退出 · RELEASE sp_1</span>',
+      '    <span class="fn">step_5</span>()                                <span class="cm"># L0 继续</span>',
+      '                                   <span class="cm"># ← L0 退出 · COMMIT</span>'
+    ],
+    transactions: [
+      { name: 'OUTER · L0 (BEGIN)', depth: 0, finalState: 'committed' },
+      { name: 'MID · L1 (sp_1)',    depth: 1, finalState: 'committed' },
+      { name: 'INNER · L2 (sp_2)',  depth: 2, finalState: 'rolled-back' }
+    ],
+    steps: [
+      { sql: '<span class="skw">BEGIN</span>',                                    txIdx:0, type:'is-begin',         txStateAfter:[ {idx:0, state:'is-running'} ], codeLine:0 },
+      { sql: '<span class="skw">UPDATE</span> ... <span class="scm">step_1</span>',                txIdx:0, type:'is-data',          codeLine:1 },
+      { sql: '<span class="skw">SAVEPOINT</span> sp_1',                          txIdx:1, type:'is-savepoint',     txStateAfter:[ {idx:1, state:'is-running'} ], codeLine:3 },
+      { sql: '<span class="skw">UPDATE</span> ... <span class="scm">step_2</span>',                txIdx:1, type:'is-data',          codeLine:4 },
+      { sql: '<span class="skw">SAVEPOINT</span> sp_2',                          txIdx:2, type:'is-savepoint',     txStateAfter:[ {idx:2, state:'is-running'} ], codeLine:7 },
+      { sql: '<span class="skw">INSERT</span> ... <span class="scm">→ TransientError</span>',     txIdx:2, type:'is-error',          codeLine:8 },
+      { sql: '<span class="skw">ROLLBACK TO SAVEPOINT</span> sp_2',              txIdx:2, type:'is-rollback-to',   txStateAfter:[ {idx:2, state:'rolled-back'} ], codeLine:11 },
+      { sql: '<span class="skw">UPDATE</span> ... <span class="scm">step_4</span>',                txIdx:1, type:'is-data',          codeLine:12 },
+      { sql: '<span class="skw">RELEASE SAVEPOINT</span> sp_1',                  txIdx:1, type:'is-commit',         txStateAfter:[ {idx:1, state:'committed'} ], codeLine:13 },
+      { sql: '<span class="skw">UPDATE</span> ... <span class="scm">step_5</span>',                txIdx:0, type:'is-data',          codeLine:14 },
+      { sql: '<span class="skw">COMMIT</span>',                                   txIdx:0, type:'is-commit',         txStateAfter:[ {idx:0, state:'committed'} ], codeLine:15 }
+    ]
+  }
+};
+
+const lcContainer = document.getElementById('lc-tx-container');
+const lcTitle     = document.getElementById('lc-title');
+const lcPy        = document.getElementById('lc-py');
+const lcPyTitle   = document.getElementById('lc-py-title');
+const lcStepNow   = document.getElementById('lc-step-now');
+const lcStepTotal = document.getElementById('lc-step-total');
+const playBtn     = document.getElementById('lc-play');
+const stepBtn     = document.getElementById('lc-step');
+const resetBtn    = document.getElementById('lc-reset');
+const scenBtns    = document.querySelectorAll('.scen-btn');
+
+let currentScen = 'success';
+let currentStep = 0;
+let playTimer = null;
+
+function buildTimeline(scen) {
+  lcContainer.innerHTML = '';
+  scen.transactions.forEach((tx, idx) => {
+    const div = document.createElement('div');
+    div.className = 'lc-tx depth-' + tx.depth;
+    div.dataset.depth = tx.depth;
+    div.dataset.idx = idx;
+    div.style.opacity = '0';
+    div.style.transform = 'translateY(4px)';
+    div.innerHTML = '<div class="lc-tx-head"><span class="lc-tx-name">' + tx.name + '</span><span class="lc-tx-tag is-running">RUNNING</span></div><ul class="lc-tx-stmts"></ul>';
+    lcContainer.appendChild(div);
+  });
+}
+
+function renderPython(scen, currentLine) {
+  if (currentLine === undefined) currentLine = -1;
+  lcPyTitle.textContent = scen.pyTitle;
+  lcPy.innerHTML = scen.pyLines.map(function(line, i) {
+    var cls = (i === currentLine) ? 'code-line is-current' : 'code-line';
+    return '<span class="' + cls + '">' + (line || '&nbsp;') + '</span>';
+  }).join('\\n');
+}
+
+function applyScenario(scenKey) {
+  var scen = scenarios[scenKey];
+  currentScen = scenKey;
+  currentStep = 0;
+  if (playTimer) { clearInterval(playTimer); playTimer = null; playBtn.textContent = '▶ 播放'; }
+  lcTitle.textContent = scen.title;
+  buildTimeline(scen);
+  renderPython(scen, -1);
+  lcStepTotal.textContent = scen.steps.length;
+  lcStepNow.textContent = 0;
+  scenBtns.forEach(function(b) { b.classList.toggle('on', b.dataset.scenario === scenKey); });
+}
+
+function applyStep(idx) {
+  var scen = scenarios[currentScen];
+  if (idx > scen.steps.length) return;
+  buildTimeline(scen);
+  for (var i = 0; i < idx; i++) {
+    var step = scen.steps[i];
+    var txDiv = lcContainer.querySelector('.lc-tx[data-idx="' + step.txIdx + '"]');
+    if (txDiv) {
+      txDiv.style.opacity = '1';
+      txDiv.style.transform = 'translateY(0)';
+      var stmtList = txDiv.querySelector('.lc-tx-stmts');
+      var li = document.createElement('li');
+      li.className = 'lc-stmt ' + step.type + ' shown';
+      li.innerHTML = step.sql;
+      stmtList.appendChild(li);
+      if (step.txStateAfter) {
+        step.txStateAfter.forEach(function(s) {
+          var tDiv = lcContainer.querySelector('.lc-tx[data-idx="' + s.idx + '"]');
+          if (tDiv) {
+            tDiv.classList.remove('committed', 'rolled-back', 'partial-rollback');
+            var tag = tDiv.querySelector('.lc-tx-tag');
+            if (s.state === 'committed') {
+              tDiv.classList.add('committed');
+              tag.className = 'lc-tx-tag is-committed';
+              tag.textContent = 'COMMITTED';
+            } else if (s.state === 'rolled-back') {
+              tDiv.classList.add('rolled-back');
+              tag.className = 'lc-tx-tag is-rolled-back';
+              tag.textContent = 'ROLLED BACK';
+            } else if (s.state === 'is-running') {
+              tag.className = 'lc-tx-tag is-running';
+              tag.textContent = 'RUNNING';
+            }
+          }
+        });
+      }
+    }
+  }
+  var lastStep = scen.steps[idx - 1];
+  renderPython(scen, lastStep ? lastStep.codeLine : -1);
+  currentStep = idx;
+  lcStepNow.textContent = idx;
+}
+
+scenBtns.forEach(function(b) { b.addEventListener('click', function() { applyScenario(b.dataset.scenario); }); });
+
+stepBtn.addEventListener('click', function() {
+  var scen = scenarios[currentScen];
+  if (currentStep < scen.steps.length) { applyStep(currentStep + 1); }
+});
+
+playBtn.addEventListener('click', function() {
+  if (playTimer) {
+    clearInterval(playTimer); playTimer = null;
+    playBtn.textContent = '▶ 播放';
+    return;
+  }
+  if (currentStep >= scenarios[currentScen].steps.length) { currentStep = 0; }
+  playBtn.textContent = '⏸ 暂停';
+  playTimer = setInterval(function() {
+    var scen = scenarios[currentScen];
+    if (currentStep < scen.steps.length) {
+      applyStep(currentStep + 1);
+    } else {
+      clearInterval(playTimer); playTimer = null;
+      playBtn.textContent = '▶ 播放';
+    }
+  }, 900);
+});
+
+resetBtn.addEventListener('click', function() {
+  if (playTimer) { clearInterval(playTimer); playTimer = null; playBtn.textContent = '▶ 播放'; }
+  applyStep(0);
+});
+
+applyScenario('success');
+</script>
+
+<script>
+(function(){var o=new IntersectionObserver(function(e){e.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visible");o.unobserve(e.target)}})},{threshold:.12});document.querySelectorAll(".reveal").forEach(function(e){o.observe(e)})})();void 0
+</script>`;
+---
+
+<BaseLayout title="rhosocial ActiveRecord — Transactions" variant="ar">
+  <Fragment set:html={__html} />
+</BaseLayout>

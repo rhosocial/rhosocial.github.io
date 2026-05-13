@@ -1,0 +1,559 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const __html = `<style>
+:root, body {
+  --code-keyword:   var(--tok-keyword);
+  --code-class:     var(--tok-class);
+  --code-fn:        var(--tok-func);
+  --code-string:    var(--tok-string);
+  --code-number:    var(--tok-num);
+  --code-comment:   var(--tok-comment);
+  --code-op:        var(--tok-op);
+  --surface-0:      var(--bg-2);
+  --surface-1:      var(--bg-elevated);
+  --surface-2:      var(--bg-2);
+  --surface-3:      color-mix(in srgb, var(--fg) 8%, var(--bg));
+  --text-primary:   var(--fg);
+  --text-secondary: var(--fg-muted);
+  --text-muted:     var(--fg-faint);
+  --accent-soft:    color-mix(in srgb, var(--accent) 15%, transparent);
+  --accent-secondary:      var(--accent-2);
+  --accent-secondary-soft: color-mix(in srgb, var(--accent-2) 12%, transparent);
+  --accent-fg:      var(--bg);
+  --ok:             var(--success);
+  --ok-soft:        color-mix(in srgb, var(--success) 12%, transparent);
+  --err:            var(--danger);
+  --err-soft:       color-mix(in srgb, var(--danger) 12%, transparent);
+  --info:           var(--info);
+  --warn:           var(--warning, #f59e0b);
+  --warn-soft:      color-mix(in srgb, var(--warning, #f59e0b) 12%, transparent);
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 9999px;
+}
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-d1 { transition-delay:0.1s; }
+.reveal-d2 { transition-delay:0.2s; }
+</style>
+<main class="page">
+<section class="hero section reveal">
+<div class="container hero-inner">
+<div class="hero-eyebrow rise"><a href="./index.html">&larr; <span data-i18n="hero.back">Backends</span></div>
+<h1 class="hero-title rise">SQL Server</h1>
+<p class="hero-sub rise" data-i18n="hero.sub">微软企业级 RDBMS。OUTPUT 子句 / MERGE / CROSS APPLY / IDENTITY / OFFSET-FETCH / 表提示 / 索引视图。</p>
+</div>
+</section>
+<section class="section reveal reveal-d1">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="features.label">Features</div>
+<h2 class="section-title" data-i18n="features.title">SQL Server 特性。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / OUTPUT</div>
+<h3 class="feature-title" data-i18n="features.output.title">OUTPUT 子句</h3>
+<p class="feature-desc" data-i18n="features.output.desc">INSERT / UPDATE / DELETE / MERGE 支持 OUTPUT 子句。inserted.* / deleted.* 虚拟表，替代 RETURNING。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / MERGE</div>
+<h3 class="feature-title" data-i18n="features.merge.title">MERGE</h3>
+<p class="feature-desc" data-i18n="features.merge.desc">MERGE ... USING ... ON ... WHEN MATCHED / NOT MATCHED。支持 $action 输出。通过 MERGE 实现 UPSERT。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / APPLY</div>
+<h3 class="feature-title" data-i18n="features.apply.title">CROSS / OUTER APPLY</h3>
+<p class="feature-desc" data-i18n="features.apply.desc">替代 LATERAL JOIN。CROSS APPLY（内连接） / OUTER APPLY（左连接）。关联子查询横向关联。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / IDENTITY</div>
+<h3 class="feature-title" data-i18n="features.identity.title">IDENTITY</h3>
+<p class="feature-desc" data-i18n="features.identity.desc">IDENTITY(1,1) 自增列。SET IDENTITY_INSERT ON/OFF。SCOPE_IDENTITY() / IDENT_CURRENT() / DBCC CHECKIDENT。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / Pagination</div>
+<h3 class="feature-title" data-i18n="features.pagination.title">OFFSET-FETCH</h3>
+<p class="feature-desc" data-i18n="features.pagination.desc">OFFSET n ROWS FETCH NEXT m ROWS ONLY（2012+）。旧版本使用 TOP / ROW_NUMBER() 分页。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / Hints</div>
+<h3 class="feature-title" data-i18n="features.hints.title">表提示</h3>
+<p class="feature-desc" data-i18n="features.hints.desc">WITH (NOLOCK / UPDLOCK / XLOCK / READPAST / TABLOCKX / INDEX / HOLDLOCK) — 查询级锁控制。</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="connection.label">Connection</div>
+<h2 class="section-title" data-i18n="connection.title">连接配置。</h2>
+</div>
+<p class="section-intro" data-i18n="connection.desc">SQLServerConnectionConfig 继承 pydantic.BaseModel，纯 Pydantic 模型（无框架混入）。ODBC 连接字符串构建。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">connection_config.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlserver <span class="tok-k">import</span> <span class="tok-cls">SQLServerBackend</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlserver.config <span class="tok-k">import</span> <span class="tok-cls">SQLServerConnectionConfig</span>
+
+<span class="tok-c"># 标准连接（pyodbc 驱动）</span>
+config = <span class="tok-cls">SQLServerConnectionConfig</span>(
+    host=<span class="tok-s">'localhost'</span>,
+    port=<span class="tok-n">1433</span>,
+    database=<span class="tok-s">'app_db'</span>,
+    username=<span class="tok-s">'sa'</span>,
+    password=<span class="tok-s">'YourPassword123'</span>,
+)
+backend = <span class="tok-cls">SQLServerBackend</span>(connection_config=config)
+backend.connect()
+
+<span class="tok-c"># Windows 身份验证（Trusted Connection）</span>
+config = <span class="tok-cls">SQLServerConnectionConfig</span>(
+    host=<span class="tok-s">'localhost'</span>,
+    port=<span class="tok-n">1433</span>,
+    database=<span class="tok-s">'app_db'</span>,
+    trusted_connection=<span class="tok-k">True</span>,
+)
+
+<span class="tok-c"># ODBC 驱动选择</span>
+config = <span class="tok-cls">SQLServerConnectionConfig</span>(
+    ...,
+    driver=<span class="tok-s">'ODBC Driver 18 for SQL Server'</span>,
+    encrypt=<span class="tok-k">True</span>,
+    trust_server_certificate=<span class="tok-k">True</span>,
+)
+
+<span class="tok-c"># 连接字符串自动构建</span>
+conn_str = config.build_connection_string()
+<span class="tok-c"># → DRIVER={ODBC Driver 17 for SQL Server};SERVER=localhost;DATABASE=app_db;...</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="config_fields.label">Config Fields</div>
+<h2 class="section-title" data-i18n="config_fields.title">配置字段。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Host</div>
+<h3 class="feature-title" data-i18n="config_fields.host">host</h3>
+<p class="feature-desc">host (默认 "localhost") / port (默认 1433) / database (必填)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Driver</div>
+<h3 class="feature-title" data-i18n="config_fields.driver">driver</h3>
+<p class="feature-desc">driver (默认 "ODBC Driver 17 for SQL Server") — validate_driver 校验</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Auth</div>
+<h3 class="feature-title" data-i18n="config_fields.auth">认证</h3>
+<p class="feature-desc">username / password / trusted_connection (Windows 验证) — 二选一</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Encrypt</div>
+<h3 class="feature-title" data-i18n="config_fields.encrypt">加密</h3>
+<p class="feature-desc">encrypt (默认 True) / trust_server_certificate (默认 False) / charset (默认 UTF-8)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / Pool</div>
+<h3 class="feature-title" data-i18n="config_fields.pool">连接池</h3>
+<p class="feature-desc">pool_size (默认 5) / pool_timeout (默认 30) / timeout (默认 30) / query_timeout (默认 0)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / Options</div>
+<h3 class="feature-title">options</h3>
+<p class="feature-desc">options: Dict[str, Any] = {} / autocommit (默认 True) / model_config: extra = "allow"</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="dialect.label">Dialect</div>
+<h2 class="section-title" data-i18n="dialect.title">SQLServerDialect 版本感知。</h2>
+</div>
+<p class="section-intro" data-i18n="dialect.desc">SQLServerDialect 依赖版本常量：2012 / 2014 / 2016 / 2017 / 2019 / 2022，驱动功能开关。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">dialect_version.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlserver.dialect <span class="tok-k">import</span> <span class="tok-cls">SQLServerDialect</span>
+
+<span class="tok-c"># 默认版本 16.0.0 (SQL Server 2022)</span>
+dialect = <span class="tok-cls">SQLServerDialect</span>()
+
+<span class="tok-c"># 指定旧版本 → 功能降级</span>
+old_dialect = <span class="tok-cls">SQLServerDialect</span>(version=(<span class="tok-n">11</span>, <span class="tok-n">0</span>, <span class="tok-n">0</span>))  <span class="tok-c"># SQL Server 2012</span>
+old_dialect.supports_json_type()                   <span class="tok-c"># False (需 2016+)</span>
+old_dialect.supports_fetch_first_pagination()      <span class="tok-c"># True (2012+)</span>
+old_dialect.supports_for_update_skip_locked()      <span class="tok-c"># False (需 2019+)</span>
+
+<span class="tok-c"># 版本常量 (SQL_SERVER_* = (major, 0, 0))</span>
+<span class="tok-c"># SQL_SERVER_2012 = (11, 0, 0) — OFFSET FETCH / SEQUENCE / IIF / TRY_CAST / Window Frame</span>
+<span class="tok-c"># SQL_SERVER_2014 = (12, 0, 0)</span>
+<span class="tok-c"># SQL_SERVER_2016 = (13, 0, 0) — JSON / STRING_SPLIT / Temporal Tables / DROP IF EXISTS</span>
+<span class="tok-c"># SQL_SERVER_2017 = (14, 0, 0) — STRING_AGG / CONCAT_WS / TRIM</span>
+<span class="tok-c"># SQL_SERVER_2019 = (15, 0, 0) — READPAST+UPDLOCK / APPROX_COUNT_DISTINCT</span>
+<span class="tok-c"># SQL_SERVER_2022 = (16, 0, 0) — JSON_PATH_EXISTS / JSON_OBJECT / JSON_ARRAY</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="dialect_features.label">Feature Matrix</div>
+<h2 class="section-title" data-i18n="dialect_features.title">方言功能矩阵。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Supported</div>
+<h3 class="feature-title" data-i18n="dialect_features.supported">支持</h3>
+<p class="feature-desc">CTE / Recursive CTE / Window Functions / MERGE / RETURNING (via OUTPUT) / ROLLUP / FOR UPDATE (table hints) / UPSERT (via MERGE) / LATERAL (CROSS/OUTER APPLY) / SAVEPOINT / EXPLAIN ANALYZE / IDENTITY / CUBE / PIVOT / Temporal Tables (2016+) / Filtered Index / ONLINE Index / Fulltext Index / INSTEAD OF Trigger</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Not Supported</div>
+<h3 class="feature-title" data-i18n="dialect_features.unsupported">不支持</h3>
+<p class="feature-desc">ARRAY / FILTER Clause / QUALIFY / Materialized CTE / Materialized View / OR REPLACE View / Temporary View / CASCADE View / Graph MATCH / Ordered-Set Aggregation / IF NOT EXISTS (Table/Index/Trigger) / Transaction Mode / Isolation in BEGIN / Read-Only Transaction / Deferrable Transaction</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / SQL Server-specific</div>
+<h3 class="feature-title" data-i18n="dialect_features.sqlserver_specific">SQL Server 专有</h3>
+<p class="feature-desc">OUTPUT (inserted./deleted.) / CROSS APPLY / OUTER APPLY / IDENTITY / SET IDENTITY_INSERT / TABLESAMPLE / CLUSTERED/NONCLUSTERED Index / INCLUDE (Covering Index) / WITH CHECK OPTION / CREATE OR ALTER VIEW / SET NOCOUNT / SET LOCK_TIMEOUT / SET DEADLOCK_PRIORITY / DBCC CHECKIDENT / SNAPSHOT Isolation</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="protocols.label">Protocols</div>
+<h2 class="section-title" data-i18n="protocols.title">SQL Server 专有协议。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Indexed View</div>
+<h3 class="feature-title" data-i18n="protocols.indexed_view">SQLServerIndexedViewSupport</h3>
+<p class="feature-desc">supports_indexed_view() / format_create_indexed_view_statement(expr)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Identity</div>
+<h3 class="feature-title" data-i18n="protocols.identity">SQLServerIdentitySupport</h3>
+<p class="feature-desc">supports_identity_insert() / format_set_identity_insert(table, on) — SET IDENTITY_INSERT ON/OFF</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Table Hint</div>
+<h3 class="feature-title" data-i18n="protocols.table_hint">SQLServerTableHintSupport</h3>
+<p class="feature-desc">supports_table_hints() / format_table_hint(hints) — NOLOCK / UPDLOCK / READPAST / INDEX / HOLDLOCK</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / OUTPUT</div>
+<h3 class="feature-title" data-i18n="protocols.output">SQLServerOutputSupport</h3>
+<p class="feature-desc">supports_output_clause() / format_output_clause(columns, clause_type) — inserted.*/deleted.*</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="output_code.label">OUTPUT</div>
+<h2 class="section-title" data-i18n="output_code.title">OUTPUT 子句示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">output_example.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlserver.dialect <span class="tok-k">import</span> <span class="tok-cls">SQLServerDialect</span>
+
+dialect = <span class="tok-cls">SQLServerDialect</span>()
+
+<span class="tok-c"># INSERT ... OUTPUT — 替代 RETURNING</span>
+sql, params = dialect.format_insert_statement(
+    table=<span class="tok-s">'users'</span>,
+    columns=[<span class="tok-s">'id'</span>, <span class="tok-s">'name'</span>],
+    values=[[<span class="tok-n">1</span>, <span class="tok-s">'Alice'</span>]],
+    output_columns=[<span class="tok-s">'id'</span>, <span class="tok-s">'name'</span>],
+)
+<span class="tok-c"># → INSERT INTO users (id, name) OUTPUT inserted.id, inserted.name VALUES (1, 'Alice')</span>
+
+<span class="tok-c"># UPDATE ... OUTPUT — 同时获取旧值和新值</span>
+sql, params = dialect.format_update_statement(
+    table=<span class="tok-s">'users'</span>,
+    set_clause={<span class="tok-s">'name'</span>: <span class="tok-s">'Bob'</span>},
+    where=<span class="tok-s">'id = 1'</span>,
+    output_columns=[<span class="tok-s">'deleted.name'</span>, <span class="tok-s">'inserted.name'</span>],
+)
+<span class="tok-c"># → UPDATE users SET name = 'Bob' OUTPUT deleted.name, inserted.name WHERE id = 1</span>
+
+<span class="tok-c"># DELETE ... OUTPUT</span>
+sql, params = dialect.format_delete_statement(
+    table=<span class="tok-s">'users'</span>,
+    where=<span class="tok-s">'id = 1'</span>,
+    output_columns=[<span class="tok-s">'deleted.id'</span>, <span class="tok-s">'deleted.name'</span>],
+)
+<span class="tok-c"># → DELETE FROM users OUTPUT deleted.id, deleted.name WHERE id = 1</span>
+
+<span class="tok-c"># MERGE ... OUTPUT $action — 区分 INSERT / UPDATE</span>
+<span class="tok-c"># OUTPUT $action, inserted.*, deleted.*</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="merge_code.label">MERGE</div>
+<h2 class="section-title" data-i18n="merge_code.title">MERGE 语句示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">merge_example.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlserver.dialect <span class="tok-k">import</span> <span class="tok-cls">SQLServerDialect</span>
+
+dialect = <span class="tok-cls">SQLServerDialect</span>()
+
+<span class="tok-c"># MERGE INTO：条件插入或更新（SQL Server UPSERT 机制）</span>
+<span class="tok-c"># SQLServerDialect.get_upsert_syntax_type() → "MERGE"</span>
+
+<span class="tok-c"># MERGE with OUTPUT $action</span>
+<span class="tok-c"># MERGE INTO users AS target</span>
+<span class="tok-c"># USING (SELECT @id AS id, @name AS name) AS source</span>
+<span class="tok-c"># ON target.id = source.id</span>
+<span class="tok-c"># WHEN MATCHED THEN UPDATE SET name = source.name</span>
+<span class="tok-c"># WHEN NOT MATCHED THEN INSERT (id, name) VALUES (source.id, source.name)</span>
+<span class="tok-c"># OUTPUT $action, inserted.*, deleted.*;</span>
+
+<span class="tok-c"># $action 输出列值：</span>
+<span class="tok-c">#   'INSERT' — 新插入行</span>
+<span class="tok-c">#   'UPDATE' — 已更新行</span>
+<span class="tok-c">#   'DELETE' — 仅 DELETE WHEN MATCHED 时</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="set_statements.label">SET</div>
+<h2 class="section-title" data-i18n="set_statements.title">SET 语句控制。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">set_statements.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlserver.mixins <span class="tok-k">import</span> <span class="tok-cls">SQLServerBackendMixin</span>
+
+<span class="tok-c"># SET NOCOUNT — 禁止返回行数消息</span>
+backend.set_nocount(on=<span class="tok-k">True</span>)   <span class="tok-c"># → SET NOCOUNT ON</span>
+
+<span class="tok-c"># IDENTITY 控制</span>
+backend.set_identity_insert(table=<span class="tok-s">'users'</span>, on=<span class="tok-k">True</span>)
+<span class="tok-c"># → SET IDENTITY_INSERT users ON</span>
+
+identity = backend.get_scope_identity()
+<span class="tok-c"># → SELECT SCOPE_IDENTITY()</span>
+
+identity = backend.get_identity_current(table=<span class="tok-s">'users'</span>)
+<span class="tok-c"># → SELECT IDENT_CURRENT('users')</span>
+
+backend.reset_identity(table=<span class="tok-s">'users'</span>, seed=<span class="tok-n">1000</span>)
+<span class="tok-c"># → DBCC CHECKIDENT ('users', RESEED, 1000)</span>
+
+<span class="tok-c"># 锁和死锁控制</span>
+backend.set_lock_timeout(timeout_ms=<span class="tok-n">5000</span>)       <span class="tok-c"># → SET LOCK_TIMEOUT 5000</span>
+backend.set_deadlock_priority(priority=<span class="tok-n">10</span>)        <span class="tok-c"># → SET DEADLOCK_PRIORITY 10</span>
+
+<span class="tok-c"># 会话设置</span>
+backend.set_ansi_nulls(on=<span class="tok-k">True</span>)              <span class="tok-c"># → SET ANSI_NULLS ON</span>
+backend.set_quoted_identifier(on=<span class="tok-k">True</span>)       <span class="tok-c"># → SET QUOTED_IDENTIFIER ON</span>
+backend.set_ansi_padding(on=<span class="tok-k">True</span>)            <span class="tok-c"># → SET ANSI_PADDING ON</span>
+backend.set_textsize(size=<span class="tok-n">2147483647</span>)        <span class="tok-c"># → SET TEXTSIZE 2147483647</span>
+backend.set_language(language=<span class="tok-s">'us_english'</span>)     <span class="tok-c"># → SET LANGUAGE us_english</span>
+backend.set_dateformat(format=<span class="tok-s">'ymd'</span>)           <span class="tok-c"># → SET DATEFORMAT ymd</span>
+
+<span class="tok-c"># 服务器属性查询</span>
+version = backend.get_product_version()    <span class="tok-c"># → SERVERPROPERTY('ProductVersion')</span>
+edition  = backend.get_edition()           <span class="tok-c"># → SERVERPROPERTY('Edition')</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="type_adapters.label">Type Adapters</div>
+<h2 class="section-title" data-i18n="type_adapters.title">SQL Server 类型适配器。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / UUID</div>
+<h3 class="feature-title">SQLServerUUIDAdapter</h3>
+<p class="feature-desc">UUID ↔ uniqueidentifier — Python uuid.UUID / str 自动转换</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / DateTime</div>
+<h3 class="feature-title">SQLServerDateTimeAdapter</h3>
+<p class="feature-desc">datetime ↔ datetime2 / datetime / smalldatetime — 高精度时间</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / DateTimeOffset</div>
+<h3 class="feature-title">SQLServerDateTimeOffsetAdapter</h3>
+<p class="feature-desc">datetime ↔ datetimeoffset — 时区感知，缺省 UTC</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / JSON</div>
+<h3 class="feature-title">SQLServerJSONAdapter</h3>
+<p class="feature-desc">dict/list ↔ nvarchar(max) / json (2016+) — 无原生 JSON 类型时用 NVARCHAR</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / XML</div>
+<h3 class="feature-title">SQLServerXMLAdapter</h3>
+<p class="feature-desc">str/bytes/dict ↔ xml — dict 自动转 XML (ElementTree)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / Decimal</div>
+<h3 class="feature-title">SQLServerDecimalAdapter</h3>
+<p class="feature-desc">Decimal/float/int ↔ decimal / numeric / money / smallmoney</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">07 / Spatial</div>
+<h3 class="feature-title">SQLServerSpatialAdapter</h3>
+<p class="feature-desc">str/dict ↔ geography / geometry — GeoJSON → WKT 自动转换</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">08 / HierarchyId</div>
+<h3 class="feature-title">SQLServerHierarchyIdAdapter</h3>
+<p class="feature-desc">list/str ↔ hierarchyid — list → /1/2/3/ 路径格式</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="functions.label">Functions</div>
+<h2 class="section-title" data-i18n="functions.title">SQL Server 专有函数。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / JSON</div>
+<h3 class="feature-title" data-i18n="functions.json">JSON (2016+)</h3>
+<p class="feature-desc">json_value / json_query / json_modify / isjson / openjson / string_split (2016+) / json_path_exists / json_object / json_array (2022+)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / String</div>
+<h3 class="feature-title" data-i18n="functions.string">字符串 (2017+)</h3>
+<p class="feature-desc">string_agg / concat_ws / trim (2017+) / iif / choose / try_cast / try_convert / try_parse (2012+)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / DateTime</div>
+<h3 class="feature-title" data-i18n="functions.datetime">日期时间 (2012+)</h3>
+<p class="feature-desc">eomonth / datefromparts / datetime2fromparts / datetimeoffsetfromparts / timefromparts / datediff_big (2016+) / sysdatetime / sysutcdatetime</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Hierarchy</div>
+<h3 class="feature-title" data-i18n="functions.hierarchy">层级</h3>
+<p class="feature-desc">hierarchyid::GetRoot() / GetDescendant() / GetLevel() / IsDescendantOf() / GetReparentedValue() / ToString() / Parse()</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="transaction.label">Transaction</div>
+<h2 class="section-title" data-i18n="transaction.title">事务控制。</h2>
+</div>
+<p class="section-intro" data-i18n="transaction.desc">SQLServerTransactionManager 支持五种隔离级别，含 SQL Server 专有 SNAPSHOT。支持 SET LOCK_TIMEOUT / DEADLOCK_PRIORITY。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">transaction_control.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.transaction <span class="tok-k">import</span> <span class="tok-cls">IsolationLevel</span>
+
+<span class="tok-c"># 标准事务（默认 READ COMMITTED）</span>
+<span class="tok-k">with</span> backend.transaction():
+    backend.execute(<span class="tok-s">"INSERT INTO users ..."</span>, ())
+
+<span class="tok-c"># 指定隔离级别</span>
+<span class="tok-k">with</span> backend.transaction(isolation_level=<span class="tok-cls">IsolationLevel</span>.SERIALIZABLE):
+    ...
+
+<span class="tok-c"># SQL Server 五种隔离级别</span>
+<span class="tok-c"># READ_UNCOMMITTED</span>
+<span class="tok-c"># READ_COMMITTED  (默认)</span>
+<span class="tok-c"># REPEATABLE_READ</span>
+<span class="tok-c"># SERIALIZABLE</span>
+<span class="tok-c"># SNAPSHOT — SQL Server 专有！</span>
+
+<span class="tok-c"># SNAPSHOT 隔离级别（行版本控制）</span>
+<span class="tok-k">with</span> backend.transaction(snapshot=<span class="tok-k">True</span>):
+    result = backend.execute(<span class="tok-s">"SELECT ..."</span>, ())
+
+<span class="tok-c"># Savepoint 支持</span>
+<span class="tok-k">with</span> backend.transaction():
+    backend.execute(<span class="tok-s">"INSERT ..."</span>, ())
+    <span class="tok-k">with</span> backend.transaction():  <span class="tok-c"># SAVE TRANSACTION</span>
+        backend.execute(<span class="tok-s">"UPDATE ..."</span>, ())
+
+<span class="tok-c"># 注意：SQL Server 中 ROLLBACK 回滚所有嵌套层</span>
+<span class="tok-c"># 嵌套事务使用 SQLServerNestedTransactionManager</span>
+
+<span class="tok-c"># 锁控制</span>
+backend.set_lock_timeout(<span class="tok-n">5000</span>)      <span class="tok-c"># SET LOCK_TIMEOUT 5000</span>
+backend.set_deadlock_priority(<span class="tok-n">10</span>)  <span class="tok-c"># SET DEADLOCK_PRIORITY 10</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="async.label">Async</div>
+<h2 class="section-title" data-i18n="async.title">异步支持。</h2>
+</div>
+<p class="section-intro" data-i18n="async.desc">AsyncSQLServerBackend 懒加载，使用 aioodbc 异步驱动。注意：继承同步 StorageBackend 基类。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">async_sqlserver.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlserver <span class="tok-k">import</span> <span class="tok-cls">AsyncSQLServerBackend</span>
+<span class="tok-c"># 需安装: pip install rhosocial-activerecord-sqlserver[async]</span>
+
+backend = <span class="tok-cls">AsyncSQLServerBackend</span>(
+    host=<span class="tok-s">'localhost'</span>,
+    port=<span class="tok-n">1433</span>,
+    database=<span class="tok-s">'app_db'</span>,
+    username=<span class="tok-s">'sa'</span>,
+    password=<span class="tok-s">'YourPassword123'</span>,
+)
+<span class="tok-k">await</span> backend.connect()
+
+<span class="tok-k">async with</span> backend.transaction():
+    result = <span class="tok-k">await</span> backend.execute(<span class="tok-s">"SELECT ..."</span>, ())
+
+<span class="tok-k">await</span> backend.disconnect()
+
+<span class="tok-c"># 懒加载：同步组件不依赖异步驱动</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlserver <span class="tok-k">import</span> <span class="tok-cls">SQLServerBackend</span>         <span class="tok-c"># ✓</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlserver <span class="tok-k">import</span> <span class="tok-cls">AsyncSQLServerBackend</span> <span class="tok-c"># ✗ 需要异步驱动</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="env_config.label">Environment</div>
+<h2 class="section-title" data-i18n="env_config.title">环境变量配置。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">env_config.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlserver.config <span class="tok-k">import</span> <span class="tok-cls">SQLServerConnectionConfig</span>
+
+<span class="tok-c"># 从环境变量创建配置（前缀 SQLSERVER_）</span>
+config = <span class="tok-cls">SQLServerConnectionConfig</span>.from_env(prefix=<span class="tok-s">"SQLSERVER_"</span>)
+
+<span class="tok-c"># 支持的环境变量：</span>
+<span class="tok-c"># SQLSERVER_HOST     — 主机地址 (默认 localhost)</span>
+<span class="tok-c"># SQLSERVER_PORT     — 端口号 (默认 1433)</span>
+<span class="tok-c"># SQLSERVER_DATABASE — 数据库名 (必填)</span>
+<span class="tok-c"># SQLSERVER_USERNAME — 用户名</span>
+<span class="tok-c"># SQLSERVER_PASSWORD — 密码</span>
+<span class="tok-c"># SQLSERVER_DRIVER   — ODBC 驱动名</span>
+<span class="tok-c"># SQLSERVER_ENCRYPT  — 加密连接 (默认 True)</span>
+<span class="tok-c"># SQLSERVER_TRUST_SERVER_CERTIFICATE — 信任服务器证书</span>
+<span class="tok-c"># SQLSERVER_POOL_SIZE — 连接池大小</span>
+<span class="tok-c"># SQLSERVER_CHARSET  — 字符集 (默认 UTF-8)</span>
+<span class="tok-c"># SQLSERVER_AUTOCOMMIT — 自动提交 (默认 True)</span>
+<span class="tok-c"># SQLSERVER_TRUSTED_CONNECTION — Windows 身份验证</span></pre></div>
+</div>
+</div>
+</section></main>
+<script>
+(function(){var o=new IntersectionObserver(function(e){e.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visible");o.unobserve(e.target)}})},{threshold:.12});document.querySelectorAll(".reveal").forEach(function(e){o.observe(e)})})();
+</script>`;
+---
+
+<BaseLayout title="rhosocial ActiveRecord — SQL Server" variant="back">
+  <Fragment set:html={__html} />
+</BaseLayout>

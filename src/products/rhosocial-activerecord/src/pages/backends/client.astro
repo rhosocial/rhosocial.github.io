@@ -1,0 +1,373 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const __html = `<style>
+:root, body {
+  --code-keyword:   var(--tok-keyword);
+  --code-class:     var(--tok-class);
+  --code-fn:        var(--tok-func);
+  --code-string:    var(--tok-string);
+  --code-number:    var(--tok-num);
+  --code-comment:   var(--tok-comment);
+  --code-op:        var(--tok-op);
+  --surface-0:      var(--bg-2);
+  --surface-1:      var(--bg-elevated);
+  --surface-2:      var(--bg-2);
+  --surface-3:      color-mix(in srgb, var(--fg) 8%, var(--bg));
+  --text-primary:   var(--fg);
+  --text-secondary: var(--fg-muted);
+  --text-muted:     var(--fg-faint);
+  --accent-soft:    color-mix(in srgb, var(--accent) 15%, transparent);
+  --accent-secondary:      var(--accent-2);
+  --accent-secondary-soft: color-mix(in srgb, var(--accent-2) 12%, transparent);
+  --accent-fg:      var(--bg);
+  --ok:             var(--success);
+  --ok-soft:        color-mix(in srgb, var(--success) 12%, transparent);
+  --err:            var(--danger);
+  --err-soft:       color-mix(in srgb, var(--danger) 12%, transparent);
+  --info:           var(--info);
+  --warn:           var(--warning, #f59e0b);
+  --warn-soft:      color-mix(in srgb, var(--warning, #f59e0b) 12%, transparent);
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 9999px;
+}
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-d1 { transition-delay:0.1s; }
+.reveal-d2 { transition-delay:0.2s; }
+</style>
+<main class="page">
+<section class="hero section reveal">
+<div class="container hero-inner">
+<div class="hero-eyebrow rise"><a href="./index.html">&larr; <span data-i18n="hero.back">Backends</span></div>
+<h1 class="hero-title rise">Backend Client</h1>
+<p class="hero-sub rise" data-i18n="hero.sub">后端客户端架构，Mixin 组合模式。</p>
+</div>
+</section>
+<section class="section reveal reveal-d1">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="mro.label">MRO</div>
+<h2 class="section-title" data-i18n="mro.title">Mixin 组合。</h2>
+</div>
+<p class="section-intro" data-i18n="mro.desc">StorageBackendBase → Logging → TypeAdaption → SQLBuilding → Returning → ResultProcessing → SQLOperations → Execution → BatchExecution → ExecutionHooks → Connection → TransactionManagement</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">storage_backend_mro.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.base <span class="tok-k">import</span> <span class="tok-cls">StorageBackend</span>, <span class="tok-cls">AsyncStorageBackend</span>
+
+<span class="tok-c"># StorageBackend 通过 12 层 Mixin 组合实现全部功能</span>
+<span class="tok-c"># StorageBackendBase  — 配置、连接状态、类型注册</span>
+<span class="tok-c"># LoggingMixin        — BackendLoggingMixin（非模型层 LoggingMixin）</span>
+<span class="tok-c"># TypeAdaptionMixin   — prepare_parameters, _adapt_row_types</span>
+<span class="tok-c"># SQLBuildingMixin    — SQL 构建辅助</span>
+<span class="tok-c"># ReturningClauseMixin — RETURNING 子句处理</span>
+<span class="tok-c"># ResultProcessingMixin — 结果构建与日志</span>
+<span class="tok-c"># SQLOperationsMixin   — insert / update / delete / fetch_one / fetch_all</span>
+<span class="tok-c"># ExecutionMixin       — execute / execute_many</span>
+<span class="tok-c"># BatchExecutionMixin  — execute_batch_dml / execute_batch_dql</span>
+<span class="tok-c"># ExecutionHooksMixin  — 游标、执行、自动提交、错误处理</span>
+<span class="tok-c"># ConnectionMixin      — connection 属性、上下文管理器</span>
+<span class="tok-c"># TransactionManagementMixin — begin/commit/rollback</span>
+
+<span class="tok-c"># AsyncStorageBackend 同构，异步版 Mixin 替换 I/O 层</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="config.label">Config</div>
+<h2 class="section-title" data-i18n="config.title">连接配置。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Basic</div>
+<h3 class="feature-title" data-i18n="config.basic">BasicConnectionMixin</h3>
+<p class="feature-desc">host / port / database / username / password</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Pool</div>
+<h3 class="feature-title" data-i18n="config.pool">ConnectionPoolMixin</h3>
+<p class="feature-desc">pool_size / pool_timeout / pool_min_size / pool_max_size / pool_recycle / pool_pre_ping</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / SSL</div>
+<h3 class="feature-title" data-i18n="config.ssl">SSLMixin</h3>
+<p class="feature-desc">ssl_ca / ssl_cert / ssl_key / ssl_mode / ssl_verify_cert / ssl_verify_identity</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Charset</div>
+<h3 class="feature-title" data-i18n="config.charset">CharsetMixin</h3>
+<p class="feature-desc">charset / client_encoding / collation</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / Timezone</div>
+<h3 class="feature-title" data-i18n="config.timezone">TimezoneMixin</h3>
+<p class="feature-desc">timezone / server_timezone / use_timezone</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / Version</div>
+<h3 class="feature-title" data-i18n="config.version">VersionMixin</h3>
+<p class="feature-desc">version: Optional[Tuple[int, ...]]</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">07 / Logging</div>
+<h3 class="feature-title" data-i18n="config.logging">LoggingMixin</h3>
+<p class="feature-desc">raise_on_warnings / log_queries / log_level</p>
+</div>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">connection_config.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.config <span class="tok-k">import</span> (
+    <span class="tok-cls">ConnectionConfig</span>, <span class="tok-cls">BasicConnectionMixin</span>,
+    <span class="tok-cls">ConnectionPoolMixin</span>, <span class="tok-cls">SSLMixin</span>, <span class="tok-cls">CharsetMixin</span>,
+    <span class="tok-cls">TimezoneMixin</span>, <span class="tok-cls">VersionMixin</span>, <span class="tok-cls">LoggingMixin</span>
+)
+
+<span class="tok-c"># ConnectionConfig 基类 = BaseConfig + BasicConnectionMixin</span>
+<span class="tok-c"># 数据库特定 Config 通过组合 Mixin 扩展</span>
+<span class="tok-k">class</span> <span class="tok-cls">MyConfig</span>(<span class="tok-cls">ConnectionConfig</span>, <span class="tok-cls">ConnectionPoolMixin</span>,
+            <span class="tok-cls">SSLMixin</span>, <span class="tok-cls">CharsetMixin</span>):
+    <span class="tok-k">pass</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="options.label">Options</div>
+<h2 class="section-title" data-i18n="options.title">执行选项。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">execution_options.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.options <span class="tok-k">import</span> (
+    <span class="tok-cls">ExecutionOptions</span>, <span class="tok-cls">InsertOptions</span>,
+    <span class="tok-cls">UpdateOptions</span>, <span class="tok-cls">DeleteOptions</span>
+)
+
+<span class="tok-c"># ExecutionOptions — 通用执行选项</span>
+opts = <span class="tok-cls">ExecutionOptions</span>(stmt_type=StatementType.SELECT)
+
+<span class="tok-c"># InsertOptions — 插入选项</span>
+insert_opts = <span class="tok-cls">InsertOptions</span>(
+    table=<span class="tok-s">'users'</span>,
+    data={<span class="tok-s">'username'</span>: <span class="tok-s">'Alice'</span>, <span class="tok-s">'age'</span>: <span class="tok-n">30</span>},
+    auto_commit=<span class="tok-k">True</span>,
+    returning_columns=[<span class="tok-s">'id'</span>]
+)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="type_adapter.label">Type Adapter</div>
+<h2 class="section-title" data-i18n="type_adapter.title">类型适配器。</h2>
+</div>
+<p class="section-intro" data-i18n="type_adapter.protocol">SQLTypeAdapter 协议：to_database / from_database / supported_types。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">type_adapter.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.type_adapter <span class="tok-k">import</span> (
+    <span class="tok-cls">SQLTypeAdapter</span>, <span class="tok-cls">BaseSQLTypeAdapter</span>,
+    <span class="tok-cls">DateTimeAdapter</span>, <span class="tok-cls">JSONAdapter</span>,
+    <span class="tok-cls">UUIDAdapter</span>, <span class="tok-cls">EnumAdapter</span>,
+    <span class="tok-cls">BooleanAdapter</span>, <span class="tok-cls">DecimalAdapter</span>,
+    <span class="tok-cls">ArrayAdapter</span>
+)
+
+<span class="tok-c"># SQLTypeAdapter @runtime_checkable 协议</span>
+<span class="tok-c"># to_database(value, target_type, options) — Python → 数据库</span>
+<span class="tok-c"># from_database(value, target_type, options) — 数据库 → Python</span>
+<span class="tok-c"># supported_types — Dict[Type, Set[Type]] 注册映射</span>
+
+<span class="tok-c"># BaseSQLTypeAdapter 自动处理 None / Optional[T]</span>
+<span class="tok-c"># 子类实现 _do_to_database / _do_from_database</span></pre></div>
+</div>
+<div class="features-grid" style="margin-top: 24px;">
+<div class="feature rise">
+<div class="feature-num">01 / DateTime</div>
+<h3 class="feature-title">DateTimeAdapter</h3>
+<p class="feature-desc">datetime→str(ISO) / datetime→int(timestamp) / date→str / time→str</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / JSON</div>
+<h3 class="feature-title">JSONAdapter</h3>
+<p class="feature-desc">dict→str / list→str；from_database 兼容已解析 JSONB</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / UUID</div>
+<h3 class="feature-title">UUIDAdapter</h3>
+<p class="feature-desc">UUID→str；from_database 接受 str 或 bytes</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Enum</div>
+<h3 class="feature-title">EnumAdapter</h3>
+<p class="feature-desc">str→name / int→value；无默认注册（泛型）</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / Boolean</div>
+<h3 class="feature-title">BooleanAdapter</h3>
+<p class="feature-desc">bool→int(1/0) / bool→str('true'/'false')</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / Decimal</div>
+<h3 class="feature-title">DecimalAdapter</h3>
+<p class="feature-desc">Decimal→str / Decimal→float；支持 precision / rounding 选项</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">07 / Array</div>
+<h3 class="feature-title">ArrayAdapter</h3>
+<p class="feature-desc">list→str(json)；无默认注册（避免 JSONAdapter 冲突）</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="result.label">Result</div>
+<h2 class="section-title" data-i18n="result.title">结果类型。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">query_result.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.result <span class="tok-k">import</span> (
+    <span class="tok-cls">QueryResult</span>, <span class="tok-cls">BatchDMLResult</span>,
+    <span class="tok-cls">BatchDQLResult</span>, <span class="tok-cls">BatchCommitMode</span>
+)
+
+<span class="tok-c"># QueryResult[T] — 单次查询结果</span>
+result = <span class="tok-cls">QueryResult</span>(
+    data=[{<span class="tok-s">'id'</span>: <span class="tok-n">1</span>, <span class="tok-s">'username'</span>: <span class="tok-s">'Alice'</span>}],
+    affected_rows=<span class="tok-n">0</span>,
+    last_insert_id=<span class="tok-k">None</span>,
+    duration=<span class="tok-n">0.003</span>
+)
+
+<span class="tok-c"># BatchCommitMode — 批量提交策略</span>
+<span class="tok-c"># WHOLE    — 单事务包含所有批次</span>
+<span class="tok-c"># PER_BATCH — 每批次独立提交</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="batch.label">Batch</div>
+<h2 class="section-title" data-i18n="batch.title">批量执行。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">batch_execution.py</span></div>
+<div class="code-body"><pre><span class="tok-c"># 批量 DML — 迭代器模式，支持大数量操作</span>
+<span class="tok-k">for</span> batch_result <span class="tok-k">in</span> backend.<span class="tok-f">execute_batch_dml</span>(
+    expressions,
+    batch_size=<span class="tok-n">100</span>,
+    commit_mode=BatchCommitMode.WHOLE,
+    returning_columns=[<span class="tok-s">'id'</span>]
+):
+    <span class="tok-f">print</span>(batch_result.total_affected_rows)
+
+<span class="tok-c"># 批量 DQL — 分页迭代器</span>
+<span class="tok-k">for</span> page <span class="tok-k">in</span> backend.<span class="tok-f">execute_batch_dql</span>(
+    query_expr,
+    page_size=<span class="tok-n">1000</span>
+):
+    <span class="tok-f">print</span>(<span class="tok-f">len</span>(page.data), page.has_more)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="hooks.label">Hooks</div>
+<h2 class="section-title" data-i18n="hooks.title">执行基础设施。</h2>
+</div>
+<p class="section-intro" data-i18n="hooks.desc">ExecutionHooksMixin — 游标获取、查询执行、自动提交、错误处理。</p>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Cursor</div>
+<h3 class="feature-title" data-i18n="hooks.cursor">_get_cursor()</h3>
+<p class="feature-desc">获取数据库游标，优先使用已有游标。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Execute</div>
+<h3 class="feature-title" data-i18n="hooks.execute">_execute_query()</h3>
+<p class="feature-desc">执行 cursor.execute(sql, params)。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Auto Commit</div>
+<h3 class="feature-title" data-i18n="hooks.auto_commit">_handle_auto_commit()</h3>
+<p class="feature-desc">非事务状态下自动提交，具体后端覆写。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Error</div>
+<h3 class="feature-title" data-i18n="hooks.error">_handle_execution_error()</h3>
+<p class="feature-desc">委托 _handle_error() 处理异常。</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="concurrency.label">Concurrency</div>
+<h2 class="section-title" data-i18n="concurrency.title">并发提示。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">concurrency_hint.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.protocols <span class="tok-k">import</span> (
+    <span class="tok-cls">ConcurrencyAware</span>, <span class="tok-cls">ConcurrencyHint</span>
+)
+
+<span class="tok-c"># ConcurrencyAware 协议</span>
+<span class="tok-c"># get_concurrency_hint() -> ConcurrencyHint | None</span>
+
+<span class="tok-c"># ConcurrencyHint(frozen=True) 数据类</span>
+<span class="tok-c"># max_concurrency: int | None  — None=无限制, 1=串行</span>
+<span class="tok-c"># reason: str = ""</span>
+
+<span class="tok-c"># SQLite 示例：文件级写锁，并发写入串行化</span>
+<span class="tok-k">if</span> <span class="tok-f">isinstance</span>(backend, <span class="tok-cls">ConcurrencyAware</span>):
+    hint = backend.<span class="tok-f">get_concurrency_hint</span>()
+    <span class="tok-k">if</span> hint <span class="tok-k">and</span> hint.max_concurrency == <span class="tok-n">1</span>:
+        <span class="tok-f">print</span>(<span class="tok-s">f"串行执行: </span>{hint.reason}<span class="tok-s">"</span>)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label">Instantiation</div>
+<h2 class="section-title">后端实例化。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">instantiation.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlite <span class="tok-k">import</span> (
+    <span class="tok-cls">SQLiteBackend</span>, <span class="tok-cls">AsyncSQLiteBackend</span>
+)
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlite.config <span class="tok-k">import</span> <span class="tok-cls">SQLiteConnectionConfig</span>
+
+<span class="tok-c"># 方式一：传入 database 字符串</span>
+backend = <span class="tok-cls">SQLiteBackend</span>(database=<span class="tok-s">":memory:"</span>)
+
+<span class="tok-c"># 方式二：传入 ConnectionConfig</span>
+backend = <span class="tok-cls">SQLiteBackend</span>(
+    connection_config=<span class="tok-cls">SQLiteConnectionConfig</span>(
+        database=<span class="tok-s">"app.db"</span>,
+        timeout=<span class="tok-n">10.0</span>,
+        uri=<span class="tok-k">True</span>
+    )
+)
+
+<span class="tok-c"># 异步后端（需安装 aiosqlite，懒加载）</span>
+async_backend = <span class="tok-cls">AsyncSQLiteBackend</span>(database=<span class="tok-s">":memory:"</span>)
+
+<span class="tok-c"># 抽象方法（具体后端必须实现）</span>
+<span class="tok-c"># connect() -> None</span>
+<span class="tok-c"># disconnect() -> None</span>
+<span class="tok-c"># ping(reconnect=True) -> bool</span>
+<span class="tok-c"># _handle_error(error) -> None</span>
+<span class="tok-c"># get_server_version() -> tuple</span>
+<span class="tok-c"># introspect_and_adapt() -> None</span></pre></div>
+</div>
+</div>
+</section></main>
+<script>
+(function(){var o=new IntersectionObserver(function(e){e.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visible");o.unobserve(e.target)}})},{threshold:.12});document.querySelectorAll(".reveal").forEach(function(e){o.observe(e)})})();
+</script>`;
+---
+
+<BaseLayout title="rhosocial ActiveRecord — Backend Client" variant="back">
+  <Fragment set:html={__html} />
+</BaseLayout>

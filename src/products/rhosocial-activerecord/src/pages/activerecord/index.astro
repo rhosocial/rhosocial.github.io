@@ -1,0 +1,304 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const __html = `<style>
+:root, body {
+  --code-keyword:   var(--tok-keyword);
+  --code-class:     var(--tok-class);
+  --code-fn:        var(--tok-func);
+  --code-string:    var(--tok-string);
+  --code-number:    var(--tok-num);
+  --code-comment:   var(--tok-comment);
+  --code-op:        var(--tok-op);
+  --surface-0:      var(--bg-2);
+  --surface-1:      var(--bg-elevated);
+  --surface-2:      var(--bg-2);
+  --surface-3:      color-mix(in srgb, var(--fg) 8%, var(--bg));
+  --text-primary:   var(--fg);
+  --text-secondary: var(--fg-muted);
+  --text-muted:     var(--fg-faint);
+  --accent-soft:    color-mix(in srgb, var(--accent) 15%, transparent);
+  --accent-secondary:      var(--accent-2);
+  --accent-secondary-soft: color-mix(in srgb, var(--accent-2) 12%, transparent);
+  --accent-fg:      var(--bg);
+  --ok:             var(--success);
+  --ok-soft:        color-mix(in srgb, var(--success) 12%, transparent);
+  --err:            var(--danger);
+  --err-soft:       color-mix(in srgb, var(--danger) 12%, transparent);
+  --info:           var(--info);
+  --warn:           var(--warning, #f59e0b);
+  --warn-soft:      color-mix(in srgb, var(--warning, #f59e0b) 12%, transparent);
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 9999px;
+}
+
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}.reveal.visible{opacity:1;transform:translateY(0)}.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}
+
+/* nav-cards — ScenarioCards style with colored accent bars */
+.nav-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-5);
+  margin-top: var(--space-6);
+}
+.nav-card {
+  display: flex; flex-direction: column;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.nav-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
+  opacity: 0.6;
+}
+.nav-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-3px);
+}
+.nav-card-num {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--text-muted); letter-spacing: 0.06em;
+  margin-bottom: var(--space-4);
+}
+.nav-card-title {
+  font-size: 1.05rem; font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-2);
+  line-height: 1.3;
+}
+.nav-card-desc {
+  font-size: 13px; color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: var(--space-4);
+}
+.nav-card-tag {
+  display: inline-flex;
+  font-family: var(--font-mono); font-size: 10px;
+  padding: 2px 8px; border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 20%, transparent);
+  width: fit-content;
+}
+
+/* sync-async-principle */
+.feature-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-7);
+  align-items: center;
+}
+.feature-split-text .section-label { margin-bottom: var(--space-3); }
+.code-block {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.code-header {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-0);
+}
+.code-dots { display: flex; gap: 6px; }
+.code-dots span {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--text-muted);
+}
+.code-filename {
+  font-family: var(--font-mono); font-size: 11px;
+  color: var(--text-muted);
+}
+.code-body { padding: 16px; overflow-x: auto; }
+.code-body pre {
+  font-family: var(--font-mono); font-size: 13px;
+  line-height: 1.8; margin: 0;
+  color: var(--text-primary);
+}
+.tok-kw  { color: var(--code-keyword); }
+.tok-cls { color: var(--code-class); }
+.tok-fn  { color: var(--code-fn); }
+.tok-s   { color: var(--code-string); }
+.tok-c   { color: var(--code-comment); font-style: italic; }
+.tok-op  { color: var(--code-op); }
+.tok-num { color: var(--code-number); }
+</style>
+<main class="page">
+  <section class="hero section reveal">
+    <div class="container hero-inner">
+      <div class="hero-eyebrow rise" data-i18n="hero.eyebrow">06 / 06 · activerecord/index.html</div>
+      <h1 class="hero-title rise" data-i18n="hero.title">用 Python 类型注解<em>定义模型</em>。</h1>
+      <p class="hero-sub rise" data-i18n="hero.sub">类型即字段，同步/异步一套 API。</p>
+    </div>
+  </section>
+
+  <!-- sync-async-principle -->
+  <section class="section reveal reveal-d1" id="sync-async-principle">
+    <div class="container">
+      <div class="feature-split">
+        <div class="feature-split-text">
+          <div class="section-label" data-i18n="pythonic.label">06 / 06 · Sync &amp; Async</div>
+          <h2 class="section-title" data-i18n="pythonic.title">像读<em>英语</em>一样写代码。</h2>
+          <p class="section-intro" data-i18n="pythonic.intro">无需 DSL，方法即语义。同步与异步同一套 API，for → async for，其余不变。</p>
+        </div>
+        <div class="feature-visual">
+          <div class="code-block">
+            <div class="code-header">
+              <div class="code-dots"><span></span><span></span><span></span></div>
+              <span class="code-filename">example.py</span>
+            </div>
+            <div class="code-body"><pre><span class="tok-c"># 读取 like English</span>
+user = <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.username == <span class="tok-s">'Alice'</span>).one()
+
+<span class="tok-c"># 保存 like English</span>
+user.save()
+
+<span class="tok-c"># 删除 like English</span>
+user.delete()
+
+<span class="tok-c"># async — same API</span>
+<span class="tok-kw">await</span> <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.username == <span class="tok-s">'Alice'</span>).one()
+<span class="tok-kw">await</span> user.save()
+<span class="tok-kw">await</span> user.delete()</pre></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- nav-cards — ScenarioCards style -->
+  <section class="section reveal reveal-d1">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label" data-i18n="topics.label">Topics</div>
+        <h2 class="section-title" data-i18n="topics.title">选择你的<em>主题</em>。</h2>
+      </div>
+      <div class="nav-cards-grid">
+        <a href="./model.html" class="nav-card" style="--accent: var(--code-class); --accent-secondary: var(--code-fn);">
+          <div class="nav-card-num">01 / Model</div>
+          <div class="nav-card-title">Model</div>
+          <div class="nav-card-desc" data-i18n="topics.model.desc">字段、Mixin、事件钩子。</div>
+          <span class="nav-card-tag">Python 3.8+</span>
+        </a>
+        <a href="./crud.html" class="nav-card" style="--accent: var(--code-string); --accent-secondary: var(--code-number);">
+          <div class="nav-card-num">02 / CRUD</div>
+          <div class="nav-card-title">CRUD</div>
+          <div class="nav-card-desc" data-i18n="topics.crud.desc">Create, Read, Update, Delete。</div>
+          <span class="nav-card-tag">Basic</span>
+        </a>
+        <a href="./relations.html" class="nav-card" style="--accent: var(--code-fn); --accent-secondary: var(--code-keyword);">
+          <div class="nav-card-num">03 / Relations</div>
+          <div class="nav-card-title">Relations</div>
+          <div class="nav-card-desc" data-i18n="topics.relations.desc">has_one, has_many, belongs_to。</div>
+          <span class="nav-card-tag">Relationships</span>
+        </a>
+        <a href="./transactions.html" class="nav-card" style="--accent: var(--code-op); --accent-secondary: var(--code-string);">
+          <div class="nav-card-num">04 / Transactions</div>
+          <div class="nav-card-title">Transactions</div>
+          <div class="nav-card-desc" data-i18n="topics.tx.desc">事务、savepoint、嵌套。</div>
+          <span class="nav-card-tag">Advanced</span>
+        </a>
+        <a href="./query.html" class="nav-card" style="--accent: var(--code-number); --accent-secondary: var(--code-class);">
+          <div class="nav-card-num">05 / Queries</div>
+          <div class="nav-card-title">Queries</div>
+          <div class="nav-card-desc" data-i18n="topics.queries.desc">where, order_by, join, prefetch。</div>
+          <span class="nav-card-tag">Query Builder</span>
+        </a>
+        <a href="./cte.html" class="nav-card" style="--accent: var(--code-comment); --accent-secondary: var(--code-op);">
+          <div class="nav-card-num">06 / CTE</div>
+          <div class="nav-card-title">CTE</div>
+          <div class="nav-card-desc" data-i18n="topics.cte.desc">公共表表达式、递归查询。</div>
+          <span class="nav-card-tag">Advanced</span>
+        </a>
+        <a href="./set-operation.html" class="nav-card" style="--accent: var(--accent); --accent-secondary: var(--accent-secondary);">
+          <div class="nav-card-num">07 / Set</div>
+          <div class="nav-card-title">Set</div>
+          <div class="nav-card-desc" data-i18n="topics.set.desc">UNION / INTERSECT / EXCEPT。</div>
+          <span class="nav-card-tag">Advanced</span>
+        </a>
+        <a href="./migrations.html" class="nav-card" style="--accent: var(--info); --accent-secondary: var(--ok);">
+          <div class="nav-card-num">08 / Migrations</div>
+          <div class="nav-card-title">Migrations</div>
+          <div class="nav-card-desc" data-i18n="topics.migrations.desc">版本化数据库模式变更。</div>
+          <span class="nav-card-tag">DevTools</span>
+        </a>
+        <a href="./validations.html" class="nav-card" style="--accent: var(--ok); --accent-secondary: var(--info);">
+          <div class="nav-card-num">09 / Validations</div>
+          <div class="nav-card-title">Validations</div>
+          <div class="nav-card-desc" data-i18n="topics.validations.desc">Pydantic 校验、回调钩子。</div>
+          <span class="nav-card-tag">Validation</span>
+        </a>
+        <a href="./advanced.html" class="nav-card" style="--accent: var(--warn); --accent-secondary: var(--err);">
+          <div class="nav-card-num">10 / Advanced</div>
+          <div class="nav-card-title">Advanced</div>
+          <div class="nav-card-desc" data-i18n="topics.advanced.desc">性能优化、调试技巧。</div>
+          <span class="nav-card-tag">Expert</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- field-proxy-taste — new section per PLAN §3 -->
+  <section class="section reveal reveal-d1">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label" data-i18n="field_proxy.label">Field Proxy</div>
+        <h2 class="section-title" data-i18n="field_proxy.title">字段不只是容器。</h2>
+      </div>
+      <p class="section-intro" data-i18n="field_proxy.desc">FieldProxy 描述符让字段带有自定义行为，而不改变字段的类型签名。</p>
+      <div class="code-block" style="margin-top: 24px;">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-filename">models.py</span>
+        </div>
+        <div class="code-body"><pre><span class="tok-kw">class</span> <span class="tok-cls">Product</span>(<span class="tok-cls">ActiveRecord</span>):
+    price: <span class="tok-cls">Money</span> = <span class="tok-cls">Field</span>(..., proxy=<span class="tok-cls">MoneyProxy</span>)
+    <span class="tok-c">#                        ^ FieldProxyDescriptor</span>
+
+<span class="tok-c"># 3 个用法</span>
+p = <span class="tok-cls">Product</span>(price=<span class="tok-cls">Money</span>(usd=<span class="tok-num">99</span>))
+p.price.value            <span class="tok-c"># 读裸值</span>
+p.price.in_range(<span class="tok-num">0</span>, <span class="tok-num">100</span>)  <span class="tok-c"># 调代理扩展方法</span></pre></div>
+      </div>
+      <p style="margin-top: 16px;"><a href="./fields.html" data-i18n="field_proxy.full_doc">完整字段代理与类型适配器文档 →</a></p>
+    </div>
+  </section>
+
+  <!-- class-map section -->
+  <section class="section reveal reveal-d1">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label" data-i18n="class_map.label">Class Map</div>
+        <h2 class="section-title" data-i18n="class_map.title">同步 · 异步 <em>对照</em>。</h2>
+      </div>
+      <p class="section-intro" data-i18n="class_map.desc">每个同步类有一个对应的 Async 版本，方法签名完全一致。</p>
+      <div class="code-block" style="margin-top: 24px;">
+        <div class="code-header">
+          <div class="code-dots"><span></span><span></span><span></span></div>
+          <span class="code-filename">class-pairing</span>
+        </div>
+        <div class="code-body"><pre><span class="tok-c"># sync                           # async</span>
+<span class="tok-cls">ActiveRecord</span>                     <span class="tok-cls">AsyncActiveRecord</span>
+<span class="tok-cls">ActiveQuery</span>                      <span class="tok-cls">AsyncActiveQuery</span>
+<span class="tok-cls">ActiveSetOperation</span>              <span class="tok-cls">AsyncActiveSetOperation</span>
+<span class="tok-cls">ActiveCTEQuery</span>                  <span class="tok-cls">AsyncActiveCTEQuery</span></pre></div>
+      </div>
+    </div>
+  </section></main>
+<script>
+(function(){var o=new IntersectionObserver(function(e){e.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visible");o.unobserve(e.target)}})},{threshold:.12});document.querySelectorAll(".reveal").forEach(function(e){o.observe(e)})})();void 0
+</script>`;
+---
+
+<BaseLayout title="rhosocial ActiveRecord" variant="ar">
+  <Fragment set:html={__html} />
+</BaseLayout>

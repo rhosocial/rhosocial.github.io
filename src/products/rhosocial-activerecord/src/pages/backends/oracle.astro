@@ -1,0 +1,562 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const __html = `<style>
+:root, body {
+  --code-keyword:   var(--tok-keyword);
+  --code-class:     var(--tok-class);
+  --code-fn:        var(--tok-func);
+  --code-string:    var(--tok-string);
+  --code-number:    var(--tok-num);
+  --code-comment:   var(--tok-comment);
+  --code-op:        var(--tok-op);
+  --surface-0:      var(--bg-2);
+  --surface-1:      var(--bg-elevated);
+  --surface-2:      var(--bg-2);
+  --surface-3:      color-mix(in srgb, var(--fg) 8%, var(--bg));
+  --text-primary:   var(--fg);
+  --text-secondary: var(--fg-muted);
+  --text-muted:     var(--fg-faint);
+  --accent-soft:    color-mix(in srgb, var(--accent) 15%, transparent);
+  --accent-secondary:      var(--accent-2);
+  --accent-secondary-soft: color-mix(in srgb, var(--accent-2) 12%, transparent);
+  --accent-fg:      var(--bg);
+  --ok:             var(--success);
+  --ok-soft:        color-mix(in srgb, var(--success) 12%, transparent);
+  --err:            var(--danger);
+  --err-soft:       color-mix(in srgb, var(--danger) 12%, transparent);
+  --info:           var(--info);
+  --warn:           var(--warning, #f59e0b);
+  --warn-soft:      color-mix(in srgb, var(--warning, #f59e0b) 12%, transparent);
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 9999px;
+}
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-d1 { transition-delay:0.1s; }
+.reveal-d2 { transition-delay:0.2s; }
+</style>
+<main class="page">
+<section class="hero section reveal">
+<div class="container hero-inner">
+<div class="hero-eyebrow rise"><a href="./index.html">&larr; <span data-i18n="hero.back">Backends</span></div>
+<h1 class="hero-title rise">Oracle</h1>
+<p class="hero-sub rise" data-i18n="hero.sub">企业级 RDBMS。层次查询 / PIVOT / MERGE / FETCH FIRST / 查询提示 / FOR UPDATE 扩展。</p>
+</div>
+</section>
+<section class="section reveal reveal-d1">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="features.label">Features</div>
+<h2 class="section-title" data-i18n="features.title">Oracle 特性。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Hierarchical</div>
+<h3 class="feature-title" data-i18n="features.hierarchical.title">层次查询</h3>
+<p class="feature-desc" data-i18n="features.hierarchical.desc">CONNECT BY / START WITH / PRIOR / LEVEL / CONNECT_BY_ROOT / SYS_CONNECT_BY_PATH / NOCYCLE / SIBLINGS 排序。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / PIVOT</div>
+<h3 class="feature-title" data-i18n="features.pivot.title">PIVOT / UNPIVOT</h3>
+<p class="feature-desc" data-i18n="features.pivot.desc">行转列 / 列转行。PIVOT ... IN / UNPIVOT ... INCLUDE|EXCLUDE NULLS（11g+）。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / MERGE</div>
+<h3 class="feature-title" data-i18n="features.merge.title">MERGE</h3>
+<p class="feature-desc" data-i18n="features.merge.desc">MERGE INTO ... USING ... ON ... WHEN MATCHED / NOT MATCHED。Oracle 原生 MERGE 语法。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Hints</div>
+<h3 class="feature-title" data-i18n="features.hints.title">查询提示</h3>
+<p class="feature-desc" data-i18n="features.hints.desc">FULL / INDEX / PARALLEL / USE_NL / USE_HASH / DRIVING_SITE / APPEND 等 Oracle 优化器提示。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / Pagination</div>
+<h3 class="feature-title" data-i18n="features.pagination.title">FETCH FIRST</h3>
+<p class="feature-desc" data-i18n="features.pagination.desc">OFFSET ... ROWS FETCH NEXT ... ROWS ONLY（12c+）。旧版本使用 ROWNUM 分页。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / FOR UPDATE</div>
+<h3 class="feature-title" data-i18n="features.for_update.title">FOR UPDATE 扩展</h3>
+<p class="feature-desc" data-i18n="features.for_update.desc">FOR UPDATE OF / NOWAIT / WAIT n / SKIP LOCKED。Oracle 独有的行锁等待控制。</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="connection.label">Connection</div>
+<h2 class="section-title" data-i18n="connection.title">连接配置。</h2>
+</div>
+<p class="section-intro" data-i18n="connection.desc">OracleConnectionConfig 继承 ConnectionConfig，混入 Pool / SSL / Timezone / Version / Logging 五组配置。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">connection_config.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle <span class="tok-k">import</span> <span class="tok-cls">OracleBackend</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle.config <span class="tok-k">import</span> <span class="tok-cls">OracleConnectionConfig</span>
+
+<span class="tok-c"># 标准连接（oracledb 驱动）</span>
+config = <span class="tok-cls">OracleConnectionConfig</span>(
+    host=<span class="tok-s">'localhost'</span>,
+    port=<span class="tok-n">1521</span>,
+    user=<span class="tok-s">'app_user'</span>,
+    password=<span class="tok-s">'secret'</span>,
+    service=<span class="tok-s">'ORCL'</span>,
+)
+backend = <span class="tok-cls">OracleBackend</span>(connection_config=config)
+backend.connect()
+
+<span class="tok-c"># 快捷方式：直接传连接参数</span>
+backend = <span class="tok-cls">OracleBackend</span>(
+    host=<span class="tok-s">'localhost'</span>,
+    port=<span class="tok-n">1521</span>,
+    user=<span class="tok-s">'app_user'</span>,
+    password=<span class="tok-s">'secret'</span>,
+    service=<span class="tok-s">'ORCL'</span>,
+)
+
+<span class="tok-c"># Oracle 专有字段</span>
+config = <span class="tok-cls">OracleConnectionConfig</span>(
+    ...,
+    mode=<span class="tok-s">'sysdba'</span>,
+    thread_mode=<span class="tok-k">True</span>,
+    events=<span class="tok-k">False</span>,
+    ssl_server_dn_match=<span class="tok-k">True</span>,
+    config_dir=<span class="tok-s">'/opt/oracle/network/admin'</span>,
+)
+
+<span class="tok-c"># 从环境变量创建配置（前缀 ORACLE_）</span>
+config = <span class="tok-cls">OracleConnectionConfig</span>.from_env(prefix=<span class="tok-s">"ORACLE_"</span>)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="config_mixins.label">Config Mixins</div>
+<h2 class="section-title" data-i18n="config_mixins.title">配置混入。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Pool</div>
+<h3 class="feature-title" data-i18n="config_mixins.pool">ConnectionPoolMixin</h3>
+<p class="feature-desc">pool_size / pool_timeout / pool_increment / pool_getmode — 连接池管理</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / SSL</div>
+<h3 class="feature-title" data-i18n="config_mixins.ssl">SSLMixin</h3>
+<p class="feature-desc">ssl_ca / ssl_cert / ssl_key / ssl_server_dn_match / wallet_path — mTLS / Oracle Wallet</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Timezone</div>
+<h3 class="feature-title" data-i18n="config_mixins.timezone">TimezoneMixin</h3>
+<p class="feature-desc">timezone — 会话时区 (ALTER SESSION SET TIME_ZONE)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Version</div>
+<h3 class="feature-title" data-i18n="config_mixins.version">VersionMixin</h3>
+<p class="feature-desc">version — 数据库版本追踪，影响方言功能开关</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / Logging</div>
+<h3 class="feature-title" data-i18n="config_mixins.logging">LoggingMixin</h3>
+<p class="feature-desc">log_queries / log_level — 查询日志控制</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="dialect.label">Dialect</div>
+<h2 class="section-title" data-i18n="dialect.title">OracleDialect 版本感知。</h2>
+</div>
+<p class="section-intro" data-i18n="dialect.desc">OracleDialect 依赖 _ORACLE_VERSION_BOUNDARIES 字典，版本阈值驱动功能开关：10g / 11g / 12c / 12.2 / 18c / 21c / 23ai。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">dialect_version.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle.dialect <span class="tok-k">import</span> <span class="tok-cls">OracleDialect</span>
+
+<span class="tok-c"># 默认版本 23.0.0（启用全部功能）</span>
+dialect = <span class="tok-cls">OracleDialect</span>()
+
+<span class="tok-c"># 指定旧版本 → 功能降级</span>
+old_dialect = <span class="tok-cls">OracleDialect</span>(version=(<span class="tok-n">11</span>, <span class="tok-n">0</span>, <span class="tok-n">0</span>))
+old_dialect.supports_fetch_first_pagination() <span class="tok-c"># False (需 12c+)</span>
+old_dialect.supports_pivot()                      <span class="tok-c"># True (11g+)</span>
+old_dialect.supports_json_type()                   <span class="tok-c"># False (需 21c+)</span>
+
+<span class="tok-c"># 版本阈值表 (_ORACLE_VERSION_BOUNDARIES)</span>
+<span class="tok-c"># 10g — MERGE / RETURNING / Flashback Query</span>
+<span class="tok-c"># 11g — PIVOT / UNPIVOT / LISTAGG / READ ONLY</span>
+<span class="tok-c"># 12c — FETCH FIRST / IDENTITY 列 / LATERAL</span>
+<span class="tok-c"># 12.2 — JSON 函数</span>
+<span class="tok-c"># 18c — POLYMORPHIC TABLE FUNCTION</span>
+<span class="tok-c"># 21c — 原生 JSON / BITMAP INDEX</span>
+<span class="tok-c"># 23ai — BOOLEAN 类型 / VECTOR 类型 / JSON DUALITY</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="dialect_features.label">Feature Matrix</div>
+<h2 class="section-title" data-i18n="dialect_features.title">方言功能矩阵。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Supported</div>
+<h3 class="feature-title" data-i18n="dialect_features.supported">支持</h3>
+<p class="feature-desc">CTE / Recursive CTE / Window Functions / MERGE (10g+) / RETURNING (OUTPUT) / PIVOT/UNPIVOT (11g+) / FETCH FIRST (12c+) / LATERAL (12c+) / JSON Functions (12.2+) / FOR UPDATE variants / HIERARCHICAL / Hints / ROLLUP / UPSERT / SAVEPOINT / Flashback Query / IDENTITY (12c+)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Not Supported</div>
+<h3 class="feature-title" data-i18n="dialect_features.unsupported">不支持</h3>
+<p class="feature-desc">ARRAY Constructor / FILTER Clause / QUALIFY / GROUPING SETS / Materialized CTE / Graph MATCH / Ordered-Set Aggregation / INSERT ON CONFLICT / UPSERT via ON CONFLICT</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Oracle-specific</div>
+<h3 class="feature-title" data-i18n="dialect_features.oracle_specific">Oracle 专有</h3>
+<p class="feature-desc">CONNECT BY / PIVOT / UNPIVOT / Query Hints / FOR UPDATE NOWAIT/WAIT/SKIP LOCKED / Flashback Query / BITMAP INDEX / IDENTITY 列 / ROWNUM / SEQUENCE (CURRVAL/NEXTVAL) / JSON Duality (23ai) / BOOLEAN (23ai) / VECTOR (23ai)</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="protocols.label">Protocols</div>
+<h2 class="section-title" data-i18n="protocols.title">Oracle 专有协议。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Hierarchical</div>
+<h3 class="feature-title" data-i18n="protocols.hierarchical">OracleHierarchicalQuerySupport</h3>
+<p class="feature-desc">format_connect_by() / format_start_with() / format_connect_by_root() / format_sys_connect_by_path() / format_order_siblings_by()</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / PIVOT</div>
+<h3 class="feature-title" data-i18n="protocols.pivot">OraclePivotSupport</h3>
+<p class="feature-desc">format_pivot_clause() / format_unpivot_clause() / supports_pivot() / supports_unpivot()</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Hints</div>
+<h3 class="feature-title" data-i18n="protocols.hint">OracleQueryHintSupport</h3>
+<p class="feature-desc">format_query_hint() / supports_query_hints() — FULL / INDEX / PARALLEL / USE_NL / USE_HASH / DRIVING_SITE / APPEND</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Flashback</div>
+<h3 class="feature-title" data-i18n="protocols.flashback">OracleFlashbackSupport</h3>
+<p class="feature-desc">format_flashback_query_as_of() / format_flashback_query_between() / format_flashback_query_to_scn() — 历史数据查询</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / FOR UPDATE</div>
+<h3 class="feature-title" data-i18n="protocols.for_update">OracleForUpdateSupport</h3>
+<p class="feature-desc">format_for_update_clause() — 支持 OF / NOWAIT / WAIT n / SKIP LOCKED 扩展</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="hierarchical_code.label">Hierarchical</div>
+<h2 class="section-title" data-i18n="hierarchical_code.title">层次查询示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">hierarchical_query.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle.dialect <span class="tok-k">import</span> <span class="tok-cls">OracleDialect</span>
+
+dialect = <span class="tok-cls">OracleDialect</span>()
+
+<span class="tok-c"># 员工层级结构查询</span>
+sql = dialect.format_connect_by(
+    table=<span class="tok-s">'employees'</span>,
+    connect_condition=<span class="tok-s">'PRIOR employee_id = manager_id'</span>,
+    start_with=<span class="tok-s">'manager_id IS NULL'</span>,
+    order_siblings_by=<span class="tok-s">'last_name'</span>,
+)
+<span class="tok-c"># → SELECT ... FROM employees</span>
+<span class="tok-c">#   START WITH manager_id IS NULL</span>
+<span class="tok-c">#   CONNECT BY PRIOR employee_id = manager_id</span>
+<span class="tok-c">#   ORDER SIBLINGS BY last_name</span>
+
+<span class="tok-c"># 层次函数</span>
+sql = dialect.format_connect_by_root(column=<span class="tok-s">'last_name'</span>)
+<span class="tok-c"># → CONNECT_BY_ROOT last_name</span>
+
+sql = dialect.format_sys_connect_by_path(column=<span class="tok-s">'last_name'</span>, separator=<span class="tok-s">'/'</span>)
+<span class="tok-c"># → SYS_CONNECT_BY_PATH(last_name, '/')</span>
+
+<span class="tok-c"># NOCYCLE 防止循环</span>
+<span class="tok-c"># CONNECT BY NOCYCLE PRIOR employee_id = manager_id</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="pivot_code.label">PIVOT</div>
+<h2 class="section-title" data-i18n="pivot_code.title">PIVOT / UNPIVOT 示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">pivot_example.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle.dialect <span class="tok-k">import</span> <span class="tok-cls">OracleDialect</span>
+
+dialect = <span class="tok-cls">OracleDialect</span>()
+
+<span class="tok-c"># PIVOT：行转列</span>
+sql, params = dialect.format_pivot_clause(
+    aggregate=<span class="tok-s">'SUM'</span>,
+    pivot_column=<span class="tok-s">'quarter'</span>,
+    value_column=<span class="tok-s">'revenue'</span>,
+    pivot_values=[<span class="tok-s">'Q1'</span>, <span class="tok-s">'Q2'</span>, <span class="tok-s">'Q3'</span>, <span class="tok-s">'Q4'</span>],
+)
+<span class="tok-c"># → PIVOT (SUM(revenue) FOR quarter IN ('Q1', 'Q2', 'Q3', 'Q4'))</span>
+
+<span class="tok-c"># UNPIVOT：列转行</span>
+sql, params = dialect.format_unpivot_clause(
+    value_column=<span class="tok-s">'revenue'</span>,
+    pivot_column=<span class="tok-s">'quarter'</span>,
+    unpivot_columns=[<span class="tok-s">'Q1'</span>, <span class="tok-s">'Q2'</span>, <span class="tok-s">'Q3'</span>, <span class="tok-s">'Q4'</span>],
+    include_nulls=<span class="tok-k">False</span>,
+)
+<span class="tok-c"># → UNPIVOT EXCLUDE NULLS (revenue FOR quarter IN (Q1, Q2, Q3, Q4))</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="merge_code.label">MERGE</div>
+<h2 class="section-title" data-i18n="merge_code.title">MERGE 语句示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">merge_example.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle.dialect <span class="tok-k">import</span> <span class="tok-cls">OracleDialect</span>
+
+dialect = <span class="tok-cls">OracleDialect</span>()
+
+<span class="tok-c"># MERGE INTO：条件插入或更新</span>
+sql, params = dialect.format_merge_statement(
+    target=<span class="tok-s">'employees'</span>,
+    source=<span class="tok-s">'(SELECT :emp_id AS employee_id, :name AS name FROM DUAL)'</span>,
+    on_condition=<span class="tok-s">'employees.employee_id = source.employee_id'</span>,
+    when_matched={<span class="tok-s">'update'</span>: {<span class="tok-s">'name'</span>: <span class="tok-s">'source.name'</span>}},
+    when_not_matched={<span class="tok-s">'insert'</span>: {<span class="tok-s">'employee_id'</span>: <span class="tok-s">'source.employee_id'</span>, <span class="tok-s">'name'</span>: <span class="tok-s">'source.name'</span>}},
+)
+<span class="tok-c"># → MERGE INTO employees</span>
+<span class="tok-c">#   USING (SELECT :emp_id AS employee_id, :name AS name FROM DUAL) source</span>
+<span class="tok-c">#   ON (employees.employee_id = source.employee_id)</span>
+<span class="tok-c">#   WHEN MATCHED THEN UPDATE SET name = source.name</span>
+<span class="tok-c">#   WHEN NOT MATCHED THEN INSERT (employee_id, name) VALUES (source.employee_id, source.name)</span>
+
+<span class="tok-c"># UPSERT 通过 MERGE 实现</span>
+<span class="tok-c"># OracleDialect.get_upsert_syntax_type() → "MERGE"</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="hint_code.label">Hints</div>
+<h2 class="section-title" data-i18n="hint_code.title">查询提示示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">hint_example.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle.dialect <span class="tok-k">import</span> <span class="tok-cls">OracleDialect</span>
+
+dialect = <span class="tok-cls">OracleDialect</span>()
+
+<span class="tok-c"># 单提示</span>
+hint = dialect.format_query_hint(hints=[<span class="tok-s">'FULL'</span>], table=<span class="tok-s">'employees'</span>)
+<span class="tok-c"># → /*+ FULL(employees) */</span>
+
+<span class="tok-c"># 多提示组合</span>
+hint = dialect.format_query_hint(hints=[<span class="tok-s">'PARALLEL'</span>, <span class="tok-s">'USE_HASH'</span>], table=<span class="tok-s">'orders'</span>, degree=<span class="tok-n">4</span>)
+<span class="tok-c"># → /*+ PARALLEL(orders 4) USE_HASH(orders) */</span>
+
+<span class="tok-c"># 常用提示类型</span>
+<span class="tok-c"># FULL(table)         — 全表扫描</span>
+<span class="tok-c"># INDEX(table idx)    — 索引扫描</span>
+<span class="tok-c"># PARALLEL(table n)   — 并行执行</span>
+<span class="tok-c"># USE_NL(table)       — 嵌套循环连接</span>
+<span class="tok-c"># USE_HASH(table)     — 哈希连接</span>
+<span class="tok-c"># DRIVING_SITE(table) — 分布式查询远程执行</span>
+<span class="tok-c"># APPEND              — 直接路径插入</span>
+<span class="tok-c"># FIRST_ROWS(n)       — 优化前 n 行响应</span>
+<span class="tok-c"># ALL_ROWS            — 优化全量吞吐</span>
+
+<span class="tok-c"># Flashback Query：历史时点查询</span>
+sql = dialect.format_flashback_query_as_of(
+    table=<span class="tok-s">'orders'</span>,
+    timestamp=<span class="tok-s">'2024-01-01 00:00:00'</span>,
+)
+<span class="tok-c"># → SELECT * FROM orders AS OF TIMESTAMP('2024-01-01 00:00:00')</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="type_adapters.label">Type Adapters</div>
+<h2 class="section-title" data-i18n="type_adapters.title">Oracle 类型适配器。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / LOB</div>
+<h3 class="feature-title">OracleLOBAdapter</h3>
+<p class="feature-desc">CLOB / BLOB / NCLOB — 大对象流式读写，自动分片处理</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / NUMBER</div>
+<h3 class="feature-title">OracleNumberAdapter</h3>
+<p class="feature-desc">NUMBER(p,s) / FLOAT / BINARY_DOUBLE / BINARY_FLOAT — 高精度数值</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / DateTime</div>
+<h3 class="feature-title">OracleDateTimeAdapter</h3>
+<p class="feature-desc">DATE / TIMESTAMP / TIMESTAMP WITH TIME ZONE — 时区感知归一化</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Interval</div>
+<h3 class="feature-title">OracleIntervalAdapter</h3>
+<p class="feature-desc">INTERVAL YEAR TO MONTH / INTERVAL DAY TO SECOND — 时间间隔</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / RAW</div>
+<h3 class="feature-title">OracleRAWAdapter</h3>
+<p class="feature-desc">RAW / LONG RAW — 二进制数据，bytes ↔ hex 编码</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / JSON</div>
+<h3 class="feature-title">OracleJSONAdapter</h3>
+<p class="feature-desc">JSON (21c+) / CLOB (12.2+) — dict/list 自动序列化，低版本存为 CLOB</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="functions.label">Functions</div>
+<h2 class="section-title" data-i18n="functions.title">Oracle 专有函数工厂。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / JSON</div>
+<h3 class="feature-title" data-i18n="functions.json">JSON</h3>
+<p class="feature-desc">json_value / json_query / json_table / json_object / json_array / json_transform / json_serialize / json_dataguide (12.2+)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Hierarchical</div>
+<h3 class="feature-title" data-i18n="functions.hierarchical">层次</h3>
+<p class="feature-desc">connect_by_root / sys_connect_by_path / level / prior — 树形结构遍历</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Analytics</div>
+<h3 class="feature-title" data-i18n="functions.analytics">分析</h3>
+<p class="feature-desc">listagg / rank / dense_rank / row_number / lead / lag / first_value / last_value / nth_value / ratio_to_report</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / DateTime</div>
+<h3 class="feature-title" data-i18n="functions.datetime">日期时间</h3>
+<p class="feature-desc">sysdate / systimestamp / current_date / current_timestamp / extract / numtodsinterval / numtoyminterval / to_dsinterval / to_yminterval</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="transaction.label">Transaction</div>
+<h2 class="section-title" data-i18n="transaction.title">事务控制。</h2>
+</div>
+<p class="section-intro" data-i18n="transaction.desc">OracleTransactionManager 支持四种隔离级别，默认 READ_COMMITTED。支持 SET TRANSACTION / SAVEPOINT / 只读事务。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">transaction_control.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.transaction <span class="tok-k">import</span> <span class="tok-cls">IsolationLevel</span>
+
+<span class="tok-c"># 标准事务（默认 READ COMMITTED）</span>
+<span class="tok-k">with</span> backend.transaction():
+    backend.execute(<span class="tok-s">"INSERT INTO employees ..."</span>, ())
+
+<span class="tok-c"># 指定隔离级别</span>
+<span class="tok-k">with</span> backend.transaction(isolation_level=<span class="tok-cls">IsolationLevel</span>.SERIALIZABLE):
+    ...
+
+<span class="tok-c"># Oracle 四种隔离级别</span>
+<span class="tok-c"># READ_UNCOMMITTED (实际等同于 READ_COMMITTED)</span>
+<span class="tok-c"># READ_COMMITTED  (默认)</span>
+<span class="tok-c"># REPEATABLE_READ (实际等同于 SERIALIZABLE)</span>
+<span class="tok-c"># SERIALIZABLE</span>
+
+<span class="tok-c"># 只读事务</span>
+<span class="tok-k">with</span> backend.transaction(read_only=<span class="tok-k">True</span>):
+    result = backend.execute(<span class="tok-s">"SELECT ..."</span>, ())
+
+<span class="tok-c"># Savepoint 支持</span>
+<span class="tok-k">with</span> backend.transaction():
+    backend.execute(<span class="tok-s">"INSERT ..."</span>, ())
+    <span class="tok-k">with</span> backend.transaction():  <span class="tok-c"># SAVEPOINT</span>
+        backend.execute(<span class="tok-s">"UPDATE ..."</span>, ())</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="async.label">Async</div>
+<h2 class="section-title" data-i18n="async.title">异步支持。</h2>
+</div>
+<p class="section-intro" data-i18n="async.desc">AsyncOracleBackend 懒加载，使用 oracledb 异步驱动。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">async_oracle.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle <span class="tok-k">import</span> <span class="tok-cls">AsyncOracleBackend</span>
+<span class="tok-c"># 需安装: pip install rhosocial-activerecord-oracle[async]</span>
+
+backend = <span class="tok-cls">AsyncOracleBackend</span>(
+    host=<span class="tok-s">'localhost'</span>,
+    port=<span class="tok-n">1521</span>,
+    user=<span class="tok-s">'app_user'</span>,
+    password=<span class="tok-s">'secret'</span>,
+    service=<span class="tok-s">'ORCL'</span>,
+)
+<span class="tok-k">await</span> backend.connect()
+
+<span class="tok-k">async with</span> backend.transaction():
+    result = <span class="tok-k">await</span> backend.execute(<span class="tok-s">"SELECT ..."</span>, ())
+
+<span class="tok-k">await</span> backend.disconnect()
+
+<span class="tok-c"># 懒加载：同步组件不依赖异步驱动</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle <span class="tok-k">import</span> <span class="tok-cls">OracleBackend</span>       <span class="tok-c"># ✓</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle <span class="tok-k">import</span> <span class="tok-cls">AsyncOracleBackend</span> <span class="tok-c"># ✗ 需要异步驱动</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="env_config.label">Environment</div>
+<h2 class="section-title" data-i18n="env_config.title">环境变量配置。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">env_config.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.oracle.config <span class="tok-k">import</span> <span class="tok-cls">OracleConnectionConfig</span>
+
+<span class="tok-c"># 从环境变量创建配置（前缀 ORACLE_）</span>
+config = <span class="tok-cls">OracleConnectionConfig</span>.from_env(prefix=<span class="tok-s">"ORACLE_"</span>)
+
+<span class="tok-c"># 支持的环境变量：</span>
+<span class="tok-c"># ORACLE_HOST     — 主机地址</span>
+<span class="tok-c"># ORACLE_PORT     — 端口号 (默认 1521)</span>
+<span class="tok-c"># ORACLE_USER     — 用户名</span>
+<span class="tok-c"># ORACLE_PASSWORD — 密码</span>
+<span class="tok-c"># ORACLE_SERVICE  — 服务名 (默认 ORCL)</span>
+<span class="tok-c"># ORACLE_POOL_SIZE — 连接池大小</span>
+<span class="tok-c"># ORACLE_TIMEZONE  — 会话时区</span>
+<span class="tok-c"># ORACLE_SSL_CA / SSL_CERT / SSL_KEY — SSL 配置</span>
+<span class="tok-c"># ORACLE_WALLET_PATH — Oracle Wallet 路径</span></pre></div>
+</div>
+</div>
+</section></main>
+<script>
+(function(){var o=new IntersectionObserver(function(e){e.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visible");o.unobserve(e.target)}})},{threshold:.12});document.querySelectorAll(".reveal").forEach(function(e){o.observe(e)})})();
+</script>`;
+---
+
+<BaseLayout title="rhosocial ActiveRecord — Oracle" variant="back">
+  <Fragment set:html={__html} />
+</BaseLayout>

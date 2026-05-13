@@ -1,59 +1,42 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+const __html = `<div class="grid-bg" style="position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:60px 60px"></div>
+
+<main>
+<div class="policy-page">
+  <h1>关于我们</h1>
+  <p class="meta">rhosocial · 开源 · 社区驱动</p>
+
+  <p>rhosocial 是一个专注于开发高质量 Python 开源工具的组织。我们的旗舰项目 <strong>rhosocial-activerecord</strong> 是一款重新设计的 Python ORM，以类型注解为起点，追求简洁、透明和可扩展的设计理念。</p>
+
+  <h2>我们的使命</h2>
+  <p>在 Python ORM 领域，开发者长期面临"魔法太多"和"配置过重"的困境。SQLAlchemy 功能强大但学习曲线陡峭，Django ORM 与框架深度耦合，Peewee 设计过时。我们相信 ORM 可以做得更好——用 Python 原生的方式，让类型注解同时成为模型定义、让链式查询透明生成 SQL、让同步与异步使用同一套 API。</p>
+
+  <h2>核心价值</h2>
+  <ul>
+    <li><strong>类型优先（Type-First）</strong>——模型定义就是 Python 类型注解，无需额外 DSL 或配置</li>
+    <li><strong>透明可控（Transparent & Controllable）</strong>——每一条生成的 SQL 都可以通过 .to_sql() 审查，无隐藏行为</li>
+    <li><strong>同步与异步一致（Sync/Async Parity）</strong>——同一套 API，for 和 async for 的区别而已</li>
+    <li><strong>后端独立（Decoupled Backends）</strong>——ActiveRecord 层与 Backend 层松耦合，后端可独立使用</li>
+    <li><strong>零假设（Zero Assumptions）</strong>——无强制 Session、无强制迁移框架、无强制全局状态</li>
+  </ul>
+
+  <h2>技术栈</h2>
+  <p>rhosocial-activerecord 以 Python 3.8+ 为目标，核心库纯 Python 实现，零 ORM 依赖（仅依赖 Pydantic v2 用于运行时类型验证）。支持六种数据库后端：SQLite、PostgreSQL、MySQL、MariaDB、SQL Server 和 Oracle，同步与异步双模式。</p>
+
+  <h2>开源与社区</h2>
+  <p>rhosocial-activerecord 以 Apache 2.0 许可开源。我们欢迎任何形式的贡献——无论是报告 bug、提交 PR、改进文档，还是提出功能建议。项目托管在 GitHub 上，由社区共同驱动发展。</p>
+
+  <h2>了解更多</h2>
+  <ul>
+    <li>GitHub：<a href="https://github.com/rhosocial/python-activerecord" target="_blank">https://github.com/rhosocial/python-activerecord</a></li>
+    <li>PyPI：<a href="https://pypi.org/project/rhosocial-activerecord/" target="_blank">https://pypi.org/project/rhosocial-activerecord/</a></li>
+    <li>文档：<a href="backends/index.html">快速开始</a></li>
+  </ul>
+</div>
+</main>`;
 ---
 
 <BaseLayout title="关于我们 — rhosocial ActiveRecord" variant="ar">
-  <div class="grid-bg" style="position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:60px 60px"></div>
-
-  <main>
-  <div class="policy-page">
-    <h1>关于我们</h1>
-    <p class="meta">rhosocial · 开源 · 社区驱动</p>
-
-    <p>rhosocial 是一个专注于开发高质量 Python 开源工具的组织。我们的旗舰项目 <strong>rhosocial-activerecord</strong> 是一款重新设计的 Python ORM，以类型注解为起点，追求简洁、透明和可扩展的设计理念。</p>
-
-    <h2>我们的使命</h2>
-    <p>在 Python ORM 领域，开发者长期面临"魔法太多"和"配置过重"的困境。SQLAlchemy 功能强大但学习曲线陡峭，Django ORM 与框架深度耦合，Peewee 设计过时。我们相信 ORM 可以做得更好——用 Python 原生的方式，让类型注解同时成为模型定义、让链式查询透明生成 SQL、让同步与异步使用同一套 API。</p>
-
-    <h2>核心价值</h2>
-    <ul>
-      <li><strong>类型优先（Type-First）</strong>——模型定义就是 Python 类型注解，无需额外 DSL 或配置</li>
-      <li><strong>透明可控（Transparent & Controllable）</strong>——每一条生成的 SQL 都可以通过 .to_sql() 审查，无隐藏行为</li>
-      <li><strong>同步与异步一致（Sync/Async Parity）</strong>——同一套 API，for 和 async for 的区别而已</li>
-      <li><strong>后端独立（Decoupled Backends）</strong>——ActiveRecord 层与 Backend 层松耦合，后端可独立使用</li>
-      <li><strong>零假设（Zero Assumptions）</strong>——无强制 Session、无强制迁移框架、无强制全局状态</li>
-    </ul>
-
-    <h2>技术栈</h2>
-    <p>rhosocial-activerecord 以 Python 3.8+ 为目标，核心库纯 Python 实现，零 ORM 依赖（仅依赖 Pydantic v2 用于运行时类型验证）。支持六种数据库后端：SQLite、PostgreSQL、MySQL、MariaDB、SQL Server 和 Oracle，同步与异步双模式。</p>
-
-    <h2>开源与社区</h2>
-    <p>rhosocial-activerecord 以 Apache 2.0 许可开源。我们欢迎任何形式的贡献——无论是报告 bug、提交 PR、改进文档，还是提出功能建议。项目托管在 GitHub 上，由社区共同驱动发展。</p>
-
-    <h2>了解更多</h2>
-    <ul>
-      <li>GitHub：<a href="https://github.com/rhosocial/python-activerecord" target="_blank">https://github.com/rhosocial/python-activerecord</a></li>
-      <li>PyPI：<a href="https://pypi.org/project/rhosocial-activerecord/" target="_blank">https://pypi.org/project/rhosocial-activerecord/</a></li>
-      <li>文档：<a href="/products/rhosocial-activerecord/backends/index.html">快速开始</a></li>
-    </ul>
-  </div>
-  </main>
+  <Fragment set:html={__html} />
 </BaseLayout>
-
-<style is:global>
-  .grid-bg { position:fixed;inset:0;z-index:0;pointer-events:none; }
-  body { background: var(--r-bg); color: var(--r-text); font-family: var(--r-font-body); margin: 0; }
-  .policy-page { max-width: 720px; margin: 0 auto; padding: 3rem 1.5rem 4rem; position: relative; z-index: 1; }
-  .policy-page h1 { font-family: var(--r-font-display); font-size: 2.2rem; font-weight: 700; margin-bottom: 0.5rem; }
-  .policy-page .meta { color: var(--r-text3); margin-bottom: 2rem; font-size: 14px; }
-  .policy-page h2 { font-family: var(--r-font-display); font-size: 1.3rem; font-weight: 600; margin: 2rem 0 0.8rem; color: var(--r-accent); }
-  .policy-page p { line-height: 1.7; margin-bottom: 0.8rem; }
-  .policy-page ul { padding-left: 1.25rem; margin-bottom: 1rem; }
-  .policy-page li { margin-bottom: 0.5rem; line-height: 1.6; }
-  .policy-page a { color: var(--r-cyan); }
-  .contact-card { background: var(--r-bg-2); border: 1px solid var(--r-border); border-radius: var(--r-radius); padding: 1.25rem; margin-bottom: 1rem; }
-  .contact-card h3 { font-family: var(--r-font-display); font-size: 1.05rem; font-weight: 600; color: var(--r-text); margin-bottom: 0.5rem; }
-  .contact-card h3 .icon { color: var(--r-accent); margin-right: 0.5rem; }
-  .contact-card p { margin-bottom: 0; font-size: 14px; }
-  .contact-card a { color: var(--r-cyan); }
-</style>

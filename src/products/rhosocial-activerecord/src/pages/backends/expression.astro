@@ -1,0 +1,295 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const __html = `<style>
+:root, body {
+  --code-keyword:   var(--tok-keyword);
+  --code-class:     var(--tok-class);
+  --code-fn:        var(--tok-func);
+  --code-string:    var(--tok-string);
+  --code-number:    var(--tok-num);
+  --code-comment:   var(--tok-comment);
+  --code-op:        var(--tok-op);
+  --surface-0:      var(--bg-2);
+  --surface-1:      var(--bg-elevated);
+  --surface-2:      var(--bg-2);
+  --surface-3:      color-mix(in srgb, var(--fg) 8%, var(--bg));
+  --text-primary:   var(--fg);
+  --text-secondary: var(--fg-muted);
+  --text-muted:     var(--fg-faint);
+  --accent-soft:    color-mix(in srgb, var(--accent) 15%, transparent);
+  --accent-secondary:      var(--accent-2);
+  --accent-secondary-soft: color-mix(in srgb, var(--accent-2) 12%, transparent);
+  --accent-fg:      var(--bg);
+  --ok:             var(--success);
+  --ok-soft:        color-mix(in srgb, var(--success) 12%, transparent);
+  --err:            var(--danger);
+  --err-soft:       color-mix(in srgb, var(--danger) 12%, transparent);
+  --info:           var(--info);
+  --warn:           var(--warning, #f59e0b);
+  --warn-soft:      color-mix(in srgb, var(--warning, #f59e0b) 12%, transparent);
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 9999px;
+}
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-d1 { transition-delay:0.1s; }
+.reveal-d2 { transition-delay:0.2s; }
+</style>
+<main class="page">
+<section class="hero section reveal">
+<div class="container hero-inner">
+<div class="hero-eyebrow rise"><a href="./index.html">&larr; <span data-i18n="hero.back">Backends</span></div>
+<h1 class="hero-title rise">Expression &amp; Dialect</h1>
+<p class="hero-sub rise" data-i18n="hero.sub">表达式收集语义，方言生成 SQL。</p>
+</div>
+</section>
+<section class="section reveal reveal-d1">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="expr_basics.label">Expression Basics</div>
+<h2 class="section-title" data-i18n="expr_basics.title">表达式基础。</h2>
+</div>
+<p class="section-intro" data-i18n="expr_basics.desc">BaseExpression.to_sql(dialect) — 表达式委托方言生成 SQL。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">expression_basics.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.expression <span class="tok-k">import</span> <span class="tok-cls">Column</span>, <span class="tok-cls">Literal</span>
+
+<span class="tok-c"># 表达式收集语义参数，不含 SQL 细节</span>
+name = <span class="tok-cls">Column</span>(<span class="tok-s">'username'</span>)
+age = <span class="tok-cls">Column</span>(<span class="tok-s">'age'</span>)
+
+<span class="tok-c"># 运算符重载构建条件</span>
+condition = (name == <span class="tok-s">'Alice'</span>) & (age > <span class="tok-n">18</span>)
+<span class="tok-c"># → 委托 dialect.format_*() 生成目标 SQL</span>
+sql, params = condition.<span class="tok-f">to_sql</span>(dialect)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="operator_overload.label">Operator Overload</div>
+<h2 class="section-title" data-i18n="operator_overload.title">运算符重载。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Arithmetic</div>
+<h3 class="feature-title" data-i18n="operator_overload.arithmetic">算术：+ - * / %</h3>
+<p class="feature-desc"><span class="tok-cls">ArithmeticMixin</span> — <span class="tok-attr">__add__</span> / <span class="tok-attr">__sub__</span> / <span class="tok-attr">__mul__</span> / <span class="tok-attr">__truediv__</span> / <span class="tok-attr">__mod__</span></p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Comparison</div>
+<h3 class="feature-title" data-i18n="operator_overload.comparison">比较：== != &lt; &gt; &lt;= &gt;=</h3>
+<p class="feature-desc"><span class="tok-cls">ComparisonMixin</span> — <span class="tok-attr">__eq__</span> / <span class="tok-attr">__ne__</span> / <span class="tok-attr">__lt__</span> / <span class="tok-attr">__gt__</span> / <span class="tok-attr">__le__</span> / <span class="tok-attr">__ge__</span></p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Logical</div>
+<h3 class="feature-title" data-i18n="operator_overload.logical">逻辑：&amp; (AND) | (OR) ~ (NOT)</h3>
+<p class="feature-desc"><span class="tok-cls">LogicalMixin</span> — <span class="tok-attr">__and__</span> &amp; / <span class="tok-attr">__or__</span> | / <span class="tok-attr">__invert__</span> ~</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / String</div>
+<h3 class="feature-title" data-i18n="operator_overload.string">字符串：like() / ilike() / concat()</h3>
+<p class="feature-desc"><span class="tok-cls">StringMixin</span> — <span class="tok-f">like()</span> / <span class="tok-f">ilike()</span> / <span class="tok-f">concat()</span></p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / Type Casting</div>
+<h3 class="feature-title" data-i18n="operator_overload.casting">类型转换：::type</h3>
+<p class="feature-desc"><span class="tok-cls">TypeCastingMixin</span> — <span class="tok-f">cast()</span> 生成 <span class="tok-s">::type</span> 语法</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / Alias</div>
+<h3 class="feature-title" data-i18n="operator_overload.alias">别名：.as_()</h3>
+<p class="feature-desc"><span class="tok-cls">AliasableMixin</span> — <span class="tok-f">.as_()</span> 生成 <span class="tok-s">AS alias</span></p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="predicates.label">Predicates</div>
+<h2 class="section-title" data-i18n="predicates.title">谓词体系。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">predicates.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.expression <span class="tok-k">import</span> (
+    <span class="tok-cls">InPredicate</span>, <span class="tok-cls">BetweenPredicate</span>,
+    <span class="tok-cls">LikePredicate</span>, <span class="tok-cls">IsNullPredicate</span>,
+    <span class="tok-cls">ComparisonPredicate</span>
+)
+
+<span class="tok-c"># ComparisonPredicate</span>
+cond = <span class="tok-cls">ComparisonPredicate</span>(Column(<span class="tok-s">'age'</span>), <span class="tok-s">'>'</span>, Literal(<span class="tok-n">18</span>))
+
+<span class="tok-c"># InPredicate</span>
+cond = <span class="tok-cls">InPredicate</span>(Column(<span class="tok-s">'category'</span>), [<span class="tok-s">'A'</span>, <span class="tok-s">'B'</span>])
+
+<span class="tok-c"># BetweenPredicate</span>
+cond = <span class="tok-cls">BetweenPredicate</span>(Column(<span class="tok-s">'stock'</span>), <span class="tok-n">10</span>, <span class="tok-n">100</span>)
+
+<span class="tok-c"># IsNullPredicate</span>
+cond = <span class="tok-cls">IsNullPredicate</span>(Column(<span class="tok-s">'deleted_at'</span>))</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="advanced_expr.label">Advanced</div>
+<h2 class="section-title" data-i18n="advanced_expr.title">高级表达式。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / CASE</div>
+<h3 class="feature-title" data-i18n="advanced_expr.case">CASE WHEN ... THEN ... ELSE ... END</h3>
+<p class="feature-desc"><span class="tok-cls">CaseExpression</span> — <span class="tok-f">.when()</span> / <span class="tok-f">.else_()</span></p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / EXISTS</div>
+<h3 class="feature-title" data-i18n="advanced_expr.exists">EXISTS / NOT EXISTS</h3>
+<p class="feature-desc">子查询存在性检查</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / ANY ALL</div>
+<h3 class="feature-title" data-i18n="advanced_expr.any_all">ANY / ALL / SOME</h3>
+<p class="feature-desc">量词比较谓词</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Window</div>
+<h3 class="feature-title" data-i18n="advanced_expr.window">窗口函数 OVER (...)</h3>
+<p class="feature-desc"><span class="tok-cls">WindowFunctionCall</span> — <span class="tok-f">.over()</span> / <span class="tok-f">.partition_by()</span></p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / FILTER</div>
+<h3 class="feature-title" data-i18n="advanced_expr.filter">FILTER (WHERE ...)</h3>
+<p class="feature-desc">聚合函数条件过滤</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="advanced_expr.label">Advanced</div>
+<h2 class="section-title">CASE WHEN 示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">case_expression.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.expression <span class="tok-k">import</span> <span class="tok-cls">CaseExpression</span>, <span class="tok-cls">Literal</span>
+
+<span class="tok-c"># CASE WHEN active = True THEN 'Active' ELSE 'Inactive' END</span>
+status_label = <span class="tok-cls">CaseExpression</span>() \\
+    .<span class="tok-f">when</span>(User.c.active == <span class="tok-k">True</span>, <span class="tok-cls">Literal</span>(<span class="tok-s">'Active'</span>)) \\
+    .<span class="tok-f">else_</span>(<span class="tok-cls">Literal</span>(<span class="tok-s">'Inactive'</span>))</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="dql.label">DQL</div>
+<h2 class="section-title" data-i18n="dql.title">SELECT 语句。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">query_expression.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.expression <span class="tok-k">import</span> <span class="tok-cls">QueryExpression</span>
+
+<span class="tok-c"># QueryExpression — 完整 SELECT 构建</span>
+query = <span class="tok-cls">QueryExpression</span>() \\
+    .<span class="tok-f">select_from</span>(<span class="tok-s">'users'</span>) \\
+    .<span class="tok-f">where</span>(User.c.age > <span class="tok-n">18</span>) \\
+    .<span class="tok-f">order_by</span>(User.c.created_at.<span class="tok-f">desc</span>()) \\
+    .<span class="tok-f">limit</span>(<span class="tok-n">10</span>) \\
+    .<span class="tok-f">offset</span>(<span class="tok-n">20</span>)
+
+sql, params = query.<span class="tok-f">to_sql</span>(backend.dialect)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="functions.label">Functions</div>
+<h2 class="section-title" data-i18n="functions.title">函数工厂。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Aggregate</div>
+<h3 class="feature-title" data-i18n="functions.aggregate">聚合：count / sum / avg / min / max</h3>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Window</div>
+<h3 class="feature-title" data-i18n="functions.window">窗口：row_number / rank / dense_rank / lag / lead</h3>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / String</div>
+<h3 class="feature-title" data-i18n="functions.string">字符串：concat / substring / trim / replace ...</h3>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Datetime</div>
+<h3 class="feature-title" data-i18n="functions.datetime">日期时间：now / date_add / date_trunc / extract ...</h3>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / Math</div>
+<h3 class="feature-title" data-i18n="functions.math">数学：abs / round / ceil / floor / sqrt ...</h3>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / Conditional</div>
+<h3 class="feature-title" data-i18n="functions.conditional">条件：case / nullif / coalesce / greatest / least</h3>
+</div>
+<div class="feature rise">
+<div class="feature-num">07 / JSON</div>
+<h3 class="feature-title" data-i18n="functions.json">JSON：json_extract / json_array_length ...</h3>
+</div>
+<div class="feature rise">
+<div class="feature-num">08 / Grouping</div>
+<h3 class="feature-title" data-i18n="functions.grouping">分组：ROLLUP / CUBE / GROUPING SETS</h3>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="dialect_protocol.label">Dialect Protocol</div>
+<h2 class="section-title" data-i18n="dialect_protocol.title">方言协议。</h2>
+</div>
+<p class="section-intro" data-i18n="dialect_protocol.desc">35+ @runtime_checkable 协议检测后端能力。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">protocol_check.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.dialect.protocols <span class="tok-k">import</span> (
+    <span class="tok-cls">CTESupport</span>, <span class="tok-cls">WindowFunctionSupport</span>
+)
+
+<span class="tok-c"># 运行时检测后端能力</span>
+<span class="tok-k">if</span> <span class="tok-f">isinstance</span>(backend.dialect, <span class="tok-cls">CTESupport</span>):
+    <span class="tok-c"># 安全使用 CTE</span>
+    ...
+<span class="tok-k">else</span>:
+    <span class="tok-k">raise</span> <span class="tok-cls">UnsupportedFeatureError</span>(<span class="tok-s">'CTE not supported'</span>)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="graph.label">Graph</div>
+<h2 class="section-title" data-i18n="graph.title">图查询 SQL/PGQ。</h2>
+</div>
+<p class="section-intro" data-i18n="graph.desc">SQL 2023 标准属性图遍历。</p>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="introspection.label">Introspection</div>
+<h2 class="section-title" data-i18n="introspection.title">内省表达式。</h2>
+</div>
+<p class="section-intro" data-i18n="introspection.desc">数据库/表/列/索引/外键/主键/触发器/视图信息查询。</p>
+</div>
+</section></main>
+<script>
+(function(){var o=new IntersectionObserver(function(e){e.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visible");o.unobserve(e.target)}})},{threshold:.12});document.querySelectorAll(".reveal").forEach(function(e){o.observe(e)})})();
+</script>`;
+---
+
+<BaseLayout title="rhosocial ActiveRecord — Expression & Dialect" variant="back">
+  <Fragment set:html={__html} />
+</BaseLayout>

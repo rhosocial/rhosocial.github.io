@@ -1,0 +1,585 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const __html = `<style>
+:root, body {
+  --code-keyword:   var(--tok-keyword);
+  --code-class:     var(--tok-class);
+  --code-fn:        var(--tok-func);
+  --code-string:    var(--tok-string);
+  --code-number:    var(--tok-num);
+  --code-comment:   var(--tok-comment);
+  --code-op:        var(--tok-op);
+  --surface-0:      var(--bg-2);
+  --surface-1:      var(--bg-elevated);
+  --surface-2:      var(--bg-2);
+  --surface-3:      color-mix(in srgb, var(--fg) 8%, var(--bg));
+  --text-primary:   var(--fg);
+  --text-secondary: var(--fg-muted);
+  --text-muted:     var(--fg-faint);
+  --accent-soft:    color-mix(in srgb, var(--accent) 15%, transparent);
+  --accent-secondary:      var(--accent-2);
+  --accent-secondary-soft: color-mix(in srgb, var(--accent-2) 12%, transparent);
+  --accent-fg:      var(--bg);
+  --ok:             var(--success);
+  --ok-soft:        color-mix(in srgb, var(--success) 12%, transparent);
+  --err:            var(--danger);
+  --err-soft:       color-mix(in srgb, var(--danger) 12%, transparent);
+  --info:           var(--info);
+  --warn:           var(--warning, #f59e0b);
+  --warn-soft:      color-mix(in srgb, var(--warning, #f59e0b) 12%, transparent);
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 9999px;
+}
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-d1 { transition-delay:0.1s; }
+.reveal-d2 { transition-delay:0.2s; }
+</style>
+<main class="page">
+<section class="hero section reveal">
+<div class="container hero-inner">
+<div class="hero-eyebrow rise"><a href="./index.html">&larr; <span data-i18n="hero.back">Backends</span></div>
+<h1 class="hero-title rise">MySQL</h1>
+<p class="hero-sub rise" data-i18n="hero.sub">成熟的企业级关系数据库。连接池、SSL 加密、字符集与分区完整支持。</p>
+</div>
+</section>
+<section class="section reveal reveal-d1">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="features.label">Features</div>
+<h2 class="section-title" data-i18n="features.title">MySQL 特性。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Enterprise</div>
+<h3 class="feature-title" data-i18n="features.enterprise.title">企业级</h3>
+<p class="feature-desc" data-i18n="features.enterprise.desc">连接池、SSL/TLS 加密、多字符集与排序规则。支持 READ_UNCOMMITTED / READ_COMMITTED / REPEATABLE_READ / SERIALIZABLE 四种隔离级别。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Upsert</div>
+<h3 class="feature-title" data-i18n="features.upsert.title">原生 Upsert</h3>
+<p class="feature-desc" data-i18n="features.upsert.desc">ON DUPLICATE KEY UPDATE / REPLACE INTO / INSERT IGNORE 三种冲突处理策略，无需额外扩展。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Partition</div>
+<h3 class="feature-title" data-i18n="features.partition.title">分区表</h3>
+<p class="feature-desc" data-i18n="features.partition.desc">RANGE / LIST / HASH / KEY 分区。通过 MySQLPartitionSupport 协议格式化分区 DDL。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / SHOW</div>
+<h3 class="feature-title" data-i18n="features.show.title">SHOW 命令</h3>
+<p class="feature-desc" data-i18n="features.show.desc">17 种 SHOW 表达式类，覆盖 SHOW CREATE TABLE / SHOW COLUMNS / SHOW INDEX / SHOW STATUS 等。</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="connection.label">Connection</div>
+<h2 class="section-title" data-i18n="connection.title">连接配置。</h2>
+</div>
+<p class="section-intro" data-i18n="connection.desc">MySQLConnectionConfig 继承 ConnectionConfig，混入 SSL / Charset / Timezone 三组配置。支持环境变量。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">connection_config.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.mysql <span class="tok-k">import</span> <span class="tok-cls">MySQLBackend</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.mysql.config <span class="tok-k">import</span> <span class="tok-cls">MySQLConnectionConfig</span>
+
+<span class="tok-c"># 标准连接（自动使用连接池）</span>
+config = <span class="tok-cls">MySQLConnectionConfig</span>(
+    host=<span class="tok-s">'127.0.0.1'</span>,
+    port=<span class="tok-n">3306</span>,
+    user=<span class="tok-s">'app_user'</span>,
+    password=<span class="tok-s">'secret'</span>,
+    database=<span class="tok-s">'app_db'</span>,
+)
+backend = <span class="tok-cls">MySQLBackend</span>(connection_config=config)
+backend.connect()
+
+<span class="tok-c"># 快捷方式：直接传连接参数</span>
+backend = <span class="tok-cls">MySQLBackend</span>(
+    host=<span class="tok-s">'127.0.0.1'</span>,
+    port=<span class="tok-n">3306</span>,
+    user=<span class="tok-s">'app_user'</span>,
+    password=<span class="tok-s">'secret'</span>,
+    database=<span class="tok-s">'app_db'</span>,
+)
+
+<span class="tok-c"># 从环境变量创建配置（前缀 MYSQL_）</span>
+config = <span class="tok-cls">MySQLConnectionConfig</span>.from_env(prefix=<span class="tok-s">"MYSQL_"</span>)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="config_mixins.label">Config Mixins</div>
+<h2 class="section-title" data-i18n="config_mixins.title">配置混入。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / SSL</div>
+<h3 class="feature-title" data-i18n="config_mixins.ssl">SSLMixin</h3>
+<p class="feature-desc">ssl_ca / ssl_cert / ssl_key / ssl_verify_cert / ssl_verify_identity — TLS 加密连接</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Charset</div>
+<h3 class="feature-title" data-i18n="config_mixins.charset">CharsetMixin</h3>
+<p class="feature-desc">charset (默认 utf8mb4) / collation — 字符集与排序规则</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Timezone</div>
+<h3 class="feature-title" data-i18n="config_mixins.timezone">TimezoneMixin</h3>
+<p class="feature-desc">timezone — 会话时区设置，影响 NOW() / CURDATE() 等函数</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="ssl_config.label">SSL</div>
+<h2 class="section-title" data-i18n="ssl_config.title">SSL 连接示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">ssl_config.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.mysql <span class="tok-k">import</span> <span class="tok-cls">MySQLBackend</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.mysql.config <span class="tok-k">import</span> <span class="tok-cls">MySQLConnectionConfig</span>
+
+<span class="tok-c"># SSL 加密连接</span>
+config = <span class="tok-cls">MySQLConnectionConfig</span>(
+    host=<span class="tok-s">'db.example.com'</span>,
+    port=<span class="tok-n">3306</span>,
+    user=<span class="tok-s">'app_user'</span>,
+    password=<span class="tok-s">'secret'</span>,
+    database=<span class="tok-s">'app_db'</span>,
+    ssl_ca=<span class="tok-s">'/path/to/ca.pem'</span>,
+    ssl_cert=<span class="tok-s">'/path/to/client-cert.pem'</span>,
+    ssl_key=<span class="tok-s">'/path/to/client-key.pem'</span>,
+    ssl_verify_cert=<span class="tok-k">True</span>,
+    ssl_verify_identity=<span class="tok-k">True</span>,
+)
+
+<span class="tok-c"># 字符集与时区</span>
+config = <span class="tok-cls">MySQLConnectionConfig</span>(
+    host=<span class="tok-s">'127.0.0.1'</span>,
+    port=<span class="tok-n">3306</span>,
+    user=<span class="tok-s">'root'</span>,
+    password=<span class="tok-s">''</span>,
+    database=<span class="tok-s">'app_db'</span>,
+    charset=<span class="tok-s">'utf8mb4'</span>,
+    collation=<span class="tok-s">'utf8mb4_unicode_ci'</span>,
+    timezone=<span class="tok-s">'+08:00'</span>,
+)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="type_helpers.label">Type Helpers</div>
+<h2 class="section-title" data-i18n="type_helpers.title">MySQL 类型辅助。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / ENUM</div>
+<h3 class="feature-title" data-i18n="type_helpers.enum">MySQLEnumType</h3>
+<p class="feature-desc">MySQL ENUM 类型辅助 — 定义合法值列表，自动生成 DDL</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / SET</div>
+<h3 class="feature-title" data-i18n="type_helpers.set">MySQLSetType</h3>
+<p class="feature-desc">MySQL SET 类型辅助 — 多值集合，自动生成 DDL 与查询函数</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="dialect.label">Dialect</div>
+<h2 class="section-title" data-i18n="dialect.title">MySQLDialect 版本感知。</h2>
+</div>
+<p class="section-intro" data-i18n="dialect.desc">MySQLDialect 在初始化时接受版本元组，动态启用/禁用协议方法。8.0+ 是关键分界线。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">dialect_version.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.mysql.dialect <span class="tok-k">import</span> <span class="tok-cls">MySQLDialect</span>
+
+<span class="tok-c"># 默认版本 8.0.0（启用窗口函数、CTE 等）</span>
+dialect = <span class="tok-cls">MySQLDialect</span>()
+
+<span class="tok-c"># 指定 5.7 版本 → 功能降级</span>
+old_dialect = <span class="tok-cls">MySQLDialect</span>(version=(<span class="tok-n">5</span>, <span class="tok-n">7</span>, <span class="tok-n">0</span>))
+old_dialect.supports_window_functions() <span class="tok-c"># False</span>
+old_dialect.supports_cte() <span class="tok-c"># False</span>
+old_dialect.supports_upsert() <span class="tok-c"># True (ON DUPLICATE KEY UPDATE)</span>
+
+<span class="tok-c"># 版本对应功能表</span>
+<span class="tok-c"># 5.7 — ROLLUP / JSON 函数 / 生成列</span>
+<span class="tok-c"># 8.0 — Window Functions / CTE / LATERAL / VALUES list</span>
+<span class="tok-c"># 8.0.14 — SET TABLE option (table_option in ALTER)</span>
+<span class="tok-c"># 不支持 — RETURNING / MERGE / ROLLUP(5.7 之前)</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="dialect_features.label">Feature Matrix</div>
+<h2 class="section-title" data-i18n="dialect_features.title">方言功能矩阵。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Supported</div>
+<h3 class="feature-title" data-i18n="dialect_features.supported">支持</h3>
+<p class="feature-desc">CTE (8.0+) / Window Functions (8.0+) / LATERAL (8.0+) / ROLLUP (5.7+) / UPSERT / SAVEPOINT / JSON / Generated Columns / Triggers / Partition</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Not Supported</div>
+<h3 class="feature-title" data-i18n="dialect_features.unsupported">不支持</h3>
+<p class="feature-desc">RETURNING / MERGE / CUBE / GROUPING SETS / ARRAY / FOR UPDATE SKIP LOCKED (部分) / ILIKE / Qualify / Full-Text MATCH (仅 InnoDB)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / MySQL-specific</div>
+<h3 class="feature-title" data-i18n="dialect_features.mysql_specific">MySQL 专有</h3>
+<p class="feature-desc">ON DUPLICATE KEY UPDATE / REPLACE INTO / INSERT IGNORE / SHOW 命令 / ENGINE 选项 / PARTITION / ENUM / SET 类型</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="insert_syntax.label">INSERT Syntax</div>
+<h2 class="section-title" data-i18n="insert_syntax.title">INSERT 语法扩展。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">insert_syntax.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.expression <span class="tok-k">import</span> <span class="tok-cls">InsertExpression</span>, <span class="tok-cls">ValuesSource</span>, <span class="tok-cls">Literal</span>
+
+<span class="tok-c"># ON DUPLICATE KEY UPDATE（MySQL 专有 upsert）</span>
+insert = <span class="tok-cls">InsertExpression</span>(
+    dialect=dialect, into=<span class="tok-s">'users'</span>,
+    columns=[<span class="tok-s">'id'</span>, <span class="tok-s">'name'</span>, <span class="tok-s">'score'</span>],
+    source=<span class="tok-cls">ValuesSource</span>(dialect, [[<span class="tok-cls">Literal</span>(dialect, <span class="tok-n">1</span>), <span class="tok-cls">Literal</span>(dialect, <span class="tok-s">'Alice'</span>), <span class="tok-cls">Literal</span>(dialect, <span class="tok-n">95</span>)]]),
+    dialect_options={
+        <span class="tok-s">'on_duplicate_key_update'</span>: {<span class="tok-s">'name'</span>: <span class="tok-cls">Literal</span>(dialect, <span class="tok-s">'Alice'</span>), <span class="tok-s">'score'</span>: <span class="tok-cls">Literal</span>(dialect, <span class="tok-n">95</span>)}
+    }
+)
+<span class="tok-c"># → INSERT INTO users (id, name, score) VALUES (1, 'Alice', 95)</span>
+<span class="tok-c">#   ON DUPLICATE KEY UPDATE name='Alice', score=95</span>
+
+<span class="tok-c"># REPLACE INTO（删除旧行，插入新行）</span>
+replace = <span class="tok-cls">InsertExpression</span>(
+    dialect=dialect, into=<span class="tok-s">'users'</span>,
+    columns=[<span class="tok-s">'id'</span>, <span class="tok-s">'name'</span>],
+    source=<span class="tok-cls">ValuesSource</span>(dialect, [[<span class="tok-cls">Literal</span>(dialect, <span class="tok-n">1</span>), <span class="tok-cls">Literal</span>(dialect, <span class="tok-s">'Alice'</span>)]]),
+    dialect_options={<span class="tok-s">'replace'</span>: <span class="tok-k">True</span>}
+)
+
+<span class="tok-c"># INSERT IGNORE（静默跳过冲突行）</span>
+ignore = <span class="tok-cls">InsertExpression</span>(
+    dialect=dialect, into=<span class="tok-s">'users'</span>,
+    columns=[<span class="tok-s">'id'</span>, <span class="tok-s">'name'</span>],
+    source=<span class="tok-cls">ValuesSource</span>(dialect, [[<span class="tok-cls">Literal</span>(dialect, <span class="tok-n">1</span>), <span class="tok-cls">Literal</span>(dialect, <span class="tok-s">'Alice'</span>)]]),
+    dialect_options={<span class="tok-s">'ignore'</span>: <span class="tok-k">True</span>}
+)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="protocols.label">Protocols</div>
+<h2 class="section-title" data-i18n="protocols.title">MySQL 专有协议。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / SHOW</div>
+<h3 class="feature-title" data-i18n="protocols.show">MySQLShowSupport</h3>
+<p class="feature-desc">format_show_create_table() / format_show_columns() / format_show_index() / format_show_table_status() / format_show_variables() / ... 17 种 SHOW 表达式</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Partition</div>
+<h3 class="feature-title" data-i18n="protocols.partition">MySQLPartitionSupport</h3>
+<p class="feature-desc">supports_partition() / format_partition_by_range() / format_partition_by_list() / format_partition_by_hash() / format_add_partition() / format_drop_partition()</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Engine</div>
+<h3 class="feature-title" data-i18n="protocols.engine">MySQLEngineSupport</h3>
+<p class="feature-desc">supports_engine_option() / format_engine_option() — InnoDB / MyISAM / Memory 等引擎选项</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="show_code.label">SHOW Example</div>
+<h2 class="section-title" data-i18n="show_code.title">SHOW 命令示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">show_example.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.mysql <span class="tok-k">import</span> <span class="tok-cls">MySQLBackend</span>
+
+backend = <span class="tok-cls">MySQLBackend</span>(host=<span class="tok-s">'127.0.0.1'</span>, user=<span class="tok-s">'root'</span>, database=<span class="tok-s">'app_db'</span>)
+backend.connect()
+dialect = backend.dialect
+
+<span class="tok-c"># SHOW CREATE TABLE</span>
+sql, params = dialect.format_show_create_table(table_name=<span class="tok-s">'users'</span>)
+<span class="tok-c"># → SHOW CREATE TABLE \`users\`</span>
+
+<span class="tok-c"># SHOW COLUMNS</span>
+sql, params = dialect.format_show_columns(table_name=<span class="tok-s">'users'</span>)
+<span class="tok-c"># → SHOW COLUMNS FROM \`users\`</span>
+
+<span class="tok-c"># SHOW INDEX</span>
+sql, params = dialect.format_show_index(table_name=<span class="tok-s">'users'</span>)
+<span class="tok-c"># → SHOW INDEX FROM \`users\`</span>
+
+<span class="tok-c"># SHOW TABLE STATUS</span>
+sql, params = dialect.format_show_table_status(database=<span class="tok-s">'app_db'</span>)
+<span class="tok-c"># → SHOW TABLE STATUS FROM \`app_db\`</span>
+
+<span class="tok-c"># SHOW VARIABLES</span>
+sql, params = dialect.format_show_variables(like_pattern=<span class="tok-s">'max_connections'</span>)
+<span class="tok-c"># → SHOW VARIABLES LIKE 'max_connections'</span>
+
+<span class="tok-c"># 完整 SHOW 表达式类列表（17 种）：</span>
+<span class="tok-c"># ShowExpression / ShowCreateTableExpression / ShowColumnsExpression</span>
+<span class="tok-c"># ShowIndexExpression / ShowTableStatusExpression / ShowVariablesExpression</span>
+<span class="tok-c"># ShowStatusExpression / ShowProcessListExpression / ShowEnginesExpression</span>
+<span class="tok-c"># ShowCharacterSetExpression / ShowCollationExpression / ShowGrantsExpression</span>
+<span class="tok-c"># ShowTriggersExpression / ShowWarningsExpression / ShowErrorsExpression</span>
+<span class="tok-c"># ShowPluginsExpression / ShowProfilesExpression</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="partition_code.label">Partition</div>
+<h2 class="section-title" data-i18n="partition_code.title">分区表示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">partition_example.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.mysql.dialect <span class="tok-k">import</span> <span class="tok-cls">MySQLDialect</span>
+
+dialect = <span class="tok-cls">MySQLDialect</span>()
+
+<span class="tok-c"># RANGE 分区</span>
+sql, params = dialect.format_partition_by_range(
+    table_name=<span class="tok-s">'orders'</span>,
+    column=<span class="tok-s">'created_at'</span>,
+    partitions=[
+        (<span class="tok-s">'p2024q1'</span>, <span class="tok-s">'2024-04-01'</span>),
+        (<span class="tok-s">'p2024q2'</span>, <span class="tok-s">'2024-07-01'</span>),
+        (<span class="tok-s">'p2024q3'</span>, <span class="tok-s">'2024-10-01'</span>),
+    ]
+)
+
+<span class="tok-c"># LIST 分区</span>
+sql, params = dialect.format_partition_by_list(
+    table_name=<span class="tok-s">'users'</span>,
+    column=<span class="tok-s">'region'</span>,
+    partitions=[
+        (<span class="tok-s">'p_asia'</span>, [<span class="tok-s">'CN'</span>, <span class="tok-s">'JP'</span>, <span class="tok-s">'KR'</span>]),
+        (<span class="tok-s">'p_europe'</span>, [<span class="tok-s">'DE'</span>, <span class="tok-s">'FR'</span>, <span class="tok-s">'GB'</span>]),
+    ]
+)
+
+<span class="tok-c"># HASH 分区</span>
+sql, params = dialect.format_partition_by_hash(
+    table_name=<span class="tok-s">'logs'</span>,
+    column=<span class="tok-s">'id'</span>,
+    num_partitions=<span class="tok-n">8</span>,
+)
+
+<span class="tok-c"># 动态管理分区</span>
+sql = dialect.format_add_partition(table_name=<span class="tok-s">'orders'</span>, name=<span class="tok-s">'p2024q4'</span>, value=<span class="tok-s">'2025-01-01'</span>)
+sql = dialect.format_drop_partition(table_name=<span class="tok-s">'orders'</span>, name=<span class="tok-s">'p2024q1'</span>)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="functions.label">Functions</div>
+<h2 class="section-title" data-i18n="functions.title">MySQL 专有函数工厂。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / JSON</div>
+<h3 class="feature-title" data-i18n="functions.json">JSON</h3>
+<p class="feature-desc">json_extract / json_contains / json_contains_path / json_keys / json_overlaps / json_search / json_set / json_insert / json_replace / json_remove / json_type / json_valid / json_depth / json_length / json_pretty</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Spatial</div>
+<h3 class="feature-title" data-i18n="functions.spatial">空间</h3>
+<p class="feature-desc">st_geom_from_text / st_geom_from_wkb / st_as_text / st_as_wkb / st_distance / st_within / st_contains / st_intersects / st_buffer / st_centroid / st_envelope</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Full-Text</div>
+<h3 class="feature-title" data-i18n="functions.fulltext">全文搜索</h3>
+<p class="feature-desc">match_against — MATCH ... AGAINST (NATURAL LANGUAGE MODE / BOOLEAN MODE / WITH QUERY EXPANSION)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / SET/Enum</div>
+<h3 class="feature-title" data-i18n="functions.set_enum">SET / ENUM</h3>
+<p class="feature-desc">find_in_set / elt / field — MySQL 专有 SET/ENUM 操作函数</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / String</div>
+<h3 class="feature-title" data-i18n="functions.string">字符串</h3>
+<p class="feature-desc">group_concat / concat_ws / format_func / hex / unhex / quote / instr / field / elt</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / DateTime</div>
+<h3 class="feature-title" data-i18n="functions.datetime">日期时间</h3>
+<p class="feature-desc">now / curdate / curtime / date_add / date_sub / datediff / date_format / str_to_date / timestampdiff / timestampadd / last_day / dayname / monthname</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">07 / System</div>
+<h3 class="feature-title" data-i18n="functions.system">系统</h3>
+<p class="feature-desc">last_insert_id / row_count / found_rows / database / user / version / connection_id / benchmark / sleep</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="function_code.label">Function Example</div>
+<h2 class="section-title" data-i18n="function_code.title">函数使用示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">function_example.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.mysql.dialect <span class="tok-k">import</span> <span class="tok-cls">MySQLDialect</span>
+
+dialect = <span class="tok-cls">MySQLDialect</span>()
+
+<span class="tok-c"># JSON 路径提取</span>
+sql, params = dialect.json_extract(column=<span class="tok-s">'metadata'</span>, path=<span class="tok-s">'$.name'</span>)
+<span class="tok-c"># → JSON_EXTRACT(\`metadata\`, '$.name')</span>
+
+<span class="tok-c"># JSON 包含检测</span>
+sql, params = dialect.json_contains(column=<span class="tok-s">'tags'</span>, value=<span class="tok-s">'"python"'</span>)
+<span class="tok-c"># → JSON_CONTAINS(\`tags\`, '"python"')</span>
+
+<span class="tok-c"># 全文搜索</span>
+sql, params = dialect.match_against(
+    columns=[<span class="tok-s">'title'</span>, <span class="tok-s">'body'</span>],
+    query=<span class="tok-s">'python async'</span>,
+    mode=<span class="tok-s">'NATURAL_LANGUAGE_MODE'</span>
+)
+<span class="tok-c"># → MATCH (\`title\`, \`body\`) AGAINST ('python async' IN NATURAL LANGUAGE MODE)</span>
+
+<span class="tok-c"># 空间距离</span>
+sql, params = dialect.st_distance(geom1=<span class="tok-s">'location'</span>, geom2=<span class="tok-s">'ST_GeomFromText(?)'</span>)
+<span class="tok-c"># → ST_Distance(\`location\`, ST_GeomFromText(?))</span>
+
+<span class="tok-c"># SET 查询</span>
+sql, params = dialect.find_in_set(value=<span class="tok-s">'admin'</span>, set_column=<span class="tok-s">'roles'</span>)
+<span class="tok-c"># → FIND_IN_SET('admin', \`roles\`)</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="transaction.label">Transaction</div>
+<h2 class="section-title" data-i18n="transaction.title">事务控制。</h2>
+</div>
+<p class="section-intro" data-i18n="transaction.desc">MySQLTransactionManager 支持全部四种 SQL 标准隔离级别。默认 REPEATABLE_READ。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">transaction_control.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.transaction <span class="tok-k">import</span> <span class="tok-cls">IsolationLevel</span>
+
+<span class="tok-c"># 标准事务（默认 REPEATABLE READ）</span>
+<span class="tok-k">with</span> backend.transaction():
+    backend.execute(<span class="tok-s">"INSERT INTO users ..."</span>, ())
+
+<span class="tok-c"># 指定隔离级别</span>
+<span class="tok-k">with</span> backend.transaction(isolation_level=<span class="tok-cls">IsolationLevel</span>.READ_COMMITTED):
+    ...
+
+<span class="tok-c"># MySQL 支持的四种隔离级别</span>
+<span class="tok-c"># READ_UNCOMMITTED — 可能读到未提交数据（脏读）</span>
+<span class="tok-c"># READ_COMMITTED — 只读已提交数据（PostgreSQL 默认）</span>
+<span class="tok-c"># REPEATABLE_READ — 可重复读（MySQL 默认，防止幻读）</span>
+<span class="tok-c"># SERIALIZABLE — 最高隔离级别，完全串行化</span>
+
+<span class="tok-c"># Savepoint 支持</span>
+<span class="tok-k">with</span> backend.transaction():
+    backend.execute(<span class="tok-s">"INSERT ..."</span>, ())
+    <span class="tok-k">with</span> backend.transaction(): <span class="tok-c"># SAVEPOINT</span>
+        backend.execute(<span class="tok-s">"UPDATE ..."</span>, ())
+        <span class="tok-c"># ROLLBACK TO SAVEPOINT → 自动回滚</span>
+
+<span class="tok-c"># 显式锁（SELECT ... FOR UPDATE / LOCK IN SHARE MODE）</span>
+<span class="tok-c"># 通过查询表达式的 dialect_options 设置</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="async.label">Async</div>
+<h2 class="section-title" data-i18n="async.title">异步支持。</h2>
+</div>
+<p class="section-intro" data-i18n="async.desc">AsyncMySQLBackend / AsyncMySQLTransactionManager 懒加载，需安装 aiomysql。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">async_mysql.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.mysql <span class="tok-k">import</span> <span class="tok-cls">AsyncMySQLBackend</span>
+<span class="tok-c"># 需安装: pip install rhosocial-activerecord-mysql[async]</span>
+
+backend = <span class="tok-cls">AsyncMySQLBackend</span>(
+    host=<span class="tok-s">'127.0.0.1'</span>,
+    port=<span class="tok-n">3306</span>,
+    user=<span class="tok-s">'app_user'</span>,
+    password=<span class="tok-s">'secret'</span>,
+    database=<span class="tok-s">'app_db'</span>,
+)
+<span class="tok-k">await</span> backend.connect()
+
+<span class="tok-k">async with</span> backend.transaction():
+    result = <span class="tok-k">await</span> backend.execute(<span class="tok-s">"SELECT ..."</span>, ())
+
+<span class="tok-k">await</span> backend.disconnect()
+
+<span class="tok-c"># 懒加载机制：导入同步组件不需要 aiomysql</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.mysql <span class="tok-k">import</span> <span class="tok-cls">MySQLBackend</span> <span class="tok-c"># ✓ 无需 aiomysql</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.mysql <span class="tok-k">import</span> <span class="tok-cls">AsyncMySQLBackend</span> <span class="tok-c"># ✗ 需要 aiomysql</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="env_config.label">Environment</div>
+<h2 class="section-title" data-i18n="env_config.title">环境变量配置。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">env_config.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.mysql.config <span class="tok-k">import</span> <span class="tok-cls">MySQLConnectionConfig</span>
+
+<span class="tok-c"># 从环境变量创建配置（前缀 MYSQL_）</span>
+config = <span class="tok-cls">MySQLConnectionConfig</span>.from_env(prefix=<span class="tok-s">"MYSQL_"</span>)
+
+<span class="tok-c"># 支持的环境变量：</span>
+<span class="tok-c"># MYSQL_HOST — 主机地址（默认 127.0.0.1）</span>
+<span class="tok-c"># MYSQL_PORT — 端口号（默认 3306）</span>
+<span class="tok-c"># MYSQL_USER — 用户名</span>
+<span class="tok-c"># MYSQL_PASSWORD — 密码</span>
+<span class="tok-c"># MYSQL_DATABASE — 数据库名</span>
+<span class="tok-c"># MYSQL_POOL_SIZE — 连接池大小</span>
+<span class="tok-c"># MYSQL_POOL_NAME — 连接池名称</span>
+<span class="tok-c"># MYSQL_CHARSET — 字符集（默认 utf8mb4）</span>
+<span class="tok-c"># MYSQL_COLLATION — 排序规则</span>
+<span class="tok-c"># MYSQL_TIMEZONE — 会话时区</span>
+<span class="tok-c"># MYSQL_SSL_CA — SSL CA 证书路径</span>
+<span class="tok-c"># MYSQL_SSL_CERT — SSL 客户端证书路径</span>
+<span class="tok-c"># MYSQL_SSL_KEY — SSL 客户端密钥路径</span></pre></div>
+</div>
+</div>
+</section></main>
+<script>
+(function(){var o=new IntersectionObserver(function(e){e.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visible");o.unobserve(e.target)}})},{threshold:.12});document.querySelectorAll(".reveal").forEach(function(e){o.observe(e)})})();
+</script>`;
+---
+
+<BaseLayout title="rhosocial ActiveRecord — MySQL" variant="back">
+  <Fragment set:html={__html} />
+</BaseLayout>

@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const __html = `<div class="grid-bg" style="position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:60px 60px"></div>
+
+<main>
+<div class="policy-page">
+  <h1>联系我们</h1>
+  <p class="meta">我们期待听到您的声音</p>
+
+  <p>无论您是遇到问题、有功能建议，还是希望参与贡献，我们都很乐意与您交流。以下是最便捷的联系方式：</p>
+
+  <div class="contact-card">
+    <h3><span class="icon">▶</span> GitHub Issues（推荐）</h3>
+    <p>页面问题最推荐直接提交到网站仓库的 Issues：</p>
+    <p><a href="https://github.com/rhosocial/rhosocial.github.io/issues" target="_blank">https://github.com/rhosocial/rhosocial.github.io/issues</a></p>
+  </div>
+
+  <div class="contact-card">
+    <h3><span class="icon">▶</span> GitHub Discussions</h3>
+    <p>如果您想进行更广泛的讨论、提问使用方法或分享您的使用案例，请访问 Discussions 板块。</p>
+    <p><a href="https://github.com/rhosocial/python-activerecord/discussions" target="_blank">https://github.com/rhosocial/python-activerecord/discussions</a></p>
+  </div>
+
+  <div class="contact-card">
+    <h3><span class="icon">▶</span> 电子邮件</h3>
+    <p>对于敏感问题或直接沟通，您也可以通过电子邮件联系：</p>
+    <p><a href="mailto:vistart@rho.social">vistart@rho.social</a></p>
+  </div>
+
+  <div class="contact-card">
+    <h3><span class="icon">▶</span> 贡献代码</h3>
+    <p>想提交代码？欢迎 Fork 我们的仓库并提交 Pull Request。请先阅读贡献指南（CONTRIBUTING.md）。</p>
+    <p><a href="https://github.com/rhosocial/python-activerecord" target="_blank">https://github.com/rhosocial/python-activerecord</a></p>
+  </div>
+
+  <h2>响应时间</h2>
+  <p>我们会尽最大努力在 48 小时内回复您的问题。对于 GitHub Issues 和 Discussions，其他社区成员也可能提供帮助，通常响应更快。</p>
+</div>
+</main>`;
+---
+
+<BaseLayout title="联系我们 — rhosocial ActiveRecord" variant="ar">
+  <Fragment set:html={__html} />
+</BaseLayout>

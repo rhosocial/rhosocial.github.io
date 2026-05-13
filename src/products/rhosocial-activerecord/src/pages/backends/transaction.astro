@@ -1,0 +1,314 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const __html = `<style>
+:root, body {
+  --code-keyword:   var(--tok-keyword);
+  --code-class:     var(--tok-class);
+  --code-fn:        var(--tok-func);
+  --code-string:    var(--tok-string);
+  --code-number:    var(--tok-num);
+  --code-comment:   var(--tok-comment);
+  --code-op:        var(--tok-op);
+  --surface-0:      var(--bg-2);
+  --surface-1:      var(--bg-elevated);
+  --surface-2:      var(--bg-2);
+  --surface-3:      color-mix(in srgb, var(--fg) 8%, var(--bg));
+  --text-primary:   var(--fg);
+  --text-secondary: var(--fg-muted);
+  --text-muted:     var(--fg-faint);
+  --accent-soft:    color-mix(in srgb, var(--accent) 15%, transparent);
+  --accent-secondary:      var(--accent-2);
+  --accent-secondary-soft: color-mix(in srgb, var(--accent-2) 12%, transparent);
+  --accent-fg:      var(--bg);
+  --ok:             var(--success);
+  --ok-soft:        color-mix(in srgb, var(--success) 12%, transparent);
+  --err:            var(--danger);
+  --err-soft:       color-mix(in srgb, var(--danger) 12%, transparent);
+  --info:           var(--info);
+  --warn:           var(--warning, #f59e0b);
+  --warn-soft:      color-mix(in srgb, var(--warning, #f59e0b) 12%, transparent);
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 9999px;
+}
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-d1 { transition-delay:0.1s; }
+.reveal-d2 { transition-delay:0.2s; }
+</style>
+<main class="page">
+<section class="hero section reveal">
+<div class="container hero-inner">
+<div class="hero-eyebrow rise"><a href="./index.html">&larr; <span data-i18n="hero.back">Backends</span></div>
+<h1 class="hero-title rise">Transaction</h1>
+<p class="hero-sub rise" data-i18n="hero.sub">后端层面事务控制，保存点与隔离级别。</p>
+</div>
+</section>
+<section class="section reveal reveal-d1">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="manager.label">Manager</div>
+<h2 class="section-title" data-i18n="manager.title">TransactionManager。</h2>
+</div>
+<p class="section-intro" data-i18n="manager.base">TransactionManagerBase(ABC) — 共享非 I/O 逻辑。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">transaction_manager.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.transaction <span class="tok-k">import</span> (
+    <span class="tok-cls">TransactionManager</span>, <span class="tok-cls">AsyncTransactionManager</span>
+)
+
+<span class="tok-c"># TransactionManagerBase(ABC) — 非I/O逻辑基类</span>
+<span class="tok-c">#   ├─ TransactionManager — 同步版</span>
+<span class="tok-c">#   └─ AsyncTransactionManager — 异步版</span>
+
+<span class="tok-c"># 核心方法（sync / async 对等）</span>
+<span class="tok-c"># begin()               — 开启事务（level=1 真实 BEGIN，>1 SAVEPOINT）</span>
+<span class="tok-c"># commit()              — 提交（level=1 真实 COMMIT，>1 RELEASE SAVEPOINT）</span>
+<span class="tok-c"># rollback()            — 回滚（level=1 真实 ROLLBACK，>1 ROLLBACK TO SAVEPOINT）</span>
+<span class="tok-c"># savepoint(name=None)  — 创建保存点</span>
+<span class="tok-c"># release(name)         — 释放保存点</span>
+<span class="tok-c"># rollback_to(name)     — 回滚到指定保存点</span>
+<span class="tok-c"># transaction(...)      — 上下文管理器（自动提交/回滚）</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="isolation.label">Isolation</div>
+<h2 class="section-title" data-i18n="isolation.title">隔离级别。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01</div>
+<h3 class="feature-title" data-i18n="isolation.read_uncommitted">READ_UNCOMMITTED</h3>
+<p class="feature-desc">读未提交，最低隔离级别。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02</div>
+<h3 class="feature-title" data-i18n="isolation.read_committed">READ_COMMITTED</h3>
+<p class="feature-desc">读已提交，大多数数据库默认。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03</div>
+<h3 class="feature-title" data-i18n="isolation.repeatable_read">REPEATABLE_READ</h3>
+<p class="feature-desc">可重复读，MySQL 默认。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04</div>
+<h3 class="feature-title" data-i18n="isolation.serializable">SERIALIZABLE</h3>
+<p class="feature-desc">可串行化，最高隔离级别，SQLite 唯一支持。</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="state.label">State</div>
+<h2 class="section-title" data-i18n="state.title">事务状态。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">transaction_state.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.transaction <span class="tok-k">import</span> <span class="tok-cls">TransactionState</span>
+
+<span class="tok-c"># TransactionState 枚举</span>
+<span class="tok-c"># INACTIVE    — 无活跃事务</span>
+<span class="tok-c"># ACTIVE      — 事务进行中</span>
+<span class="tok-c"># COMMITTED   — 已提交</span>
+<span class="tok-c"># ROLLED_BACK — 已回滚</span>
+
+<span class="tok-c"># 状态转换：</span>
+<span class="tok-c"># INACTIVE → begin() → ACTIVE → commit() → COMMITTED → INACTIVE</span>
+<span class="tok-c"># ACTIVE → rollback() → ROLLED_BACK → INACTIVE</span>
+
+manager = backend.transaction_manager
+<span class="tok-f">print</span>(manager.state)  <span class="tok-c"># TransactionState.INACTIVE</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="control_expr.label">Control Expression</div>
+<h2 class="section-title" data-i18n="control_expr.title">事务控制表达式。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">transaction_expressions.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.expression.transaction <span class="tok-k">import</span> (
+    <span class="tok-cls">BeginTransactionExpression</span>,
+    <span class="tok-cls">CommitTransactionExpression</span>,
+    <span class="tok-cls">RollbackTransactionExpression</span>,
+    <span class="tok-cls">SavepointExpression</span>,
+    <span class="tok-cls">ReleaseSavepointExpression</span>,
+    <span class="tok-cls">SetTransactionExpression</span>
+)
+<span class="tok-k">from</span> rhosocial.activerecord.backend.transaction <span class="tok-k">import</span> <span class="tok-cls">IsolationLevel</span>, <span class="tok-cls">TransactionMode</span>
+
+<span class="tok-c"># BeginTransactionExpression — 流式 API</span>
+expr = <span class="tok-cls">BeginTransactionExpression</span>(dialect) \\
+    .<span class="tok-f">isolation_level</span>(<span class="tok-cls">IsolationLevel</span>.SERIALIZABLE) \\
+    .<span class="tok-f">read_only</span>() \\
+    .<span class="tok-f">deferrable</span>(<span class="tok-k">True</span>)  <span class="tok-c"># PostgreSQL 特有</span>
+
+<span class="tok-c"># SQLite 特有：begin_type</span>
+expr = <span class="tok-cls">BeginTransactionExpression</span>(dialect) \\
+    .<span class="tok-f">begin_type</span>(<span class="tok-s">'IMMEDIATE'</span>)
+
+<span class="tok-c"># SetTransactionExpression</span>
+expr = <span class="tok-cls">SetTransactionExpression</span>(dialect) \\
+    .<span class="tok-f">isolation_level</span>(<span class="tok-cls">IsolationLevel</span>.READ_COMMITTED) \\
+    .<span class="tok-f">session</span>(<span class="tok-k">True</span>)  <span class="tok-c"># SET SESSION CHARACTERISTICS</span>
+
+<span class="tok-c"># RollbackTransactionExpression</span>
+expr = <span class="tok-cls">RollbackTransactionExpression</span>(dialect).<span class="tok-f">to_savepoint</span>(<span class="tok-s">'SP_1'</span>)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="savepoint.label">Savepoint</div>
+<h2 class="section-title" data-i18n="savepoint.title">保存点。</h2>
+</div>
+<p class="section-intro" data-i18n="savepoint.desc">嵌套事务通过保存点实现：level=1 真实 BEGIN，level>1 创建 SAVEPOINT。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">savepoint.py</span></div>
+<div class="code-body"><pre><span class="tok-k">with</span> backend.<span class="tok-f">transaction</span>():
+    <span class="tok-c"># 外层事务 — 真实 BEGIN</span>
+    User(username=<span class="tok-s">'Alice'</span>).<span class="tok-f">save</span>()
+
+    <span class="tok-k">with</span> backend.<span class="tok-f">transaction</span>():
+        <span class="tok-c"># 内层事务 — SAVEPOINT SP_1</span>
+        User(username=<span class="tok-s">'Bob'</span>).<span class="tok-f">save</span>()
+
+    <span class="tok-c"># 显式保存点 API</span>
+    sp = backend.transaction_manager.<span class="tok-f">savepoint</span>(<span class="tok-s">'my_point'</span>)
+    <span class="tok-c"># ... 操作 ...</span>
+    backend.transaction_manager.<span class="tok-f">rollback_to</span>(sp)
+    <span class="tok-c"># 回滚到 my_point，后续操作撤销</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="mode.label">Mode</div>
+<h2 class="section-title" data-i18n="mode.title">事务模式。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / READ_WRITE</div>
+<h3 class="feature-title" data-i18n="mode.read_write">READ_WRITE</h3>
+<p class="feature-desc">默认模式，允许读写操作。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / READ_ONLY</div>
+<h3 class="feature-title" data-i18n="mode.read_only">READ_ONLY</h3>
+<p class="feature-desc">只读模式，禁止写操作。PostgreSQL / MySQL 5.6.5+ 支持。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / DEFERRABLE</div>
+<h3 class="feature-title" data-i18n="mode.deferrable">DEFERRABLE</h3>
+<p class="feature-desc">PostgreSQL 特有，可延迟约束检查至事务结束。</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="context.label">Context Manager</div>
+<h2 class="section-title" data-i18n="context.title">上下文管理器。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">transaction_context.py</span></div>
+<div class="code-body"><pre><span class="tok-c"># 便捷用法 — 自动提交/回滚</span>
+<span class="tok-k">with</span> backend.<span class="tok-f">transaction</span>():
+    User(username=<span class="tok-s">'Alice'</span>).<span class="tok-f">save</span>()
+    User(username=<span class="tok-s">'Bob'</span>).<span class="tok-f">save</span>()
+    <span class="tok-c"># 成功 → COMMIT，异常 → ROLLBACK</span>
+
+<span class="tok-c"># 异步版</span>
+<span class="tok-k">async with</span> backend.<span class="tok-f">transaction</span>():
+    <span class="tok-k">await</span> User(username=<span class="tok-s">'Alice'</span>).<span class="tok-f">asave</span>()
+
+<span class="tok-c"># 指定隔离级别和模式 — 通过 transaction_manager</span>
+<span class="tok-k">with</span> backend.transaction_manager.<span class="tok-f">transaction</span>(
+    isolation_level=<span class="tok-cls">IsolationLevel</span>.SERIALIZABLE,
+    mode=<span class="tok-cls">TransactionMode</span>.READ_ONLY
+):
+    users = User.query().all()
+
+<span class="tok-c"># 也可通过 ActiveRecord 模型类</span>
+<span class="tok-k">with</span> User.<span class="tok-f">transaction</span>():
+    User(username=<span class="tok-s">'Alice'</span>).<span class="tok-f">save</span>()</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="backend_diff.label">Backend Diff</div>
+<h2 class="section-title" data-i18n="backend_diff.title">各后端差异。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / SQLite</div>
+<h3 class="feature-title" data-i18n="backend_diff.sqlite">SQLite</h3>
+<p class="feature-desc">仅 SERIALIZABLE / READ_UNCOMMITTED；DEFERRED / IMMEDIATE / EXCLUSIVE 开始类型。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / MySQL</div>
+<h3 class="feature-title" data-i18n="backend_diff.mysql">MySQL</h3>
+<p class="feature-desc">REPEATABLE_READ 默认隔离级别。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / PostgreSQL</div>
+<h3 class="feature-title" data-i18n="backend_diff.postgres">PostgreSQL</h3>
+<p class="feature-desc">所有标准隔离级别 + DEFERRABLE + READ ONLY / READ WRITE。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Oracle</div>
+<h3 class="feature-title" data-i18n="backend_diff.oracle">Oracle</h3>
+<p class="feature-desc">READ_COMMITTED / SERIALIZABLE。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / SQL Server</div>
+<h3 class="feature-title" data-i18n="backend_diff.sqlserver">SQL Server</h3>
+<p class="feature-desc">支持 SNAPSHOT 隔离级别。</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="errors.label">Errors</div>
+<h2 class="section-title" data-i18n="errors.title">错误类型。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">transaction_errors.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.errors <span class="tok-k">import</span> (
+    <span class="tok-cls">TransactionError</span>,
+    <span class="tok-cls">IsolationLevelError</span>,
+    <span class="tok-cls">UnsupportedTransactionModeError</span>,
+    <span class="tok-cls">UnsupportedIsolationLevelError</span>
+)
+
+<span class="tok-c"># TransactionError — 事务基础错误</span>
+<span class="tok-c"># IsolationLevelError — 活跃事务中不可更改隔离级别</span>
+<span class="tok-c"># UnsupportedTransactionModeError — 后端不支持该事务模式</span>
+<span class="tok-c">#   .feature / .backend 属性</span>
+<span class="tok-c"># UnsupportedIsolationLevelError — 后端不支持该隔离级别</span>
+<span class="tok-c">#   .isolation_level / .backend 属性</span>
+
+<span class="tok-k">try</span>:
+    backend.transaction_manager.isolation_level = <span class="tok-cls">IsolationLevel</span>.SERIALIZABLE
+<span class="tok-k">except</span> <span class="tok-cls">IsolationLevelError</span>:
+    <span class="tok-f">print</span>(<span class="tok-s">"事务进行中，不可更改隔离级别"</span>)</pre></div>
+</div>
+</div>
+</section></main>
+<script>
+(function(){var o=new IntersectionObserver(function(e){e.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visible");o.unobserve(e.target)}})},{threshold:.12});document.querySelectorAll(".reveal").forEach(function(e){o.observe(e)})})();
+</script>`;
+---
+
+<BaseLayout title="rhosocial ActiveRecord — Transaction" variant="back">
+  <Fragment set:html={__html} />
+</BaseLayout>

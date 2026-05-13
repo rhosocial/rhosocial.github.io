@@ -1,0 +1,592 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const __html = `<style>
+:root, body {
+  --code-keyword:   var(--tok-keyword);
+  --code-class:     var(--tok-class);
+  --code-fn:        var(--tok-func);
+  --code-string:    var(--tok-string);
+  --code-number:    var(--tok-num);
+  --code-comment:   var(--tok-comment);
+  --code-op:        var(--tok-op);
+  --surface-0:      var(--bg-2);
+  --surface-1:      var(--bg-elevated);
+  --surface-2:      var(--bg-2);
+  --surface-3:      color-mix(in srgb, var(--fg) 8%, var(--bg));
+  --text-primary:   var(--fg);
+  --text-secondary: var(--fg-muted);
+  --text-muted:     var(--fg-faint);
+  --accent-soft:    color-mix(in srgb, var(--accent) 15%, transparent);
+  --accent-secondary:      var(--accent-2);
+  --accent-secondary-soft: color-mix(in srgb, var(--accent-2) 12%, transparent);
+  --accent-fg:      var(--bg);
+  --ok:             var(--success);
+  --ok-soft:        color-mix(in srgb, var(--success) 12%, transparent);
+  --err:            var(--danger);
+  --err-soft:       color-mix(in srgb, var(--danger) 12%, transparent);
+  --info:           var(--info);
+  --warn:           var(--warning, #f59e0b);
+  --warn-soft:      color-mix(in srgb, var(--warning, #f59e0b) 12%, transparent);
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 9999px;
+}
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-d1 { transition-delay:0.1s; }
+.reveal-d2 { transition-delay:0.2s; }
+</style>
+<main class="page">
+<section class="hero section reveal">
+<div class="container hero-inner">
+<div class="hero-eyebrow rise"><a href="./index.html">&larr; <span data-i18n="hero.back">Backends</span></div>
+<h1 class="hero-title rise">PostgreSQL</h1>
+<p class="hero-sub rise" data-i18n="hero.sub">功能最丰富的开源数据库。ENUM / ARRAY / JSONB / Range / 分区 / 物化视图全覆盖。</p>
+</div>
+</section>
+<section class="section reveal reveal-d1">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="features.label">Features</div>
+<h2 class="section-title" data-i18n="features.title">PostgreSQL 特性。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Rich Types</div>
+<h3 class="feature-title" data-i18n="features.types.title">丰富类型</h3>
+<p class="feature-desc" data-i18n="features.types.desc">原生 ENUM / ARRAY / JSONB / Range / UUID / HSTORE。PostgresEnumType 类型辅助自动管理 DDL。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / MERGE</div>
+<h3 class="feature-title" data-i18n="features.merge.title">MERGE 语句</h3>
+<p class="feature-desc" data-i18n="features.merge.desc">PostgreSQL 15+ 原生 MERGE INTO 支持，标准化 upsert 语义替代 INSERT ... ON CONFLICT。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Partition</div>
+<h3 class="feature-title" data-i18n="features.partition.title">声明式分区</h3>
+<p class="feature-desc" data-i18n="features.partition.desc">RANGE / LIST / HASH 声明式分区。PostgresPartitionSupport 协议 + ATTACH / DETACH 分区管理。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / MVCC</div>
+<h3 class="feature-title" data-i18n="features.mvcc.title">MVCC</h3>
+<p class="feature-desc" data-i18n="features.mvcc.desc">多版本并发控制，四种隔离级别全支持。RETURNING 子句、SAVEPOINT、 advisory lock 完备。</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="connection.label">Connection</div>
+<h2 class="section-title" data-i18n="connection.title">连接配置。</h2>
+</div>
+<p class="section-intro" data-i18n="connection.desc">PostgresConnectionConfig 继承 ConnectionConfig，混入 SSL / SearchPath / Timezone 三组配置。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">connection_config.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.postgresql <span class="tok-k">import</span> <span class="tok-cls">PostgresBackend</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.postgresql.config <span class="tok-k">import</span> <span class="tok-cls">PostgresConnectionConfig</span>
+
+<span class="tok-c"># 标准连接</span>
+config = <span class="tok-cls">PostgresConnectionConfig</span>(
+    host=<span class="tok-s">'127.0.0.1'</span>,
+    port=<span class="tok-n">5432</span>,
+    user=<span class="tok-s">'app_user'</span>,
+    password=<span class="tok-s">'secret'</span>,
+    database=<span class="tok-s">'app_db'</span>,
+)
+backend = <span class="tok-cls">PostgresBackend</span>(connection_config=config)
+backend.connect()
+
+<span class="tok-c"># 快捷方式：直接传连接参数</span>
+backend = <span class="tok-cls">PostgresBackend</span>(
+    host=<span class="tok-s">'127.0.0.1'</span>,
+    port=<span class="tok-n">5432</span>,
+    user=<span class="tok-s">'app_user'</span>,
+    password=<span class="tok-s">'secret'</span>,
+    database=<span class="tok-s">'app_db'</span>,
+)
+
+<span class="tok-c"># 从环境变量创建配置（前缀 PG_）</span>
+config = <span class="tok-cls">PostgresConnectionConfig</span>.from_env(prefix=<span class="tok-s">"PG_"</span>)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="config_mixins.label">Config Mixins</div>
+<h2 class="section-title" data-i18n="config_mixins.title">配置混入。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / SSL</div>
+<h3 class="feature-title" data-i18n="config_mixins.ssl">SSLMixin</h3>
+<p class="feature-desc">ssl_mode (disable / require / verify-ca / verify-full) / ssl_ca / ssl_cert / ssl_key / ssl_root_cert</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / SearchPath</div>
+<h3 class="feature-title" data-i18n="config_mixins.search_path">SearchPathMixin</h3>
+<p class="feature-desc">search_path — schema 搜索路径，影响未限定名解析顺序</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Timezone</div>
+<h3 class="feature-title" data-i18n="config_mixins.timezone">TimezoneMixin</h3>
+<p class="feature-desc">timezone — 会话时区设置，影响 NOW() / CURRENT_TIMESTAMP 等函数</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="ssl_config.label">SSL</div>
+<h2 class="section-title" data-i18n="ssl_config.title">SSL 连接示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">ssl_config.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.postgresql <span class="tok-k">import</span> <span class="tok-cls">PostgresBackend</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.postgresql.config <span class="tok-k">import</span> <span class="tok-cls">PostgresConnectionConfig</span>
+
+<span class="tok-c"># SSL verify-full（最严格模式）</span>
+config = <span class="tok-cls">PostgresConnectionConfig</span>(
+    host=<span class="tok-s">'db.example.com'</span>,
+    port=<span class="tok-n">5432</span>,
+    user=<span class="tok-s">'app_user'</span>,
+    password=<span class="tok-s">'secret'</span>,
+    database=<span class="tok-s">'app_db'</span>,
+    ssl_mode=<span class="tok-s">'verify-full'</span>,
+    ssl_ca=<span class="tok-s">'/path/to/root.crt'</span>,
+    ssl_cert=<span class="tok-s">'/path/to/client.crt'</span>,
+    ssl_key=<span class="tok-s">'/path/to/client.key'</span>,
+)
+
+<span class="tok-c"># Search Path 与时区</span>
+config = <span class="tok-cls">PostgresConnectionConfig</span>(
+    host=<span class="tok-s">'127.0.0.1'</span>,
+    port=<span class="tok-n">5432</span>,
+    user=<span class="tok-s">'postgres'</span>,
+    password=<span class="tok-s">''</span>,
+    database=<span class="tok-s">'app_db'</span>,
+    search_path=<span class="tok-s">'app_schema, public'</span>,
+    timezone=<span class="tok-s">'Asia/Shanghai'</span>,
+)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="type_helpers.label">Type Helpers</div>
+<h2 class="section-title" data-i18n="type_helpers.title">PostgreSQL 类型辅助。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / ENUM</div>
+<h3 class="feature-title" data-i18n="type_helpers.enum">PostgresEnumType</h3>
+<p class="feature-desc">CREATE TYPE ... AS ENUM / DROP TYPE / ALTER TYPE ADD VALUE — 自动管理枚举类型生命周期</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / ARRAY</div>
+<h3 class="feature-title" data-i18n="type_helpers.array">ARRAY</h3>
+<p class="feature-desc">原生数组类型支持 — int[] / text[] / jsonb[] 等，array_agg / unnest 操作</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / JSONB</div>
+<h3 class="feature-title" data-i18n="type_helpers.jsonb">JSONB</h3>
+<p class="feature-desc">二进制 JSON — jsonb_set / jsonb_insert / jsonb_pretty / @> / ? / ?| 操作符</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Range</div>
+<h3 class="feature-title" data-i18n="type_helpers.range">Range</div>
+<p class="feature-desc">int4range / int8range / numrange / daterange / tsrange / tstzrange — 区间类型与操作符</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="enum_ddl.label">ENUM DDL</div>
+<h2 class="section-title" data-i18n="enum_ddl.title">枚举类型 DDL。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">enum_ddl.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.postgresql.dialect <span class="tok-k">import</span> <span class="tok-cls">PostgresDialect</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.postgresql.type <span class="tok-k">import</span> <span class="tok-cls">PostgresEnumType</span>
+
+dialect = <span class="tok-cls">PostgresDialect</span>()
+
+<span class="tok-c"># 创建枚举类型</span>
+enum_type = <span class="tok-cls">PostgresEnumType</span>(name=<span class="tok-s">'user_status'</span>, values=[<span class="tok-s">'active'</span>, <span class="tok-s">'inactive'</span>, <span class="tok-s">'suspended'</span>])
+
+<span class="tok-c"># CREATE TYPE</span>
+sql, params = dialect.format_create_enum_type(
+    type_name=<span class="tok-s">'user_status'</span>,
+    values=[<span class="tok-s">'active'</span>, <span class="tok-s">'inactive'</span>, <span class="tok-s">'suspended'</span>]
+)
+<span class="tok-c"># → CREATE TYPE "user_status" AS ENUM ('active', 'inactive', 'suspended')</span>
+
+<span class="tok-c"># ALTER TYPE ADD VALUE（PostgreSQL 12+ 支持事务内添加）</span>
+sql, params = dialect.format_alter_enum_type_add_value(
+    type_name=<span class="tok-s">'user_status'</span>,
+    new_value=<span class="tok-s">'banned'</span>
+)
+<span class="tok-c"># → ALTER TYPE "user_status" ADD VALUE 'banned'</span>
+
+<span class="tok-c"># DROP TYPE</span>
+sql, params = dialect.format_drop_enum_type(type_name=<span class="tok-s">'user_status'</span>)
+<span class="tok-c"># → DROP TYPE IF EXISTS "user_status"</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="dialect.label">Dialect</div>
+<h2 class="section-title" data-i18n="dialect.title">PostgresDialect 版本感知。</h2>
+</div>
+<p class="section-intro" data-i18n="dialect.desc">PostgresDialect 在初始化时接受版本元组，动态启用/禁用协议方法。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">dialect_version.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.postgresql.dialect <span class="tok-k">import</span> <span class="tok-cls">PostgresDialect</span>
+
+<span class="tok-c"># 默认版本 15.0（启用 MERGE）</span>
+dialect = <span class="tok-cls">PostgresDialect</span>()
+
+<span class="tok-c"># 指定旧版本 → 功能降级</span>
+old_dialect = <span class="tok-cls">PostgresDialect</span>(version=(<span class="tok-n">11</span>, <span class="tok-n">0</span>, <span class="tok-n">0</span>))
+old_dialect.supports_merge() <span class="tok-c"># False</span>
+old_dialect.supports_returning_clause() <span class="tok-c"># True</span>
+old_dialect.supports_partition() <span class="tok-c"># True (10+)</span>
+
+<span class="tok-c"># 版本对应功能表</span>
+<span class="tok-c"># 10 — 声明式分区</span>
+<span class="tok-c"># 12 — CTE 物化控制 (NOT MATERIALIZED)</span>
+<span class="tok-c"># 13 — 生成列 (GENERATED ALWAYS AS)</span>
+<span class="tok-c"># 14 — UNBOUNDED FOLLOWING 窗口帧</span>
+<span class="tok-c"># 15 — MERGE 语句</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="dialect_features.label">Feature Matrix</div>
+<h2 class="section-title" data-i18n="dialect_features.title">方言功能矩阵。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Supported</div>
+<h3 class="feature-title" data-i18n="dialect_features.supported">支持</h3>
+<p class="feature-desc">CTE / Window Functions / RETURNING / UPSERT (ON CONFLICT) / MERGE (15+) / LATERAL / ROLLUP / CUBE / GROUPING SETS / FILTER / ARRAY / JSON/JSONB / Savepoint / Partition (10+) / Generated Columns (13+) / ILIKE / Materialized CTE (12+)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Not Supported</div>
+<h3 class="feature-title" data-i18n="dialect_features.unsupported">不支持</h3>
+<p class="feature-desc">MERGE (14 及以下) / INSERT OR REPLACE / SHOW 命令 (MySQL 式) / ENUM 运行时删除值 / 双引号字符串字面量</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / PostgreSQL-specific</div>
+<h3 class="feature-title" data-i18n="dialect_features.pg_specific">PostgreSQL 专有</h3>
+<p class="feature-desc">ENUM TYPE DDL / Range 类型 / ARRAY / JSONB 操作符 / VACUUM / ANALYZE / COMMENT ON / Materialized View REFRESH / SET TRANSACTION / Advisory Lock / Search Path / CREATE STATISTICS</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="protocols.label">Protocols</div>
+<h2 class="section-title" data-i18n="protocols.title">PostgreSQL 专有协议。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Partition</div>
+<h3 class="feature-title" data-i18n="protocols.partition">PostgresPartitionSupport</h3>
+<p class="feature-desc">format_create_partition() / format_detach_partition() / format_attach_partition() — 声明式分区 + ATTACH/DETACH</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / ENUM</div>
+<h3 class="feature-title" data-i18n="protocols.enum">PostgresEnumSupport</h3>
+<p class="feature-desc">format_create_enum_type() / format_drop_enum_type() / format_alter_enum_type_add_value() — 枚举类型生命周期管理</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Range</div>
+<h3 class="feature-title" data-i18n="protocols.range">PostgresRangeTypeSupport</h3>
+<p class="feature-desc">format_create_range_type() — 自定义 Range 类型 DDL</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="ddl_expressions.label">DDL</div>
+<h2 class="section-title" data-i18n="ddl_expressions.title">PostgreSQL 专有 DDL 表达式。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Maintenance</div>
+<h3 class="feature-title" data-i18n="ddl_expressions.maintenance">维护</h3>
+<p class="feature-desc">PostgresVacuumExpression / PostgresAnalyzeExpression / PostgresReindexExpression — VACUUM / ANALYZE / REINDEX</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Partition</div>
+<h3 class="feature-title" data-i18n="ddl_expressions.partition_ddl">分区</h3>
+<p class="feature-desc">PostgresCreatePartitionExpression / PostgresDetachPartitionExpression / PostgresAttachPartitionExpression</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Statistics</div>
+<h3 class="feature-title" data-i18n="ddl_expressions.statistics">统计</h3>
+<p class="feature-desc">PostgresCreateStatisticsExpression / PostgresDropStatisticsExpression — 扩展统计信息对象</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Metadata</div>
+<h3 class="feature-title" data-i18n="ddl_expressions.metadata">元数据</h3>
+<p class="feature-desc">PostgresCommentExpression — COMMENT ON TABLE/COLUMN/TYPE / PostgresRefreshMaterializedViewExpression</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="ddl_code.label">DDL Example</div>
+<h2 class="section-title" data-i18n="ddl_code.title">DDL 操作示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">ddl_example.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.postgresql <span class="tok-k">import</span> <span class="tok-cls">PostgresBackend</span>
+
+backend = <span class="tok-cls">PostgresBackend</span>(host=<span class="tok-s">'127.0.0.1'</span>, user=<span class="tok-s">'postgres'</span>, database=<span class="tok-s">'app_db'</span>)
+backend.connect()
+dialect = backend.dialect
+
+<span class="tok-c"># VACUUM</span>
+sql, params = dialect.format_vacuum(table_name=<span class="tok-s">'users'</span>, analyze=<span class="tok-k">True</span>)
+<span class="tok-c"># → VACUUM ANALYZE "users"</span>
+
+<span class="tok-c"># ANALYZE</span>
+sql, params = dialect.format_analyze(table_name=<span class="tok-s">'orders'</span>, columns=[<span class="tok-s">'status'</span>, <span class="tok-s">'created_at'</span>])
+<span class="tok-c"># → ANALYZE "orders" ("status", "created_at")</span>
+
+<span class="tok-c"># COMMENT ON</span>
+sql, params = dialect.format_comment(
+    object_type=<span class="tok-s">'TABLE'</span>,
+    object_name=<span class="tok-s">'users'</span>,
+    comment=<span class="tok-s">'Application users'</span>
+)
+<span class="tok-c"># → COMMENT ON TABLE "users" IS 'Application users'</span>
+
+<span class="tok-c"># REFRESH MATERIALIZED VIEW</span>
+sql, params = dialect.format_refresh_materialized_view(
+    view_name=<span class="tok-s">'user_stats'</span>,
+    concurrently=<span class="tok-k">True</span>
+)
+<span class="tok-c"># → REFRESH MATERIALIZED VIEW CONCURRENTLY "user_stats"</span>
+
+<span class="tok-c"># CREATE STATISTICS</span>
+sql, params = dialect.format_create_statistics(
+    name=<span class="tok-s">'user_stats_obj'</span>,
+    kinds=[<span class="tok-s">'ndistinct'</span>, <span class="tok-s">'dependencies'</span>],
+    columns=[<span class="tok-s">'region'</span>, <span class="tok-s">'status'</span>],
+    table_name=<span class="tok-s">'users'</span>
+)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="functions.label">Functions</div>
+<h2 class="section-title" data-i18n="functions.title">PostgreSQL 专有函数工厂。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / JSON</div>
+<h3 class="feature-title" data-i18n="functions.json">JSON/JSONB</h3>
+<p class="feature-desc">json_build_object / jsonb_set / jsonb_insert / jsonb_pretty / jsonb_path_query / jsonb_path_exists / jsonb_each / jsonb_array_elements</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / String</div>
+<h3 class="feature-title" data-i18n="functions.string">字符串</h3>
+<p class="feature-desc">concat_ws / format_func / md5 / sha256 / encode / decode / to_hex / split_part / regexp_replace / regexp_match / left / right / chr / ascii</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Range</div>
+<h3 class="feature-title" data-i18n="functions.range">Range</h3>
+<p class="feature-desc">int4range / int8range / numrange / daterange / tsrange / tstzrange / lower / upper / isempty / overlaps</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Aggregate</div>
+<h3 class="feature-title" data-i18n="functions.aggregate">聚合</h3>
+<p class="feature-desc">string_agg / array_agg / bool_and / bool_or / every / bit_and / bit_or / percentile_cont / percentile_disc / mode / rank / dense_rank / percent_rank</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / System</div>
+<h3 class="feature-title" data-i18n="functions.system">系统</h3>
+<p class="feature-desc">pg_typeof / current_setting / set_config / version / current_database / current_user / inet_client_addr / inet_server_addr / txid_current / pg_is_in_recovery</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / Spatial</div>
+<h3 class="feature-title" data-i18n="functions.spatial">PostGIS</h3>
+<p class="feature-desc">st_geomfromtext / st_distance / st_within / st_contains / st_intersects / st_buffer / st_transform / st_setsrid / GeoJSON — 需 PostGIS 扩展</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">07 / DateTime</div>
+<h3 class="feature-title" data-i18n="functions.datetime">日期时间</h3>
+<p class="feature-desc">now / current_date / current_time / date_trunc / date_part / extract / age / justify_interval / make_date / make_time / make_timestamp / to_char / to_timestamp</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="function_code.label">Function Example</div>
+<h2 class="section-title" data-i18n="function_code.title">函数使用示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">function_example.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.postgresql.dialect <span class="tok-k">import</span> <span class="tok-cls">PostgresDialect</span>
+
+dialect = <span class="tok-cls">PostgresDialect</span>()
+
+<span class="tok-c"># JSONB 路径查询</span>
+sql, params = dialect.jsonb_path_query(
+    column=<span class="tok-s">'metadata'</span>,
+    path=<span class="tok-s">'$.tags[*] ? (@.type == "skill")'</span>
+)
+<span class="tok-c"># → jsonb_path_query("metadata", '$.tags[*] ? (@.type == "skill")')</span>
+
+<span class="tok-c"># JSONB 包含检测（@> 操作符）</span>
+sql, params = dialect.jsonb_contains(
+    column=<span class="tok-s">'settings'</span>,
+    value=<span class="tok-s">'{"theme": "dark"}'</span>
+)
+<span class="tok-c"># → "settings" @> '{"theme": "dark"}'::jsonb</span>
+
+<span class="tok-c"># Range 构造</span>
+sql, params = dialect.int4range(lower=<span class="tok-n">1</span>, upper=<span class="tok-n">100</span>)
+<span class="tok-c"># → int4range(1, 100)</span>
+
+<span class="tok-c"># 系统函数</span>
+sql, params = dialect.pg_typeof(expression=<span class="tok-s">'created_at'</span>)
+<span class="tok-c"># → pg_typeof("created_at")</span>
+
+sql, params = dialect.current_setting(name=<span class="tok-s">'work_mem'</span>)
+<span class="tok-c"># → current_setting('work_mem')</span>
+
+<span class="tok-c"># string_agg 聚合</span>
+sql, params = dialect.string_agg(expression=<span class="tok-s">'name'</span>, delimiter=<span class="tok-s">','</span>)
+<span class="tok-c"># → string_agg("name", ',')</span>
+
+<span class="tok-c"># array_agg 聚合</span>
+sql, params = dialect.array_agg(expression=<span class="tok-s">'tag'</span>)
+<span class="tok-c"># → array_agg("tag")</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="transaction.label">Transaction</div>
+<h2 class="section-title" data-i18n="transaction.title">事务控制。</h2>
+</div>
+<p class="section-intro" data-i18n="transaction.desc">PostgresTransactionManager 支持全部四种 SQL 标准隔离级别。默认 READ_COMMITTED。支持 SET TRANSACTION 设置。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">transaction_control.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.transaction <span class="tok-k">import</span> <span class="tok-cls">IsolationLevel</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.postgresql.dialect <span class="tok-k">import</span> <span class="tok-cls">PostgresDialect</span>
+
+<span class="tok-c"># 标准事务（默认 READ COMMITTED）</span>
+<span class="tok-k">with</span> backend.transaction():
+    backend.execute(<span class="tok-s">"INSERT INTO users ..."</span>, ())
+
+<span class="tok-c"># 指定隔离级别</span>
+<span class="tok-k">with</span> backend.transaction(isolation_level=<span class="tok-cls">IsolationLevel</span>.SERIALIZABLE):
+    ...
+
+<span class="tok-c"># PostgreSQL 四种隔离级别</span>
+<span class="tok-c"># READ_UNCOMMITTED — PostgreSQL 实际提升为 READ_COMMITTED</span>
+<span class="tok-c"># READ_COMMITTED — 默认，每次语句看到最新快照</span>
+<span class="tok-c"># REPEATABLE_READ — 事务内看到一致性快照</span>
+<span class="tok-c"># SERIALIZABLE — 严格串行化，检测序列化失败</span>
+
+<span class="tok-c"># SET TRANSACTION（事务级别配置）</span>
+dialect = <span class="tok-cls">PostgresDialect</span>()
+sql, params = dialect.format_set_transaction(
+    isolation_level=<span class="tok-s">'SERIALIZABLE'</span>,
+    read_only=<span class="tok-k">True</span>,
+    deferrable=<span class="tok-k">True</span>
+)
+<span class="tok-c"># → SET TRANSACTION ISOLATION LEVEL SERIALIZABLE READ ONLY DEFERRABLE</span>
+
+<span class="tok-c"># Savepoint 支持</span>
+<span class="tok-k">with</span> backend.transaction():
+    backend.execute(<span class="tok-s">"INSERT ..."</span>, ())
+    <span class="tok-k">with</span> backend.transaction(): <span class="tok-c"># SAVEPOINT</span>
+        backend.execute(<span class="tok-s">"UPDATE ..."</span>, ())
+        <span class="tok-c"># ROLLBACK TO SAVEPOINT → 自动回滚</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="async.label">Async</div>
+<h2 class="section-title" data-i18n="async.title">异步支持。</h2>
+</div>
+<p class="section-intro" data-i18n="async.desc">AsyncPostgresBackend / AsyncPostgresTransactionManager 懒加载，需安装 asyncpg。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">async_postgres.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.postgresql <span class="tok-k">import</span> <span class="tok-cls">AsyncPostgresBackend</span>
+<span class="tok-c"># 需安装: pip install rhosocial-activerecord-postgres[async]</span>
+
+backend = <span class="tok-cls">AsyncPostgresBackend</span>(
+    host=<span class="tok-s">'127.0.0.1'</span>,
+    port=<span class="tok-n">5432</span>,
+    user=<span class="tok-s">'app_user'</span>,
+    password=<span class="tok-s">'secret'</span>,
+    database=<span class="tok-s">'app_db'</span>,
+)
+<span class="tok-k">await</span> backend.connect()
+
+<span class="tok-k">async with</span> backend.transaction():
+    result = <span class="tok-k">await</span> backend.execute(<span class="tok-s">"SELECT ..."</span>, ())
+
+<span class="tok-k">await</span> backend.disconnect()
+
+<span class="tok-c"># 懒加载机制：导入同步组件不需要 asyncpg</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.postgresql <span class="tok-k">import</span> <span class="tok-cls">PostgresBackend</span> <span class="tok-c"># ✓ 无需 asyncpg</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.postgresql <span class="tok-k">import</span> <span class="tok-cls">AsyncPostgresBackend</span> <span class="tok-c"># ✗ 需要 asyncpg</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="env_config.label">Environment</div>
+<h2 class="section-title" data-i18n="env_config.title">环境变量配置。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">env_config.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.postgresql.config <span class="tok-k">import</span> <span class="tok-cls">PostgresConnectionConfig</span>
+
+<span class="tok-c"># 从环境变量创建配置（前缀 PG_）</span>
+config = <span class="tok-cls">PostgresConnectionConfig</span>.from_env(prefix=<span class="tok-s">"PG_"</span>)
+
+<span class="tok-c"># 支持的环境变量：</span>
+<span class="tok-c"># PG_HOST — 主机地址（默认 127.0.0.1）</span>
+<span class="tok-c"># PG_PORT — 端口号（默认 5432）</span>
+<span class="tok-c"># PG_USER — 用户名</span>
+<span class="tok-c"># PG_PASSWORD — 密码</span>
+<span class="tok-c"># PG_DATABASE — 数据库名</span>
+<span class="tok-c"># PG_SSL_MODE — SSL 模式（disable/require/verify-ca/verify-full）</span>
+<span class="tok-c"># PG_SSL_CA — SSL CA 证书路径</span>
+<span class="tok-c"># PG_SSL_CERT — SSL 客户端证书路径</span>
+<span class="tok-c"># PG_SSL_KEY — SSL 客户端密钥路径</span>
+<span class="tok-c"># PG_SEARCH_PATH — Schema 搜索路径</span>
+<span class="tok-c"># PG_TIMEZONE — 会话时区</span></pre></div>
+</div>
+</div>
+</section></main>
+<script>
+(function(){var o=new IntersectionObserver(function(e){e.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visible");o.unobserve(e.target)}})},{threshold:.12});document.querySelectorAll(".reveal").forEach(function(e){o.observe(e)})})();
+</script>`;
+---
+
+<BaseLayout title="rhosocial ActiveRecord — PostgreSQL" variant="back">
+  <Fragment set:html={__html} />
+</BaseLayout>

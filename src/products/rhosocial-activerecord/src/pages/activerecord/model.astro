@@ -1,0 +1,802 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const __html = `<style>
+/* ═══════════════════════════════════════════════
+   Theme variable mapping — maps theme system vars
+   to UX prototype naming conventions
+   ═══════════════════════════════════════════════ */
+:root, body {
+  --code-keyword:   var(--tok-keyword);
+  --code-class:     var(--tok-class);
+  --code-fn:        var(--tok-func);
+  --code-string:    var(--tok-string);
+  --code-number:    var(--tok-num);
+  --code-comment:   var(--tok-comment);
+  --code-op:        var(--tok-op);
+
+  --surface-0:      var(--bg-2);
+  --surface-1:      var(--bg-elevated);
+  --surface-2:      var(--bg-2);
+  --surface-3:      color-mix(in srgb, var(--fg) 8%, var(--bg));
+  --text-primary:   var(--fg);
+  --text-secondary: var(--fg-muted);
+  --text-muted:     var(--fg-faint);
+  --accent-soft:    color-mix(in srgb, var(--accent) 15%, transparent);
+  --accent-secondary:      var(--accent-2);
+  --accent-secondary-soft: color-mix(in srgb, var(--accent-2) 12%, transparent);
+  --accent-fg:      var(--bg);
+  --ok:             var(--success);
+  --ok-soft:        color-mix(in srgb, var(--success) 12%, transparent);
+  --err:            var(--danger);
+  --err-soft:       color-mix(in srgb, var(--danger) 12%, transparent);
+  --info:           var(--info);
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 9999px;
+}
+
+/* ═══════════════════════════════════════════════
+   Scroll Reveal
+   ═══════════════════════════════════════════════ */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-d1 { transition-delay:0.1s; }
+.reveal-d2 { transition-delay:0.2s; }
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0; padding:0; background:var(--bg); color:var(--text-primary);
+  font-family:var(--font-body); font-size:15px; line-height:1.7; -webkit-font-smoothing:antialiased}
+:lang(zh) body{ line-height:1.75 }
+a{color:var(--accent-secondary); text-decoration:none}
+a:hover{text-decoration:underline}
+code,pre,.mono{font-family:var(--font-mono)}
+h1,h2,h3,h4{font-family:var(--font-display); font-weight:700; letter-spacing:-0.01em; margin:0}
+.container{max-width:1180px; margin:0 auto; padding:0 var(--space-5)}
+
+.hero{ padding:var(--space-8) 0 var(--space-7) }
+.hero .eyebrow{ font-family:var(--font-mono); font-size:11px;
+  letter-spacing:0.16em; text-transform:uppercase; color:var(--accent); margin-bottom:var(--space-3) }
+.hero h1{ font-size:clamp(2rem,5.5vw,3.6rem); line-height:1.05; margin-bottom:var(--space-4) }
+:lang(zh) .hero h1 em{
+  font-style:normal; font-weight:700; color:var(--text-primary);
+  text-decoration:underline; text-decoration-color:var(--accent);
+  text-decoration-thickness:3px; text-underline-offset:8px }
+.hero .lead{ color:var(--text-secondary); font-size:17px; max-width:720px; line-height:1.65 }
+.hero .lead b{ color:var(--text-primary); font-weight:600 }
+.hero .lead code{ color:var(--accent); background:var(--accent-soft); padding:1px 6px; border-radius:3px; font-size:13px }
+.hero-pills{ display:flex; gap:var(--space-2); flex-wrap:wrap; margin-top:var(--space-5) }
+.pill{ display:inline-flex; padding:5px 12px; border-radius:9999px;
+  background:var(--accent-soft); color:var(--accent); border:1px solid var(--accent-soft);
+  font-family:var(--font-mono); font-size:11px; font-weight:700; letter-spacing:0.04em }
+.pill.is-secondary{ background:var(--accent-secondary-soft); color:var(--accent-secondary); border-color:var(--accent-secondary-soft) }
+.pill.is-ghost{ background:transparent; color:var(--text-secondary); border-color:var(--border) }
+
+.hero .stat-row{ display:flex; gap:var(--space-7); margin-top:var(--space-6); flex-wrap:wrap }
+.hero .stat-cell .num{ font-family:var(--font-display); font-size:36px; line-height:1;
+  color:var(--accent); font-weight:700; font-feature-settings:'tnum' }
+.hero .stat-cell .lbl{ font-family:var(--font-mono); font-size:11px;
+  color:var(--text-muted); letter-spacing:0.08em; text-transform:uppercase; margin-top:6px }
+
+.sect{ margin:var(--space-8) 0; padding-top:var(--space-7); border-top:1px solid var(--border) }
+.sect-tag{ display:inline-block; font-family:var(--font-mono); font-size:11px;
+  letter-spacing:0.12em; text-transform:uppercase;
+  color:var(--accent); border:1px solid var(--accent);
+  padding:var(--space-1) var(--space-3); border-radius:var(--radius-sm); margin-bottom:var(--space-3) }
+.sect h2{ font-size:clamp(1.6rem,3.5vw,2.4rem); line-height:1.15; margin-bottom:var(--space-4) }
+:lang(zh) .sect h2 em{
+  font-style:normal; font-weight:700; color:var(--text-primary);
+  text-decoration:underline; text-decoration-color:var(--accent);
+  text-decoration-thickness:3px; text-underline-offset:6px }
+.sect .intro{ color:var(--text-secondary); max-width:780px; font-size:16px; margin-bottom:var(--space-5) }
+.sect .intro b{ color:var(--text-primary) }
+.sect .intro code{ color:var(--accent); background:var(--accent-soft); padding:1px 6px; border-radius:3px; font-size:13px }
+
+.code-panel{ background:var(--surface-0); border:1px solid var(--border-strong);
+  border-radius:var(--radius-lg); overflow:hidden; margin-top:var(--space-3) }
+.code-panel-header{ padding:8px var(--space-4);
+  background:var(--surface-1); border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:var(--space-2);
+  font-family:var(--font-mono); font-size:11px;
+  color:var(--text-muted); letter-spacing:0.06em; text-transform:uppercase }
+.code-panel-header .dot{ width:6px; height:6px; border-radius:50%; background:var(--accent) }
+.code-panel-header.is-sql .dot{ background:var(--accent-secondary) }
+
+.code-block{ background:var(--surface-2); border:none;
+  padding:var(--space-5);
+  font-family:var(--font-mono); font-size:13px; line-height:1.85; overflow-x:auto;
+  direction:ltr; unicode-bidi:embed; margin:0 }
+.code-panel .code-block{ background:transparent }
+.code-block .cm{ color:var(--code-comment); font-style:italic }
+.code-block .kw{ color:var(--code-keyword) }
+.code-block .cls{ color:var(--code-class) }
+.code-block .fn{ color:var(--code-fn) }
+.code-block .str{ color:var(--code-string) }
+.code-block .num{ color:var(--code-number) }
+.code-block .op{ color:var(--code-op) }
+.code-block .skw{ color:var(--accent-secondary); font-weight:700 }
+.code-block .stbl{ color:var(--accent) }
+.code-block .sval{ color:var(--ok) }
+.code-block .scm{ color:var(--code-comment); font-style:italic }
+.code-block .hl{ background:var(--accent-soft); border-radius:3px; padding:0 4px; color:var(--accent) }
+.code-block .hl-ok{ background:var(--ok-soft); border-radius:3px; padding:0 4px; color:var(--ok) }
+.diff-token{ background:var(--accent-soft); color:var(--accent);
+  padding:0 4px; border-radius:3px; font-weight:700 }
+
+.tabs-row{ display:flex; gap:var(--space-1); flex-wrap:wrap; margin-bottom:var(--space-3) }
+.tab-btn{ font-family:var(--font-mono); font-size:12px;
+  padding:var(--space-2) var(--space-4);
+  border:1px solid var(--border); background:transparent; color:var(--text-secondary);
+  border-radius:var(--radius-sm); cursor:pointer; transition:.15s }
+.tab-btn:hover{ color:var(--text-primary); border-color:var(--accent) }
+.tab-btn.on{ background:var(--accent); color:var(--accent-fg); border-color:var(--accent); font-weight:700 }
+.tab-pane{ display:none }
+.tab-pane.on{ display:block }
+
+.type-table{ width:100%; border-collapse:collapse; font-family:var(--font-mono); font-size:12px;
+  background:var(--surface-1); border:1px solid var(--border);
+  border-radius:var(--radius-md); overflow:hidden; margin-top:var(--space-4) }
+.type-table th,.type-table td{ padding:10px 14px; text-align:left;
+  border-bottom:1px solid var(--border); border-right:1px solid var(--border);
+  vertical-align:top }
+.type-table th{ background:var(--surface-2); color:var(--text-muted);
+  font-weight:600; font-size:11px; letter-spacing:0.06em; text-transform:uppercase }
+.type-table tr:last-child td{ border-bottom:none }
+.type-table td:last-child,.type-table th:last-child{ border-right:none }
+.type-table th:first-child,.type-table td:first-child{ color:var(--text-primary); font-weight:700 }
+.type-table .py-type{ color:var(--code-class); font-weight:700 }
+.type-table .sqlite-type{ color:var(--ok) }
+.type-table .pg-type{ color:var(--info) }
+.type-table .mysql-type{ color:var(--accent) }
+.type-table small{ color:var(--text-muted); font-size:10px }
+
+.validator-grid{ display:grid; grid-template-columns:1fr; gap:var(--space-4); margin-top:var(--space-4) }
+@media (min-width:880px){ .validator-grid{ grid-template-columns:1fr 1fr } }
+.val-card{ background:var(--surface-1); border:1px solid var(--border);
+  border-radius:var(--radius-md); padding:var(--space-4) }
+.val-card h4{ font-family:var(--font-mono); font-size:13px; color:var(--accent);
+  margin-bottom:var(--space-3); font-weight:700 }
+.val-card .val-desc{ color:var(--text-muted); font-size:12px; margin-bottom:var(--space-3); line-height:1.55 }
+
+.mro-block{ background:var(--surface-1); border:1px solid var(--border);
+  border-radius:var(--radius-md); padding:var(--space-5); margin-top:var(--space-4);
+  font-family:var(--font-mono); font-size:12px }
+.mro-stages{ display:flex; gap:0; flex-wrap:wrap }
+.mro-stage{ flex:1; min-width:140px;
+  background:var(--surface-2); border:1px solid var(--border);
+  padding:var(--space-3); position:relative;
+  border-right:none; }
+.mro-stage:first-child{ border-radius:var(--radius-sm) 0 0 var(--radius-sm) }
+.mro-stage:last-child{ border-right:1px solid var(--border); border-radius:0 var(--radius-sm) var(--radius-sm) 0 }
+.mro-stage::after{
+  content:'\\203A'; position:absolute; right:-9px; top:50%; transform:translateY(-50%);
+  background:var(--surface-2); padding:0 2px;
+  color:var(--text-muted); font-size:18px; font-weight:700; z-index:2; line-height:1;
+}
+.mro-stage:last-child::after{ display:none }
+.mro-stage-num{ font-size:9px; color:var(--accent); letter-spacing:0.1em; font-weight:700 }
+.mro-stage-name{ color:var(--text-primary); font-size:13px; font-weight:700; margin:4px 0 4px }
+.mro-stage-desc{ color:var(--text-muted); font-size:10px; line-height:1.4 }
+.mro-stage.is-mixin{ background:var(--accent-secondary-soft); border-color:var(--accent-secondary) }
+.mro-stage.is-mixin::after{ background:var(--accent-secondary-soft) }
+.mro-stage.is-mixin .mro-stage-num{ color:var(--accent-secondary) }
+.mro-stage.is-base{ background:var(--accent-soft); border-color:var(--accent) }
+.mro-stage.is-base::after{ background:var(--accent-soft) }
+
+.diff-wrap{ display:grid; grid-template-columns:1fr; gap:var(--space-4); margin-top:var(--space-4) }
+@media (min-width:900px){ .diff-wrap{ grid-template-columns:1fr 1fr } }
+
+.fp-flow{ display:grid; grid-template-columns:1fr; gap:var(--space-3); margin-top:var(--space-5) }
+@media (min-width:760px){ .fp-flow{ grid-template-columns:repeat(3, 1fr) } }
+.fp-step{ background:var(--surface-1); border:1px solid var(--border);
+  border-radius:var(--radius-md); padding:var(--space-5); position:relative; overflow:hidden }
+.fp-step::before{ content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--accent) }
+.fp-step-num{ font-family:var(--font-mono); font-size:11px; color:var(--accent);
+  letter-spacing:0.1em; font-weight:700; margin-bottom:var(--space-2) }
+.fp-step-title{ font-family:var(--font-display); font-size:16px; font-weight:700;
+  color:var(--text-primary); margin-bottom:var(--space-2) }
+.fp-step-desc{ color:var(--text-secondary); font-size:13px; line-height:1.6; margin-bottom:var(--space-3) }
+.fp-step pre{ background:var(--surface-2); border:1px solid var(--border);
+  border-radius:var(--radius-sm); padding:var(--space-3);
+  font-family:var(--font-mono); font-size:11px; line-height:1.6; overflow-x:auto; margin:0 }
+
+.cross-links{ display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:var(--space-3); margin-top:var(--space-5) }
+.x-link{ background:var(--surface-1); border:1px solid var(--border);
+  border-radius:var(--radius-md); padding:var(--space-4) var(--space-5);
+  text-decoration:none; transition:.2s; display:block }
+.x-link:hover{ border-color:var(--accent); transform:translateY(-1px); text-decoration:none }
+.x-link .x-eyebrow{ font-family:var(--font-mono); font-size:10px;
+  color:var(--accent); letter-spacing:0.12em; text-transform:uppercase; margin-bottom:var(--space-2) }
+.x-link .x-title{ color:var(--text-primary); font-weight:600; margin-bottom:6px; font-size:15px }
+.x-link .x-desc{ color:var(--text-secondary); font-size:12px; line-height:1.5 }
+</style>
+
+<main class="container">
+
+<section class="hero reveal">
+  <div class="eyebrow">Model</div>
+  <h1>模型即<em>Pydantic</em>。<br>不是装饰器,<br>不是元类魔法,<em>就是 v2 字段</em>。</h1>
+  <p class="lead">
+    AR 不发明新的"模型 DSL"——它直接继承 <code>BaseModel</code>。
+    你写的每个字段都是真正的 Pydantic 字段,享有 v2 的类型推导、验证、序列化、IDE 补全。
+    <b>类型安全</b> 不是营销词汇,而是 Python 类型系统天然带来的副作用。
+  </p>
+  <div class="hero-pills">
+    <span class="pill">Type-safe CTA</span>
+    <span class="pill is-secondary">Pydantic v2</span>
+    <span class="pill is-secondary">A2 ChainBuilder</span>
+    <span class="pill is-ghost">A8 LifecycleTimeline · MRO</span>
+    <span class="pill is-ghost">字段代理引子</span>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-cell">
+      <div class="num">v2</div>
+      <div class="lbl">Pydantic 版本</div>
+    </div>
+    <div class="stat-cell">
+      <div class="num" style="color:var(--accent-secondary)">3.8+</div>
+      <div class="lbl">Python 最低</div>
+    </div>
+    <div class="stat-cell">
+      <div class="num" style="color:var(--ok)">0</div>
+      <div class="lbl">额外的元类</div>
+    </div>
+    <div class="stat-cell">
+      <div class="num" style="color:var(--info)">100%</div>
+      <div class="lbl">IDE 补全可达</div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 01 最小模型 ============ -->
+<section class="sect reveal" id="basic">
+  <span class="sect-tag">01 · BASIC · A2</span>
+  <h2>最小模型,<em>4 行</em>。</h2>
+  <p class="intro">
+    继承 <code>ActiveRecord</code>,声明 <code>__table_name__</code>,定义字段——就是模型。
+    下面 4 个 tab 分别展示 Python 3.8 / 3.10+ × sync / async 的写法,差异<b>仅在第一行 import 与基类名</b>。
+  </p>
+
+  <div class="tabs-row" data-tabset="basic">
+    <button class="tab-btn on" data-tab="py310-async">3.10+ async</button>
+    <button class="tab-btn"    data-tab="py310-sync">3.10+ sync</button>
+    <button class="tab-btn"    data-tab="py38-async">3.8 async</button>
+    <button class="tab-btn"    data-tab="py38-sync">3.8 sync</button>
+  </div>
+
+  <div class="code-panel">
+    <div class="code-panel-header"><span class="dot"></span><span>models.py · 最小用户模型</span></div>
+
+    <div class="tab-pane on" data-tab="py310-async">
+<pre class="code-block"><span class="kw">from</span> rhosocial.activerecord <span class="diff-token">import</span> <span class="cls">AsyncActiveRecord</span>
+<span class="kw">from</span> typing <span class="kw">import</span> Optional
+
+<span class="kw">class</span> <span class="cls">User</span>(<span class="cls">AsyncActiveRecord</span>):
+    __table_name__ = <span class="str">"users"</span>
+
+    id:    <span class="cls">Optional</span>[<span class="cls">int</span>] = <span class="kw">None</span>     <span class="cm"># 主键,自增,可空</span>
+    name:  <span class="cls">str</span>                       <span class="cm"># NOT NULL</span>
+    email: <span class="cls">str</span>
+    age:   <span class="cls">int</span>  = <span class="num">0</span>                  <span class="cm"># 默认值</span>
+
+<span class="cm"># 使用</span>
+user = <span class="cls">User</span>(name=<span class="str">"alice"</span>, email=<span class="str">"a@x.com"</span>)
+<span class="diff-token">await</span> user.<span class="fn">save</span>()
+<span class="cm"># INSERT INTO "users" ("name","email","age") VALUES (?,?,?)</span></pre>
+    </div>
+
+    <div class="tab-pane" data-tab="py310-sync">
+<pre class="code-block"><span class="kw">from</span> rhosocial.activerecord <span class="diff-token">import</span> <span class="cls">ActiveRecord</span>
+<span class="kw">from</span> typing <span class="kw">import</span> Optional
+
+<span class="kw">class</span> <span class="cls">User</span>(<span class="cls">ActiveRecord</span>):
+    __table_name__ = <span class="str">"users"</span>
+
+    id:    <span class="cls">Optional</span>[<span class="cls">int</span>] = <span class="kw">None</span>
+    name:  <span class="cls">str</span>
+    email: <span class="cls">str</span>
+    age:   <span class="cls">int</span>  = <span class="num">0</span>
+
+user = <span class="cls">User</span>(name=<span class="str">"alice"</span>, email=<span class="str">"a@x.com"</span>)
+user.<span class="fn">save</span>()</pre>
+    </div>
+
+    <div class="tab-pane" data-tab="py38-async">
+<pre class="code-block"><span class="kw">from</span> rhosocial.activerecord <span class="diff-token">import</span> <span class="cls">AsyncActiveRecord</span>
+<span class="kw">from</span> typing <span class="kw">import</span> Optional       <span class="cm"># 3.8 必须显式 import</span>
+
+<span class="kw">class</span> <span class="cls">User</span>(<span class="cls">AsyncActiveRecord</span>):
+    __table_name__ = <span class="str">"users"</span>
+
+    id:    <span class="cls">Optional</span>[<span class="cls">int</span>] = <span class="kw">None</span>
+    name:  <span class="cls">str</span>
+    email: <span class="cls">str</span>
+    age:   <span class="cls">int</span>  = <span class="num">0</span>
+
+<span class="kw">async def</span> <span class="fn">main</span>():
+    user = <span class="cls">User</span>(name=<span class="str">"alice"</span>, email=<span class="str">"a@x.com"</span>)
+    <span class="diff-token">await</span> user.<span class="fn">save</span>()</pre>
+    </div>
+
+    <div class="tab-pane" data-tab="py38-sync">
+<pre class="code-block"><span class="kw">from</span> rhosocial.activerecord <span class="diff-token">import</span> <span class="cls">ActiveRecord</span>
+<span class="kw">from</span> typing <span class="kw">import</span> Optional
+
+<span class="kw">class</span> <span class="cls">User</span>(<span class="cls">ActiveRecord</span>):
+    __table_name__ = <span class="str">"users"</span>
+
+    id:    <span class="cls">Optional</span>[<span class="cls">int</span>] = <span class="kw">None</span>
+    name:  <span class="cls">str</span>
+    email: <span class="cls">str</span>
+    age:   <span class="cls">int</span>  = <span class="num">0</span>
+
+user = <span class="cls">User</span>(name=<span class="str">"alice"</span>, email=<span class="str">"a@x.com"</span>)
+user.<span class="fn">save</span>()</pre>
+    </div>
+  </div>
+
+  <p style="color:var(--text-muted); font-family:var(--font-mono); font-size:11px; margin-top:var(--space-3)">
+    4 个版本,<b>主体 7 行完全相同</b>。差异只在 import 与是否 <code>await</code>。
+  </p>
+</section>
+
+<!-- ============ 02 类型映射 ============ -->
+<section class="sect reveal reveal-d1" id="field-types">
+  <span class="sect-tag">02 · FIELD TYPES</span>
+  <h2>Python 类型 → SQL 类型,<em>透明映射</em>。</h2>
+  <p class="intro">
+    AR 的<b>类型适配器</b>(TypeAdapter)在每个 backend 内独立维护一张表,把 Python 类型映射到对应 dialect 的列类型。
+    你只看到 <code>int</code>、<code>str</code>、<code>datetime</code>;dialect 差异 (SERIAL vs AUTO_INCREMENT)
+    全部由 backend 处理。深入了解类型适配器 → <a href="./fields.html#type-adapter">fields.html</a>。
+  </p>
+
+  <table class="type-table">
+    <thead>
+      <tr>
+        <th>Python</th>
+        <th>SQLite</th>
+        <th>PostgreSQL</th>
+        <th>MySQL</th>
+        <th>说明</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="py-type">int</span></td>
+        <td><span class="sqlite-type">INTEGER</span></td>
+        <td><span class="pg-type">INTEGER / BIGINT</span></td>
+        <td><span class="mysql-type">INT / BIGINT</span></td>
+        <td>主键时自动加 PRIMARY KEY</td>
+      </tr>
+      <tr>
+        <td><span class="py-type">str</span></td>
+        <td><span class="sqlite-type">TEXT</span></td>
+        <td><span class="pg-type">TEXT</span></td>
+        <td><span class="mysql-type">VARCHAR(255)</span><br><small>长度可由 Field(max_length=N) 指定</small></td>
+        <td>可加 max_length 约束</td>
+      </tr>
+      <tr>
+        <td><span class="py-type">float</span></td>
+        <td><span class="sqlite-type">REAL</span></td>
+        <td><span class="pg-type">DOUBLE PRECISION</span></td>
+        <td><span class="mysql-type">DOUBLE</span></td>
+        <td>金额建议用 Decimal</td>
+      </tr>
+      <tr>
+        <td><span class="py-type">decimal.Decimal</span></td>
+        <td><span class="sqlite-type">NUMERIC</span></td>
+        <td><span class="pg-type">NUMERIC(p,s)</span></td>
+        <td><span class="mysql-type">DECIMAL(p,s)</span></td>
+        <td>精度由 Field(max_digits=, decimal_places=)</td>
+      </tr>
+      <tr>
+        <td><span class="py-type">bool</span></td>
+        <td><span class="sqlite-type">INTEGER</span><br><small>0/1</small></td>
+        <td><span class="pg-type">BOOLEAN</span></td>
+        <td><span class="mysql-type">TINYINT(1)</span></td>
+        <td>读写自动转换</td>
+      </tr>
+      <tr>
+        <td><span class="py-type">datetime.datetime</span></td>
+        <td><span class="sqlite-type">TEXT</span><br><small>ISO 8601</small></td>
+        <td><span class="pg-type">TIMESTAMP / TIMESTAMPTZ</span></td>
+        <td><span class="mysql-type">DATETIME(6)</span></td>
+        <td>时区由 Field(tz_aware=True) 控制</td>
+      </tr>
+      <tr>
+        <td><span class="py-type">datetime.date</span></td>
+        <td><span class="sqlite-type">TEXT</span></td>
+        <td><span class="pg-type">DATE</span></td>
+        <td><span class="mysql-type">DATE</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="py-type">uuid.UUID</span></td>
+        <td><span class="sqlite-type">TEXT</span></td>
+        <td><span class="pg-type">UUID</span><br><small>原生</small></td>
+        <td><span class="mysql-type">CHAR(36)</span></td>
+        <td>序列化为标准格式</td>
+      </tr>
+      <tr>
+        <td><span class="py-type">dict / list / Pydantic</span></td>
+        <td><span class="sqlite-type">TEXT</span><br><small>JSON1</small></td>
+        <td><span class="pg-type">JSONB</span><br><small>带索引</small></td>
+        <td><span class="mysql-type">JSON</span></td>
+        <td>嵌套 BaseModel 也支持</td>
+      </tr>
+      <tr>
+        <td><span class="py-type">bytes</span></td>
+        <td><span class="sqlite-type">BLOB</span></td>
+        <td><span class="pg-type">BYTEA</span></td>
+        <td><span class="mysql-type">VARBINARY / BLOB</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="py-type">enum.Enum</span></td>
+        <td><span class="sqlite-type">TEXT</span></td>
+        <td><span class="pg-type">TEXT</span><br><small>(可选 ENUM 类型)</small></td>
+        <td><span class="mysql-type">ENUM(...)</span></td>
+        <td>用 enum.value 持久化</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ 03 Optional / Default / Field() ============ -->
+<section class="sect reveal reveal-d1" id="optional-default">
+  <span class="sect-tag">03 · OPTIONAL · DEFAULT · A2</span>
+  <h2>可选与默认值,<em>就用 Pydantic</em>。</h2>
+  <p class="intro">
+    AR 不发明 <code>nullable=True</code>——直接用 <code>Optional</code>。
+    不发明 <code>default_factory</code>——直接用 Pydantic 的 <code>Field(default_factory=...)</code>。
+    <b>"AR 字段"完全等同于"Pydantic v2 字段"</b>,任何 v2 文档里的字段配置都能用。
+  </p>
+
+  <div class="code-panel">
+    <div class="code-panel-header"><span class="dot"></span><span>models.py · 字段配置示例</span></div>
+<pre class="code-block"><span class="kw">from</span> pydantic <span class="kw">import</span> Field
+<span class="kw">from</span> datetime <span class="kw">import</span> datetime
+<span class="kw">from</span> uuid <span class="kw">import</span> UUID, uuid4
+<span class="kw">from</span> decimal <span class="kw">import</span> Decimal
+<span class="kw">from</span> typing <span class="kw">import</span> Optional
+
+<span class="kw">class</span> <span class="cls">Order</span>(<span class="cls">ActiveRecord</span>):
+    __table_name__ = <span class="str">"orders"</span>
+
+    <span class="cm"># 主键 - 自增,数据库分配</span>
+    id: <span class="cls">Optional</span>[<span class="cls">int</span>] = <span class="kw">None</span>
+
+    <span class="cm"># UUID 主键 - Python 端分配,默认值用 default_factory</span>
+    public_id: <span class="cls">UUID</span> = <span class="fn">Field</span>(default_factory=uuid4, frozen=<span class="kw">True</span>)
+
+    <span class="cm"># 必填字符串,最长 100 字符</span>
+    title: <span class="cls">str</span> = <span class="fn">Field</span>(..., max_length=<span class="num">100</span>)
+
+    <span class="cm"># 可选 + 数据库默认</span>
+    note: <span class="cls">Optional</span>[<span class="cls">str</span>] = <span class="kw">None</span>
+
+    <span class="cm"># 金额 - decimal · 精度 12,2</span>
+    amount: <span class="cls">Decimal</span> = <span class="fn">Field</span>(..., max_digits=<span class="num">12</span>, decimal_places=<span class="num">2</span>)
+
+    <span class="cm"># 创建时间 - 服务端 default(数据库默认值)</span>
+    created_at: <span class="cls">datetime</span> = <span class="fn">Field</span>(default_factory=datetime.utcnow)
+
+    <span class="cm"># 状态 - 用 Literal 限定枚举,Pydantic 自动验证</span>
+    status: <span class="cls">Literal</span>[<span class="str">"draft"</span>, <span class="str">"submitted"</span>, <span class="str">"paid"</span>, <span class="str">"shipped"</span>] = <span class="str">"draft"</span>
+
+<span class="cm"># 实例化时全部字段都被 Pydantic 校验</span>
+o = <span class="cls">Order</span>(title=<span class="str">"book"</span>, amount=<span class="cls">Decimal</span>(<span class="str">"99.99"</span>))
+<span class="fn">print</span>(o.id)         <span class="cm"># None - 还没保存</span>
+<span class="fn">print</span>(o.public_id)  <span class="cm"># UUID('a3b...') - default_factory 已生成</span>
+o.<span class="fn">save</span>()
+<span class="fn">print</span>(o.id)         <span class="cm"># 1 - 数据库分配后回填</span></pre>
+  </div>
+</section>
+
+<!-- ============ 04 验证器 ============ -->
+<section class="sect reveal reveal-d1" id="validators">
+  <span class="sect-tag">04 · VALIDATORS</span>
+  <h2>验证器,<em>Pydantic v2 原生</em>。</h2>
+  <p class="intro">
+    <code>@field_validator</code> / <code>@model_validator</code> / <code>computed_field</code>——AR 完全沿用 Pydantic v2。
+    AR 只在保存到数据库前<b>多跑一次</b> Pydantic 校验,确保入库数据合法。
+  </p>
+
+  <div class="validator-grid">
+    <div class="val-card">
+      <h4>@field_validator · 单字段</h4>
+      <div class="val-desc">字段级校验,可对值做转换或抛错。在赋值/构造时自动触发。</div>
+<pre class="code-block"><span class="kw">from</span> pydantic <span class="kw">import</span> field_validator
+
+<span class="kw">class</span> <span class="cls">User</span>(<span class="cls">ActiveRecord</span>):
+    email: <span class="cls">str</span>
+
+    @<span class="fn">field_validator</span>(<span class="str">"email"</span>)
+    @<span class="kw">classmethod</span>
+    <span class="kw">def</span> <span class="fn">_check_email</span>(cls, v: <span class="cls">str</span>) -> <span class="cls">str</span>:
+        <span class="kw">if</span> <span class="str">"@"</span> <span class="kw">not in</span> v:
+            <span class="kw">raise</span> <span class="cls">ValueError</span>(<span class="str">"无效邮箱"</span>)
+        <span class="kw">return</span> v.<span class="fn">lower</span>().<span class="fn">strip</span>()</pre>
+    </div>
+
+    <div class="val-card">
+      <h4>@model_validator · 跨字段</h4>
+      <div class="val-desc">整模型级校验,可访问所有字段。<code>mode="after"</code> 在所有字段都校验完后跑。</div>
+<pre class="code-block"><span class="kw">from</span> pydantic <span class="kw">import</span> model_validator
+
+<span class="kw">class</span> <span class="cls">DateRange</span>(<span class="cls">ActiveRecord</span>):
+    start: <span class="cls">datetime</span>
+    end:   <span class="cls">datetime</span>
+
+    @<span class="fn">model_validator</span>(mode=<span class="str">"after"</span>)
+    <span class="kw">def</span> <span class="fn">_check_range</span>(self):
+        <span class="kw">if</span> self.end &lt; self.start:
+            <span class="kw">raise</span> <span class="cls">ValueError</span>(<span class="str">"end < start"</span>)
+        <span class="kw">return</span> self</pre>
+    </div>
+
+    <div class="val-card">
+      <h4>@computed_field · 计算字段</h4>
+      <div class="val-desc">不存数据库,但<b>包含在 model_dump()</b> 输出里。可用于 API 响应。</div>
+<pre class="code-block"><span class="kw">from</span> pydantic <span class="kw">import</span> computed_field
+
+<span class="kw">class</span> <span class="cls">Order</span>(<span class="cls">ActiveRecord</span>):
+    qty: <span class="cls">int</span>
+    unit_price: <span class="cls">Decimal</span>
+
+    @<span class="fn">computed_field</span>
+    @<span class="kw">property</span>
+    <span class="kw">def</span> <span class="fn">total</span>(self) -> <span class="cls">Decimal</span>:
+        <span class="kw">return</span> self.qty * self.unit_price
+
+o = <span class="cls">Order</span>(qty=<span class="num">3</span>, unit_price=<span class="cls">Decimal</span>(<span class="str">"9.9"</span>))
+<span class="fn">print</span>(o.<span class="fn">model_dump</span>())  <span class="cm"># {qty:3, unit_price:9.9, total:29.7}</span></pre>
+    </div>
+
+    <div class="val-card">
+      <h4>Field(...) · 数据库约束</h4>
+      <div class="val-desc">Pydantic 字段约束 (max_length 等) 同时<b>影响 DDL 生成</b>。AR 把它翻译成 VARCHAR(N)、CHECK 等。</div>
+<pre class="code-block"><span class="kw">class</span> <span class="cls">User</span>(<span class="cls">ActiveRecord</span>):
+    name: <span class="cls">str</span> = <span class="fn">Field</span>(
+        ...,
+        min_length=<span class="num">2</span>,
+        max_length=<span class="num">50</span>,
+    )
+    age: <span class="cls">int</span> = <span class="fn">Field</span>(
+        default=<span class="num">0</span>,
+        ge=<span class="num">0</span>, le=<span class="num">150</span>,    <span class="cm"># DB 端会生成 CHECK 约束</span>
+    )
+    score: <span class="cls">float</span> = <span class="fn">Field</span>(
+        default=<span class="num">0.0</span>,
+        ge=<span class="num">0</span>, le=<span class="num">100</span>,
+    )</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 05 Field Proxy 引子 ============ -->
+<section class="sect reveal reveal-d1" id="field-proxy-intro">
+  <span class="sect-tag">05 · FIELD PROXY · 入门</span>
+  <h2>字段不只是<em>容器</em>。</h2>
+  <p class="intro">
+    AR 字段系统是<b>三层</b>的:Pydantic v2 验证层(本页主题)+ <b>字段代理层</b>(本节)+ 类型适配器层(<a href="./fields.html#type-adapter">fields.html</a>)。
+    字段代理让你给一个字段挂上"扩展方法"——不是子类,不是装饰器,是<b>Python 描述符协议的标准用法</b>。
+  </p>
+
+  <div class="fp-flow">
+    <div class="fp-step">
+      <div class="fp-step-num">STEP 01</div>
+      <div class="fp-step-title">声明 proxy=</div>
+      <div class="fp-step-desc">字段定义时把代理类传给 <code>Field(proxy=...)</code>。AR 把它注册为该字段的描述符。</div>
+<pre><span class="kw">class</span> <span class="cls">Product</span>(<span class="cls">ActiveRecord</span>):
+    price: <span class="cls">Money</span> = <span class="fn">Field</span>(
+      ..., proxy=<span class="cls">MoneyProxy</span>
+    )</pre>
+    </div>
+    <div class="fp-step">
+      <div class="fp-step-num">STEP 02</div>
+      <div class="fp-step-title">访问字段</div>
+      <div class="fp-step-desc">访问 <code>p.price</code> 时返回 proxy 实例,proxy 持有原值。</div>
+<pre>p = <span class="cls">Product</span>(price=<span class="cls">Money</span>(<span class="num">99</span>))
+
+p.price             <span class="cm"># MoneyProxy 实例</span>
+p.price.value       <span class="cm"># Money(99) 原值</span></pre>
+    </div>
+    <div class="fp-step">
+      <div class="fp-step-num">STEP 03</div>
+      <div class="fp-step-title">调代理方法</div>
+      <div class="fp-step-desc">所有 proxy 上定义的方法都<b>直接可用</b>,IDE 完整补全。</div>
+<pre>p.price.<span class="fn">in_range</span>(<span class="num">0</span>, <span class="num">100</span>)
+p.price.<span class="fn">to_usd</span>()
+p.price.<span class="fn">format</span>(<span class="str">"zh_CN"</span>)
+<span class="cm"># 都来自 MoneyProxy 类</span></pre>
+    </div>
+  </div>
+
+  <p style="color:var(--text-muted); font-family:var(--font-mono); font-size:11px; margin-top:var(--space-4)">
+    详细机制(描述符协议、内置代理、自定义代理) → 完整字段代理与类型适配器文档 <a href="./fields.html">fields.html</a> →
+  </p>
+</section>
+
+<!-- ============ 06 继承与 Mixin ============ -->
+<section class="sect reveal reveal-d1" id="inheritance">
+  <span class="sect-tag">06 · INHERITANCE · A8 MRO</span>
+  <h2>继承与 <em>Mixin</em>。</h2>
+  <p class="intro">
+    AR 模型完全遵循 Python 的 <b>MRO</b>(方法解析顺序)。下面 A8 时间轴展示一个用了 3 个 Mixin 的模型在
+    <code>save()</code> 时的方法解析顺序——这跟你写普通 Python 类时<b>一模一样</b>。
+  </p>
+
+  <div class="code-panel">
+    <div class="code-panel-header"><span class="dot"></span><span>models.py · Mixin 组合</span></div>
+<pre class="code-block"><span class="kw">from</span> rhosocial.activerecord <span class="kw">import</span> ActiveRecord
+<span class="kw">from</span> rhosocial.activerecord.mixin <span class="kw">import</span> TimestampMixin, SoftDeleteMixin, AuditMixin
+
+<span class="kw">class</span> <span class="cls">Article</span>(<span class="cls">TimestampMixin</span>, <span class="cls">SoftDeleteMixin</span>, <span class="cls">AuditMixin</span>, <span class="cls">ActiveRecord</span>):
+    __table_name__ = <span class="str">"articles"</span>
+
+    id:    <span class="cls">Optional</span>[<span class="cls">int</span>] = <span class="kw">None</span>
+    title: <span class="cls">str</span>
+    body:  <span class="cls">str</span>
+    <span class="cm"># 每个 Mixin 自动加几个字段:</span>
+    <span class="cm">#   TimestampMixin → created_at, updated_at</span>
+    <span class="cm">#   SoftDeleteMixin → deleted_at</span>
+    <span class="cm">#   AuditMixin → created_by, updated_by</span>
+
+a = <span class="cls">Article</span>(title=<span class="str">"hi"</span>, body=<span class="str">"..."</span>)
+a.<span class="fn">save</span>()    <span class="cm"># MRO 决定每个 mixin 的 save() 钩子按什么顺序运行</span></pre>
+  </div>
+
+  <div class="mro-block">
+    <div style="color:var(--text-secondary); margin-bottom:var(--space-3); font-size:13px">
+      <b style="color:var(--text-primary)">save() 调用时的 MRO 链:</b>
+    </div>
+    <div class="mro-stages">
+      <div class="mro-stage is-mixin">
+        <div class="mro-stage-num">MRO 01</div>
+        <div class="mro-stage-name">TimestampMixin</div>
+        <div class="mro-stage-desc">填 created_at / updated_at,然后 super().save()</div>
+      </div>
+      <div class="mro-stage is-mixin">
+        <div class="mro-stage-num">MRO 02</div>
+        <div class="mro-stage-name">SoftDeleteMixin</div>
+        <div class="mro-stage-desc">检查 deleted_at,允许 save 仍然走</div>
+      </div>
+      <div class="mro-stage is-mixin">
+        <div class="mro-stage-num">MRO 03</div>
+        <div class="mro-stage-name">AuditMixin</div>
+        <div class="mro-stage-desc">从 context 取 current_user 填 created_by / updated_by</div>
+      </div>
+      <div class="mro-stage is-base">
+        <div class="mro-stage-num">MRO 04</div>
+        <div class="mro-stage-name">ActiveRecord.save</div>
+        <div class="mro-stage-desc">真正执行 INSERT / UPDATE 到数据库</div>
+      </div>
+    </div>
+  </div>
+
+  <p style="color:var(--text-muted); font-family:var(--font-mono); font-size:11px; margin-top:var(--space-4)">
+    每个 Mixin 都<b>调用 super().save()</b>,所以链条按 <code>__mro__</code> 顺序串起来。
+    自己写 Mixin 的关键: 永远 <code>return super().save()</code>。
+  </p>
+</section>
+
+<!-- ============ 07 py 版本差异 ============ -->
+<section class="sect reveal reveal-d1" id="py-version-diff">
+  <span class="sect-tag">07 · PY 3.8 vs 3.10+</span>
+  <h2>语法<em>差异速查</em>。</h2>
+  <p class="intro">
+    Python 3.10+ 的新语法(PEP 604 union 操作符 <code>|</code>、PEP 585 内置泛型)让模型定义更短,但 AR <b>同时支持</b>两种语法。
+    项目最低 Python 版本由你的 <code>requires-python</code> 决定,而非 AR。
+  </p>
+
+  <div class="diff-wrap">
+    <div class="code-panel">
+      <div class="code-panel-header"><span class="dot"></span><span>Python 3.8 写法</span></div>
+<pre class="code-block"><span class="kw">from</span> typing <span class="kw">import</span> Optional, List, Dict
+
+<span class="kw">class</span> <span class="cls">User</span>(<span class="cls">ActiveRecord</span>):
+    id:        <span class="cls">Optional</span>[<span class="cls">int</span>] = <span class="kw">None</span>
+    name:      <span class="cls">str</span>
+
+    tags:      <span class="cls">List</span>[<span class="cls">str</span>] = []
+    metadata:  <span class="cls">Dict</span>[<span class="cls">str</span>, <span class="cls">str</span>] = {}
+    parent:    <span class="cls">Optional</span>[<span class="cls">int</span>] = <span class="kw">None</span>
+    score:     <span class="cls">Optional</span>[<span class="cls">float</span>] = <span class="kw">None</span>
+
+    <span class="cm"># 必须 import typing.Optional / List / Dict</span></pre>
+    </div>
+    <div class="code-panel">
+      <div class="code-panel-header is-sql"><span class="dot"></span><span>Python 3.10+ 写法</span></div>
+<pre class="code-block"><span class="cm"># 不需要 import typing 模块</span>
+
+<span class="kw">class</span> <span class="cls">User</span>(<span class="cls">ActiveRecord</span>):
+    id:        <span class="cls">int</span> | <span class="kw">None</span> = <span class="kw">None</span>     <span class="hl-ok">PEP 604</span>
+    name:      <span class="cls">str</span>
+
+    tags:      <span class="cls">list</span>[<span class="cls">str</span>] = []        <span class="hl-ok">PEP 585</span>
+    metadata:  <span class="cls">dict</span>[<span class="cls">str</span>, <span class="cls">str</span>] = {}
+    parent:    <span class="cls">int</span> | <span class="kw">None</span> = <span class="kw">None</span>
+    score:     <span class="cls">float</span> | <span class="kw">None</span> = <span class="kw">None</span>
+
+    <span class="cm"># 等价语义,更简洁</span></pre>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 08 cross-links ============ -->
+<section class="sect reveal reveal-d1" id="next">
+  <span class="sect-tag">08 · NEXT</span>
+  <h2>继续阅读</h2>
+  <div class="cross-links">
+    <a href="./fields.html" class="x-link">
+      <div class="x-eyebrow">DEEP</div>
+      <div class="x-title">Fields · 字段三层系统</div>
+      <div class="x-desc">字段代理 / 类型适配器 / 自定义 Adapter · MoneyProxy / PointAdapter 完整示例。</div>
+    </a>
+    <a href="./query.html" class="x-link">
+      <div class="x-eyebrow">→ NEXT</div>
+      <div class="x-title">Query · 查询基础</div>
+      <div class="x-desc">运算符重载 · 链式累积 · 集合运算 · CTE · 后端能力差异。</div>
+    </a>
+    <a href="./relations.html" class="x-link">
+      <div class="x-eyebrow">→ NEXT</div>
+      <div class="x-title">Relations · 关系系统</div>
+      <div class="x-desc">has_many / belongs_to / through · N+1 问题可视化。</div>
+    </a>
+    <a href="./transactions.html" class="x-link">
+      <div class="x-eyebrow">→ NEXT</div>
+      <div class="x-title">Transactions · 事务</div>
+      <div class="x-desc">嵌套即 SAVEPOINT · 立体时间轴 · 各后端事务差异。</div>
+    </a>
+    <a href="../backends/architecture.html" class="x-link">
+      <div class="x-eyebrow">REFERENCE</div>
+      <div class="x-title">Backend Architecture</div>
+      <div class="x-desc">理解类型适配器在 backend 层的实现位置 · 33 Protocol。</div>
+    </a>
+    <a href="../practices/migration/sqlalchemy.html" class="x-link">
+      <div class="x-eyebrow">PRACTICE</div>
+      <div class="x-title">从 SQLAlchemy 迁移</div>
+      <div class="x-desc">Column → 类型注解 · session.query → User.query · 行级对照。</div>
+    </a>
+  </div>
+</section></main>
+
+<script>
+document.querySelectorAll('[data-tabset]').forEach(row => {
+  const allBtns = row.querySelectorAll('.tab-btn');
+  const allPanes = row.parentElement.querySelectorAll('.tab-pane');
+  allBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      allBtns.forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      const target = btn.dataset.tab;
+      allPanes.forEach(p => p.classList.toggle('on', p.dataset.tab === target));
+    });
+  });
+});
+</script>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// Scroll Reveal
+// ═══════════════════════════════════════════════════════════════
+(function(){
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+})();
+</script>`;
+---
+
+<BaseLayout title="rhosocial ActiveRecord — Model" variant="ar">
+  <Fragment set:html={__html} />
+</BaseLayout>

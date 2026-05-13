@@ -1,0 +1,79 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const __html = `<style>
+:root, body {
+  --code-keyword:   var(--tok-keyword);
+  --code-class:     var(--tok-class);
+  --code-fn:        var(--tok-func);
+  --code-string:    var(--tok-string);
+  --code-number:    var(--tok-num);
+  --code-comment:   var(--tok-comment);
+  --code-op:        var(--tok-op);
+  --surface-0:      var(--bg-2);
+  --surface-1:      var(--bg-elevated);
+  --surface-2:      var(--bg-2);
+  --surface-3:      color-mix(in srgb, var(--fg) 8%, var(--bg));
+  --text-primary:   var(--fg);
+  --text-secondary: var(--fg-muted);
+  --text-muted:     var(--fg-faint);
+  --accent-soft:    color-mix(in srgb, var(--accent) 15%, transparent);
+  --accent-secondary:      var(--accent-2);
+  --accent-secondary-soft: color-mix(in srgb, var(--accent-2) 12%, transparent);
+  --accent-fg:      var(--bg);
+  --ok:             var(--success);
+  --ok-soft:        color-mix(in srgb, var(--success) 12%, transparent);
+  --err:            var(--danger);
+  --err-soft:       color-mix(in srgb, var(--danger) 12%, transparent);
+  --info:           var(--info);
+  --warn:           var(--warning, #f59e0b);
+  --warn-soft:      color-mix(in srgb, var(--warning, #f59e0b) 12%, transparent);
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 9999px;
+}
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-d1 { transition-delay:0.1s; }
+.reveal-d2 { transition-delay:0.2s; }
+</style>
+<main class="page">
+  <section class="hero section reveal">
+    <div class="container hero-inner">
+      <div class="hero-eyebrow rise"><a href="./index.html">&larr; <span data-i18n="hero.back">ActiveRecord</span></div>
+      <h1 class="hero-title rise">CTE</h1>
+      <p class="hero-sub rise" data-i18n="hero.sub">公共表表达式，化繁为简。</p>
+    </div>
+  </section>
+  <section class="section reveal reveal-d1">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label" data-i18n="api.label">API</div>
+        <h2 class="section-title" data-i18n="api.title">CTEQuery 接口。</h2>
+      </div>
+      <div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></div><span class="code-filename">main.py</span></div>
+        <div class="code-body"><pre><span class="tok-kw">from</span> rhosocial.activerecord.query <span class="tok-kw">import</span> <span class="tok-cls">CTEQuery</span>, <span class="tok-cls">AsyncCTEQuery</span>
+
+<span class="tok-c"># 非递归 CTE</span>
+cte = (<span class="tok-cls">CTEQuery</span>()
+    .with_cte(<span class="tok-s">'active_users'</span>, <span class="tok-cls">User</span>.query().where(<span class="tok-cls">User</span>.c.is_active == <span class="tok-kw">True</span>))
+    .select_from(<span class="tok-s">'active_users'</span>)
+    .all())
+
+<span class="tok-c"># 递归 CTE (树形结构)</span>
+cte = (<span class="tok-cls">CTEQuery</span>()
+    .with_recursive_cte(<span class="tok-s">'org_tree'</span>,
+        base_query=<span class="tok-cls">Department</span>.query().where(<span class="tok-cls">Department</span>.c.parent_id.is_null()),
+        recursive_query=<span class="tok-cls">Department</span>.query().join(<span class="tok-s">'org_tree'</span>, <span class="tok-cls">Department</span>.c.parent_id == <span class="tok-cls">Department</span>.c.id))
+    .select_from(<span class="tok-s">'org_tree'</span>)
+    .all())</pre></div>
+      </div>
+    </div>
+  </section></main>
+<script>
+(function(){var o=new IntersectionObserver(function(e){e.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visible");o.unobserve(e.target)}})},{threshold:.12});document.querySelectorAll(".reveal").forEach(function(e){o.observe(e)})})();void 0
+</script>`;
+---
+
+<BaseLayout title="rhosocial ActiveRecord — CTE" variant="ar">
+  <Fragment set:html={__html} />
+</BaseLayout>

@@ -1,0 +1,202 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const __html = `<style>
+:root, body {
+  --code-keyword:   var(--tok-keyword);
+  --code-class:     var(--tok-class);
+  --code-fn:        var(--tok-func);
+  --code-string:    var(--tok-string);
+  --code-number:    var(--tok-num);
+  --code-comment:   var(--tok-comment);
+  --code-op:        var(--tok-op);
+  --surface-0:      var(--bg-2);
+  --surface-1:      var(--bg-elevated);
+  --surface-2:      var(--bg-2);
+  --surface-3:      color-mix(in srgb, var(--fg) 8%, var(--bg));
+  --text-primary:   var(--fg);
+  --text-secondary: var(--fg-muted);
+  --text-muted:     var(--fg-faint);
+  --accent-soft:    color-mix(in srgb, var(--accent) 15%, transparent);
+  --accent-secondary:      var(--accent-2);
+  --accent-secondary-soft: color-mix(in srgb, var(--accent-2) 12%, transparent);
+  --accent-fg:      var(--bg);
+  --ok:             var(--success);
+  --ok-soft:        color-mix(in srgb, var(--success) 12%, transparent);
+  --err:            var(--danger);
+  --err-soft:       color-mix(in srgb, var(--danger) 12%, transparent);
+  --info:           var(--info);
+  --warn:           var(--warning, #f59e0b);
+  --warn-soft:      color-mix(in srgb, var(--warning, #f59e0b) 12%, transparent);
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 9999px;
+}
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-d1 { transition-delay:0.1s; }
+.reveal-d2 { transition-delay:0.2s; }
+</style>
+<main class="page">
+<section class="hero section reveal">
+<div class="container hero-inner">
+<div class="hero-eyebrow rise"><a href="./index.html">&larr; <span data-i18n="hero.back">Backends</span></div>
+<h1 class="hero-title rise">Named Query</h1>
+<p class="hero-sub rise" data-i18n="hero.sub">预定义 SQL 查询，参数化与模块化管理。</p>
+</div>
+</section>
+<section class="section reveal reveal-d1">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="resolver.label">Resolver</div>
+<h2 class="section-title" data-i18n="resolver.title">NamedQueryResolver。</h2>
+</div>
+<p class="section-intro" data-i18n="resolver.desc">通过完全限定名解析 Python 可调用对象，注入 dialect 返回 BaseExpression。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">named_query_resolver.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.named_query <span class="tok-k">import</span> (
+    <span class="tok-cls">NamedQueryResolver</span>, <span class="tok-f">resolve_named_query</span>
+)
+
+<span class="tok-c"># 生命周期：create → load() → describe() → execute(dialect)</span>
+resolver = <span class="tok-cls">NamedQueryResolver</span>(<span class="tok-s">'myapp.queries.get_active_users'</span>)
+resolver.<span class="tok-f">load</span>()
+
+<span class="tok-c"># describe() — 返回元信息（排除 dialect 和 self 参数）</span>
+info = resolver.<span class="tok-f">describe</span>()
+
+<span class="tok-c"># execute() — 注入 dialect，调用并返回 BaseExpression</span>
+expr = resolver.<span class="tok-f">execute</span>(backend.dialect)
+
+<span class="tok-c"># 一步解析：返回 (expression, sql, params)</span>
+expr, sql, params = <span class="tok-f">resolve_named_query</span>(
+    <span class="tok-s">'myapp.queries.get_active_users'</span>,
+    backend.dialect
+)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="procedure.label">Procedure</div>
+<h2 class="section-title" data-i18n="procedure.title">Procedure 基类。</h2>
+</div>
+<p class="section-intro" data-i18n="procedure.desc">继承 Procedure，实现 run(self, ctx) 方法。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">procedure_example.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.named_query <span class="tok-k">import</span> <span class="tok-cls">Procedure</span>, <span class="tok-cls">ProcedureContext</span>
+
+<span class="tok-k">class</span> <span class="tok-cls">GetActiveUsers</span>(<span class="tok-cls">Procedure</span>):
+    <span class="tok-c"># 通过类属性注解定义参数</span>
+    min_age: <span class="tok-cls">int</span> = <span class="tok-n">18</span>
+
+    <span class="tok-k">def</span> <span class="tok-f">run</span>(self, ctx: <span class="tok-cls">ProcedureContext</span>):
+        result = ctx.<span class="tok-f">execute</span>(
+            <span class="tok-s">'myapp.queries.active_users_by_age'</span>,
+            params={<span class="tok-s">'min_age'</span>: self.min_age},
+            bind=<span class="tok-s">'active_users'</span>
+        )
+        <span class="tok-k">for</span> row <span class="tok-k">in</span> ctx.<span class="tok-f">rows</span>(<span class="tok-s">'active_users'</span>):
+            ctx.<span class="tok-f">log</span>(<span class="tok-s">f"User: </span>{row[<span class="tok-s">'username'</span>]}<span class="tok-s">"</span>)
+
+<span class="tok-c"># 执行入口</span>
+<span class="tok-c"># ProcedureRunner.run(backend, user_params, transaction_mode)</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="context.label">Context</div>
+<h2 class="section-title" data-i18n="context.title">ProcedureContext。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Execute</div>
+<h3 class="feature-title" data-i18n="context.execute">execute()</h3>
+<p class="feature-desc">execute(qualified_name, params, bind, output) — 执行命名查询并绑定结果。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Scalar</div>
+<h3 class="feature-title" data-i18n="context.scalar">scalar()</h3>
+<p class="feature-desc">scalar(var_name, column) — 获取绑定结果的标量值。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Rows</div>
+<h3 class="feature-title" data-i18n="context.rows">rows()</h3>
+<p class="feature-desc">rows(var_name) — 迭代绑定结果的行数据。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Bind</div>
+<h3 class="feature-title" data-i18n="context.bind">bind()</h3>
+<p class="feature-desc">bind(name, data) — 手动绑定数据到上下文。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / Log</div>
+<h3 class="feature-title" data-i18n="context.log">log()</h3>
+<p class="feature-desc">log(message, level) — 记录日志条目。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / Abort</div>
+<h3 class="feature-title" data-i18n="context.abort">abort()</h3>
+<p class="feature-desc">abort(procedure_name, reason) — 中止过程执行。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">07 / Parallel</div>
+<h3 class="feature-title" data-i18n="context.parallel">parallel()</h3>
+<p class="feature-desc">parallel(*steps, max_concurrency) — 并行执行多个步骤。</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="transaction_mode.label">Transaction Mode</div>
+<h2 class="section-title" data-i18n="transaction_mode.title">事务模式。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / AUTO</div>
+<h3 class="feature-title" data-i18n="transaction_mode.auto">AUTO</h3>
+<p class="feature-desc">整个 run() 包裹在单事务中。成功提交，异常回滚。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / STEP</div>
+<h3 class="feature-title" data-i18n="transaction_mode.step">STEP</h3>
+<p class="feature-desc">每个 ctx.execute() 独立事务。逐步提交，部分失败不影响已提交步骤。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / NONE</div>
+<h3 class="feature-title" data-i18n="transaction_mode.none">NONE</h3>
+<p class="feature-desc">无事务管理。所有操作自动提交。</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="module_scan.label">Module Scan</div>
+<h2 class="section-title" data-i18n="module_scan.title">模块扫描。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">module_scan.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.named_query <span class="tok-k">import</span> (
+    <span class="tok-f">list_named_queries_in_module</span>,
+    <span class="tok-f">list_named_procedures_in_module</span>
+)
+
+<span class="tok-c"># 发现首参数为 dialect 的可调用对象</span>
+queries = <span class="tok-f">list_named_queries_in_module</span>(<span class="tok-s">'myapp.queries'</span>)
+
+<span class="tok-c"># 发现 Procedure 子类</span>
+procedures = <span class="tok-f">list_named_procedures_in_module</span>(<span class="tok-s">'myapp.procedures'</span>)</pre></div>
+</div>
+</div>
+</section></main>
+<script>
+(function(){var o=new IntersectionObserver(function(e){e.forEach(function(e){if(e.isIntersecting){e.target.classList.add("visible");o.unobserve(e.target)}})},{threshold:.12});document.querySelectorAll(".reveal").forEach(function(e){o.observe(e)})})();
+</script>`;
+---
+
+<BaseLayout title="rhosocial ActiveRecord — Named Query" variant="back">
+  <Fragment set:html={__html} />
+</BaseLayout>

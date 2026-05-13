@@ -1,0 +1,594 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const __html = `<style>
+:root, body {
+  --code-keyword:   var(--tok-keyword);
+  --code-class:     var(--tok-class);
+  --code-fn:        var(--tok-func);
+  --code-string:    var(--tok-string);
+  --code-number:    var(--tok-num);
+  --code-comment:   var(--tok-comment);
+  --code-op:        var(--tok-op);
+  --surface-0:      var(--bg-2);
+  --surface-1:      var(--bg-elevated);
+  --surface-2:      var(--bg-2);
+  --surface-3:      color-mix(in srgb, var(--fg) 8%, var(--bg));
+  --text-primary:   var(--fg);
+  --text-secondary: var(--fg-muted);
+  --text-muted:     var(--fg-faint);
+  --accent-soft:    color-mix(in srgb, var(--accent) 15%, transparent);
+  --accent-secondary:      var(--accent-2);
+  --accent-secondary-soft: color-mix(in srgb, var(--accent-2) 12%, transparent);
+  --accent-fg:      var(--bg);
+  --ok:             var(--success);
+  --ok-soft:        color-mix(in srgb, var(--success) 12%, transparent);
+  --err:            var(--danger);
+  --err-soft:       color-mix(in srgb, var(--danger) 12%, transparent);
+  --info:           var(--info);
+  --warn:           var(--warning, #f59e0b);
+  --warn-soft:      color-mix(in srgb, var(--warning, #f59e0b) 12%, transparent);
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
+  --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 9999px;
+}
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-d1 { transition-delay:0.1s; }
+.reveal-d2 { transition-delay:0.2s; }
+</style>
+<main class="page">
+<section class="hero section reveal">
+<div class="container hero-inner">
+<div class="hero-eyebrow rise"><a href="./index.html">&larr; <span data-i18n="hero.back">Backends</span></div>
+<h1 class="hero-title rise">SQLite</h1>
+<p class="hero-sub rise" data-i18n="hero.sub">内置、零依赖、单文件数据库。同步/异步双模式，PRAGMA 精细控制。</p>
+</div>
+</section>
+<section class="section reveal reveal-d1">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="features.label">Features</div>
+<h2 class="section-title" data-i18n="features.title">SQLite 特性。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Zero Config</div>
+<h3 class="feature-title" data-i18n="features.zero.title">零配置</h3>
+<p class="feature-desc" data-i18n="features.zero.desc">开箱即用，无需安装服务器。默认启用 WAL 模式与外键约束。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Single File</div>
+<h3 class="feature-title" data-i18n="features.file.title">单文件</h3>
+<p class="feature-desc" data-i18n="features.file.desc">整个数据库是一个文件，便于分发。也支持 :memory: 内存数据库。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / ACID</div>
+<h3 class="feature-title" data-i18n="features.acid.title">完整 ACID</h3>
+<p class="feature-desc" data-i18n="features.acid.desc">事务保证原子性、一致性、隔离性、持久性。DEFERRED / IMMEDIATE / EXCLUSIVE 三种 BEGIN 模式。</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Extensions</div>
+<h3 class="feature-title" data-i18n="features.ext.title">扩展生态</h3>
+<p class="feature-desc" data-i18n="features.ext.desc">FTS5 全文搜索、JSON1、R-Tree、Geopoly 等虚拟表扩展。扩展注册表运行时检测可用性。</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="connection.label">Connection</div>
+<h2 class="section-title" data-i18n="connection.title">连接配置。</h2>
+</div>
+<p class="section-intro" data-i18n="connection.desc">SQLiteConnectionConfig 继承 ConnectionConfig，混入 PRAGMA / Driver / Storage 三组配置。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">connection_config.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlite <span class="tok-k">import</span> <span class="tok-cls">SQLiteBackend</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlite.config <span class="tok-k">import</span> (
+    <span class="tok-cls">SQLiteConnectionConfig</span>,
+    <span class="tok-cls">SQLiteInMemoryConfig</span>,
+    <span class="tok-cls">SQLiteTempFileConfig</span>,
+)
+
+<span class="tok-c"># 文件数据库（自动启用默认 PRAGMA）</span>
+config = <span class="tok-cls">SQLiteConnectionConfig</span>(database=<span class="tok-s">'app.db'</span>)
+backend = <span class="tok-cls">SQLiteBackend</span>(connection_config=config)
+backend.connect()
+
+<span class="tok-c"># 内存数据库（自动优化 PRAGMA）</span>
+mem_config = <span class="tok-cls">SQLiteInMemoryConfig</span>()
+mem_backend = <span class="tok-cls">SQLiteBackend</span>(connection_config=mem_config)
+
+<span class="tok-c"># 临时文件数据库（关闭时自动删除）</span>
+temp_config = <span class="tok-cls">SQLiteTempFileConfig</span>()
+temp_backend = <span class="tok-cls">SQLiteBackend</span>(connection_config=temp_config)
+
+<span class="tok-c"># 快捷方式：直接传 database 参数</span>
+backend = <span class="tok-cls">SQLiteBackend</span>(database=<span class="tok-s">'app.db'</span>)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="config_mixins.label">Config Mixins</div>
+<h2 class="section-title" data-i18n="config_mixins.title">配置混入。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Pragma</div>
+<h3 class="feature-title" data-i18n="config_mixins.pragma">SQLitePragmaMixin</h3>
+<p class="feature-desc">pragmas: Dict[str, Any] — 默认启用 foreign_keys=ON / journal_mode=WAL / synchronous=FULL</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Driver</div>
+<h3 class="feature-title" data-i18n="config_mixins.driver">SQLiteDriverMixin</h3>
+<p class="feature-desc">uri / timeout / isolation_level / detect_types / check_same_thread / cached_statements / autocommit</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Storage</div>
+<h3 class="feature-title" data-i18n="config_mixins.storage">SQLiteStorageMixin</h3>
+<p class="feature-desc">database (默认 :memory:) / delete_on_close / is_memory_db()</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="default_pragmas.label">Pragmas</div>
+<h2 class="section-title" data-i18n="default_pragmas.title">默认 PRAGMA。</h2>
+</div>
+<p class="section-intro" data-i18n="default_pragmas.desc">SQLiteConnectionConfig 自动启用以下 PRAGMA，兼顾安全性与性能：</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">default_pragmas.py</span></div>
+<div class="code-body"><pre>DEFAULT_PRAGMAS = {
+    <span class="tok-s">"foreign_keys"</span>:     <span class="tok-s">"ON"</span>,       <span class="tok-c"># 启用外键约束</span>
+    <span class="tok-s">"journal_mode"</span>:     <span class="tok-s">"WAL"</span>,       <span class="tok-c"># 写前日志模式，允许并发读</span>
+    <span class="tok-s">"synchronous"</span>:      <span class="tok-s">"FULL"</span>,      <span class="tok-c"># 完全同步，最安全</span>
+    <span class="tok-s">"wal_autocheckpoint"</span>: <span class="tok-s">"1000"</span>,   <span class="tok-c"># WAL 自动检查点阈值</span>
+    <span class="tok-s">"wal_checkpoint"</span>:   <span class="tok-s">"FULL"</span>,      <span class="tok-c"># 检查点模式</span>
+}
+
+<span class="tok-c"># 自定义 PRAGMA</span>
+config = <span class="tok-cls">SQLiteConnectionConfig</span>(
+    database=<span class="tok-s">'app.db'</span>,
+    pragmas={
+        <span class="tok-s">"foreign_keys"</span>: <span class="tok-s">"ON"</span>,
+        <span class="tok-s">"journal_mode"</span>: <span class="tok-s">"WAL"</span>,
+        <span class="tok-s">"cache_size"</span>: <span class="tok-s">"-64000"</span>,  <span class="tok-c"># 64MB 页缓存</span>
+        <span class="tok-s">"mmap_size"</span>: <span class="tok-s">"268435456"</span>, <span class="tok-c"># 256MB 内存映射</span>
+    }
+)
+
+<span class="tok-c"># 内存数据库自动覆盖 PRAGMA</span>
+<span class="tok-c"># journal_mode → MEMORY, synchronous → OFF, temp_store → MEMORY</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="type_adapters.label">Type Adapters</div>
+<h2 class="section-title" data-i18n="type_adapters.title">类型适配器。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Blob</div>
+<h3 class="feature-title" data-i18n="type_adapters.blob">SQLiteBlobAdapter</h3>
+<p class="feature-desc">bytes ↔ BLOB / memoryview 双向转换</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / JSON</div>
+<h3 class="feature-title" data-i18n="type_adapters.json">SQLiteJSONAdapter</h3>
+<p class="feature-desc">dict / list ↔ JSON TEXT (json.dumps / json.loads)</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / UUID</div>
+<h3 class="feature-title" data-i18n="type_adapters.uuid">SQLiteUUIDAdapter</h3>
+<p class="feature-desc">UUID ↔ TEXT (标准 UUID 字符串格式)</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="dialect.label">Dialect</div>
+<h2 class="section-title" data-i18n="dialect.title">SQLiteDialect 版本感知。</h2>
+</div>
+<p class="section-intro" data-i18n="dialect.desc">SQLiteDialect 在初始化时接受版本元组，动态启用/禁用协议方法。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">dialect_version.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlite.dialect <span class="tok-k">import</span> <span class="tok-cls">SQLiteDialect</span>
+
+<span class="tok-c"># 默认版本 3.35.0（启用 RETURNING）</span>
+dialect = <span class="tok-cls">SQLiteDialect</span>()
+
+<span class="tok-c"># 指定旧版本 → 功能降级</span>
+old_dialect = <span class="tok-cls">SQLiteDialect</span>(version=(<span class="tok-n">3</span>, <span class="tok-n">24</span>, <span class="tok-n">0</span>))
+old_dialect.supports_returning_clause()  <span class="tok-c"># False</span>
+old_dialect.supports_window_functions()  <span class="tok-c"># False</span>
+old_dialect.supports_upsert()            <span class="tok-c"># True (3.24.0+)</span>
+
+<span class="tok-c"># 版本对应功能表</span>
+<span class="tok-c"># 3.8.3  — CTE / Recursive CTE</span>
+<span class="tok-c"># 3.25.0 — Window Functions, RENAME COLUMN</span>
+<span class="tok-c"># 3.31.0 — Generated Columns (STORED/VIRTUAL)</span>
+<span class="tok-c"># 3.35.0 — RETURNING, DROP COLUMN, MATERIALIZED CTE</span>
+<span class="tok-c"># 3.38.0 — JSON1 内置（不再依赖扩展）</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="dialect_features.label">Feature Matrix</div>
+<h2 class="section-title" data-i18n="dialect_features.title">方言功能矩阵。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Supported</div>
+<h3 class="feature-title" data-i18n="dialect_features.supported">支持</h3>
+<p class="feature-desc">CTE / Window Functions / RETURNING / UPSERT (ON CONFLICT) / FILTER / LATERAL JOIN / JSON / Savepoint / Trigger / Generated Columns / FTS5 MATCH</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Not Supported</div>
+<h3 class="feature-title" data-i18n="dialect_features.unsupported">不支持</h3>
+<p class="feature-desc">ROLLUP / CUBE / GROUPING SETS / ARRAY / MERGE / FOR UPDATE / QUALIFY / Materialized View / ILIKE / Ordered-Set Agg / Graph MATCH / Temporal Table</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / SQLite-specific</div>
+<h3 class="feature-title" data-i18n="dialect_features.sqlite_specific">SQLite 专有</h3>
+<p class="feature-desc">INSERT OR REPLACE / INSERT OR IGNORE / PRAGMA / Virtual Table / REINDEX / BEGIN DEFERRED|IMMEDIATE|EXCLUSIVE</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="insert_syntax.label">INSERT Syntax</div>
+<h2 class="section-title" data-i18n="insert_syntax.title">INSERT 语法扩展。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">insert_syntax.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.expression <span class="tok-k">import</span> <span class="tok-cls">InsertExpression</span>, <span class="tok-cls">ValuesSource</span>, <span class="tok-cls">Literal</span>
+
+<span class="tok-c"># 标准 INSERT ... ON CONFLICT (3.24.0+)</span>
+insert = <span class="tok-cls">InsertExpression</span>(dialect=dialect, into=<span class="tok-s">'users'</span>,
+    columns=[<span class="tok-s">'id'</span>, <span class="tok-s">'name'</span>],
+    source=<span class="tok-cls">ValuesSource</span>(dialect, [[<span class="tok-cls">Literal</span>(dialect, <span class="tok-n">1</span>), <span class="tok-cls">Literal</span>(dialect, <span class="tok-s">'Alice'</span>)]]),
+    on_conflict=...)
+
+<span class="tok-c"># SQLite 专有：INSERT OR REPLACE（删除旧行，插入新行）</span>
+insert_or_replace = <span class="tok-cls">InsertExpression</span>(
+    dialect=dialect, into=<span class="tok-s">'users'</span>,
+    columns=[<span class="tok-s">'id'</span>, <span class="tok-s">'name'</span>],
+    source=<span class="tok-cls">ValuesSource</span>(dialect, [[<span class="tok-cls">Literal</span>(dialect, <span class="tok-n">1</span>), <span class="tok-cls">Literal</span>(dialect, <span class="tok-s">'Alice'</span>)]]),
+    dialect_options={<span class="tok-s">'or_replace'</span>: <span class="tok-k">True</span>}
+)
+
+<span class="tok-c"># SQLite 专有：INSERT OR IGNORE（静默跳过冲突行）</span>
+insert_or_ignore = <span class="tok-cls">InsertExpression</span>(
+    dialect=dialect, into=<span class="tok-s">'users'</span>,
+    columns=[<span class="tok-s">'id'</span>, <span class="tok-s">'name'</span>],
+    source=<span class="tok-cls">ValuesSource</span>(dialect, [[<span class="tok-cls">Literal</span>(dialect, <span class="tok-n">1</span>), <span class="tok-cls">Literal</span>(dialect, <span class="tok-s">'Alice'</span>)]]),
+    dialect_options={<span class="tok-s">'or_ignore'</span>: <span class="tok-k">True</span>}
+)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="protocols.label">Protocols</div>
+<h2 class="section-title" data-i18n="protocols.title">SQLite 专有协议。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Extension</div>
+<h3 class="feature-title" data-i18n="protocols.extension">SQLiteExtensionSupport</h3>
+<p class="feature-desc">detect_extensions() / is_extension_available() / check_extension_feature()</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Pragma</div>
+<h3 class="feature-title" data-i18n="protocols.pragma">SQLitePragmaSupport</h3>
+<p class="feature-desc">get_pragma_info() / get_pragma_sql() / set_pragma_sql() / get_pragmas_by_category()</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / VirtualTable</div>
+<h3 class="feature-title" data-i18n="protocols.vtable">SQLiteVirtualTableSupport</h3>
+<p class="feature-desc">supports_rtree() / supports_fts5() / supports_geopoly() / format_create_virtual_table() / format_fts5_*()</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Reindex</div>
+<h3 class="feature-title" data-i18n="protocols.reindex">SQLiteReindexSupport</h3>
+<p class="feature-desc">supports_reindex() / supports_reindex_expressions() (3.53.0+) / format_reindex_statement()</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="extension.label">Extensions</div>
+<h2 class="section-title" data-i18n="extension.title">扩展框架。</h2>
+</div>
+<p class="section-intro" data-i18n="extension.desc">SQLiteExtensionRegistry 管理扩展注册与版本感知检测。</p>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / FTS5</div>
+<h3 class="feature-title" data-i18n="extension.fts5">FTS5 全文搜索</h3>
+<p class="feature-desc">format_fts5_create_virtual_table() / MATCH / bm25() / highlight() / snippet() / offset()</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / JSON1</div>
+<h3 class="feature-title" data-i18n="extension.json1">JSON1</h3>
+<p class="feature-desc">json_extract / json_set / json_type / json_valid / json_tree / json_each（3.38.0+ 内置）</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / R-Tree</div>
+<h3 class="feature-title" data-i18n="extension.rtree">R-Tree 空间索引</h3>
+<p class="feature-desc">range query / nearest-neighbor / 3.6.0+ / format_create_virtual_table(module='rtree')</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Geopoly</div>
+<h3 class="feature-title" data-i18n="extension.geopoly">Geopoly 多边形</h3>
+<p class="feature-desc">基于 R-Tree 的多边形几何操作 / 3.26.0+</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="extension_code.label">FTS5 Example</div>
+<h2 class="section-title" data-i18n="extension_code.title">FTS5 全文搜索示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">fts5_example.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlite <span class="tok-k">import</span> <span class="tok-cls">SQLiteBackend</span>
+
+backend = <span class="tok-cls">SQLiteBackend</span>(database=<span class="tok-s">'docs.db'</span>)
+backend.connect()
+dialect = backend.dialect
+
+<span class="tok-c"># 创建 FTS5 虚拟表</span>
+sql, params = dialect.format_fts5_create_virtual_table(
+    table_name=<span class="tok-s">'articles'</span>,
+    columns=[<span class="tok-s">'title'</span>, <span class="tok-s">'body'</span>],
+    tokenizer=<span class="tok-s">'unicode61'</span>,
+)
+<span class="tok-c"># → CREATE VIRTUAL TABLE "articles" USING fts5(title, body, tokenize=unicode61)</span>
+
+<span class="tok-c"># 全文搜索 MATCH</span>
+sql, params = dialect.format_fts5_match_expression(
+    table_name=<span class="tok-s">'articles'</span>, query=<span class="tok-s">'python async'</span>
+)
+<span class="tok-c"># → ("articles" MATCH ?, ('python async',))</span>
+
+<span class="tok-c"># BM25 排名</span>
+sql, params = dialect.format_fts5_rank_expression(
+    table_name=<span class="tok-s">'articles'</span>, weights=[<span class="tok-n">10.0</span>, <span class="tok-n">1.0</span>]
+)
+<span class="tok-c"># → bm25("articles", 10.0, 1.0)</span>
+
+<span class="tok-c"># 高亮搜索结果</span>
+sql, params = dialect.format_fts5_highlight_expression(
+    table_name=<span class="tok-s">'articles'</span>, column=<span class="tok-s">'body'</span>, query=<span class="tok-s">'python'</span>,
+    prefix_marker=<span class="tok-s">'&lt;mark&gt;'</span>, suffix_marker=<span class="tok-s">'&lt;/mark&gt;'</span>
+)
+
+<span class="tok-c"># 检测扩展可用性</span>
+<span class="tok-k">if</span> dialect.is_extension_available(<span class="tok-s">'fts5'</span>):
+    features = dialect.get_supported_extension_features(<span class="tok-s">'fts5'</span>)</pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="pragma_framework.label">Pragma Framework</div>
+<h2 class="section-title" data-i18n="pragma_framework.title">PRAGMA 框架。</h2>
+</div>
+<p class="section-intro" data-i18n="pragma_framework.desc">PragmaCategory 枚举分类，PragmaInfo 元数据驱动，6 类 PRAGMA 全覆盖。</p>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / Configuration</div>
+<h3 class="feature-title" data-i18n="pragma_framework.config">配置类</h3>
+<p class="feature-desc">foreign_keys / journal_mode / synchronous / cache_size / mmap_size / temp_store ...</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / Information</div>
+<h3 class="feature-title" data-i18n="pragma_framework.info">信息类</h3>
+<p class="feature-desc">database_list / table_info / index_info / foreign_key_list / compile_options ...</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Debug</div>
+<h3 class="feature-title" data-i18n="pragma_framework.debug">调试类</h3>
+<p class="feature-desc">integrity_check / wal_checkpoint / wal_blocking_checkpoint ...</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / Performance</div>
+<h3 class="feature-title" data-i18n="pragma_framework.perf">性能类</h3>
+<p class="feature-desc">cache_size / mmap_size / page_size / wal_autocheckpoint ...</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / WAL</div>
+<h3 class="feature-title" data-i18n="pragma_framework.wal">WAL 类</h3>
+<p class="feature-desc">journal_mode / wal_checkpoint / wal_autocheckpoint / wal_blocking_checkpoint ...</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / Compile-Time</div>
+<h3 class="feature-title" data-i18n="pragma_framework.compile">编译时类</h3>
+<p class="feature-desc">compile_options — 只读，反映编译时选项</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="pragma_code.label">Pragma API</div>
+<h2 class="section-title" data-i18n="pragma_code.title">PRAGMA 操作示例。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">pragma_api.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlite.pragma <span class="tok-k">import</span> (
+    <span class="tok-cls">PragmaCategory</span>, <span class="tok-f">get_pragma_info</span>, <span class="tok-f">get_pragmas_by_category</span>
+)
+
+<span class="tok-c"># 查询单个 PRAGMA 元数据</span>
+info = <span class="tok-f">get_pragma_info</span>(<span class="tok-s">'journal_mode'</span>)
+info.get_sql()        <span class="tok-c"># → "PRAGMA journal_mode"</span>
+info.get_set_sql(<span class="tok-s">'WAL'</span>) <span class="tok-c"># → "PRAGMA journal_mode = WAL"</span>
+
+<span class="tok-c"># 按类别浏览 PRAGMA</span>
+perf_pragmas = <span class="tok-f">get_pragmas_by_category</span>(<span class="tok-cls">PragmaCategory</span>.PERFORMANCE)
+
+<span class="tok-c"># 通过方言运行时查询</span>
+dialect = backend.dialect
+sql = dialect.get_pragma_sql(<span class="tok-s">'cache_size'</span>)
+<span class="tok-c"># → "PRAGMA cache_size"</span>
+
+sql = dialect.set_pragma_sql(<span class="tok-s">'cache_size'</span>, <span class="tok-s">'-64000'</span>)
+<span class="tok-c"># → "PRAGMA cache_size = -64000"</span>
+
+<span class="tok-c"># 检测 PRAGMA 可用性</span>
+dialect.is_pragma_available(<span class="tok-s">'journal_mode'</span>)  <span class="tok-c"># True</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="transaction.label">Transaction</div>
+<h2 class="section-title" data-i18n="transaction.title">事务控制。</h2>
+</div>
+<p class="section-intro" data-i18n="transaction.desc">SQLiteTransactionManager 支持三种 BEGIN 模式，默认 SERIALIZABLE 隔离级别。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">transaction_control.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.transaction <span class="tok-k">import</span> <span class="tok-cls">IsolationLevel</span>
+
+<span class="tok-c"># 标准事务（默认 BEGIN IMMEDIATE TRANSACTION）</span>
+<span class="tok-k">with</span> backend.transaction():
+    backend.execute(<span class="tok-s">"INSERT INTO users ..."</span>, ())
+
+<span class="tok-c"># 指定隔离级别</span>
+<span class="tok-k">with</span> backend.transaction(isolation_level=<span class="tok-cls">IsolationLevel</span>.SERIALIZABLE):
+    ...
+
+<span class="tok-c"># SQLite 仅支持两种隔离级别</span>
+<span class="tok-c"># SERIALIZABLE      → BEGIN IMMEDIATE (默认)</span>
+<span class="tok-c"># READ_UNCOMMITTED  → BEGIN DEFERRED + PRAGMA read_uncommitted=1</span>
+
+<span class="tok-c"># 直接控制 BEGIN 类型</span>
+tm = backend.transaction_manager
+tm.begin_type = <span class="tok-s">'EXCLUSIVE'</span>  <span class="tok-c"># BEGIN EXCLUSIVE TRANSACTION</span>
+<span class="tok-c"># DEFERRED   — 不获取锁，首次读写时加锁</span>
+<span class="tok-c"># IMMEDIATE  — 立即获取 RESERVED 锁（推荐写事务）</span>
+<span class="tok-c"># EXCLUSIVE  — 立即获取 EXCLUSIVE 锁（独占访问）</span>
+
+<span class="tok-c"># Savepoint 支持</span>
+<span class="tok-k">with</span> backend.transaction():
+    backend.execute(<span class="tok-s">"INSERT ..."</span>, ())
+    <span class="tok-k">with</span> backend.transaction():  <span class="tok-c"># SAVEPOINT</span>
+        backend.execute(<span class="tok-s">"UPDATE ..."</span>, ())
+        <span class="tok-c"># ROLLBACK TO SAVEPOINT → 自动回滚</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="functions.label">Functions</div>
+<h2 class="section-title" data-i18n="functions.title">SQLite 专有函数工厂。</h2>
+</div>
+<div class="features-grid">
+<div class="feature rise">
+<div class="feature-num">01 / String</div>
+<h3 class="feature-title" data-i18n="functions.string">字符串</h3>
+<p class="feature-desc">substr / instr / printf / unicode / hex / unhex / soundex / group_concat / trim_sqlite / ltrim / rtrim</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">02 / DateTime</div>
+<h3 class="feature-title" data-i18n="functions.datetime">日期时间</h3>
+<p class="feature-desc">date_func / time_func / datetime_func / julianday / strftime_func</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">03 / Math</div>
+<h3 class="feature-title" data-i18n="functions.math">数学</h3>
+<p class="feature-desc">random_func / abs_sql / sign / total / round_ / pow / sqrt / mod / ceil / floor / trunc</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">04 / JSON</div>
+<h3 class="feature-title" data-i18n="functions.json">JSON</h3>
+<p class="feature-desc">json_extract / json_set / json_type / json_valid / json_patch / json_tree / json_each / json_array_length</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">05 / Blob</div>
+<h3 class="feature-title" data-i18n="functions.blob">BLOB</h3>
+<p class="feature-desc">zeroblob / randomblob</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">06 / System</div>
+<h3 class="feature-title" data-i18n="functions.system">系统</h3>
+<p class="feature-desc">typeof / quote / last_insert_rowid / changes</p>
+</div>
+<div class="feature rise">
+<div class="feature-num">07 / Conditional</div>
+<h3 class="feature-title" data-i18n="functions.conditional">条件</h3>
+<p class="feature-desc">iif — SQLite 专有的三元条件函数</p>
+</div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="async.label">Async</div>
+<h2 class="section-title" data-i18n="async.title">异步支持。</h2>
+</div>
+<p class="section-intro" data-i18n="async.desc">AsyncSQLiteBackend / AsyncSQLiteTransactionManager 懒加载，需安装 aiosqlite。</p>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">async_sqlite.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlite <span class="tok-k">import</span> <span class="tok-cls">AsyncSQLiteBackend</span>
+<span class="tok-c"># 需安装: pip install rhosocial-activerecord[async]</span>
+
+backend = <span class="tok-cls">AsyncSQLiteBackend</span>(database=<span class="tok-s">'app.db'</span>)
+<span class="tok-k">await</span> backend.connect()
+
+<span class="tok-k">async with</span> backend.transaction():
+    result = <span class="tok-k">await</span> backend.execute(<span class="tok-s">"SELECT ..."</span>, ())
+
+<span class="tok-k">await</span> backend.disconnect()
+
+<span class="tok-c"># 懒加载机制：导入同步组件不需要 aiosqlite</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlite <span class="tok-k">import</span> <span class="tok-cls">SQLiteBackend</span>  <span class="tok-c"># ✓ 无需 aiosqlite</span>
+<span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlite <span class="tok-k">import</span> <span class="tok-cls">AsyncSQLiteBackend</span>  <span class="tok-c"># ✗ 需要 aiosqlite</span></pre></div>
+</div>
+</div>
+</section>
+<section class="section">
+<div class="container">
+<div class="section-header">
+<div class="section-label" data-i18n="env_config.label">Environment</div>
+<h2 class="section-title" data-i18n="env_config.title">环境变量配置。</h2>
+</div>
+<div class="code-block" style="margin-top: 24px;"><div class="code-header"><div class="code-dots"><span></span><span></span><span></span></div><span class="code-filename">env_config.py</span></div>
+<div class="code-body"><pre><span class="tok-k">from</span> rhosocial.activerecord.backend.impl.sqlite.config <span class="tok-k">import</span> <span class="tok-cls">SQLiteConnectionConfig</span>
+
+<span class="tok-c"># 从环境变量创建配置（前缀 SQLITE_）</span>
+config = <span class="tok-cls">SQLiteConnectionConfig</span>.from_env(prefix=<span class="tok-s">"SQLITE_"</span>)
+
+<span class="tok-c"># 支持的环境变量：</span>
+<span class="tok-c"># SQLITE_DATABASE         — 数据库文件路径</span>
+<span class="tok-c"># SQLITE_URI              — 启用 URI 文件名 (true/false)</span>
+<span class="tok-c"># SQLITE_TIMEOUT          — 连接超时（秒）</span>
+<span class="tok-c"># SQLITE_ISOLATION_LEVEL  — 隔离级别</span>
+<span class="tok-c"># SQLITE_DETECT_TYPES     — 类型检测标志</span>
+<span class="tok-c"># SQLITE_CACHED_STATEMENTS — 缓存语句数</span>
+<span class="tok-c"># SQLITE_AUTOCOMMIT       — 自动提交模式</span>
+<span class="tok-c"># SQLITE_DELETE_ON_CLOSE  — 关闭时删除文件</span>
+<span class="tok-c"># SQLITE_PRAGMA_*         — 自定义 PRAGMA（如 SQLITE_PRAGMA_CACHE_SIZE）</span></pre></div>
+</div>
+</div>
+</section></main>`;
+---
+
+<BaseLayout title="rhosocial ActiveRecord — SQLite" variant="back">
+  <Fragment set:html={__html} />
+</BaseLayout>
