@@ -66,7 +66,6 @@
         var sub = m.sub || '';
 
         html += '<a ' + href + ' class="' + cls + '" style="--accent:' + (isPublished ? 'var(--code-class)' : 'var(--tok-fn)') + '">';
-        html += '<div class="blog-card-date">' + date + '</div>';
         html += '<div class="blog-card-cats">' + cats.map(function(c) { return '<span class="blog-card-cat">' + c + '</span>'; }).join('') + '</div>';
         html += '<div class="blog-card-title">' + title + '</div>';
         if (sub) {
