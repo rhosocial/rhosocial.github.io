@@ -22,17 +22,20 @@
     coreDesign: {
       name: { 'zh-cn': '核心设计决策', 'en-us': 'Core Design Decisions' },
       posts: [
-        { slug: 'why-pydantic-v2', key: 'whyPydanticV2', date: '2026-05-12', cats: ['Design','Architecture'], status: 'published', titleStub: {'zh-cn':'为什么我们选择 Pydantic v2 作为 ActiveRecord 的基类','en-us':'Why ActiveRecord Chose Pydantic v2 as Its Model Base Class'} },
-        { slug: '', key: 'coreBackendSeparation', date: 'TBD', cats: ['Architecture'], status: 'planned', titleStub: {'zh-cn':'ActiveRecord-后端分离架构：设计理念与实践','en-us':'ActiveRecord-Backend Separation Architecture: Design Philosophy & Practice'} },
-        { slug: '', key: 'fieldProxySystem', date: 'TBD', cats: ['Architecture'], status: 'planned', titleStub: {'zh-cn':'字段代理系统：在 Pydantic 之上叠加自定义行为','en-us':'Field Proxy System: Layering Custom Behaviors on Top of Pydantic'} },
-        { slug: '', key: 'syncAsyncSymmetry', date: 'TBD', cats: ['Design'], status: 'planned', titleStub: {'zh-cn':'Sync/Async API 对称设计：命名的艺术','en-us':'Sync/Async API Symmetry: The Art of Naming'} }
+        { slug: 'why-activerecord', key: 'whyActiverecord', date: '2026-05-13', cats: ['Design','Architecture'], status: 'published', titleStub: {'zh-cn':'为什么选择 ActiveRecord 设计模式','en-us':'Why the ActiveRecord Pattern'} },
+        { slug: 'why-pydantic-v2', key: 'whyPydanticV2', date: '2026-05-13', cats: ['Design','Architecture'], status: 'published', titleStub: {'zh-cn':'为什么我们选择 Pydantic v2 作为 ActiveRecord 的基类','en-us':'Why We Chose Pydantic v2 as ActiveRecord\'s Base Class'} },
+        { slug: 'fluent-api', key: 'fluentApi', date: '2026-05-14', cats: ['Design','API'], status: 'published', titleStub: {'zh-cn':'流式 API：ActiveRecord.save 与 ActiveQuery','en-us':'Fluent API: ActiveRecord.save and ActiveQuery'} },
+        { slug: 'relation-mapping', key: 'relationMapping', date: '2026-05-15', cats: ['Relation','Design'], status: 'published', titleStub: {'zh-cn':'关系映射：声明方式与加载策略','en-us':'Relation Mapping: Declaration & Loading Strategies'} },
+        { slug: 'field-proxy', key: 'fieldProxy', date: '2026-05-16', cats: ['Architecture','Field'], status: 'published', titleStub: {'zh-cn':'为什么需要字段代理','en-us':'Why We Need Field Proxy'} },
+        { slug: 'core-backend-separation', key: 'coreBackendSeparation', date: '2026-05-17', cats: ['Architecture','Backend'], status: 'published', titleStub: {'zh-cn':'ActiveRecord-后端分离架构：设计理念与实践','en-us':'ActiveRecord-Backend Separation: Design Philosophy & Practice'} },
+        { slug: 'sync-async-symmetry', key: 'syncAsyncSymmetry', date: '2026-05-18', cats: ['Design','API'], status: 'published', titleStub: {'zh-cn':'Sync/Async API 对称设计：命名的艺术','en-us':'Sync/Async API Symmetry: The Art of Naming'} }
       ]
     },
     exprDialect: {
       name: { 'zh-cn': '表达式与方言系统', 'en-us': 'Expression & Dialect System' },
       posts: [
-        { slug: '', key: 'expressionSystemDesign', date: 'TBD', cats: ['Query','Architecture'], status: 'planned', titleStub: {'zh-cn':'Expression 系统的设计哲学','en-us':'The Design Philosophy of the Expression System'} },
-        { slug: '', key: 'dialectAbstraction', date: 'TBD', cats: ['Dialect','Extension'], status: 'planned', titleStub: {'zh-cn':'Dialect 系统：通用表达式与方言扩展','en-us':'Dialect System: Common Expressions & Dialect Extensions'} }
+        { slug: 'expression-system-design', key: 'expressionSystemDesign', date: '2026-05-19', cats: ['Query','Architecture'], status: 'published', titleStub: {'zh-cn':'Expression 系统的设计哲学','en-us':'The Design Philosophy of the Expression System'} },
+        { slug: 'dialect-abstraction', key: 'dialectAbstraction', date: '2026-05-20', cats: ['Dialect','Extension'], status: 'published', titleStub: {'zh-cn':'Dialect 系统：通用表达式与方言扩展','en-us':'Dialect System: Common Expressions & Dialect Extensions'} }
       ]
     },
     backendDeepDive: {
@@ -55,7 +58,6 @@
     bestPractices: {
       name: { 'zh-cn': '实战与最佳实践', 'en-us': 'Best Practices' },
       posts: [
-        { slug: '', key: 'relationMapping', date: 'TBD', cats: ['Relation','Loading'], status: 'planned', titleStub: {'zh-cn':'关系映射：声明方式与加载策略','en-us':'Relation Mapping: Declaration & Loading Strategies'} },
         { slug: '', key: 'migrationSystem', date: 'TBD', cats: ['Migration','Schema'], status: 'planned', titleStub: {'zh-cn':'迁移（Migration）系统运作指南','en-us':'Migration System Operation Guide'} },
         { slug: '', key: 'dualValidation', date: 'TBD', cats: ['Validation','Security'], status: 'planned', titleStub: {'zh-cn':'数据验证的双重保障','en-us':'Dual Validation Guarantee'} },
         { slug: '', key: 'batchOperations', date: 'TBD', cats: ['Performance','Batch'], status: 'planned', titleStub: {'zh-cn':'批量操作与性能优化','en-us':'Batch Operations & Performance Optimization'} },

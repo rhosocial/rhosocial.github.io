@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>rhosocial ActiveRecord — 为什么我们选择 Pydantic v2 作为基类</title>
+<title>rhosocial ActiveRecord — 为什么选择 ActiveRecord 设计模式</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
@@ -61,8 +61,8 @@
 <link rel="stylesheet" href="../assets/fonts/dm.css">
 <link rel="stylesheet" href="../assets/fonts/outfit.css">
 <link rel="stylesheet" href="../assets/fonts/literata.css">
-<script src="why-pydantic-v2/zh-CN.js"></script>
-<script src="why-pydantic-v2/en-US.js"></script>
+<script src="why-activerecord/zh-CN.js"></script>
+<script src="why-activerecord/en-US.js"></script>
 <script src="../assets/state-manager.js"></script>
 <script src="../assets/theme-applier.js"></script>
 <script src="../assets/i18n.js"></script>
@@ -101,6 +101,8 @@
   --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
   --space-5: 24px; --space-6: 32px; --space-7: 48px; --space-8: 64px;
   --radius-sm: 4px; --radius-md: 8px; --radius-lg: 12px; --radius-pill: 9999px;
+  --border:           var(--border, rgba(255,255,255,0.08));
+  --border-strong:    var(--border-strong, rgba(255,255,255,0.16));
 }
 
 .reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
@@ -171,12 +173,12 @@ h3{font-size:1.2rem; margin-top:var(--space-6); margin-bottom:var(--space-3); co
     <div class="container">
       <a href="./index.html" class="back-link">&larr; <span data-i18n="hero.back">Back to Blog</span></a>
       <div class="eyebrow" data-i18n="hero.eyebrow">2026-05-13 · Design · Architecture</div>
-      <h1 data-i18n="hero.title">为什么我们选择 Pydantic v2 作为 ActiveRecord 的基类</h1>
-      <p class="lead" data-i18n="hero.sub">类型安全、验证管道与 IDE 体验的取舍。</p>
+      <h1 data-i18n="hero.title">为什么选择 ActiveRecord 设计模式</h1>
+      <p class="lead" data-i18n="hero.sub">在众多 ORM 和数据库访问模式中，为什么 ActiveRecord 模式仍然是最优解？</p>
     </div>
   </section>
 
-  <div id="post-body" class="container article-body" data-slug="why-pydantic-v2"></div>
+  <div id="post-body" class="container article-body" data-slug="why-activerecord"></div>
 
   <style>
 .series-nav {
@@ -255,7 +257,7 @@ h3{font-size:1.2rem; margin-top:var(--space-6); margin-bottom:var(--space-3); co
 }
 </style>
 
-<div id="series-article-nav" class="container series-nav reveal reveal-d1" data-slug="why-pydantic-v2"></div>
+<div id="series-article-nav" class="container series-nav reveal reveal-d1" data-slug="why-activerecord"></div>
 
   <script src="../assets/blog-post.js"></script>
   <script src="../assets/series-nav.js"></script>
