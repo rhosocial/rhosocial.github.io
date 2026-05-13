@@ -29,12 +29,8 @@ window.__SERIES_STRUCTURE = {
   seriesKey: {
     name: { 'zh-cn': '专题名', 'en-us': 'Series Name' },
     posts: [
-      { slug: 'article-slug', key: 'articleKey', date: '2026-05-12',
-        cats: ['Category1','Category2'], status: 'published',
-        titleStub: {'zh-cn':'标题','en-us':'Title'} },
-      { slug: '', key: 'plannedKey', date: 'TBD', cats: [...],
-        status: 'planned',
-        titleStub: {'zh-cn':'标题','en-us':'Title'} },
+      { slug: 'article-slug', key: 'articleKey', status: 'published' },
+      { slug: '', key: 'plannedKey', status: 'planned' },
     ]
   }
 }
@@ -43,11 +39,12 @@ window.__SERIES_STRUCTURE = {
 | 字段 | 说明 |
 |------|------|
 | `slug` | 已发布文章的 URL slug；planned 文章为空字符串 |
-| `key` | 关联 `index/zh-CN.js` 中 `posts` 对象 key 的标识符，用于首页查找元数据 |
+| `key` | 关联 `index/zh-CN.js` / `index/en-US.js` 中 `posts` 对象 key 的标识符，用于统一查找元数据 |
 | `status` | `'published'`（可点击）或 `'planned'`（灰色占位） |
-| `titleStub` | 多语言标题，用于文章页专题导航中 planned 文章的显示 |
 
-### 首页文章元数据（`index/zh-CN.js` / `index/en-US.js` 的 `posts` 字段）
+> `__SERIES_STRUCTURE` 不再携带 `titleStub`、`date`、`cats` 等元数据。所有文章的标题、副标题、slug、日期、分类、描述均从 `index` i18n 的 `posts` 统一获取，避免重复定义。
+
+### 首页文章元数据（`index/zh-CN.js` / `index/en-US.js` 的 `posts` 字段）—— 单一数据源头
 
 ```js
 posts: {
@@ -55,13 +52,15 @@ posts: {
     slug: "why-pydantic-v2",   // 已发布文章与 slug 一致，planned 为空
     date: "2026-05-12",
     cats: ["Design", "Architecture"],
+    status: "published",       // "published" 或 "planned"
     title: "文章标题",
+    sub: "文章副标题",          // 对应文章页 hero.sub，用于卡片和导航展示
     desc: "文章描述摘要"
   }
 }
 ```
 
-`blog-index.js` 通过 `post.slug || post.key` 查找元数据。
+**`index/zh-CN.js` 和 `index/en-US.js` 的 `posts` 是唯一元数据源头。** 所有组件（blog-index.js 的首页卡片、series-nav.js 的文章导航）都从此处读取标题、副标题、slug、发布状态等信息。`series-nav.js` 中的 `__SERIES_STRUCTURE` 仅保留结构关系（系列分组、文章顺序、key 关联），不含任何 i18n 标题文本。
 
 ### 文章 i18n 正文（`{slug}/zh-CN.js` / `{slug}/en-US.js` 的 `body` 字段）
 
@@ -88,16 +87,16 @@ body: [
 
 ### `assets/series-nav.js`
 
-- 定义 `window.__SERIES_STRUCTURE`：所有专题的结构数据（只含系列关系和标题存根，不含正文内容）
+- 定义 `window.__SERIES_STRUCTURE`：所有专题的结构数据（只含系列关系和 key 关联，不含 i18n 文本）
 - 定义 `window.__SERIES_NAV.renderArticleNav(container, slug)`：为文章页渲染底部专题导航列表
-- 文章页专题导航的标题来源：当前文章从 `window.I18N[lang].hero.title` 读取，其他已发布文章从 `titleStub` 读取
+- 文章标题/副标题来源：当前文章从当前页面的 `hero.title` 读取，其他文章从 `index` i18n 的 `posts[key]` 统一读取（title 和 sub）
 - 自包含 i18n（labels 对象）用于"专题"、"即将发布"等界面文字
 
 ### `assets/blog-index.js`
 
-- 读取 `window.__SERIES_STRUCTURE` + `window.I18N[lang].posts` 元数据
-- 渲染按专题分组的文章卡片网格
-- 已发布卡片可点击（蓝色 accent），planned 卡片灰色半透明（`placeholder` 类）
+- 读取 `window.__SERIES_STRUCTURE`（结构关系） + `window.I18N[lang].posts`（元数据唯一源头）
+- 从 `posts` 中读取 `title`、`sub`、`slug`、`status`、`date`、`cats`；`status` 决定卡片是否可点击
+- 渲染按专题分组的文章卡片网格，已发布卡片可点击（蓝色 accent），planned 卡片灰色半透明（`placeholder` 类）
 - 自包含 i18n（labels 对象）用于"阅读全文"、"即将发布"等界面文字
 - 订阅 lang 变化
 
@@ -165,8 +164,9 @@ body: [
 
 ## 新增文章流程
 
-1. **`assets/series-nav.js`**：在 `__SERIES_STRUCTURE` 对应专题的 `posts` 数组中添加一条（含 key、slug、titleStub、status）
-2. **`index/zh-CN.js` / `index/en-US.js`**：在 `posts` 中添加元数据（title、desc、cats、date），key 与上一步的 key 一致
+1. **`assets/series-nav.js`**：在 `__SERIES_STRUCTURE` 对应专题的 `posts` 数组中添加一条（含 key、slug、status）
+2. **`index/zh-CN.js` / `index/en-US.js`**：在 `posts` 中添加元数据（slug、date、cats、status、title、sub、desc），key 与上一步的 key 一致
 3. **创建 `{slug}.html`**：复制 `why-pydantic-v2.html` 为模板，修改 `<title>`、hero 中的 `data-i18n` 和正文自定义组件
-4. **创建 `{slug}/zh-CN.js` / `{slug}/en-US.js`**：包含 hero i18n + body 数组（英文版内容全文翻译）
-5. 如果是 published：在 `__SERIES_STRUCTURE` 中填写 `slug`，并在 `index` i18n 的 `posts` 中填写 `slug`
+4. **创建 `{slug}/zh-CN.js` / `{slug}/en-US.js`**：包含 hero i18n（back、eyebrow、title、sub）+ body 数组（英文版内容全文翻译）
+5. 如果是 published：在 `__SERIES_STRUCTURE` 和 `index` i18n 的 `posts` 中均填写 `slug`；`status` 设为 `"published"`
+6. 如果是 planned：`slug` 留空，`status` 设为 `"planned"`；`sub` 可暂时留空
