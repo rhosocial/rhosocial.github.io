@@ -1,0 +1,90 @@
+/**
+ * feature-cards.css — Horizontal scroll feature cards
+ * Depends on: rho-vars.css (--r-* tokens)
+ */
+
+.features-scroll-container {
+  overflow-x: auto;
+  padding: 1rem 0 2rem;
+  scrollbar-width: none;
+}
+.features-scroll-container::-webkit-scrollbar { display: none; }
+.features-track { display: flex; gap: 20px; width: max-content; }
+.feat-card {
+  width: 300px;
+  flex-shrink: 0;
+  background: var(--r-bg2);
+  border: 1px solid var(--r-border);
+  border-radius: 10px;
+  padding: 28px;
+  transition: border-color 0.3s, transform 0.3s;
+  position: relative;
+  overflow: hidden;
+}
+.feat-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--r-accent), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.feat-card:hover { border-color: var(--r-border2); transform: translateY(-4px); }
+.feat-card:hover::before { opacity: 1; }
+.feat-num {
+  font-family: var(--r-font-mono);
+  font-size: 11px;
+  color: var(--r-text3);
+  margin-bottom: 20px;
+  letter-spacing: 0.06em;
+}
+.feat-icon {
+  width: 40px; height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-bottom: 18px;
+  background: var(--r-surface);
+}
+.feat-title {
+  font-family: var(--r-font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--r-text);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
+.feat-desc { font-size: 13px; color: var(--r-text2); line-height: 1.65; }
+.feat-code-snip {
+  margin-top: 18px;
+  padding: 12px;
+  background: var(--r-surface);
+  border-radius: 5px;
+  font-family: var(--r-font-mono);
+  font-size: 11px;
+  line-height: 1.7;
+  border-left: 2px solid color-mix(in srgb, var(--r-accent) 30%, transparent);
+}
+.feat-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 16px; }
+.feat-tag {
+  font-family: var(--r-font-mono);
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 3px;
+  background: var(--r-surface2);
+  color: var(--r-text3);
+  border: 1px solid var(--r-border);
+}
+.feat-link {
+  font-family: var(--r-font-mono);
+  font-size: 11px;
+  color: var(--r-cyan);
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 12px;
+}
+.feat-link:hover { text-decoration: underline; }

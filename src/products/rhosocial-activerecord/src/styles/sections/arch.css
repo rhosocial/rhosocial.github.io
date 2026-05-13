@@ -1,0 +1,75 @@
+/**
+ * arch.css — Architecture diagram
+ * Depends on: rho-vars.css (--r-* tokens)
+ */
+
+.arch-diagram {
+  margin-top: 3rem;
+  display: grid;
+  grid-template-columns: 1fr 80px 1fr;
+  align-items: center;
+}
+.arch-col { display: flex; flex-direction: column; gap: 12px; }
+.arch-label {
+  font-family: var(--r-font-mono);
+  font-size: 11px;
+  color: var(--r-text3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 4px;
+}
+.arch-box {
+  background: var(--r-bg2);
+  border: 1px solid var(--r-border2);
+  border-radius: 8px;
+  padding: 16px 20px;
+  transition: all 0.2s;
+}
+.arch-box:hover { border-color: var(--r-accent); }
+.arch-box.is-ar { border-left: 3px solid var(--r-accent); }
+.arch-box.is-be { border-left: 3px solid var(--r-cyan); }
+.arch-box-name {
+  font-family: var(--r-font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--r-accent);
+  margin-bottom: 4px;
+}
+.arch-box-name.cyan { color: var(--r-cyan); }
+.arch-box-sub { font-size: 12px; color: var(--r-text3); line-height: 1.5; }
+.arch-arrow-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.arch-arrow-line {
+  width: 2px;
+  height: 40px;
+  background: linear-gradient(180deg, var(--r-accent), var(--r-cyan));
+}
+.arch-arrow-label {
+  font-family: var(--r-font-mono);
+  font-size: 9px;
+  color: var(--r-text3);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.arch-sync-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--r-font-mono);
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 20px;
+  border: 1px solid var(--r-border);
+  color: var(--r-text3);
+  white-space: nowrap;
+  margin-top: 8px;
+}
+
+@media (max-width: 900px) {
+  .arch-diagram { grid-template-columns: 1fr; gap: 1rem; }
+}

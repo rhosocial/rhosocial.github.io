@@ -1,0 +1,62 @@
+---
+export interface Props {
+  title: string;
+  description?: string;
+  variant?: 'ar' | 'back' | 'blog';
+  lang?: string;
+}
+
+const { title, description, variant = 'ar', lang = 'zh-CN' } = Astro.props;
+const A = '/products/rhosocial-activerecord/assets';
+
+const THEMES = ['terminal','editorial','brutalist','aurora','synthwave','sumi','blueprint','noir','riso','nordic','solarpunk','mocha','wireframe','anderson','tokyo','memphis','chalkboard','matrix','steel','frutiger','newsprint','candy','botanical','cyberpunk','parchment','glassmorphism'];
+const FONTS = ['tight','serif','geometric','heavy','allmono','reader','display-serif','neo-future','plex','playful','classic-serif','pixel','monumental','slab','condensed','expressive','deco','stencil','rubik','bricolage','gloock','crimson','dm','outfit','literata'];
+const LANG_FILES = ['zh-cn','en-us','ja-jp','de-de','fr-fr','ko-kr','pt-pt','nl-nl','it-it','ru-ru','es-es','tr-tr','el-gr','ar','hi-in','id-id','vi-vn','pl-pl','th-th','uk-ua','fa-ir','bn-bd','ro-ro','cs-cz'];
+---
+
+<!DOCTYPE html>
+<html lang={lang}>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" type="image/svg+xml" href={`${A}/favicon.svg`} />
+  <title>{title}</title>
+  {description && <meta name="description" content={description} />}
+  <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
+
+  <script src={`${A}/init-head.js`}></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href={`${A}/core.css`} />
+  <link rel="stylesheet" href={`${A}/core-extensions.css`} />
+  <link rel="stylesheet" href={`${A}/shared.css`} />
+
+  {THEMES.map(t => <link rel="stylesheet" href={`${A}/themes/${t}.css`} />)}
+  {FONTS.map(f => <link rel="stylesheet" href={`${A}/fonts/${f}.css`} />)}
+
+  <link rel="stylesheet" href={`${A}/sections/rho-vars.css`} />
+  <link rel="stylesheet" href={`${A}/sections/section-common.css`} />
+  <link rel="stylesheet" href={`${A}/sections/hero.css`} />
+  <link rel="stylesheet" href={`${A}/sections/ticker.css`} />
+  <link rel="stylesheet" href={`${A}/sections/chain-builder.css`} />
+  <link rel="stylesheet" href={`${A}/sections/feature-cards.css`} />
+  <link rel="stylesheet" href={`${A}/sections/arch.css`} />
+  <link rel="stylesheet" href={`${A}/sections/compare.css`} />
+  <link rel="stylesheet" href={`${A}/sections/install.css`} />
+
+  {LANG_FILES.map(l => <script src={`${A}/i18n/${l}.js`}></script>)}
+</head>
+<body>
+  <slot />
+
+  <script src={`${A}/state-manager.js`}></script>
+  <script src={`${A}/theme-applier.js`}></script>
+  <script src={`${A}/i18n.js`}></script>
+  <script src={`${A}/control-bar.js`} data-variant={variant}></script>
+  <script src={`${A}/shared-header.js`}></script>
+  <script src={`${A}/shared-footer.js`}></script>
+</body>
+</html>

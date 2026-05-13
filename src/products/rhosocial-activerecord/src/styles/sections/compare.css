@@ -1,0 +1,47 @@
+/**
+ * compare.css — Comparison grid
+ * Depends on: rho-vars.css (--r-* tokens)
+ */
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: 200px repeat(6, 1fr);
+  margin-top: 2rem;
+  border: 1px solid var(--r-border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.cg-header {
+  background: var(--r-surface);
+  padding: 14px 16px;
+  font-family: var(--r-font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  border-bottom: 1px solid var(--r-border2);
+  border-right: 1px solid var(--r-border);
+}
+.cg-header:first-child { color: var(--r-text3); font-family: var(--r-font-body); font-size: 12px; }
+.cg-header.is-ar {
+  background: var(--r-accent-glow);
+  border-top: 2px solid var(--r-accent);
+  color: var(--r-accent);
+}
+.cg-header.other { color: var(--r-text2); }
+.cg-cell {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--r-border);
+  border-right: 1px solid var(--r-border);
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+}
+.cg-cell.feat-name { color: var(--r-text2); font-size: 12px; background: var(--r-bg2); }
+.cg-cell.is-ar { background: color-mix(in srgb, var(--r-accent) 3%, transparent); }
+.cg-cell .chk { color: var(--r-green); font-size: 14px; font-weight: 700; }
+.cg-cell .cross { color: var(--r-text3); font-size: 14px; }
+.cg-cell .half { color: var(--r-accent); font-size: 12px; }
+
+@media (max-width: 900px) {
+  .compare-grid { grid-template-columns: 140px repeat(6, 1fr); }
+  .cg-cell, .cg-header { font-size: 11px; padding: 8px 6px; }
+}

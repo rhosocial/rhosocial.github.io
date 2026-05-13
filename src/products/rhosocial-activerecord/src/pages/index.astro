@@ -1,0 +1,261 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const A = '/products/rhosocial-activerecord/assets';
+const T = '/products/rhosocial-activerecord/assets/sections';
+---
+
+<BaseLayout title="rhosocial ActiveRecord — Python ORM" variant="ar">
+  <div class="page">
+    <style>
+      body::before {
+        content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+        opacity: 0.025;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-repeat: repeat; background-size: 200px 200px;
+      }
+      section { position: relative; z-index: 1; }
+      a { color: var(--r-cyan); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+      html { scroll-behavior: smooth; }
+    </style>
+
+    <div class="grid-bg" style="position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:60px 60px"></div>
+
+    <!-- HERO -->
+    <section class="rho-hero">
+      <div style="min-height:0"></div>
+      <div class="rho-hero-body">
+        <div class="rho-hero-left">
+          <p class="hero-eyebrow">rhosocial-activerecord <span>· v1.0 · Apache 2.0</span></p>
+          <h1>Python ORM<br /><span class="hl">重新设计</span><br /><span class="dim">从类型开始。</span></h1>
+          <p class="hero-sub">
+            用 <strong>Python 原生类型注解</strong>定义模型。链式查询透明生成 SQL。
+            同步与异步，<strong>同一套 API</strong>。
+          </p>
+          <div class="hero-actions">
+            <a href="#install" class="btn-primary">
+              pip install
+              <span style="opacity:0.6;font-size:12px;">→</span>
+            </a>
+            <a href="https://github.com/rhosocial/python-activerecord" target="_blank" class="btn-ghost">GitHub</a>
+          </div>
+          <div class="hero-stats">
+            <div class="stat-item"><div class="stat-num">6<span>+</span></div><div class="stat-label">Database backends</div></div>
+            <div class="stat-item"><div class="stat-num">100<span>%</span></div><div class="stat-label">Type annotated</div></div>
+            <div class="stat-item"><div class="stat-num">3.8<span>+</span></div><div class="stat-label">Python support</div></div>
+            <div class="stat-item"><div class="stat-num">0</div><div class="stat-label">ORM deps</div></div>
+          </div>
+        </div>
+        <div class="demo-terminal" id="hero-demo">
+          <div class="term-bar">
+            <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+            <div class="term-title">demo.py — rhosocial-activerecord</div>
+            <div class="badge-run"><svg width="8" height="8" viewBox="0 0 8 8"><circle cx="4" cy="4" r="4" fill="#22d3ee"/></svg> live</div>
+          </div>
+          <div class="term-split">
+            <div class="term-pane pane-python">
+              <div class="term-pane-header">Python model</div>
+              <div class="hero-code-block">
+<span class="kw">class</span> <span class="cls">User</span>(<span class="cls">ActiveRecord</span>):
+    __table_name__ = <span class="str">"users"</span>
+
+    id: Optional[<span class="cls">int</span>] = <span class="kw">None</span>
+    name: <span class="cls">str</span>
+    email: <span class="cls">str</span>
+    age: <span class="cls">int</span> = <span class="num">0</span>
+
+
+<span class="co"># fluent query builder</span>
+results = (
+    <span class="cls">User</span>.<span class="fn">query</span>()
+        .<span class="fn">where</span>(<span class="cls">User</span>.c.age &gt;= <span class="num">18</span>)
+        .<span class="fn">where</span>(<span class="cls">User</span>.c.name.<span class="fn">like</span>(<span class="str">"%alice%"</span>))
+        .<span class="fn">order_by</span>(<span class="cls">User</span>.c.name)
+        .<span class="fn">limit</span>(<span class="num">10</span>)
+        .<span class="fn">all</span>()
+)<span class="cursor-blink"></span>
+              </div>
+            </div>
+            <div class="term-pane pane-sql">
+              <div class="term-pane-header">Generated SQL <span style="margin-left:auto;font-size:10px;color:var(--r-cyan);opacity:0.7;">.to_sql()</span></div>
+              <div class="hero-code-block">
+<span class="sql-kw">SELECT</span> <span class="sql-tbl">u</span>.<span class="sql-tbl">id</span>,
+       <span class="sql-tbl">u</span>.<span class="sql-tbl">name</span>,
+       <span class="sql-tbl">u</span>.<span class="sql-tbl">email</span>,
+       <span class="sql-tbl">u</span>.<span class="sql-tbl">age</span>
+<span class="sql-kw">FROM</span> <span class="sql-tbl">users</span> <span class="sql-tbl">u</span>
+<span class="sql-kw">WHERE</span> <span class="sql-tbl">u</span>.<span class="sql-tbl">age</span> &gt;= <span class="sql-val">?</span>
+  <span class="sql-kw">AND</span> <span class="sql-tbl">u</span>.<span class="sql-tbl">name</span> <span class="sql-kw">LIKE</span> <span class="sql-val">?</span>
+<span class="sql-kw">ORDER BY</span> <span class="sql-tbl">u</span>.<span class="sql-tbl">name</span> <span class="sql-kw">ASC</span>
+<span class="sql-kw">LIMIT</span> <span class="sql-val">10</span>
+              </div>
+              <div class="sql-result">
+                <div style="font-family:var(--r-font-mono);font-size:10px;color:var(--r-text3);margin-bottom:8px;letter-spacing:0.06em;">PARAMS: (18, "%alice%")</div>
+                <div class="result-row"><span class="col">id</span><span class="col">name</span><span class="col">email</span><span class="val">age</span></div>
+                <div class="result-row"><span class="col">→ 3</span><span class="col">Alice</span><span class="col">alice@example.org</span><span class="val">24</span></div>
+                <div class="result-row"><span class="col">→ 7</span><span class="col">alice_dev</span><span class="col">adev@example.org</span><span class="val">31</span></div>
+                <div class="result-row" style="color:var(--r-text3)"><span>2 rows in 0.8ms</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TICKER -->
+    <div class="ticker">
+      <div class="ticker-inner" id="ticker-inner"></div>
+    </div>
+
+    <!-- CHAIN BUILDER -->
+    <section class="rho-section" id="features">
+      <div class="rho-section-header reveal">
+        <div class="label">Interactive</div>
+        <h2 style="margin-top:1rem;">点击构建查询，<span class="hl">实时看 SQL</span></h2>
+        <p class="rho-section-sub">每一个链式方法对应一行 SQL。透明，可控，无魔法。</p>
+      </div>
+      <div class="interactive-demo reveal reveal-d1">
+        <div class="demo-panel">
+          <div class="demo-panel-header">
+            <div class="demo-panel-title"><div class="dot-lang"></div> Query Builder</div>
+            <span style="font-family:var(--r-font-mono);font-size:10px;color:var(--r-text3)">点击开关</span>
+          </div>
+          <div class="demo-panel-body">
+            <div class="chain-builder" id="chain-builder">
+              <div class="chain-step active" data-id="base"><div class="chain-step-icon">▶</div><div class="chain-step-label"><span class="code-block" style="display:inline;font-size:12px"><span class="cls">User</span>.<span class="fn">query</span>()</span></div><div class="chain-step-hint">必选</div></div>
+              <div class="chain-connector lit">│</div>
+              <div class="chain-step active" data-id="where1"><div class="chain-step-icon">⬡</div><div class="chain-step-label">.<span class="fn">where</span>(age &gt;= <span class="num">18</span>)</div><div class="chain-step-hint">WHERE</div></div>
+              <div class="chain-connector" data-conn="where2">│</div>
+              <div class="chain-step" data-id="where2"><div class="chain-step-icon">⬡</div><div class="chain-step-label">.<span class="fn">where</span>(name.like(…))</div><div class="chain-step-hint">AND</div></div>
+              <div class="chain-connector" data-conn="join">│</div>
+              <div class="chain-step" data-id="join"><div class="chain-step-icon">⬡</div><div class="chain-step-label">.<span class="fn">join</span>(<span class="cls">Post</span>, …)</div><div class="chain-step-hint">JOIN</div></div>
+              <div class="chain-connector" data-conn="order">│</div>
+              <div class="chain-step active" data-id="order"><div class="chain-step-icon">⬡</div><div class="chain-step-label">.<span class="fn">order_by</span>(name)</div><div class="chain-step-hint">ORDER BY</div></div>
+              <div class="chain-connector" data-conn="limit">│</div>
+              <div class="chain-step active" data-id="limit"><div class="chain-step-icon">⬡</div><div class="chain-step-label">.<span class="fn">limit</span>(<span class="num">10</span>)</div><div class="chain-step-hint">LIMIT</div></div>
+              <div class="chain-connector" data-conn="all">│</div>
+              <div class="chain-step active" data-id="all"><div class="chain-step-icon">◉</div><div class="chain-step-label">.<span class="fn">all</span>()</div><div class="chain-step-hint">执行</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="demo-panel">
+          <div class="demo-panel-header">
+            <div class="demo-panel-title"><div class="dot-lang dot-lang-cyan"></div> Generated SQL</div>
+            <div class="sql-compile-badge"><div class="pulse"></div> compiled</div>
+          </div>
+          <div class="demo-panel-body">
+            <div class="sql-output" id="sql-output"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="gradient-sep"></div>
+
+    <!-- FEATURE CARDS -->
+    <section class="rho-section">
+      <div class="rho-section-header reveal">
+        <div class="label">Six promises</div>
+        <h2 style="margin-top:1rem;">六个核心<span class="hl">设计决策</span>。</h2>
+      </div>
+      <div class="features-scroll-container reveal reveal-d1">
+        <div class="features-track" id="features-track"></div>
+      </div>
+    </section>
+
+    <div class="gradient-sep"></div>
+
+    <!-- ARCHITECTURE -->
+    <section class="rho-section" id="arch">
+      <div class="reveal">
+        <div class="label">Architecture</div>
+        <h2 style="margin-top:1rem;">两层独立，<span class="hl">按需组合</span>。</h2>
+        <p class="rho-section-sub">ActiveRecord 是 Backend 的用户；Backend 可独立运行。同步/异步配对，不可混用。</p>
+      </div>
+      <div class="arch-diagram reveal reveal-d1">
+        <div class="arch-col">
+          <div class="arch-label">ActiveRecord Layer</div>
+          <div class="arch-box is-ar">
+            <div class="arch-box-name">ActiveRecord</div>
+            <div class="arch-box-sub">ActiveQuery · SetOperation · CTEQuery</div>
+          </div>
+          <div class="arch-box" style="opacity:0.5;border-style:dashed;">
+            <div class="arch-box-name" style="color:var(--r-text2)">AsyncActiveRecord</div>
+            <div class="arch-box-sub">AsyncActiveQuery · AsyncCTEQuery</div>
+          </div>
+          <div style="margin-top:4px;">
+            <div class="arch-sync-badge"><span style="color:var(--r-accent)">●</span> sync</div>
+            <div class="arch-sync-badge" style="opacity:0.5"><span style="color:var(--r-cyan)">●</span> async</div>
+          </div>
+        </div>
+        <div class="arch-arrow-col">
+          <div class="arch-arrow-label" style="margin-bottom:6px;">uses</div>
+          <div style="width:40px;height:2px;background:linear-gradient(90deg,var(--r-accent),var(--r-cyan));position:relative">
+            <div style="position:absolute;right:-4px;top:-3px;border:4px solid transparent;border-left-color:var(--r-cyan)"></div>
+          </div>
+          <div class="arch-arrow-label" style="margin-top:6px;">ABC</div>
+        </div>
+        <div class="arch-col">
+          <div class="arch-label">Backend Layer</div>
+          <div class="arch-box is-be">
+            <div class="arch-box-name cyan">StorageBackend</div>
+            <div class="arch-box-sub">SQLite · PostgreSQL · MySQL · MariaDB · SQL Server · Oracle</div>
+          </div>
+          <div class="arch-box is-be" style="opacity:0.6">
+            <div class="arch-box-name cyan">AsyncStorageBackend</div>
+            <div class="arch-box-sub">AsyncSQLite · AsyncPG · AsyncMySQL · …</div>
+          </div>
+          <div style="margin-top:4px;">
+            <div class="arch-sync-badge"><span style="color:var(--r-cyan)">●</span> all backends</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="gradient-sep"></div>
+
+    <!-- COMPARE -->
+    <section class="rho-section" id="compare">
+      <div class="reveal">
+        <div class="label">Compare</div>
+        <h2 style="margin-top:1rem;">与其它 ORM <span class="hl">对比</span>。</h2>
+      </div>
+      <div class="compare-grid reveal reveal-d1">
+        <div class="cg-header">特性</div><div class="cg-header is-ar">ρAR</div><div class="cg-header other">SQLAlchemy</div><div class="cg-header other">Django ORM</div><div class="cg-header other">SQLModel</div><div class="cg-header other">Peewee</div><div class="cg-header other">Tortoise</div>
+        <div class="cg-cell feat-name">后端可独立使用</div><div class="cg-cell is-ar"><span class="chk">✓</span></div><div class="cg-cell"><span class="cross">—</span></div><div class="cg-cell"><span class="cross">—</span></div><div class="cg-cell"><span class="cross">—</span></div><div class="cg-cell"><span class="cross">—</span></div><div class="cg-cell"><span class="cross">—</span></div>
+        <div class="cg-cell feat-name">Sync/Async API 一致</div><div class="cg-cell is-ar"><span class="chk">✓</span></div><div class="cg-cell"><span class="cross">—</span></div><div class="cg-cell"><span class="cross">—</span></div><div class="cg-cell"><span class="cross">—</span></div><div class="cg-cell"><span class="cross">—</span></div><div class="cg-cell"><span class="cross">—</span></div>
+        <div class="cg-cell feat-name">原生 Pydantic v2</div><div class="cg-cell is-ar"><span class="chk">✓</span></div><div class="cg-cell"><span class="cross">—</span></div><div class="cg-cell"><span class="cross">—</span></div><div class="cg-cell"><span class="chk">✓</span></div><div class="cg-cell"><span class="cross">—</span></div><div class="cg-cell"><span class="cross">—</span></div>
+        <div class="cg-cell feat-name">无 Session 概念</div><div class="cg-cell is-ar"><span class="chk">✓</span></div><div class="cg-cell"><span class="cross">—</span></div><div class="cg-cell"><span class="half">½</span></div><div class="cg-cell"><span class="cross">—</span></div><div class="cg-cell"><span class="half">½</span></div><div class="cg-cell"><span class="half">½</span></div>
+        <div class="cg-cell feat-name">SQL 透明 .to_sql()</div><div class="cg-cell is-ar"><span class="chk">✓</span></div><div class="cg-cell"><span class="half">½</span></div><div class="cg-cell"><span class="half">½</span></div><div class="cg-cell"><span class="half">½</span></div><div class="cg-cell"><span class="chk">✓</span></div><div class="cg-cell"><span class="cross">—</span></div>
+        <div class="cg-cell feat-name">零强制迁移依赖</div><div class="cg-cell is-ar"><span class="chk">✓</span></div><div class="cg-cell"><span class="chk">✓</span></div><div class="cg-cell"><span class="cross">—</span></div><div class="cg-cell"><span class="chk">✓</span></div><div class="cg-cell"><span class="chk">✓</span></div><div class="cg-cell"><span class="chk">✓</span></div>
+      </div>
+    </section>
+
+    <div class="gradient-sep"></div>
+
+    <!-- INSTALL -->
+    <section class="rho-section" id="install">
+      <div class="install-inner">
+        <div class="label" style="margin:0 auto 1.5rem;width:fit-content;">Get started</div>
+        <h2 class="install-title">一行安装，<span class="hl">十分钟</span>上手。</h2>
+        <p class="install-sub">SQLite 随核心包一起。Pydantic 是唯一依赖。其他后端按需安装。</p>
+        <div class="install-cmd" id="install-cmd">
+          <span class="prompt">$</span>
+          <span class="cmd-text">pip install rhosocial-activerecord</span>
+          <span class="copy-hint" id="copy-hint">点击复制</span>
+        </div>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <a href="/products/rhosocial-activerecord/backends/index.html" class="btn-primary">阅读文档 →</a>
+          <a href="https://github.com/rhosocial/python-activerecord" target="_blank" class="btn-ghost">GitHub →</a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src={`${T}/ticker.js`}></script>
+  <script src={`${T}/chain-builder.js`}></script>
+  <script src={`${T}/feature-cards.js`}></script>
+  <script src={`${T}/scroll-reveal.js`}></script>
+  <script src={`${T}/install-copy.js`}></script>
+</BaseLayout>

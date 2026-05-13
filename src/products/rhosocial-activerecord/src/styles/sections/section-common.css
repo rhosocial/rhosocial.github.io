@@ -1,0 +1,85 @@
+/**
+ * section-common.css — Shared section layout + scroll reveal
+ * Depends on: rho-vars.css (--r-* tokens)
+ */
+
+/* ── SECTION LAYOUT ── */
+.rho-section { padding: 6rem 3rem; max-width: 1280px; margin: 0 auto; }
+.rho-section-header { margin-bottom: 3rem; }
+.rho-section-sub { color: var(--r-text2); font-size: 15px; margin-top: 0.75rem; max-width: 480px; }
+.gradient-sep {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--r-border2) 20%, var(--r-border2) 80%, transparent 100%);
+  margin: 0 3rem;
+}
+
+/* ── LABEL TAG ── */
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--r-font-mono);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--r-accent);
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 3px;
+  border: 1px solid color-mix(in srgb, var(--r-accent) 25%, transparent);
+  background: var(--r-accent-glow);
+}
+.label::before { content: '//'; opacity: 0.5; }
+
+/* ── HEADINGS ── */
+h2 {
+  font-family: var(--r-font-display);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: var(--r-text);
+  margin: 0;
+}
+h2 .hl { color: var(--r-accent); }
+
+/* ── BUTTONS ── */
+.btn-primary, .btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.btn-primary { background: var(--r-accent); color: #000; }
+.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); text-decoration: none; }
+.btn-ghost {
+  color: var(--r-text2);
+  border: 1px solid var(--r-border2);
+  background: transparent;
+}
+.btn-ghost:hover { color: var(--r-text); border-color: var(--r-border2); text-decoration: none; }
+
+/* ── SCROLL REVEAL ── */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-d1 { transition-delay: 0.1s; }
+.reveal-d2 { transition-delay: 0.2s; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .rho-section { padding: 3rem 1.5rem; }
+  .gradient-sep { margin: 0 1.5rem; }
+}
+
+/* ── RTL font overrides ── */
+html[lang="ar"] { font-family: 'Noto Sans Arabic', var(--font-body); }
+html[lang="ar"] code, html[lang="ar"] pre, html[lang="ar"] .install-cmd { direction: ltr; unicode-bidi: embed; text-align: left; }
+html[lang="fa-ir"] { font-family: 'Noto Sans Arabic', var(--font-body); }
+html[lang="fa-ir"] code, html[lang="fa-ir"] pre, html[lang="fa-ir"] .install-cmd { direction: ltr; unicode-bidi: embed; text-align: left; }
+html[lang="hi-in"] { font-family: 'Noto Sans Devanagari', var(--font-body); }
+html[lang="bn-bd"] { font-family: 'Noto Sans Bengali', var(--font-body); }

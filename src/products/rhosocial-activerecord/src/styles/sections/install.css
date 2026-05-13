@@ -1,0 +1,35 @@
+/**
+ * install.css — Install section
+ * Depends on: rho-vars.css (--r-* tokens)
+ */
+
+.install-inner { max-width: 600px; margin: 0 auto; text-align: center; }
+.install-title {
+  font-family: var(--r-font-display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--r-text);
+  margin-bottom: 1rem;
+}
+.install-sub { color: var(--r-text2); font-size: 15px; margin-bottom: 2.5rem; }
+.install-cmd {
+  display: flex;
+  align-items: center;
+  background: var(--r-bg2);
+  border: 1px solid var(--r-border2);
+  border-radius: 8px;
+  padding: 16px 20px;
+  font-family: var(--r-font-mono);
+  font-size: 14px;
+  color: var(--r-text);
+  margin-bottom: 2rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.install-cmd:hover { border-color: var(--r-accent); }
+.install-cmd .prompt { color: var(--r-accent); margin-right: 10px; }
+.install-cmd .cmd-text { flex: 1; }
+.install-cmd .copy-hint { font-size: 11px; color: var(--r-text3); cursor: pointer; }
+.install-cmd .copy-hint:hover { color: var(--r-accent); }
