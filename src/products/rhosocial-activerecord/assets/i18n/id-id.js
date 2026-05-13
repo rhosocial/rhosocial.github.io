@@ -54,6 +54,13 @@ window.I18N['id-id'] = {
     next:     'Berikutnya',
     close:    'Tutup'
   },
+
+  /** Article tool bar */
+  tools: {
+    reportIssue: 'Report Issue',
+    copyLink:    'Copy Link'
+  },
+
   /** Homepage content */
   home: {
     hero: {

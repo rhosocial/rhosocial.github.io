@@ -54,6 +54,13 @@ window.I18N['ro-ro'] = {
     next:    'Următorul',
     close:   'Închide'
   },
+
+  /** Article tool bar */
+  tools: {
+    reportIssue: 'Report Issue',
+    copyLink:    'Copy Link'
+  },
+
   /** Homepage content */
   home: {
     hero: {

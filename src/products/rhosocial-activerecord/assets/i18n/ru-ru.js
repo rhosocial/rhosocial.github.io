@@ -55,6 +55,13 @@ window.I18N['ru-ru'] = {
     close:   'Закрыть'
   },
 
+
+  /** Article tool bar */
+  tools: {
+    reportIssue: 'Report Issue',
+    copyLink:    'Copy Link'
+  },
+
   /** Homepage content */
   home: {
     hero: {

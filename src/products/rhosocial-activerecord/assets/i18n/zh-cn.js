@@ -60,6 +60,12 @@ window.I18N['zh-cn'] = {
     close:    '关闭'
   },
 
+  /** Article tool bar */
+  tools: {
+    reportIssue: '反馈页面问题',
+    copyLink:    '复制链接'
+  },
+
   /** Homepage content */
   home: {
     hero: {

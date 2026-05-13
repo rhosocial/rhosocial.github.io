@@ -54,6 +54,13 @@ window.I18N['pt-pt'] = {
     next:    'Seguinte',
     close:   'Fechar'
   },
+
+  /** Article tool bar */
+  tools: {
+    reportIssue: 'Report Issue',
+    copyLink:    'Copy Link'
+  },
+
   /** Homepage content */
   home: {
     hero: {

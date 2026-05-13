@@ -54,6 +54,13 @@ window.I18N['el-gr'] = {
     next:     'Επόμενο',
     close:    'Κλείσιμο'
   },
+
+  /** Article tool bar */
+  tools: {
+    reportIssue: 'Report Issue',
+    copyLink:    'Copy Link'
+  },
+
   /** Homepage content */
   home: {
     hero: {

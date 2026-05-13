@@ -51,15 +51,19 @@
     }
   }
 
-  // Run on load
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', formatArticleDates);
-  } else {
+  function onReady() {
     formatArticleDates();
+
+    // Subscribe to language changes (deferred: __STATE__ may not exist yet)
+    if (window.__STATE__ && typeof window.__STATE__.subscribe === 'function') {
+      window.__STATE__.subscribe(['lang'], formatArticleDates);
+    }
   }
 
-  // Subscribe to language changes
-  if (window.__STATE__ && typeof window.__STATE__.subscribe === 'function') {
-    window.__STATE__.subscribe(['lang'], formatArticleDates);
+  // Defer all work to DOMContentLoaded so state-manager.js has loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', onReady);
+  } else {
+    onReady();
   }
 })();

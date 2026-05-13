@@ -54,6 +54,13 @@ window.I18N['hi-in'] = {
     next:     'अगला',
     close:    'बंद'
   },
+
+  /** Article tool bar */
+  tools: {
+    reportIssue: 'Report Issue',
+    copyLink:    'Copy Link'
+  },
+
   /** Homepage content */
   home: {
     hero: {

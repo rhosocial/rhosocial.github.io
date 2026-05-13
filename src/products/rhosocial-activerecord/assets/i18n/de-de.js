@@ -54,6 +54,13 @@ window.I18N['de-de'] = {
     next:     'Nächstes',
     close:    'Schließen'
   },
+
+  /** Article tool bar */
+  tools: {
+    reportIssue: 'Report Issue',
+    copyLink:    'Copy Link'
+  },
+
   /** Homepage content */
   home: {
     hero: {

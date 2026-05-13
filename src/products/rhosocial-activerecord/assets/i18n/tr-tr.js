@@ -55,6 +55,13 @@ window.I18N['tr-tr'] = {
     close:    'Kapat'
   },
 
+
+  /** Article tool bar */
+  tools: {
+    reportIssue: 'Report Issue',
+    copyLink:    'Copy Link'
+  },
+
   /** Homepage content */
   home: {
     hero: {

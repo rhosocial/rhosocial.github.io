@@ -54,6 +54,13 @@ window.I18N['bn-bd'] = {
     next:     'পরে',
     close:    'বন্ধ'
   },
+
+  /** Article tool bar */
+  tools: {
+    reportIssue: 'Report Issue',
+    copyLink:    'Copy Link'
+  },
+
   /** Homepage content */
   home: {
     hero: {

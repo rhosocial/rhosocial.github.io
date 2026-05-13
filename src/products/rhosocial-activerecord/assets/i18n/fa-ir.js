@@ -55,6 +55,13 @@ window.I18N['fa-ir'] = {
     close:    'بستن'
   },
 
+
+  /** Article tool bar */
+  tools: {
+    reportIssue: 'Report Issue',
+    copyLink:    'Copy Link'
+  },
+
   /** Homepage content */
   home: {
     hero: {

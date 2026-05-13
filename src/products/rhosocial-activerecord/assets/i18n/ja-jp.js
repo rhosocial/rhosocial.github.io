@@ -54,6 +54,13 @@ window.I18N['ja-jp'] = {
     next:     '次へ',
     close:    '閉じる'
   },
+
+  /** Article tool bar */
+  tools: {
+    reportIssue: 'Report Issue',
+    copyLink:    'Copy Link'
+  },
+
   /** Homepage content */
   home: {
     hero: {

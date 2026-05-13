@@ -54,6 +54,13 @@ window.I18N['cs-cz'] = {
     next:     'Další',
     close:    'Zavřít'
   },
+
+  /** Article tool bar */
+  tools: {
+    reportIssue: 'Report Issue',
+    copyLink:    'Copy Link'
+  },
+
   /** Homepage content */
   home: {
     hero: {
