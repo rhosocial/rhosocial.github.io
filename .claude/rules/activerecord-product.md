@@ -74,16 +74,31 @@ rhosocial-activerecord/
 
 ```bash
 # 本地调试（默认端口 4321）
-npm run dev            # astro dev
+npm run dev            # predev → astro dev → postdev
 # 访问: http://localhost:4321/products/rhosocial-activerecord/
 
 # 生产构建
-npm run build          # astro build + postbuild.mjs
+npm run build          # prebuild → astro build + postbuild.mjs → postbuild
 # 输出到 dist/
 
 # 预览构建产物
 npm run preview        # astro preview
 ```
+
+### 资产文件管理
+
+所有运行时资产（主题 CSS、字体、i18n JS）存放在 `src/assets/` 目录下，**不在 `public/` 中持久保留**。
+
+通过 npm 的 `pre`/`post` 生命周期钩子自动管理资产复制：
+
+| 命令 | pre 脚本（自动执行） | 主脚本 | post 脚本（自动执行） |
+|------|---------------------|--------|---------------------|
+| `npm run dev` | 复制 `assets/` → `public/assets/` | `astro dev` | 删除 `public/assets/` |
+| `npm run build` | 复制 `assets/` → `public/assets/` | `astro build` + `postbuild.mjs` | 删除 `public/assets/` |
+
+**重要**：`public/assets/` 已从 git 跟踪中移除并加入 `.gitignore`。开发/构建时由 npm 脚本自动复制，结束后自动清理。
+
+**只使用 `npm run dev` 启动调试**，不要直接执行 `npx astro dev`（否则不会触发 predev 复制资产，页面无法加载 CSS/JS）。
 
 ### build 流程
 

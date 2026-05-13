@@ -25,3 +25,7 @@ pnpm-debug.log*
 
 # Blog data now inlined in Astro templates
 public/blog/
+
+# Build-time asset copy (auto-managed by npm pre/post scripts)
+public/assets/
+public/assets
