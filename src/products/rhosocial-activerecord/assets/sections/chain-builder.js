@@ -18,6 +18,11 @@
     all:    { line: '<span class="sql-cm">-- execute & return List[User]</span>', h: false },
   };
 
+  function noClausesText() {
+    var lang = window.__STATE__ && window.__STATE__.get('lang');
+    return (window.I18N && window.I18N[lang] && window.I18N[lang].home && window.I18N[lang].home.chain && window.I18N[lang].home.chain.no_clauses) || 'No clauses selected';
+  }
+
   function renderSQL() {
     var active = [];
     document.querySelectorAll('.chain-step.active').forEach(function(el) { active.push(el.dataset.id); });
@@ -35,7 +40,7 @@
     if (active.indexOf('all') !== -1) {
       html += '<div class="sql-line" style="margin-top:4px;"><span class="sql-line-num">' + lineNum + '</span><span class="sql-line-content"><span class="sql-cm">-- execute & return List[User]</span></span></div>';
     }
-    out.innerHTML = html || '<div style="color:var(--r-text3);font-size:12px">No clauses selected</div>';
+    out.innerHTML = html || '<div style="color:var(--r-text3);font-size:12px">' + noClausesText() + '</div>';
   }
 
   document.querySelectorAll('.chain-step').forEach(function(step) {
@@ -58,4 +63,9 @@
     if (s && s.classList.contains('active')) conn.classList.add('lit');
   });
   renderSQL();
+
+  // Re-render on language change (for no-clauses text)
+  if (window.__STATE__) {
+    window.__STATE__.subscribe(['lang'], function() { renderSQL(); });
+  }
 })();

@@ -15,6 +15,8 @@ Static documentation website - GitHub Pages.
   - `component-i18n.md` - Component i18n design principles
   - `shared-components.md` - Shared component manual
   - `blog-system.md` - Blog system architecture and design rules
+  - `product-ssg.md` - Product SSG app structure and rules^M
+  - `activerecord-product.md` - rhosocial-activerecord product SSG app details
 - `.claude/plan/` - Project plans (not tracked in git)
 
 ## Quick Start
@@ -25,6 +27,6 @@ Static documentation website - GitHub Pages.
 
 ## Important Notes
 
-- This is a static site - no build process needed
+- Products under `src/products/` are independent SSG apps — each needs `npm run build` before deploy
 - All user replies should be in Chinese (unless requested otherwise)
 - Plans go in `.claude/plan/` - these are not tracked in git

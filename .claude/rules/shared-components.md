@@ -186,13 +186,22 @@ navLinks[4].href = prefix + 'blog/index.html';
 
 导航链接根据路径自动高亮当前页面（`.is-current`），触屏友好（最小触摸区域 36px、圆角背景、无下划线）。
 
+**状态订阅**：订阅 `['theme', 'font', 'lang']`，语言切换时同步更新：
+
+- nav-links 文字（`NAV_LABELS`）
+- dropdown 标签文字（`CTRL_LABELS`，如"主题"/"Theme"）
+- dropdown 选中值显示
+- dropdown 选项高亮状态
+
 ### 页脚（Footer）
 
 | 属性 | 值 |
 |------|-----|
 | 文件 | `assets/shared-footer.js` |
-| 样式 | `assets/shared.css`（`.rho-footer`） + `core.css §15` |
+| 样式 | `assets/shared.css`（`.rho-footer`） — 不再通过 JS 内联注入 |
 | 注入方式 | `<script src="assets/shared-footer.js"></script>`（放在 `</body>` 前） |
+| 状态订阅 | `['theme', 'font', 'lang']` — 语言切换时更新许可协议/链接文字 |
+| 布局 | logo（ρ）在左，链接在右，`flex-wrap: wrap` 窄屏换行居中 |
 
 ### i18n（i18n.js）
 

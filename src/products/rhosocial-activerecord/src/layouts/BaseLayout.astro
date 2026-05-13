@@ -7,7 +7,8 @@ export interface Props {
 }
 
 const { title, description, variant = 'ar', lang = 'zh-CN' } = Astro.props;
-const A = '/products/rhosocial-activerecord/assets';
+const BASE_URL = (import.meta.env.BASE_URL || '/').replace(/\/+$/, '');
+const A = BASE_URL + '/assets';
 
 const THEMES = ['terminal','editorial','brutalist','aurora','synthwave','sumi','blueprint','noir','riso','nordic','solarpunk','mocha','wireframe','anderson','tokyo','memphis','chalkboard','matrix','steel','frutiger','newsprint','candy','botanical','cyberpunk','parchment','glassmorphism'];
 const FONTS = ['tight','serif','geometric','heavy','allmono','reader','display-serif','neo-future','plex','playful','classic-serif','pixel','monumental','slab','condensed','expressive','deco','stencil','rubik','bricolage','gloock','crimson','dm','outfit','literata'];
@@ -52,6 +53,7 @@ const LANG_FILES = ['zh-cn','en-us','ja-jp','de-de','fr-fr','ko-kr','pt-pt','nl-
 <body>
   <slot />
 
+  <script set:html={`window.__BASE_URL__ = '${BASE_URL}';`}></script>
   <script src={`${A}/state-manager.js`}></script>
   <script src={`${A}/theme-applier.js`}></script>
   <script src={`${A}/i18n.js`}></script>

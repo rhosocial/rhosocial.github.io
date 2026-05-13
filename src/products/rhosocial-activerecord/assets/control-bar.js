@@ -53,7 +53,7 @@
     var ALL_THEMES = Object.keys(THEME_NAMES);
     var ALL_FONTS = Object.keys(FONT_NAMES);
     var LANG_NAMES = {
-      'zh-cn':'简体中文','en-us':'English','ja-jp':'日本語','de-de':'Deutsch',
+      'zh-cn':'中文','en-us':'English','ja-jp':'日本語','de-de':'Deutsch',
       'fr-fr':'Français','ko-kr':'한국어','pt-pt':'Português','nl-nl':'Nederlands',
       'it-it':'Italiano','ru-ru':'Русский','es-es':'Español','tr-tr':'Türkçe',
       'el-gr':'Ελληνικά','ar':'العربية','hi-in':'हिन्दी','id-id':'Bahasa Indonesia',
@@ -67,28 +67,28 @@
     var NAV_LABELS = {
       'zh-cn': { index:'首页', backends:'后端', activerecord:'ActiveRecord', practices:'实践', blog:'文章' },
       'en-us': { index:'Index', backends:'Backends', activerecord:'ActiveRecord', practices:'Practices', blog:'Blog' },
-      'ja-jp': { index:'Index', backends:'Backends', activerecord:'ActiveRecord', practices:'Practices', blog:'Blog' },
+      'ja-jp': { index:'インデックス', backends:'バックエンド', activerecord:'ActiveRecord', practices:'プラクティス', blog:'ブログ' },
       'de-de': { index:'Startseite', backends:'Backends', activerecord:'ActiveRecord', practices:'Praktiken', blog:'Blog' },
       'fr-fr': { index:'Accueil', backends:'Backends', activerecord:'ActiveRecord', practices:'Pratiques', blog:'Blog' },
-      'ko-kr': { index:'Index', backends:'Backends', activerecord:'ActiveRecord', practices:'Practices', blog:'Blog' },
-      'pt-pt': { index:'Index', backends:'Backends', activerecord:'ActiveRecord', practices:'Practices', blog:'Blog' },
-      'nl-nl': { index:'Index', backends:'Backends', activerecord:'ActiveRecord', practices:'Practices', blog:'Blog' },
-      'it-it': { index:'Index', backends:'Backends', activerecord:'ActiveRecord', practices:'Practices', blog:'Blog' },
-      'ru-ru': { index:'Index', backends:'Backends', activerecord:'ActiveRecord', practices:'Practices', blog:'Blog' },
+      'ko-kr': { index:'홈', backends:'백엔드', activerecord:'ActiveRecord', practices:'실습', blog:'블로그' },
+      'pt-pt': { index:'Índice', backends:'Backends', activerecord:'ActiveRecord', practices:'Práticas', blog:'Blog' },
+      'nl-nl': { index:'Index', backends:'Backends', activerecord:'ActiveRecord', practices:'Praktijken', blog:'Blog' },
+      'it-it': { index:'Indice', backends:'Backend', activerecord:'ActiveRecord', practices:'Pratiche', blog:'Blog' },
+      'ru-ru': { index:'Главная', backends:'Бэкенды', activerecord:'ActiveRecord', practices:'Практики', blog:'Блог' },
       'es-es': { index:'Inicio', backends:'Backends', activerecord:'ActiveRecord', practices:'Prácticas', blog:'Blog' },
       'tr-tr': { index:'Dizin', backends:'Arka Uçlar', activerecord:'ActiveRecord', practices:'Pratikler', blog:'Blog' },
       'el-gr': { index:'Αρχική', backends:'Backends', activerecord:'ActiveRecord', practices:'Πρακτικές', blog:'Blog' },
-      'ar':    { index:'الرئيسية', backends:'الخوادم', activerecord:'ActiveRecord', practices:'الممارسات', blog:'Blog' },
-      'hi-in': { index:'Index', backends:'Backends', activerecord:'ActiveRecord', practices:'Practices', blog:'Blog' },
-      'id-id': { index:'Index', backends:'Backends', activerecord:'ActiveRecord', practices:'Practices', blog:'Blog' },
+      'ar':    { index:'الرئيسية', backends:'الخوادم', activerecord:'ActiveRecord', practices:'الممارسات', blog:'المدونة' },
+      'hi-in': { index:'मुख्य', backends:'बैकएंड', activerecord:'ActiveRecord', practices:'अभ्यास', blog:'ब्लॉग' },
+      'id-id': { index:'Beranda', backends:'Backend', activerecord:'ActiveRecord', practices:'Praktik', blog:'Blog' },
       'vi-vn': { index:'Trang chủ', backends:'Backends', activerecord:'ActiveRecord', practices:'Thực hành', blog:'Blog' },
-      'pl-pl': { index:'Index', backends:'Backends', activerecord:'ActiveRecord', practices:'Practices', blog:'Blog' },
-      'th-th': { index:'หน้าแรก', backends:'Backends', activerecord:'ActiveRecord', practices:'แนวปฏิบัติ', blog:'Blog' },
-      'uk-ua': { index:'Головна', backends:'Backends', activerecord:'ActiveRecord', practices:'Практики', blog:'Blog' },
-      'fa-ir': { index:'خانه', backends:'Backends', activerecord:'ActiveRecord', practices:'تمرین‌ها', blog:'Blog' },
-      'bn-bd': { index:'হোম', backends:'ব্যাকএন্ড', activerecord:'ActiveRecord', practices:'অনুশীলন', blog:'Blog' },
-      'ro-ro': { index:'Index', backends:'Backends', activerecord:'ActiveRecord', practices:'Practices', blog:'Blog' },
-      'cs-cz': { index:'Index', backends:'Backends', activerecord:'ActiveRecord', practices:'Praxe', blog:'Blog' },
+      'pl-pl': { index:'Strona główna', backends:'Backendy', activerecord:'ActiveRecord', practices:'Praktyki', blog:'Blog' },
+      'th-th': { index:'หน้าแรก', backends:'แบ็กเอนด์', activerecord:'ActiveRecord', practices:'แนวปฏิบัติ', blog:'บล็อก' },
+      'uk-ua': { index:'Головна', backends:'Бекенди', activerecord:'ActiveRecord', practices:'Практики', blog:'Блог' },
+      'fa-ir': { index:'خانه', backends:'بک‌اندها', activerecord:'ActiveRecord', practices:'تمرین‌ها', blog:'وبلاگ' },
+      'bn-bd': { index:'হোম', backends:'ব্যাকএন্ড', activerecord:'ActiveRecord', practices:'অনুশীলন', blog:'ব্লগ' },
+      'ro-ro': { index:'Index', backends:'Backenduri', activerecord:'ActiveRecord', practices:'Practici', blog:'Blog' },
+      'cs-cz': { index:'Index', backends:'Backendy', activerecord:'ActiveRecord', practices:'Praxe', blog:'Blog' },
     };
     var CTRL_LABELS = {
       'zh-cn': { theme:'主题', font:'字体', lang:'语言' },
@@ -138,23 +138,15 @@
     else if (pathname.indexOf('/blog/') !== -1) currentPage = 'blog';
     else if (pathname.indexOf('/activerecord/') !== -1) currentPage = 'activerecord';
 
-    var isRootLevel = pathname.indexOf('/backends/') === -1 &&
-                      pathname.indexOf('/activerecord/') === -1 &&
-                      pathname.indexOf('/blog/') === -1;
+    var BASE_URL = window.__BASE_URL__ || '';
 
     var navLinks = [
-      { key: 'index',      href: '#',             disabled: false },
-      { key: 'backends',   href: '#',    disabled: false },
-      { key: 'activerecord', href: '#',            disabled: false },
-      { key: 'practices',  href: '#',                         disabled: true },
-      { key: 'blog',       href: '#',        disabled: false },
+      { key: 'index',        href: BASE_URL + '/index.html',             disabled: false },
+      { key: 'backends',     href: BASE_URL + '/backends/index.html',    disabled: false },
+      { key: 'activerecord', href: BASE_URL + '/activerecord/index.html',disabled: false },
+      { key: 'practices',    href: '#',                                  disabled: true },
+      { key: 'blog',         href: BASE_URL + '/blog/index.html',        disabled: false },
     ];
-    // Set hrefs based on current page depth
-    var prefix = isRootLevel ? '' : '../';
-    navLinks[0].href = prefix + 'index.html';
-    navLinks[1].href = prefix + 'backends/index.html';
-    navLinks[2].href = prefix + 'activerecord/index.html';
-    navLinks[4].href = prefix + 'blog/index.html';
 
     var navHTML = navLinks.map(function (link) {
       if (link.disabled) return '';
@@ -259,6 +251,11 @@
                 break;
               }
             }
+          });
+          // Update dropdown labels (Theme/Font/Language) on lang change
+          ['theme', 'font', 'lang'].forEach(function (k) {
+            var dl = document.querySelector('[data-dropdown="' + k + '"] .dropdown-label');
+            if (dl) dl.textContent = ctrlLabel(k === 'theme' ? 'theme' : (k === 'font' ? 'font' : 'lang'));
           });
         }
 

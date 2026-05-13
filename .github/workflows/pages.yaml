@@ -1,3 +1,6 @@
+# Deploys the entire site to GitHub Pages.
+# Builds any SSG apps under src/products/ before deploying.
+
 name: Deploy to GitHub Pages
 
 on:
@@ -24,6 +27,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      # Build product SSG apps under src/products/
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Build Astro SSG — rhosocial-activerecord
+        run: |
+          cd src/products/rhosocial-activerecord
+          npm ci
+          npm run build
+          cp -r dist/* ../../../src/products/rhosocial-activerecord/
 
       - name: Setup Pages
         uses: actions/configure-pages@v4

@@ -1,4 +1,7 @@
-name: Build and deploy activerecord product site
+# Build-only check for rhosocial-activerecord Astro SSG.
+# Actual deployment is handled by pages.yaml.
+
+name: Build activerecord product site
 
 on:
   push:
@@ -26,8 +29,3 @@ jobs:
           cache-dependency-path: src/products/rhosocial-activerecord/package-lock.json
       - run: npm ci
       - run: npm run build
-      - name: Upload build artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: activerecord-dist
-          path: src/products/rhosocial-activerecord/dist/

@@ -1,44 +1,114 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-const __html = `<div class="grid-bg" style="position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:60px 60px"></div>
-
-<main>
-<div class="policy-page">
-  <h1>联系我们</h1>
-  <p class="meta">我们期待听到您的声音</p>
-
-  <p>无论您是遇到问题、有功能建议，还是希望参与贡献，我们都很乐意与您交流。以下是最便捷的联系方式：</p>
-
-  <div class="contact-card">
-    <h3><span class="icon">▶</span> GitHub Issues（推荐）</h3>
-    <p>页面问题最推荐直接提交到网站仓库的 Issues：</p>
-    <p><a href="https://github.com/rhosocial/rhosocial.github.io/issues" target="_blank">https://github.com/rhosocial/rhosocial.github.io/issues</a></p>
-  </div>
-
-  <div class="contact-card">
-    <h3><span class="icon">▶</span> GitHub Discussions</h3>
-    <p>如果您想进行更广泛的讨论、提问使用方法或分享您的使用案例，请访问 Discussions 板块。</p>
-    <p><a href="https://github.com/rhosocial/python-activerecord/discussions" target="_blank">https://github.com/rhosocial/python-activerecord/discussions</a></p>
-  </div>
-
-  <div class="contact-card">
-    <h3><span class="icon">▶</span> 电子邮件</h3>
-    <p>对于敏感问题或直接沟通，您也可以通过电子邮件联系：</p>
-    <p><a href="mailto:vistart@rho.social">vistart@rho.social</a></p>
-  </div>
-
-  <div class="contact-card">
-    <h3><span class="icon">▶</span> 贡献代码</h3>
-    <p>想提交代码？欢迎 Fork 我们的仓库并提交 Pull Request。请先阅读贡献指南（CONTRIBUTING.md）。</p>
-    <p><a href="https://github.com/rhosocial/python-activerecord" target="_blank">https://github.com/rhosocial/python-activerecord</a></p>
-  </div>
-
-  <h2>响应时间</h2>
-  <p>我们会尽最大努力在 48 小时内回复您的问题。对于 GitHub Issues 和 Discussions，其他社区成员也可能提供帮助，通常响应更快。</p>
-</div>
-</main>`;
 ---
 
 <BaseLayout title="联系我们 — rhosocial ActiveRecord" variant="ar">
-  <Fragment set:html={__html} />
+  <div class="grid-bg"></div>
+
+  <main>
+    <div class="policy-page">
+      <h1>联系我们</h1>
+      <p class="meta">我们期待听到您的声音</p>
+
+      <p>无论您是遇到问题、有功能建议，还是希望参与贡献，我们都很乐意与您交流。以下是最便捷的联系方式：</p>
+
+      <div class="contact-card">
+        <h3><span class="icon">▶</span> GitHub Issues（推荐）</h3>
+        <p>页面问题最推荐直接提交到网站仓库的 Issues：</p>
+        <p><a href="https://github.com/rhosocial/rhosocial.github.io/issues" target="_blank">https://github.com/rhosocial/rhosocial.github.io/issues</a></p>
+      </div>
+
+      <div class="contact-card">
+        <h3><span class="icon">▶</span> GitHub Discussions</h3>
+        <p>如果您想进行更广泛的讨论、提问使用方法或分享您的使用案例，请访问 Discussions 板块。</p>
+        <p><a href="https://github.com/rhosocial/python-activerecord/discussions" target="_blank">https://github.com/rhosocial/python-activerecord/discussions</a></p>
+      </div>
+
+      <div class="contact-card">
+        <h3><span class="icon">▶</span> 电子邮件</h3>
+        <p>对于敏感问题或直接沟通，您也可以通过电子邮件联系：</p>
+        <p><a href="mailto:vistart@rho.social">vistart@rho.social</a></p>
+      </div>
+
+      <div class="contact-card">
+        <h3><span class="icon">▶</span> 贡献代码</h3>
+        <p>想提交代码？欢迎 Fork 我们的仓库并提交 Pull Request。请先阅读贡献指南（CONTRIBUTING.md）。</p>
+        <p><a href="https://github.com/rhosocial/python-activerecord" target="_blank">https://github.com/rhosocial/python-activerecord</a></p>
+      </div>
+
+      <h2>响应时间</h2>
+      <p>我们会尽最大努力在 48 小时内回复您的问题。对于 GitHub Issues 和 Discussions，其他社区成员也可能提供帮助，通常响应更快。</p>
+    </div>
+  </main>
+
+  <style>
+    .grid-bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    main { position: relative; z-index: 1; }
+
+    .policy-page {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 5rem 2rem 4rem;
+    }
+    .policy-page h1 {
+      font-family: var(--font-display, 'Inter Tight', sans-serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--fg, inherit);
+      margin-bottom: 0.5rem;
+    }
+    .policy-page .meta {
+      font-family: var(--font-mono, 'JetBrains Mono', monospace);
+      font-size: 12px;
+      color: var(--fg-faint, #888);
+      margin-bottom: 2.5rem;
+    }
+    .policy-page h2 {
+      font-family: var(--font-display, 'Inter Tight', sans-serif);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--fg, inherit);
+      margin: 2rem 0 0.75rem;
+    }
+    .policy-page p {
+      color: var(--fg-muted, #aaa);
+      font-size: 15px;
+      line-height: 1.75;
+      margin-bottom: 0.75rem;
+    }
+    a { color: var(--accent-2, #22d3ee); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .contact-card {
+      background: var(--bg-2, rgba(255,255,255,0.03));
+      border: 1px solid var(--border, rgba(255,255,255,0.06));
+      border-radius: 8px;
+      padding: 1.25rem 1.5rem;
+      margin: 1rem 0;
+    }
+    .contact-card h3 {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--fg, inherit);
+      margin: 0 0 0.5rem;
+    }
+    .contact-card .icon {
+      color: var(--accent, #22d3ee);
+      font-size: 0.7rem;
+      margin-right: 0.4rem;
+    }
+    .contact-card p {
+      font-size: 14px;
+      margin-bottom: 0.3rem;
+    }
+    .contact-card p:last-child { margin-bottom: 0; }
+  </style>
 </BaseLayout>

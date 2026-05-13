@@ -1,78 +1,149 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-const __html = `<div class="grid-bg" style="position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:60px 60px"></div>
-
-<main class="page">
-<div class="policy-page">
-  <h1>隐私政策</h1>
-  <p class="meta">最后更新：2026 年 5 月 12 日</p>
-
-  <p>rhosocial（以下简称"我们"）深知隐私对您的重要性。本隐私政策说明了当您访问 rhosocial-activerecord 产品介绍网站时，我们如何收集、使用和保护您的信息。</p>
-
-  <h2>1. 我们收集的信息</h2>
-
-  <h3>1.1 本地存储偏好设置</h3>
-  <p>为了提升您的浏览体验，我们会在您的浏览器本地存储（localStorage）中记录以下偏好参数：</p>
-  <ul>
-    <li><strong>主题（Theme）</strong>——您选择的页面配色方案</li>
-    <li><strong>字体（Font）</strong>——您选择的字体风格</li>
-    <li><strong>语言（Language）</strong>——您选择的界面语言</li>
-  </ul>
-
-  <div class="highlight-box">
-    <p><strong>重要说明：</strong>上述三项参数<strong>仅存储在您本地浏览器的 localStorage 中</strong>，不会被发送到我们的服务器或其他第三方服务器。这些参数仅用于在您同一浏览器下次访问时恢复您的偏好设置，从而提供一致的用户体验。您可以随时通过浏览器设置清除这些数据。</p>
-  </div>
-
-  <h3>1.2 第三方分析服务</h3>
-  <p>本网站使用了以下第三方分析服务，以了解网站的访问情况并持续改进用户体验：</p>
-  <ul>
-    <li><strong>百度统计（Baidu Analytics）</strong>——由百度提供的网站访问统计分析服务。</li>
-    <li><strong>Google Analytics</strong>——由 Google 提供的网站访问统计分析服务。</li>
-  </ul>
-  <p>这些服务可能会在您的浏览器中设置 Cookie 或使用类似技术收集匿名访问数据（如页面浏览、访问来源、设备信息等）。这些数据的收集、处理和使用受其各自隐私政策的约束：</p>
-  <ul>
-    <li>百度统计隐私政策：<a href="https://tongji.baidu.com/web/help/article?id=330&type=0" target="_blank">https://tongji.baidu.com/web/help/article?id=330&type=0</a></li>
-    <li>Google Analytics 隐私政策：<a href="https://support.google.com/analytics/answer/6004245" target="_blank">https://support.google.com/analytics/answer/6004245</a></li>
-  </ul>
-  <p>我们建议您查阅上述链接以了解其详细的数据处理方式。我们不会将分析服务收集的数据与任何个人身份信息关联。</p>
-
-  <h2>2. 我们如何使用信息</h2>
-  <p>我们仅将收集到的信息用于以下目的：</p>
-  <ul>
-    <li>记住您的主题、字体和语言偏好，以提供一致的浏览体验（localStorage 本地数据）</li>
-    <li>分析网站访问流量和趋势，以改进网站内容和结构（第三方分析服务）</li>
-  </ul>
-
-  <h2>3. 信息共享与披露</h2>
-  <p>我们不会将您的个人信息出售、交易或转让给第三方，但以下情况除外：</p>
-  <ul>
-    <li>您的浏览器偏好数据仅存储在您本地，不会被我们收集或共享</li>
-    <li>匿名化的访问统计数据通过百度统计和 Google Analytics 处理，具体请见上述第三方隐私政策</li>
-    <li>法律要求或为保护合法权益所必需的披露</li>
-  </ul>
-
-  <h2>4. 数据存储与安全</h2>
-  <p>您的主题、字体和语言偏好仅存储在您浏览器的 localStorage 中，不会传输到任何服务器。我们采取了合理的技术措施保护网站的安全，但请理解，没有任何互联网传输或电子存储方法是完全安全的。</p>
-
-  <h2>5. 您的选择</h2>
-  <ul>
-    <li><strong>清除本地偏好：</strong>您可以通过浏览器设置清除 localStorage 数据，偏好设置将重置为默认值。</li>
-    <li><strong>选择退出分析：</strong>您可以使用浏览器插件或隐私设置阻止百度统计和/或 Google Analytics 的追踪。</li>
-  </ul>
-
-  <h2>6. 政策更新</h2>
-  <p>我们可能会不时更新本隐私政策。更新后的政策将在本页面发布，并更新"最后更新"日期。建议您定期查看本页面以了解最新信息。</p>
-
-  <h2>7. 联系我们</h2>
-  <p>如果您对本隐私政策有任何疑问或建议，请通过以下方式联系我们：</p>
-  <ul>
-    <li><strong>GitHub Issues（推荐）</strong>：在 <a href="https://github.com/rhosocial/rhosocial.github.io/issues" target="_blank">rhosocial.github.io Issues</a> 提交问题——这是最快捷的方式，也能帮助其他用户看到相关信息。</li>
-    <li><strong>电子邮件</strong>：<a href="mailto:vistart@rho.social">vistart@rho.social</a></li>
-  </ul>
-</div>
-</main>`;
 ---
 
 <BaseLayout title="隐私政策 — rhosocial ActiveRecord" variant="ar">
-  <Fragment set:html={__html} />
+  <div class="grid-bg"></div>
+
+  <main>
+    <div class="policy-page">
+      <h1>隐私政策</h1>
+      <p class="meta">最后更新：2026 年 5 月 12 日</p>
+
+      <p>rhosocial（以下简称"我们"）深知隐私对您的重要性。本隐私政策说明了当您访问 rhosocial-activerecord 产品介绍网站时，我们如何收集、使用和保护您的信息。</p>
+
+      <h2>1. 我们收集的信息</h2>
+
+      <h3>1.1 本地存储偏好设置</h3>
+      <p>为了提升您的浏览体验，我们会在您的浏览器本地存储（localStorage）中记录以下偏好参数：</p>
+      <ul>
+        <li><strong>主题（Theme）</strong>——您选择的页面配色方案</li>
+        <li><strong>字体（Font）</strong>——您选择的字体风格</li>
+        <li><strong>语言（Language）</strong>——您选择的界面语言</li>
+      </ul>
+
+      <div class="highlight-box">
+        <p><strong>重要说明：</strong>上述三项参数<strong>仅存储在您本地浏览器的 localStorage 中</strong>，不会被发送到我们的服务器或其他第三方服务器。这些参数仅用于在您同一浏览器下次访问时恢复您的偏好设置，从而提供一致的用户体验。您可以随时通过浏览器设置清除这些数据。</p>
+      </div>
+
+      <h3>1.2 第三方分析服务</h3>
+      <p>本网站使用了以下第三方分析服务，以了解网站的访问情况并持续改进用户体验：</p>
+      <ul>
+        <li><strong>百度统计（Baidu Analytics）</strong>——由百度提供的网站访问统计分析服务。</li>
+        <li><strong>Google Analytics</strong>——由 Google 提供的网站访问统计分析服务。</li>
+      </ul>
+      <p>这些服务可能会在您的浏览器中设置 Cookie 或使用类似技术收集匿名访问数据（如页面浏览、访问来源、设备信息等）。这些数据的收集、处理和使用受其各自隐私政策的约束：</p>
+      <ul>
+        <li>百度统计隐私政策：<a href="https://tongji.baidu.com/web/help/article?id=330&type=0" target="_blank">https://tongji.baidu.com/web/help/article?id=330&amp;type=0</a></li>
+        <li>Google Analytics 隐私政策：<a href="https://support.google.com/analytics/answer/6004245" target="_blank">https://support.google.com/analytics/answer/6004245</a></li>
+      </ul>
+      <p>我们建议您查阅上述链接以了解其详细的数据处理方式。我们不会将分析服务收集的数据与任何个人身份信息关联。</p>
+
+      <h2>2. 我们如何使用信息</h2>
+      <p>我们仅将收集到的信息用于以下目的：</p>
+      <ul>
+        <li>记住您的主题、字体和语言偏好，以提供一致的浏览体验（localStorage 本地数据）</li>
+        <li>分析网站访问流量和趋势，以改进网站内容和结构（第三方分析服务）</li>
+      </ul>
+
+      <h2>3. 信息共享与披露</h2>
+      <p>我们不会将您的个人信息出售、交易或转让给第三方，但以下情况除外：</p>
+      <ul>
+        <li>您的浏览器偏好数据仅存储在您本地，不会被我们收集或共享</li>
+        <li>匿名化的访问统计数据通过百度统计和 Google Analytics 处理，具体请见上述第三方隐私政策</li>
+        <li>法律要求或为保护合法权益所必需的披露</li>
+      </ul>
+
+      <h2>4. 数据存储与安全</h2>
+      <p>您的主题、字体和语言偏好仅存储在您浏览器的 localStorage 中，不会传输到任何服务器。我们采取了合理的技术措施保护网站的安全，但请理解，没有任何互联网传输或电子存储方法是完全安全的。</p>
+
+      <h2>5. 您的选择</h2>
+      <ul>
+        <li><strong>清除本地偏好：</strong>您可以通过浏览器设置清除 localStorage 数据，偏好设置将重置为默认值。</li>
+        <li><strong>选择退出分析：</strong>您可以使用浏览器插件或隐私设置阻止百度统计和/或 Google Analytics 的追踪。</li>
+      </ul>
+
+      <h2>6. 政策更新</h2>
+      <p>我们可能会不时更新本隐私政策。更新后的政策将在本页面发布，并更新"最后更新"日期。建议您定期查看本页面以了解最新信息。</p>
+
+      <h2>7. 联系我们</h2>
+      <p>如果您对本隐私政策有任何疑问或建议，请通过以下方式联系我们：</p>
+      <ul>
+        <li><strong>GitHub Issues（推荐）</strong>：在 <a href="https://github.com/rhosocial/rhosocial.github.io/issues" target="_blank">rhosocial.github.io Issues</a> 提交问题——这是最快捷的方式，也能帮助其他用户看到相关信息。</li>
+        <li><strong>电子邮件</strong>：<a href="mailto:vistart@rho.social">vistart@rho.social</a></li>
+      </ul>
+    </div>
+  </main>
+
+  <style>
+    .grid-bg {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    main { position: relative; z-index: 1; }
+
+    .policy-page {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 5rem 2rem 4rem;
+    }
+    .policy-page h1 {
+      font-family: var(--font-display, 'Inter Tight', sans-serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--fg, inherit);
+      margin-bottom: 0.5rem;
+    }
+    .policy-page .meta {
+      font-family: var(--font-mono, 'JetBrains Mono', monospace);
+      font-size: 12px;
+      color: var(--fg-faint, #888);
+      margin-bottom: 2.5rem;
+    }
+    .policy-page h2 {
+      font-family: var(--font-display, 'Inter Tight', sans-serif);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--fg, inherit);
+      margin: 2rem 0 0.75rem;
+    }
+    .policy-page h3 {
+      font-family: var(--font-display, 'Inter Tight', sans-serif);
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--fg, inherit);
+      margin: 1.5rem 0 0.5rem;
+    }
+    .policy-page p {
+      color: var(--fg-muted, #aaa);
+      font-size: 15px;
+      line-height: 1.75;
+      margin-bottom: 0.75rem;
+    }
+    .policy-page ul {
+      color: var(--fg-muted, #aaa);
+      font-size: 15px;
+      line-height: 1.75;
+      padding-left: 1.5rem;
+      margin-bottom: 0.75rem;
+    }
+    .policy-page ul li { margin-bottom: 0.4rem; }
+    a { color: var(--accent-2, #22d3ee); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .highlight-box {
+      background: var(--bg-2, rgba(255,255,255,0.03));
+      border-left: 3px solid var(--accent, #22d3ee);
+      border-radius: 6px;
+      padding: 1rem 1.5rem;
+      margin: 1rem 0;
+    }
+    .highlight-box p { margin-bottom: 0; font-size: 14px; }
+    .highlight-box strong { color: var(--accent, #22d3ee); }
+  </style>
 </BaseLayout>
