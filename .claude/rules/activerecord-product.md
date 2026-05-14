@@ -23,7 +23,11 @@ rhosocial-activerecord/
 │   │   ├── core.css / core-extensions.css / shared.css
 │   │   ├── themes/ (26 个主题 CSS)
 │   │   ├── fonts/ (25 种字体 CSS)
-│   │   ├── sections/ (首页段落样式+JS)
+│   │   ├── sections/ (首页段落 + 通用组件 样式+JS)
+│   │   │   ├── i18n.js               # 组件共享多语（24 语言）
+│   │   │   ├── code-block.css / .js   # CodeBlock 三模式（标准/diff/result）
+│   │   │   ├── tab.css / .js          # 通用 Tab 组件
+│   │   │   ├── query-builder.css/.js  # 查询构建演示（ActiveQuery/CTE/SetOperation）
 │   │   ├── i18n/ (24 种语言 JS)
 │   │   ├── control-bar.js / state-manager.js / theme-applier.js
 │   │   ├── i18n.js / shared-header.js / shared-footer.js

@@ -230,23 +230,74 @@ navLinks[4].href = prefix + 'blog/index.html';
 
 `utils.js` 仅被 `legacy-index.html` 引用，新页面不需要加载。
 
-### 代码块（core.css §9）
+### CodeBlock 组件（`assets/sections/code-block.css` + `.js`）
+
+运行时 JS 组件，支持三种渲染模式，通过 `window.CodeBlock` API 调用。
+
+| 模式 | 方法 | 用途 |
+|------|------|------|
+| 标准 | `CodeBlock.renderStandard(code, lang, filename)` | 单段代码高亮，复制按钮常显，macOS 三点 |
+| Diff | `CodeBlock.renderDiff(syncCode, asyncCode, filename)` | 同步/异步对比，上下堆叠，差异词闪烁 |
+| Result | `CodeBlock.renderResult(code, sql, result, filename)` | 代码 → SQL 高亮 → 结果表格三段式 |
+
+**复制逻辑**：标准模式复制按钮在 header；diff 模式每段各有一个独立复制按钮，只复制对应段落的代码。
+
+**语法高亮**：通过 highlight.js CDN（jsDelivr @11.9.0）自动高亮，类名映射到 `--tok-*` CSS 变量，兼容 26 主题。
+
+**数据格式（博文 body）**：
+```javascript
+{ tag: 'code', lang: 'python', text: '...', filename: 'demo.py' }
+{ tag: 'code-diff', filename: 'demo.py', syncText: '...', asyncText: '...' }
+{ tag: 'code-result', filename: 'demo.py', code: '...', sql: '...', result: { columns, rows, params } }
+{ tag: 'code-tabs', filename: 'model.py', lang: 'python', tabs: [{ label, code }, ...] }
+```
+
+### Tab 组件（`assets/sections/tab.css` + `.js`）
+
+通用 Tab 切换器，通过 `data-tabs="auto"` 自动初始化。
 
 ```html
-<div class="code-block">
-  <div class="code-header">
-    <div class="code-dots"><span></span><span></span><span></span></div>
-    <span class="code-filename">main.py</span>
+<div class="tabs" data-tabs="auto">
+  <div class="tabs-list">
+    <button class="tab is-active" data-tab="py38">Python 3.8</button>
+    <button class="tab" data-tab="py310">Python 3.10</button>
   </div>
-  <div class="code-body"><pre>
-    <span class="tok-k">from</span> ...
-    <span class="tok-s">'string'</span>
-    <span class="tok-c"># comment</span>
-  </pre></div>
+  <div class="tab-panel is-active" data-panel="py38"><!-- ... --></div>
+  <div class="tab-panel" data-panel="py310"><!-- ... --></div>
 </div>
 ```
 
-**语法高亮 Token 类名**：`tok-k`、`tok-cls`、`tok-s`、`tok-c`、`tok-attr`、`tok-n`、`tok-f`、`tok-d`、`tok-o`。
+编程式初始化：`window.Tab.init(containerElement)`。
+
+### QueryBuilder 组件（`assets/sections/query-builder.css` + `.js`）
+
+可交互查询构建演示，支持三引擎：
+- **ActiveQuery** — 链式步骤开关 × 对应 SQL
+- **CTEQuery** — WITH 子句构建
+- **SetOperationQuery** — UNION/INTERSECT/EXCEPT 选择 + 子查询
+
+```html
+<div data-component="query-builder"></div>
+```
+
+### Callout 组件
+
+```html
+<div class="callout callout-tip">
+  <span class="callout-icon">💡</span>
+  <span class="callout-body">提示内容</span>
+</div>
+```
+
+| 类型 | class | 图标 | 左边框色 |
+|------|-------|------|----------|
+| 提示 | `callout-tip` | 💡 | `--accent-2`（青绿） |
+| 警告 | `callout-warning` | ⚠️ | `--warn`（黄色） |
+| 危险 | `callout-danger` | 🚨 | `--danger`（红色） |
+| 信息 | `callout-info` | ℹ️ | `--info`（蓝色） |
+| 笔记 | `callout-note` | 📝 | `--fg-muted`（灰色） |
+
+博文数据格式：`{ tag: 'callout', type: 'tip', html: '...' }`
 
 ---
 

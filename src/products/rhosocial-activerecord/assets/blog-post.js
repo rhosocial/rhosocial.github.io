@@ -4,13 +4,13 @@
  * from window.I18N[lang].body array. Supports both data-driven rendering
  * and static HTML children (for custom components, media, etc.).
  * Subscribes to lang changes for live re-render.
+ * Delegates code rendering to CodeBlock component when available.
  * Load after i18n.js, before shared-footer.js.
  */
 (function() {
   'use strict';
 
   var CONTAINER_ID = 'post-body';
-  var CSS_INJECTED = false;
 
   function lang() {
     return (window.__STATE__ && window.__STATE__.get('lang')) || 'zh-cn';
@@ -24,13 +24,11 @@
       .replace(/"/g, '&quot;');
   }
 
-  /* ── Python tokenizer (produces tok-kw/fn/num/cls/s/c/op spans) ── */
   function tokenizePython(code) {
     var escaped = escape(code);
     var out = '';
     var i = 0;
     var n = escaped.length;
-
     var KW = {
       'import':1,'from':1,'class':1,'def':1,'return':1,'if':1,'elif':1,
       'else':1,'for':1,'while':1,'break':1,'continue':1,'in':1,'not':1,
@@ -39,50 +37,33 @@
       'yield':1,'lambda':1,'del':1,'global':1,'nonlocal':1,'assert':1,
       'self':1,'print':1,'super':1
     };
-
     function isWord(ch) {
       return (ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') ||
              (ch >= '0' && ch <= '9') || ch === '_';
     }
-
     while (i < n) {
       var ch = escaped[i];
-
-      // Comment
       if (ch === '#' && (i === 0 || !isWord(escaped[i - 1]))) {
         var end = escaped.indexOf('\n', i);
         if (end === -1) end = n;
         out += '<span class="tok-c">' + escaped.slice(i, end) + '</span>';
-        i = end;
-        continue;
+        i = end; continue;
       }
-
-      // String literal
       if (ch === '"' || ch === "'") {
         var quote = ch;
         var j = i + 1;
-        while (j < n) {
-          if (escaped[j] === '\\') { j += 2; continue; }
-          if (escaped[j] === quote) { j++; break; }
-          j++;
-        }
+        while (j < n) { if (escaped[j] === '\\') { j += 2; continue; } if (escaped[j] === quote) { j++; break; } j++; }
         out += '<span class="tok-s">' + escaped.slice(i, j) + '</span>';
-        i = j;
-        continue;
+        i = j; continue;
       }
-
-      // Number
       if (ch >= '0' && ch <= '9') {
         var j = i;
         while (j < n && ((escaped[j] >= '0' && escaped[j] <= '9') ||
                escaped[j] === '.' || escaped[j] === 'e' || escaped[j] === 'E' ||
                escaped[j] === 'x' || escaped[j] === 'X')) j++;
         out += '<span class="tok-num">' + escaped.slice(i, j) + '</span>';
-        i = j;
-        continue;
+        i = j; continue;
       }
-
-      // Word
       if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch === '_') {
         var j = i;
         while (j < n && isWord(escaped[j])) j++;
@@ -91,45 +72,31 @@
           out += '<span class="tok-kw">' + word + '</span>';
         } else if (j < n && escaped[j] === '(') {
           out += '<span class="tok-fn">' + word + '</span>';
-        } else {
-          out += word;
-        }
-        i = j;
-        continue;
+        } else { out += word; }
+        i = j; continue;
       }
-
-      // Everything else
-      out += ch;
-      i++;
+      out += ch; i++;
     }
     return out;
   }
 
-  /* ── Copy button i18n ── */
-  var COPY_BTN_LABELS = {
-    'zh-cn': { copy: '复制', copied: '已复制' },
-    'en-us': { copy: 'Copy', copied: 'Copied!' }
-  };
-  function copyLabel(key) {
-    var l = lang();
-    return (COPY_BTN_LABELS[l] || COPY_BTN_LABELS['en-us'])[key] || key;
-  }
-
-  /* ── Inject copy button CSS (one-time) ── */
-  function injectCodeBlockCSS() {
-    if (CSS_INJECTED) return;
-    CSS_INJECTED = true;
-    var style = document.createElement('style');
-    style.textContent =
-      '.code-copy-btn{' +
-        'margin-left:auto;background:none;border:1px solid var(--code-border);' +
-        'color:var(--code-fg-muted);padding:2px 8px;border-radius:3px;' +
-        'font-size:10px;cursor:pointer;font-family:var(--font-mono);' +
-        'transition:color 0.2s,border-color 0.2s;opacity:0;' +
-      '}' +
-      '.code-header:hover .code-copy-btn{opacity:1}' +
-      '.code-copy-btn:hover{color:var(--code-fg);border-color:var(--code-fg-muted)}';
-    document.head.appendChild(style);
+  /* ── CodeBlock integration (with fallback) ── */
+  function codeBlockHtml(block) {
+    var codeText = block.text || block.html || '';
+    var filename = block.filename || '';
+    var lang = block.lang || 'python';
+    if (typeof CodeBlock !== 'undefined') {
+      return CodeBlock.renderStandard(codeText, lang, filename);
+    }
+    var highlighted = tokenizePython(codeText);
+    return '<div class="code-block">' +
+      '<div class="code-header">' +
+        '<div class="code-dots"><span></span><span></span><span></span></div>' +
+        '<span class="code-filename">' + escape(filename) + '</span>' +
+        '<button class="code-copy-btn" type="button">Copy</button>' +
+      '</div>' +
+      '<div class="code-body"><pre>' + highlighted + '</pre></div>' +
+    '</div>';
   }
 
   function renderBlock(block) {
@@ -152,17 +119,38 @@
         html = '<h3>' + (block.html || '') + '</h3>';
         break;
       case 'code':
-        var codeText = block.text || block.html || '';
-        var filename = block.filename || '';
-        var highlighted = tokenizePython(codeText);
-        html = '<div class="code-block">' +
-          '<div class="code-header">' +
-            '<div class="code-dots"><span></span><span></span><span></span></div>' +
-            '<span class="code-filename">' + escape(filename) + '</span>' +
-            '<button class="code-copy-btn" type="button">' + copyLabel('copy') + '</button>' +
-          '</div>' +
-          '<div class="code-body"><pre>' + highlighted + '</pre></div>' +
-        '</div>';
+        html = codeBlockHtml(block);
+        break;
+      case 'code-diff':
+        if (typeof CodeBlock !== 'undefined') {
+          html = CodeBlock.renderDiff(block.syncText, block.asyncText, block.filename);
+        }
+        break;
+      case 'code-result':
+        if (typeof CodeBlock !== 'undefined') {
+          html = CodeBlock.renderResult(block.code, block.sql, block.result || block.results, block.filename);
+        }
+        break;
+      case 'code-tabs':
+        if (block.tabs && block.tabs.length) {
+          html = '<div class="tabs" data-tabs="auto">' +
+            '<div class="tabs-list">';
+          for (var ti = 0; ti < block.tabs.length; ti++) {
+            html += '<button class="tab' + (ti === 0 ? ' is-active' : '') +
+              '" data-tab="' + ti + '" aria-selected="' + (ti === 0 ? 'true' : 'false') + '">' +
+              escape(block.tabs[ti].label) + '</button>';
+          }
+          html += '</div>';
+          for (var ti = 0; ti < block.tabs.length; ti++) {
+            html += '<div class="tab-panel' + (ti === 0 ? ' is-active' : '') +
+              '" data-panel="' + ti + '">';
+            if (typeof CodeBlock !== 'undefined') {
+              html += CodeBlock.renderStandard(block.tabs[ti].code, block.lang || 'python', block.filename);
+            }
+            html += '</div>';
+          }
+          html += '</div>';
+        }
         break;
       case 'ul':
         if (block.items) {
@@ -175,7 +163,10 @@
         }
         break;
       case 'callout':
-        html = '<div class="callout">' + (block.html || '') + '</div>';
+        var ct = block.type || 'note';
+        html = '<div class="callout callout-' + ct + '">' +
+          '<span class="callout-icon">' + ({tip:'💡',warning:'⚠️',danger:'🚨',info:'ℹ️',note:'📝'}[ct]||'📝') + '</span>' +
+          '<span class="callout-body">' + (block.html || '') + '</span></div>';
         break;
       case 'blockquote':
         html = '<blockquote>' + (block.html || '') + '</blockquote>';
@@ -195,24 +186,6 @@
     return html;
   }
 
-  /* ── Copy handler via event delegation on #post-body ── */
-  function onCopyClick(e) {
-    var btn = e.target.closest('.code-copy-btn');
-    if (!btn) return;
-    var block = btn.closest('.code-block');
-    if (!block) return;
-    var pre = block.querySelector('.code-body pre');
-    if (!pre) return;
-    var code = pre.textContent;
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(code).then(function() {
-        var orig = btn.textContent;
-        btn.textContent = copyLabel('copied');
-        setTimeout(function() { btn.textContent = orig; }, 1200);
-      });
-    }
-  }
-
   function renderBody(slug, targetLang) {
     var dict = window.I18N && (window.I18N[targetLang] || window.I18N['zh-cn']);
     if (!dict) return;
@@ -224,11 +197,15 @@
 
     var html = blocks.map(renderBlock).join('\n');
     container.innerHTML = html;
+
+    if (window.Tab) {
+      container.querySelectorAll('[data-tabs="auto"]').forEach(function(el) {
+        window.Tab.init(el);
+      });
+    }
   }
 
   function init() {
-    injectCodeBlockCSS();
-
     var container = document.getElementById(CONTAINER_ID);
     if (!container) return;
 
@@ -236,9 +213,6 @@
     if (!slug) return;
 
     renderBody(slug, lang());
-
-    // One-time event delegation for copy buttons
-    container.addEventListener('click', onCopyClick);
 
     if (window.__STATE__) {
       window.__STATE__.subscribe(['lang'], function() {

@@ -38,6 +38,8 @@ const LANG_FILES = ['zh-cn','en-us','ja-jp','de-de','fr-fr','ko-kr','pt-pt','nl-
   {THEMES.map(t => <link rel="stylesheet" href={`${A}/themes/${t}.css`} />)}
   {FONTS.map(f => <link rel="stylesheet" href={`${A}/fonts/${f}.css`} />)}
 
+  <script is:inline src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.9.0/build/highlight.min.js"></script>
+
   <link rel="stylesheet" href={`${A}/sections/rho-vars.css`} />
   <link rel="stylesheet" href={`${A}/sections/section-common.css`} />
   <link rel="stylesheet" href={`${A}/sections/hero.css`} />
@@ -47,6 +49,9 @@ const LANG_FILES = ['zh-cn','en-us','ja-jp','de-de','fr-fr','ko-kr','pt-pt','nl-
   <link rel="stylesheet" href={`${A}/sections/arch.css`} />
   <link rel="stylesheet" href={`${A}/sections/compare.css`} />
   <link rel="stylesheet" href={`${A}/sections/install.css`} />
+  <link rel="stylesheet" href={`${A}/sections/code-block.css`} />
+  <link rel="stylesheet" href={`${A}/sections/tab.css`} />
+  <link rel="stylesheet" href={`${A}/sections/query-builder.css`} />
 
   {LANG_FILES.map(l => <script src={`${A}/i18n/${l}.js`}></script>)}
 </head>
@@ -60,5 +65,9 @@ const LANG_FILES = ['zh-cn','en-us','ja-jp','de-de','fr-fr','ko-kr','pt-pt','nl-
   <script src={`${A}/control-bar.js`} data-variant={variant}></script>
   <script src={`${A}/shared-header.js`}></script>
   <script src={`${A}/shared-footer.js`}></script>
+  <script src={`${A}/sections/i18n.js`}></script>
+  <script src={`${A}/sections/code-block.js`}></script>
+  <script src={`${A}/sections/tab.js`}></script>
+  <script src={`${A}/sections/query-builder.js`}></script>
 </body>
 </html>
